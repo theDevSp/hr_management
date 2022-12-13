@@ -58,3 +58,6 @@ class hr_employee(models.Model):
     #profile_paie = fields.Many2one(related="contract_id.function.function_id",string='Profile de Paie')
     #chantier_affect = fields.One2many("hr.employee.affectation.chantier","employee_id",string="Affectation Chantier")
     #company_id = fields.Many2one('res.company', 'Company', required=True,default=1)
+
+
+######
