@@ -2,10 +2,9 @@ from odoo import fields, models, api
 from datetime import date
 
 class hr_employee(models.Model):
-    _name = "hr.employee.new"
     _description = "Employee"
     #_order = 'name'
-    #_inherit = ['hr.employee']
+    _inherit = ['hr.employee']
     #_inherit = ['hr.employee', 'mail.thread', 'mail.activity.mixin', 'resource.mixin', 'avatar.mixin']
     #_mail_post_access = 'read'
 

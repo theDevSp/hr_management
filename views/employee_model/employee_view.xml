@@ -3,7 +3,7 @@
     <!--on met les enregistrement ici dans la balise odoo -->
     <record id='employee_action' model='ir.actions.act_window'>
         <field name="name"> HR Management  </field>
-        <field name="res_model">hr.employee.new</field>
+        <field name="res_model">hr.employee</field>
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -24,7 +24,7 @@
 
     <record id="employee_view_form" model="ir.ui.view">
         <field name="name">Employees Form</field>
-        <field name="model">hr.employee.new</field>
+        <field name="model">hr.employee</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -77,7 +77,7 @@
 
     <record id="employee_tree" model="ir.ui.view">
         <field name="name">HR Employee List</field>
-        <field name="model">hr.employee.new</field>
+        <field name="model">hr.employee</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="cin"/>
@@ -91,7 +91,7 @@
 
     <record id="employee_search" model="ir.ui.view">
         <field name="name">Employee Recherche</field>
-        <field name="model">hr.employee.new</field>
+        <field name="model">hr.employee</field>
         <field name="arch" type="xml">
             <search>
                 <field name="cin"/>
