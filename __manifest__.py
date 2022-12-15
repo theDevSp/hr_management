@@ -19,6 +19,7 @@
         'security/groups.xml',
         'security/ir.model.access.csv',
         'views/employee_model/employee_view.xml',
+        'views/employee_model/employee_menu.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

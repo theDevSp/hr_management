@@ -4,7 +4,7 @@
     <record id='employee_action' model='ir.actions.act_window'>
         <field name="name"> HR Management  </field>
         <field name="res_model">hr.employee</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,search</field>
     </record>
 
     <!--
@@ -19,9 +19,7 @@
         <field name="implementation">standard</field>
     </record>
     -->
-    <menuitem name="HR Management" id="hr_management_base_menu" />
-    <menuitem name="Employees" id="employees_menu" parent="hr_management_base_menu" action="employee_action"/>
-
+    
     <record id="employee_view_form" model="ir.ui.view">
         <field name="name">Employees Form</field>
         <field name="model">hr.employee</field>
