@@ -10,7 +10,7 @@
     "license": 'LGPL-3',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mail', 'hr'],
+    'depends': ['base', 'mail', 'hr', 'stock'],
 
     # always loaded
     'data': [         

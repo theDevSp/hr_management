@@ -3,9 +3,8 @@ from datetime import date
 
 class hr_employee(models.Model):
     _description = "Employee"
-    #_order = 'name'
+    _order = 'name'
     _inherit = ['hr.employee']
-    #_inherit = ['hr.employee', 'mail.thread', 'mail.activity.mixin', 'resource.mixin', 'avatar.mixin']
     #_mail_post_access = 'read'
 
     cin = fields.Char('CIN', required=True)
