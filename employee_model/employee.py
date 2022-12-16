@@ -8,8 +8,8 @@ class hr_employee(models.Model):
     #_mail_post_access = 'read'
 
     cin = fields.Char('CIN', required=True)
-    is_salary = fields.Boolean("Is Employee?")
-    ### employee_type = fields.Selection([("employee1","Salarié"),("employee2","Ouvrier")],string=u"Type d'employé",default="employee1")
+    cnss = fields.Char('CNSS')
+    type_emp = fields.Selection([("employee1","Salarié"),("employee2","Ouvrier")],string=u"Type d'employé",default="employee1")
     #title_id = fields.Many2one("res.partner.title","Titre")
     #bank = fields.Many2one("bank","Banque")
     ville_bank = fields.Char(u"Ville")
@@ -54,7 +54,7 @@ class hr_employee(models.Model):
     #wage_jour = fields.Float(compute='_compute_salaire_jour',string='Salaire Journalier')
     panier_done = fields.Boolean('Panier régler')
     state_employee_wtf = fields.Selection([("new","Nouveau Embauche"),("transfert","Transfert"),("active","Active"),("stc","STC")],u"Situation Employée")
-
+    active = fields.Boolean('Active', related='resource_id.active', default=True, store=True, readonly=False)
 
     #profile_paie = fields.Many2one(related="contract_id.function.function_id",string='Profile de Paie')
     #chantier_affect = fields.One2many("hr.employee.affectation.chantier","employee_id",string="Affectation Chantier")
