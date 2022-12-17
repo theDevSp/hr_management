@@ -52,7 +52,6 @@ class hr_employee(models.Model):
     #payslip_count = fields.Integer(compute='_compute_payslip')
     #working_years = fields.Char(compute='_compute_working_years',string="Ancienneté")
     #wage_jour = fields.Float(compute='_compute_salaire_jour',string='Salaire Journalier')
-    panier_done = fields.Boolean('Panier régler')
     state_employee_wtf = fields.Selection([("new","Nouveau Embauche"),("transfert","Transfert"),("active","Active"),("stc","STC")],u"Situation Employée")
     active = fields.Boolean('Active', related='resource_id.active', default=True, store=True, readonly=False)
 

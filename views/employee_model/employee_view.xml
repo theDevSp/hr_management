@@ -120,7 +120,6 @@
                             <group>
                                 <!--<field name="remaining_leaves" readonly="1"/>-->
                                 <!--<field name="nbr_jour_ferie"/>-->
-                                <field name="panier_done"/> 
                             </group>	
                         </group>
                     </group>
