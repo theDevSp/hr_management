@@ -54,8 +54,6 @@ class hr_employee(models.Model):
     nombre_enfants = fields.Integer(u"Nombre d'enfants")
 
 
-
-    #@api.multi
     def _compute_age(self):
         for employee in self:
             if employee.date_naissance:
@@ -64,7 +62,7 @@ class hr_employee(models.Model):
                 age = today.year - birthDate.year - ((today.month, today.day) < (birthDate.month, birthDate.day))
                 employee.employee_age = age       
 
-    #@api.multi
+
     def _compute_jf(self):  
         for employee in self:  
             if employee:
@@ -72,7 +70,6 @@ class hr_employee(models.Model):
                 employee.nbr_jour_ferie = sum([line.number_of_days_temp for line in attributions])      
 
 
-    #@api.one
     def _compute_remaining_days(self):
         query = """
                     select cast(date_part('day',date_end::timestamp - CURRENT_DATE::timestamp) as int) from hr_contract where
@@ -83,12 +80,11 @@ class hr_employee(models.Model):
         if len(res) > 0:
             self.remaining_days = res[0][0]
 
-    #@api.one
+
     def _compute_payslip(self):
             self.payslip_count = len(self.env['hr.payslip'].search([('employee_id', '=', self.id)]))
         
 
-    #@api.multi
     def _compute_working_years(self):
         for employee in self:
             if employee.contract_id.date_start:
@@ -106,7 +102,7 @@ class hr_employee(models.Model):
             else :
                 employee.working_years = 0
 
-    #@api.multi
+
     def _compute_salaire_jour(self):
         for employee in self:
             if employee.wage:
@@ -125,7 +121,7 @@ class hr_employee(models.Model):
             Contract = self.env['hr.contract'].search([('employee_id', '=', parent_obj.employee_id)])
             return Contract.wage
 
-    #@api.multi
+
     def view_employee_payslips(self):
         res = []
         view = self.env.ref('hr_payroll.view_hr_payslip_tree')
@@ -146,7 +142,7 @@ class hr_employee(models.Model):
             'domain':[('id','in',res)]
             }
 
-    #@api.multi
+
     @api.onchange("identification_id")
     def _verify_new_recruit(self):
         if self.identification_id:
@@ -205,7 +201,6 @@ class hr_employee(models.Model):
         return res
 
 
-    #@api.multi
     def action_active_salarie(self):
         pointeur = self.env['res.users'].has_group("nxtm_employee_mngt.group_pointage_user")
         view = self.env.ref('nxtm_employee_mngt.hr_tree') if not pointeur else self.env.ref('nxtm_employee_mngt.hr_pointeur_tree')
@@ -223,7 +218,6 @@ class hr_employee(models.Model):
         }
     
         
-    #@api.multi
     def action_active_ouvrier(self):
         pointeur = self.env['res.users'].has_group("nxtm_employee_mngt.group_pointage_user")
         view = self.env.ref('nxtm_employee_mngt.hr_tree') if not pointeur else self.env.ref('nxtm_employee_mngt.hr_pointeur_tree')
@@ -240,7 +234,7 @@ class hr_employee(models.Model):
             'domain':[('id', 'in',self._get_active_employee('employee2'))]
         }
 
-    #@api.multi
+
     def nouveau_embauche(self):
         pointeur = self.env['res.users'].has_group("nxtm_employee_mngt.group_pointage_user")
         view = self.env.ref('nxtm_employee_mngt.hr_tree') if not pointeur else self.env.ref('nxtm_employee_mngt.hr_pointeur_tree')
@@ -272,7 +266,7 @@ class hr_employee(models.Model):
             res.append(employee[0])
         return res
 
-    #@api.multi
+
     def action_fin_contrat(self):
         
         view = self.env.ref('nxtm_employee_mngt.hr_fin_contrat_tree')
@@ -289,7 +283,6 @@ class hr_employee(models.Model):
             'domain':[('id','in',self._get_fin_contrat(2,90))]
         }
     
-    #@api.multi
     def action_fin_contrat_6(self):
         
         view = self.env.ref('nxtm_employee_mngt.hr_fin_contrat_tree')

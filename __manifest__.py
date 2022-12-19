@@ -3,8 +3,6 @@
     'name': "Human Ressources Management",
     'summary': "The Human Ressources Management",
     'description': "Description Of Human Ressources Management",
-    #'author': "My Company",
-    #'website': "http://www.yourcompany.com",
     'category': 'Uncategorized',
     'version': '0.1',
     'license': 'LGPL-3',
