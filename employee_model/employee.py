@@ -103,6 +103,8 @@ class hr_employee(models.Model):
                 if diff.days > 0 :
                     res += str(diff.days) + ' jours'
                 employee.working_years = res
+            else :
+                employee.working_years = 0
 
     #@api.multi
     def _compute_salaire_jour(self):
