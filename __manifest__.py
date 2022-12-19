@@ -7,12 +7,12 @@
     #'website': "http://www.yourcompany.com",
     'category': 'Uncategorized',
     'version': '0.1',
-    "license": 'LGPL-3',
+    'license': 'LGPL-3',
 
-    # any module necessary for this one to work correctly
-    'depends': ['base', 'mail', 'hr', 'stock', 'hr_contract'],
+    'depends': [
+        'base', 'mail', 'hr', 'stock', 'hr_contract'
+        ],
 
-    # always loaded
     'data': [         
         'views/views.xml',
         'views/templates.xml',
@@ -21,7 +21,7 @@
         'views/employee_model/employee_view.xml',
         'views/employee_model/employee_menu.xml',
     ],
-    # only loaded in demonstration mode
+
     'demo': [
         #'demo/demo.xml',
     ],
