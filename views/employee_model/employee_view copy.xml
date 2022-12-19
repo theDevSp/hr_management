@@ -1,3 +1,11 @@
+
+bank = fields.Many2one("bank","Banque")
+property_bank_account = fields.Many2one(required=False)
+    employee_account = fields.Many2one(required=False)
+    salary_account = fields.Many2one(required=False)
+
+
+
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id='employee_action' model='ir.actions.act_window'>
@@ -11,10 +19,11 @@
         <field name="model">hr.employee</field>
         <field name="arch" type="xml">
             <tree decoration-success="state_employee_wtf == 'new'" decoration-danger="state_employee_wtf == 'stc'">
-                <field name="name"/>
-				<field name="identification_id"/>
+                <field name="name" />
+				<!--field name="identification_id" /-->
                 <field name="cin"/>
                 <field name="cnss"/>
+               
 				<field name="job" />
                 <field name="diplome"/>
 				<field name="type_emp" />
@@ -51,6 +60,7 @@
                         <field name="date_naissance"/>
                         <field name="lieu_naissance"/>
                         <field name="employee_age" />
+                        <field name="working_years"/>
                         <field name="gender"/>
                         <field name="marital"/>
                         <field name="nombre_enfants" />
@@ -77,22 +87,25 @@
                             <field name="motif_enbauche"/>
                             <field name="obs_embauche" />
                             <field name="state_employee_wtf"/>
+							<field name="emplacement_chantier_id" options="{'no_create': True}"/>
                             <field name="date_start"/>
                             <field name="date_end"/>
-                            <field name="working_years"/>
                             <field name="payslip_count"/>
                             <field name="working_years"/>
                             <field name="wage" string="Salaire de base"/>
 							<field name="wage_jour" />
-                            <field name="chantier_id" options="{'no_create': True}"/> 
-                            <field name="emplacement_chantier_id" options="{'no_create': True}"/>
+                          <!--  <field name="chantier_id" options="{'no_create': True}"/> 
+                            <field name="emplacement_chantier_id" options="{'no_create': True}"/>-->
                         </group> 
                         <group string="Informations bancaires">
                             <group>
-                                <!--<field name="bank"/>-->
+                                <field name="bank"/>
                                 <field name="bank_account"/>
                                 <field name="bank_agence"/>
                                 <field name="ville_bank"/>
+                                <field name="property_bank_account"/>
+                                <field name="employee_account"/>
+                                <field name="salary_account"/>
                             </group>	
 					    </group>
                     </group>
