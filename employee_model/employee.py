@@ -6,7 +6,7 @@ class hr_employee(models.Model):
     _description = "Employee"
     _order = 'name'
     _inherit = ['hr.employee']
-    #_mail_post_access = 'read'
+    _mail_post_access = 'read'
 
     cin = fields.Char('CIN', required=True)
     cnss = fields.Char('CNSS')
@@ -31,7 +31,7 @@ class hr_employee(models.Model):
     date_naissance = fields.Date(u"Date Naissance")
     lieu_naissance = fields.Char(u"Lieu Naissance")
     montant_cimr = fields.Float(u"Montant Cotisation CIMR")
-    nbr_jour_ferie = fields.Float(u"Nombre de Jours Fériés",compute="_compute_jf")
+
     date_start = fields.Date(related="contract_id.date_start",string='Date Debut')
     date_end = fields.Date(related="contract_id.date_end",string='Date Fin')
     remaining_days = fields.Char(compute="_compute_remaining_days",string='Jours Restant')
@@ -39,7 +39,8 @@ class hr_employee(models.Model):
     phone1 = fields.Char(u"Tél. Portable 1")
     phone2 = fields.Char(u"Tél. Portable 2")
     phone3 = fields.Char(u"Tél. Portable 3")
-    payslip_count = fields.Integer(compute='_compute_payslip')
+    #payslip_count = fields.Integer(compute='_compute_payslip')    
+    #nbr_jour_ferie = fields.Float(u"Nombre de Jours Fériés",compute="_compute_jf")
     working_years = fields.Char(compute='_compute_working_years',string="Ancienneté")
     
     currency_f = fields.Many2one('res.currency', string='Currency')
@@ -62,14 +63,7 @@ class hr_employee(models.Model):
                 age = today.year - birthDate.year - ((today.month, today.day) < (birthDate.month, birthDate.day))
                 employee.employee_age = age
             else :
-                employee.employee_age = 0       
-
-
-    def _compute_jf(self):  
-        for employee in self:  
-            if employee:
-                attributions = self.env['hr.holidays'].search([('employee_id','=',employee.id),('holiday_status_id','=',9)]) 
-                employee.nbr_jour_ferie = sum([line.number_of_days_temp for line in attributions])      
+                employee.employee_age = 0           
 
 
     def _compute_remaining_days(self):
@@ -81,11 +75,9 @@ class hr_employee(models.Model):
         res = self.env.cr.fetchall()
         if len(res) > 0:
             self.remaining_days = res[0][0]
-
-
-    def _compute_payslip(self):
-            self.payslip_count = len(self.env['hr.payslip'].search([('employee_id', '=', self.id)]))
-        
+        else :
+            self.remaining_days = 0
+  
 
     def _compute_working_years(self):
         for employee in self:
@@ -112,6 +104,8 @@ class hr_employee(models.Model):
                     employee.wage_jour = employee.wage/26
                 else:
                     employee.wage_jour = employee.wage/30
+            else :
+                employee.wage_jour = 0
 
 
     @api.model

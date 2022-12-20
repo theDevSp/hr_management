@@ -8,7 +8,7 @@
     'license': 'LGPL-3',
 
     'depends': [
-        'base', 'mail', 'hr', 'stock', 'hr_contract'
+        'base', 'mail', 'hr', 'stock', 'hr_contract',
         ],
 
     'data': [         
@@ -21,12 +21,10 @@
     ],
 
     'demo': [
-        #'demo/demo.xml',
     ],
 
     'application': True ,
     'installable': True ,
     'auto_install': False,
     'sequence': 2,
-    
 }

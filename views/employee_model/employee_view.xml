@@ -34,11 +34,6 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <!--    
-                    <button name="creatiion_individuel_rapport_pointage" string="Générer un rapport" type="object" groups="nxtm_employee_mngt.group_pointage_admin"/>
-                    <button name="activation" string="Activé l'employée" type="object" groups="nxtm_employee_mngt.group_pointage_admin"/>
-                    <field name="state_employee_wtf" widget="statusbar"/>
-                    -->
                     <button name="creatiion_individuel_rapport_pointage" string="Générer un rapport"/>
                     <button name="activation" string="Activé l'employée"/>
                 </header>
@@ -80,7 +75,7 @@
                             <field name="date_start"/>
                             <field name="date_end"/>
                             <field name="working_years"/>
-                            <field name="payslip_count"/>
+                           <!-- <field name="payslip_count"/> -->
                             <field name="working_years"/>
                             <field name="wage" string="Salaire de base"/>
 							<field name="wage_jour" />
@@ -107,33 +102,10 @@
                         <group string="Panier de Congés">
                             <group>
                                 <field name="remaining_days" readonly="1"/>
-                                <field name="nbr_jour_ferie"/>
+                                <!--<field name="nbr_jour_ferie"/>-->
                             </group>	
                         </group>
                     </group>
-                    
-                    <!--
-                    <group string="Formule Salaire">
-                        
-                        <center>
-                            <button string="Recuperer rubriques par defaut" name="retrieve_contract_lines" type="object" />
-                            <button string="Vider les rubriques" name="vider_contract_lines" type="object" />
-                        </center>
-                        
-                        <field name="line_ids" string="Lignes de rubriques" colspan="4" nolabel="1" >
-                            <tree colors="red:display==True;">
-                                <field name="category_id" on_change="onchange_category(category_id)" string="Nom (originaire de..)"  />
-                                <field name="libelle" string="Libelle" invisible="1" />
-                                <field name="name" string="name (debug)" invisible="1"/>
-                                <field name="code"/>
-                                <field name="a_afficher" string="Afficher dans bulletin" invisible="1"/>
-                                <field name="sequence" />
-                                <field name="valeur" on_change="onchange_amount(amount, amount_type)"  string="Valeur"  />
-                                <field name="display" invisible="1"/>
-                            </tree>
-                        </field>     
-                    </group>
-                    --> 
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
