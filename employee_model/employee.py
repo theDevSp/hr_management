@@ -60,7 +60,9 @@ class hr_employee(models.Model):
                 today = date.today() 
                 birthDate = fields.Date.from_string(employee.date_naissance)
                 age = today.year - birthDate.year - ((today.month, today.day) < (birthDate.month, birthDate.day))
-                employee.employee_age = age       
+                employee.employee_age = age
+            else :
+                employee.employee_age = 0       
 
 
     def _compute_jf(self):  
