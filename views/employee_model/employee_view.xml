@@ -11,19 +11,19 @@
         <field name="model">hr.employee</field>
         <field name="arch" type="xml">
             <tree decoration-success="state_employee_wtf == 'new'" decoration-danger="state_employee_wtf == 'stc'">
-                <field name="name"/>
-				<field name="identification_id"/>
-                <field name="cin"/>
-                <field name="cnss"/>
-				<field name="job" />
-                <field name="diplome"/>
-				<field name="type_emp" />
-                <field name="chantier_id"/>
-                <field name="emplacement_chantier_id"/>				
-				<field name="bank_account" />
-				<field name="mobile_phone" />
-				<field name="state_employee_wtf"/>
-                <field name="montant_cimr"/>
+                <field name="name" optional="show"/>
+				<field name="identification_id" optional="show"/>
+                <field name="cin" optional="show"/>
+                <field name="cnss" optional="show"/>
+				<field name="job" optional="show"/>
+                <field name="diplome" optional="show"/>
+				<field name="type_emp" optional="show"/>
+                <field name="chantier_id" optional="show"/>
+                <field name="emplacement_chantier_id" optional="show"/>				
+				<field name="bank_account" optional="show"/>
+				<field name="mobile_phone" optional="show"/>
+				<field name="state_employee_wtf" optional="show"/>
+                <field name="montant_cimr" optional="show"/>
             </tree>
         </field>
     </record>

@@ -27,4 +27,5 @@
     'installable': True ,
     'auto_install': False,
     'sequence': 2,
+
 }
