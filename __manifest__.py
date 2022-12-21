@@ -8,7 +8,7 @@
     'license': 'LGPL-3',
 
     'depends': [
-        'base', 'mail', 'hr', 'stock', 'hr_contract',
+        'base', 'mail', 'hr', 'stock', 'hr_contract', 'construction_site_management'
         ],
 
     'data': [         
@@ -28,4 +28,9 @@
     'auto_install': False,
     'sequence': 2,
 
+    'assets': {
+        'web.assets_backend': [
+            'hr_management/static/src/css/style.css',
+        ],
+    },
 }

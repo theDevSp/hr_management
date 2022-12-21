@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.osv import expression
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -34,7 +35,7 @@ class hr_employee(models.Model):
 
     date_start = fields.Date(related="contract_id.date_start",string='Date Debut')
     date_end = fields.Date(related="contract_id.date_end",string='Date Fin')
-    remaining_days = fields.Char(compute="_compute_remaining_days",string='Jours Restant')
+    remaining_days = fields.Char(compute="_compute_remaining_days",string='Jours Restants')
     date_cin = fields.Date(u'Date validité CIN')
     phone1 = fields.Char(u"Tél. Portable 1")
     phone2 = fields.Char(u"Tél. Portable 2")
@@ -47,7 +48,7 @@ class hr_employee(models.Model):
     wage = fields.Monetary(related="contract_id.wage",string='Salaire', required=True, tracking=True, currency_field = "currency_f")
     
     wage_jour = fields.Float(compute='_compute_salaire_jour',string='Salaire Journalier')
-    state_employee_wtf = fields.Selection([("new","Nouveau Embauche"),("transfert","Transfert"),("active","Active"),("stc","STC")],u"Situation Employée")
+    state_employee_wtf = fields.Selection([("new","Nouveau Embauche"),("transfert","Transfert"),("active","Active"),("stc","STC")],u"Situation Employée",index=True, copy=False, default='new', tracking=True)
     active = fields.Boolean('Active', related='resource_id.active', default=True, store=True, readonly=False)
     chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier")
     emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Emplacement")
@@ -67,16 +68,17 @@ class hr_employee(models.Model):
 
 
     def _compute_remaining_days(self):
-        query = """
-                    select cast(date_part('day',date_end::timestamp - CURRENT_DATE::timestamp) as int) from hr_contract where
-                    employee_id = %s;
-                """   % (self.id)
-        self.env.cr.execute(query)
-        res = self.env.cr.fetchall()
-        if len(res) > 0:
-            self.remaining_days = res[0][0]
-        else :
-            self.remaining_days = 0
+        for rec in self :
+            query = """
+                        select cast(date_part('day',date_end::timestamp - CURRENT_DATE::timestamp) as int) from hr_contract where
+                        employee_id = %s;
+                    """   % (rec.id)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            if len(res) > 0:
+                rec.remaining_days = res[0][0]
+            else :
+                rec.remaining_days = 0
   
 
     def _compute_working_years(self):
@@ -94,7 +96,7 @@ class hr_employee(models.Model):
                     res += str(diff.days) + ' jours'
                 employee.working_years = res
             else :
-                employee.working_years = 0
+                employee.working_years = str(0) + ' jours'
 
 
     def _compute_salaire_jour(self):
@@ -298,7 +300,7 @@ class hr_employee(models.Model):
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):
         args = args or []
-        args2 = ['|',['name',operator,name],['identification_id',operator,name]]
+        args2 = ['|',['name',operator,name],['identification_id',operator,name], ['cin',operator,name], ['cnss',operator,name],['chantier_id',operator,name],['emplacement_chantier_id',operator,name]]
         
         args = args2+args
         recs = self.search(args, limit=limit)

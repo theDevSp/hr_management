@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <!--Cet enregistrement affichera nos groupes dans une liste déroulante -->
     <record model="ir.module.category" id="module_management">                                
         <field name="name">Groupe prévilège Employee</field>                                
         <field name="description">User access level for this module</field>                                
@@ -10,9 +8,6 @@
 
     <record id="group_admin_paie" model="res.groups">                                
         <field name="name">Administrateur de paie</field>
-        <!--Le champs "implied_ids": je dis que si l'utilisateur a les droits de gestionnaire, il devrait également avoir des droits en tant qu'utilisateur ( ref('tutorial_create_security_groups.group_user') le fait) -->                               
-        <!-- field name="implied_ids" eval="[(4, ref('tutorial_create_security_groups.group_user'))]"></field -->                                
-        <!--Le champ "users" : renvoie à un autre utilisateur du groupe (par défaut les utilisateurs appartenant à l'autre groupe doivent être ajouté à ce groupe spécifique )-->
         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"></field>                                
         <field name="category_id" ref="module_management"></field>                            
     </record>

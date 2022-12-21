@@ -10,20 +10,50 @@
         <field name="name">HR Employee List</field>
         <field name="model">hr.employee</field>
         <field name="arch" type="xml">
-            <tree decoration-success="state_employee_wtf == 'new'" decoration-danger="state_employee_wtf == 'stc'">
-                <field name="name" optional="show"/>
-				<field name="identification_id" optional="show"/>
-                <field name="cin" optional="show"/>
-                <field name="cnss" optional="show"/>
-				<field name="job" optional="show"/>
+            <tree decoration-success="state_employee_wtf == 'new'" decoration-danger="state_employee_wtf == 'stc'" class="table">
+                <field name="name"/>
+				<field name="identification_id"/>
+                <field name="cin"/>
+                <field name="cnss"/>
+				<field name="job"/>
                 <field name="diplome" optional="show"/>
-				<field name="type_emp" optional="show"/>
-                <field name="chantier_id" optional="show"/>
-                <field name="emplacement_chantier_id" optional="show"/>				
+				<field name="type_emp"/>
+                <field name="chantier_id"/>
+                <field name="emplacement_chantier_id"/>				
 				<field name="bank_account" optional="show"/>
-				<field name="mobile_phone" optional="show"/>
-				<field name="state_employee_wtf" optional="show"/>
-                <field name="montant_cimr" optional="show"/>
+                <field name="state_employee_wtf"/>
+                <field name="montant_cimr" optional="show" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+                <field name="mobile_phone" optional="show"/>
+                <field name="wage" string="Salaire de base" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+				<field name="wage_jour" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+                <field name="cotisation" optional="show"  groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+
+                <field name="date_cin" optional="hide"/>
+                <field name="date_naissance" optional="show"/>
+                <field name="lieu_naissance" optional="hide"/>
+                <field name="employee_age" optional="show"/>
+                <field name="gender" optional="show"/>   
+                <field name="marital" optional="show"/>
+                <field name="nombre_enfants" optional="hide"/>
+                <field name="adress_personnel" optional="show"/>
+                <field name="phone1" optional="hide"/>
+                <field name="phone2" optional="hide"/>
+                <field name="phone3" optional="hide"/>
+                <field name="company_id" optional="hide"/>
+                <field name="active" optional="hide"/>
+                <field name="black_list" optional="hide"/>
+                <field name="motif_ln" optional="hide"/>
+                <field name="bool_company" optional="hide"/> 
+                <field name="embaucher_par" optional="hide"/>
+                <field name="recommander_par" optional="hide"/>
+                <field name="motif_enbauche" optional="hide"/>
+                <field name="obs_embauche" optional="hide"/>
+                <field name="date_start" optional="hide"/>
+                <field name="date_end" optional="hide"/>
+                <field name="working_years" optional="hide"/>
+                <field name="bank_agence" optional="hide"/>
+                <field name="ville_bank" optional="hide"/>
+                <field name="remaining_days" optional="show"/>
             </tree>
         </field>
     </record>
@@ -36,6 +66,9 @@
                 <header>
                     <button name="creatiion_individuel_rapport_pointage" string="Générer un rapport"/>
                     <button name="activation" string="Activé l'employée"/>
+                </header>
+                <header>
+                    <field name="state_employee_wtf" widget="statusbar" nolabel="1" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
                     <group string="Informations Personnels">
@@ -71,12 +104,11 @@
                             <field name="recommander_par"/>
                             <field name="motif_enbauche"/>
                             <field name="obs_embauche" />
-                            <field name="state_employee_wtf"/>
+                           <!-- <field name="state_employee_wtf"/> -->
                             <field name="date_start"/>
                             <field name="date_end"/>
                             <field name="working_years"/>
                            <!-- <field name="payslip_count"/> -->
-                            <field name="working_years"/>
                             <field name="wage" string="Salaire de base"/>
 							<field name="wage_jour" />
                             <field name="chantier_id" options="{'no_create': True}"/> 
@@ -121,20 +153,12 @@
         <field name="model">hr.employee</field>
         <field name="arch" type="xml">
             <search>
-                 <field name="name" />
+                <field name="name" />
 				<field name="identification_id" />
                 <field name="cin"/>
                 <field name="cnss"/>
-                <field name="employee_age"/>
-				<field name="job" />
-                <field name="diplome"/>
-				<field name="type_emp" />
                 <field name="chantier_id"/>
                 <field name="emplacement_chantier_id"/>				
-				<field name="bank_account" />
-				<field name="mobile_phone" />
-				<field name="state_employee_wtf"/>
-                <field name="montant_cimr"/>
             </search>
         </field>
     </record>
