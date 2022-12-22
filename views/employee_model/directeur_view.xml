@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id='responsable_action' model='ir.actions.act_window'>
-        <field name="name"> HR Management - Responsables </field>
-        <field name="res_model">hr.responsable.chantier</field>
+    <record id='directeur_action' model='ir.actions.act_window'>
+        <field name="name"> HR Management - Directeur </field>
+        <field name="res_model">hr.directeur</field>
         <field name="view_mode">tree,form,search</field>
     </record>
 
-    <record id="responsable_tree" model="ir.ui.view">
-        <field name="name">HR Responsables List</field>
-        <field name="model">hr.responsable.chantier</field>
+    <record id="directeur_tree" model="ir.ui.view">
+        <field name="name">HR Directeur List</field>
+        <field name="model">hr.directeur</field>
         <field name="arch" type="xml">
             <tree class="table">
                 <field name="name"/>
                 <field name="poste"/>
-                <field name="type_responsabilite"/>
             </tree>
         </field>
     </record>
 
-    <record id="responsable_view_form" model="ir.ui.view">
-        <field name="name">Responsable Form</field>
-        <field name="model">hr.responsable.chantier</field>
+    <record id="directeur_view_form" model="ir.ui.view">
+        <field name="name">Directeur Form</field>
+        <field name="model">hr.directeur</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
                     <group>
                         <field name="name"/>
                         <field name="poste"/>
-                        <field name="type_responsabilite"/>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -39,14 +37,13 @@
         </field>
     </record>
 
-    <record id="responsable_search" model="ir.ui.view">
-        <field name="name">Responsable Recherche</field>
-        <field name="model">hr.responsable.chantier</field>
+    <record id="directeur_search" model="ir.ui.view">
+        <field name="name">Directeur Recherche</field>
+        <field name="model">hr.directeur</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name" />
-                <field name="poste"/>
-                <field name="type_responsabilite"/>			
+                <field name="poste"/>		
             </search>
         </field>
     </record>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id='employee_action' model='ir.actions.act_window'>
-        <field name="name"> HR Management  </field>
+        <field name="name"> HR Management - Employees </field>
         <field name="res_model">hr.employee</field>
         <field name="view_mode">tree,form,search</field>
     </record>
@@ -26,7 +26,7 @@
                 <field name="mobile_phone" optional="show"/>
                 <field name="wage" string="Salaire de base" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
 				<field name="wage_jour" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
-                <field name="cotisation" optional="show"  groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+                <field name="cotisation" optional="show" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
 
                 <field name="date_cin" optional="hide"/>
                 <field name="date_naissance" optional="show"/>
@@ -54,6 +54,7 @@
                 <field name="bank_agence" optional="hide"/>
                 <field name="ville_bank" optional="hide"/>
                 <field name="remaining_days" optional="show"/>
+                <field name="responsable_id" optional="hide" groups ="hr_management.group_admin_paie"/>
             </tree>
         </field>
     </record>
@@ -113,6 +114,7 @@
 							<field name="wage_jour" />
                             <field name="chantier_id" options="{'no_create': True}"/> 
                             <field name="emplacement_chantier_id" options="{'no_create': True}"/>
+                            <field name="responsable_id" options="{'no_create': True}" groups="hr_management.group_admin_paie"/>
                         </group> 
                         <group string="Informations bancaires">
                             <group>
