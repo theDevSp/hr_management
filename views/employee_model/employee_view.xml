@@ -42,7 +42,6 @@
                 <field name="company_id" optional="hide"/>
                 <field name="active" optional="hide"/>
                 <field name="black_list" optional="hide"/>
-                <field name="motif_ln" optional="hide"/>
                 <field name="bool_company" optional="hide"/> 
                 <field name="embaucher_par" optional="hide"/>
                 <field name="recommander_par" optional="hide"/>
@@ -65,8 +64,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="creatiion_individuel_rapport_pointage" string="Générer un rapport"/>
-                    <button name="activation" string="Activé l'employée"/>
+                    <button name="open_wizard" string="Create Wizard" class="oe_highlight" type="object"/>                 
                 </header>
                 <header>
                     <field name="state_employee_wtf" widget="statusbar" nolabel="1" options="{'clickable': '1'}"/>
@@ -93,7 +91,6 @@
                         <field name="company_id" options="{'no_create': True}"/>
                         <field name="active"/>
                         <field name="black_list"/>
-                        <field name="motif_ln"/>
                         <field name="bool_company"/> 
                     </group>
                     <group>

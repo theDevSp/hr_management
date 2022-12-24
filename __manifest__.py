@@ -16,11 +16,14 @@
         'views/templates.xml',
         'security/groups.xml',
         'security/ir.model.access.csv',
+        'wizard/wizard_blacklist_view.xml',
+
         'views/employee_model/employee_view.xml',
-        'views/employee_model/employee_menu.xml',
         'views/employee_model/responsable_chantier_view.xml',
-        'views/employee_model/responsable_chantier_menu.xml',
         'views/employee_model/directeur_view.xml',
+        
+        'views/employee_model/employee_menu.xml',
+        'views/employee_model/responsable_chantier_menu.xml',
         'views/employee_model/directeur_menu.xml',
     ],
 

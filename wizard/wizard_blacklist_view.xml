@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="wizard_blacklist_view_form">
+      <field name="name">Black List Form</field>
+      <field name="model">wizard_blacklist</field>
+      <field name="arch" type="xml">
+        <form string="My Wizard">
+            <group>
+                <field name="employee_id"/>
+                <field name="responsable_id"/>
+                <field name="directeur_id"/>
+                <field name="chantier_id"/>
+                <field name="motif"/>
+                <field name="date_effet" default="now()"/>
+                <field name="action"/>
+            </group>
+            <footer>
+                <button name="action_confirm" string="Confirm" type="object" class="oe_highlight"/>
+                or
+                <button string="Cancel" class="oe_highlight" special="cancel"/>
+            </footer>
+        </form>
+      </field>
+    </record>
+  </data>
+</odoo>
+

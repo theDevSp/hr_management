@@ -22,7 +22,6 @@ class hr_employee(models.Model):
     bool_company = fields.Boolean("Cofabri-bitumes")
     cotisation = fields.Boolean("Activer Cotisation-CIMR")
     black_list = fields.Boolean("Liste Noire")
-    motif_ln   = fields.Text("Motif Liste Noire")
     diplome = fields.Char(u"Diplôme")
     embaucher_par  = fields.Many2one("hr.employee",u"Embaucher Par")
     recommander_par  = fields.Many2one("hr.employee",u"Recommander Par")
@@ -312,3 +311,17 @@ class hr_employee(models.Model):
     def create(self,vals):
         vals['state_employee_wtf'] ='new'
         return super(hr_employee,self).create(vals)
+
+
+    def open_wizard(self):
+        view = self.env.ref('hr_management.wizard_blacklist_view_form')
+        return {
+            'name': ('Description'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'wizard_blacklist',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+        }
