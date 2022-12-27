@@ -315,8 +315,14 @@ class hr_employee(models.Model):
 
     def open_wizard(self):
         view = self.env.ref('hr_management.wizard_blacklist_view_form')
+
+        if self.black_list == 1 :
+            action = "debloque"
+        else:
+            action = "bloque"
+
         return {
-            'name': ('Description'),
+            'name': ('Black List Form'),
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',
@@ -324,4 +330,29 @@ class hr_employee(models.Model):
             'views': [(view.id, 'form')],
             'view_id': view.id,
             'target': 'new',
+            'context' : {
+                        'default_employee_id': self.id,
+                        'default_chantier_id': self.chantier_id.id,
+                        'default_action': action,
+                        },
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        

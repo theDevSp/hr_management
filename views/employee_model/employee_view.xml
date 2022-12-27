@@ -64,7 +64,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="open_wizard" string="Create Wizard" class="oe_highlight" type="object"/>                 
+                    <!--<button name="open_wizard" string="Create Wizard" class="oe_highlight" type="object"
+                        context="{'default_employee_id': id, 'default_chantier_id': chantier_id}"/> -->                
+                    <button name="open_wizard" string="Blacklist Treatment" class="oe_highlight" type="object"/>
                 </header>
                 <header>
                     <field name="state_employee_wtf" widget="statusbar" nolabel="1" options="{'clickable': '1'}"/>

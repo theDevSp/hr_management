@@ -23,6 +23,17 @@
         </form>
       </field>
     </record>
+<!--
+    <record id="lab_test" model="ir.actions.act_window">
+      <field name="context">{'employee_id':active_id}</field>
+      <field name="name">Lab Test</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">wizard_blacklist</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="wizard_blacklist_view_form"/>
+      <field name="target">new</field>
+    </record>
+-->
   </data>
 </odoo>
 
