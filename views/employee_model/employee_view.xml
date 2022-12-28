@@ -63,9 +63,7 @@
         <field name="model">hr.employee</field>
         <field name="arch" type="xml">
             <form>
-                <header>
-                    <!--<button name="open_wizard" string="Create Wizard" class="oe_highlight" type="object"
-                        context="{'default_employee_id': id, 'default_chantier_id': chantier_id}"/> -->                
+                <header>            
                     <button name="open_wizard" string="Blacklist Treatment" class="oe_highlight" type="object"/>
                 </header>
                 <header>

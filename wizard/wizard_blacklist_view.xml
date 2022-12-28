@@ -8,32 +8,20 @@
         <form string="My Wizard">
             <group>
                 <field name="employee_id"/>
-                <field name="responsable_id"/>
-                <field name="directeur_id"/>
-                <field name="chantier_id"/>
+                <field name="responsable_id" options="{'no_create': True, 'no_open': True}"/>
+                <field name="directeur_id" options="{'no_create': True, 'no_open': True}"/>
+                <field name="chantier_id" options="{'no_create': True, 'no_open': True}"/>
                 <field name="motif"/>
                 <field name="date_effet" default="now()"/>
-                <field name="action"/>
             </group>
             <footer>
-                <button name="action_confirm" string="Confirm" type="object" class="oe_highlight"/>
+                <button name="action_confirm_blacklist" string="Confirm" type="object" class="oe_highlight"/>
                 or
                 <button string="Cancel" class="oe_highlight" special="cancel"/>
             </footer>
         </form>
       </field>
     </record>
-<!--
-    <record id="lab_test" model="ir.actions.act_window">
-      <field name="context">{'employee_id':active_id}</field>
-      <field name="name">Lab Test</field>
-      <field name="type">ir.actions.act_window</field>
-      <field name="res_model">wizard_blacklist</field>
-      <field name="view_mode">form</field>
-      <field name="view_id" ref="wizard_blacklist_view_form"/>
-      <field name="target">new</field>
-    </record>
--->
   </data>
 </odoo>
 
