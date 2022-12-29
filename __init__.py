@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from . import blacklist
+from . import employee_blacklist_model
 from . import controllers
 from . import employee_contract_job_recruit_augmentation_fixation_profile_model
 from . import employee_credit_model

@@ -137,6 +137,9 @@
                             </group>	
                         </group>
                     </group>
+                    <group string="Historique Blacklist">
+						<field name="blacklist_histo"/>
+                    </group>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
