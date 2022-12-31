@@ -26,7 +26,7 @@
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="poste"/>
+                        <field name="poste" options="{'no_create': True, 'no_open': True}"/>
                         <field name="type_responsabilite"/>
                     </group>
                 </sheet>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='recrutement_action' model='ir.actions.act_window'>
+        <field name="name"> HR Management - Recrutement </field>
+        <field name="res_model">hr.recrutement</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <record id="recrutement_tree" model="ir.ui.view">
+        <field name="name">HR Recrutement List</field>
+        <field name="model">hr.recrutement</field>
+        <field name="arch" type="xml">
+            <tree class="table">
+                <field name="chantier_id"/>
+                <field name="responsable_id"/>
+                <field name="title_poste"/>
+                <field name="nbr_effectif_demande"/>
+                <field name="nbr_effectif_accepte"/>
+                <field name="status"/>
+                <field name="observation"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="recrutement_view_form" model="ir.ui.view">
+        <field name="name">Recrutement Form</field>
+        <field name="model">hr.recrutement</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="status" widget="statusbar" nolabel="1" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="chantier_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="responsable_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="title_poste" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="nbr_effectif_demande"/>
+                        <field name="nbr_effectif_accepte"/>
+                        <field name="observation"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="recrutement_search" model="ir.ui.view">
+        <field name="name">Recrutement Recherche</field>
+        <field name="model">hr.recrutement</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="chantier_id"/>
+                <field name="responsable_id"/>
+                <field name="title_poste"/>
+                <field name="status"/>	
+            </search>
+        </field>
+    </record>
+</odoo>

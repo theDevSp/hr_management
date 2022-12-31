@@ -8,6 +8,7 @@
 
     <record id="employee_tree" model="ir.ui.view">
         <field name="name">HR Employee List</field>
+        <field name="priority">1</field>
         <field name="model">hr.employee</field>
         <field name="arch" type="xml">
             <tree decoration-success="state_employee_wtf == 'new'" decoration-danger="state_employee_wtf == 'stc'" class="table">
@@ -88,7 +89,7 @@
                         <field name="phone3" />
                     </group>
                     <group>
-                        <field name="company_id" options="{'no_create': True}"/>
+                        <field name="company_id" options="{'no_create': True, 'no_open': True}"/>
                         <field name="active"/>
                         <field name="black_list"/>
                         <field name="bool_company"/> 
@@ -98,11 +99,10 @@
                             <field name="type_emp"/> 
                             <field name="job"/>
                             <field name="diplome"/>
-                            <field name="embaucher_par"/>
-                            <field name="recommander_par"/>
+                            <field name="embaucher_par" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="recommander_par" options="{'no_create': True, 'no_open': True}"/>
                             <field name="motif_enbauche"/>
                             <field name="obs_embauche" />
-                           <!-- <field name="state_employee_wtf"/> -->
                             <field name="date_start"/>
                             <field name="date_end"/>
                             <field name="working_years"/>
@@ -111,7 +111,7 @@
 							<field name="wage_jour" />
                             <field name="chantier_id" options="{'no_create': True}"/> 
                             <field name="emplacement_chantier_id" options="{'no_create': True}"/>
-                            <field name="responsable_id" options="{'no_create': True}" groups="hr_management.group_admin_paie"/>
+                            <field name="responsable_id" options="{'no_create': True, 'no_open': True}" groups="hr_management.group_admin_paie"/>
                         </group> 
                         <group string="Informations bancaires">
                             <group>
@@ -137,8 +137,20 @@
                             </group>	
                         </group>
                     </group>
-                    <group string="Historique Blacklist">
-						<field name="blacklist_histo"/>
+                    <group string="Historique Blacklist" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">
+                        <group>
+                            <field name="blacklist_histo" nolabel="1">
+                                <tree class="table" create="false" edit="false">
+                                    <field name="responsable_id"/>
+                                    <field name="directeur_id"/>
+                                    <field name="chantier_id"/>
+                                    <field name="motif"/>
+                                    <field name="date_effet"/>
+                                    <field name="action"/>
+                                    <field name="user_doing_action"/>
+                                </tree>
+                            </field>
+                        </group>
                     </group>
                 </sheet>
                 <div class="oe_chatter">

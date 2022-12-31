@@ -54,7 +54,7 @@ class hr_employee(models.Model):
     company_id = fields.Many2one('res.company', 'Company', required=True,default=1)
     nombre_enfants = fields.Integer(u"Nombre d'enfants")
     responsable_id = fields.Many2one("hr.responsable.chantier","Responsable")
-    blacklist_histo = fields.One2many('hr.blacklist', 'employee_id',string='  ',readonly=True)
+    blacklist_histo = fields.One2many('hr.blacklist', 'employee_id',readonly=True)
 
 
     def _compute_age(self):

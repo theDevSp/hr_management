@@ -22,12 +22,13 @@
         'views/employee_model/responsable_chantier_view.xml',
         'views/employee_model/directeur_view.xml',
         'views/employee_blacklist_model/blacklist_view.xml',
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/recruit_view.xml',
         
         'views/employee_model/employee_menu.xml',
         'views/employee_model/responsable_chantier_menu.xml',
         'views/employee_model/directeur_menu.xml',
         'views/employee_blacklist_model/blacklist_menu.xml',
-
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/recruit_menu.xml',
     ],
 
     'demo': [
