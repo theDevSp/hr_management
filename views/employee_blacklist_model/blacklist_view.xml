@@ -3,6 +3,7 @@
     <record id='blacklist_action' model='ir.actions.act_window'>
         <field name="name"> HR Management - Black List </field>
         <field name="res_model">hr.employee</field>
+        <field name="view_id" ref="blacklist_tree"/>
         <field name="view_mode">tree,search</field>
         <field name="domain">[('black_list', '=', 'True')]</field>
     </record>
@@ -10,13 +11,14 @@
     <record id="blacklist_tree" model="ir.ui.view">
         <field name="name">HR Black List</field>
         <field name="model">hr.employee</field>
+        <field name="priority" eval="2"/>
         <field name="arch" type="xml">
             <tree class="table" create="false" edit="false">
                 <field name="name"/>
                 <field name="cin"/>
                 <field name="chantier_id"/>
                 <field name="responsable_id"/>
-                <field name="black_list"/>
+                <field name="motif_blacklist"/>
             </tree>
         </field>
     </record>

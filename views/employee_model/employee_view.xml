@@ -3,13 +3,14 @@
     <record id='employee_action' model='ir.actions.act_window'>
         <field name="name"> HR Management - Employees </field>
         <field name="res_model">hr.employee</field>
+        <field name="view_id" ref="employee_tree"/> 
         <field name="view_mode">tree,form,search</field>
     </record>
 
     <record id="employee_tree" model="ir.ui.view">
         <field name="name">HR Employee List</field>
-        <field name="priority">1</field>
         <field name="model">hr.employee</field>
+        <field name="priority" eval="1"/>
         <field name="arch" type="xml">
             <tree decoration-success="state_employee_wtf == 'new'" decoration-danger="state_employee_wtf == 'stc'" class="table">
                 <field name="name"/>

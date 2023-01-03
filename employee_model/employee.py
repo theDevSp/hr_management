@@ -21,7 +21,6 @@ class hr_employee(models.Model):
     job = fields.Char("Fonction")
     bool_company = fields.Boolean("Cofabri-bitumes")
     cotisation = fields.Boolean("Activer Cotisation-CIMR")
-    black_list = fields.Boolean("Liste Noire")
     diplome = fields.Char(u"Diplôme")
     embaucher_par  = fields.Many2one("hr.employee",u"Embaucher Par")
     recommander_par  = fields.Many2one("hr.employee",u"Recommander Par")
@@ -54,9 +53,10 @@ class hr_employee(models.Model):
     company_id = fields.Many2one('res.company', 'Company', required=True,default=1)
     nombre_enfants = fields.Integer(u"Nombre d'enfants")
     responsable_id = fields.Many2one("hr.responsable.chantier","Responsable")
+    black_list = fields.Boolean("Liste Noire", readonly=True)
     blacklist_histo = fields.One2many('hr.blacklist', 'employee_id',readonly=True)
-
-
+    motif_blacklist = fields.Char("Motif Blacklist", compute = "_compute_motif_blacklist")
+   
     def _compute_age(self):
         for employee in self:
             if employee.date_naissance:
@@ -339,22 +339,18 @@ class hr_employee(models.Model):
                         },
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+    def _compute_motif_blacklist(self):
+        for rec in self :
+            query = """
+                SELECT motif
+                FROM hr_blacklist
+                WHERE employee_id = %s
+                ORDER BY id DESC
+                LIMIT 1;
+            """ % (rec.id)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            if len(res) > 0:
+                rec.motif_blacklist = res[0][0]
+            else :
+                rec.motif_blacklist = ""
