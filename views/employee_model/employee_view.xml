@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # -*- coding: utf-8 -*-
 
 # from odoo import models, fields, api
@@ -16,3 +17,190 @@
 #     def _value_pc(self):
 #         for record in self:
 #             record.value2 = float(record.value) / 100
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="employee_tree" model="ir.ui.view">
+        <field name="name">HR Employee List</field>
+        <field name="model">hr.employee</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree decoration-success="state_employee_wtf == 'new'" decoration-danger="state_employee_wtf == 'stc'" class="table">
+                <field name="name"/>
+				<field name="identification_id"/>
+                <field name="cin"/>
+                <field name="cnss" optional="show"/>
+				<field name="job" optional="show"/>
+                <field name="type_emp" optional="show"/>
+                <field name="chantier_id" optional="show"/>
+                <field name="emplacement_chantier_id" optional="show"/>
+                <field name="state_employee_wtf"/>
+                <field name="diplome" optional="hide"/>				
+				<field name="bank_account" optional="hide"/>
+                
+                <field name="montant_cimr" optional="hide" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+                <field name="mobile_phone" optional="hide"/>
+                <field name="wage" string="Salaire de base" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+				<field name="wage_jour" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+                <field name="cotisation" optional="hide" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+
+                <field name="date_cin" optional="hide"/>
+                <field name="date_naissance" optional="hide"/>
+                <field name="lieu_naissance" optional="hide"/>
+                <field name="employee_age" optional="hide"/>
+                <field name="gender" optional="hide"/>   
+                <field name="marital" optional="hide"/>
+                <field name="nombre_enfants" optional="hide"/>
+                <field name="adress_personnel" optional="hide"/>
+                <field name="phone1" optional="hide"/>
+                <field name="phone2" optional="hide"/>
+                <field name="phone3" optional="hide"/>
+                <field name="company_id" optional="hide"/>
+                <field name="active" optional="hide"/>
+                <field name="black_list" optional="hide"/>
+                <field name="bool_company" optional="hide"/> 
+                <field name="embaucher_par" optional="hide"/>
+                <field name="recommander_par" optional="hide"/>
+                <field name="motif_enbauche" optional="hide"/>
+                <field name="obs_embauche" optional="hide"/>
+                <field name="date_start" optional="hide"/>
+                <field name="date_end" optional="hide"/>
+                <field name="working_years" optional="hide"/>
+                <field name="bank_agence" optional="hide"/>
+                <field name="ville_bank" optional="hide"/>
+                <field name="remaining_days" optional="hide"/>
+                <field name="responsable_id" optional="hide" groups ="hr_management.group_admin_paie"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="employee_view_form" model="ir.ui.view">
+        <field name="name">Employees Form</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>            
+                    <button name="open_wizard" string="Blacklist Treatment" class="oe_highlight" type="object"/>
+                    <field name="state_employee_wtf" widget="statusbar" nolabel="1" options="{'clickable': '1'}"/>
+                </header>
+                <header>
+                    
+                </header>
+                <sheet>
+                    <group string="Informations Personnels">
+                        <field name="cin"/>
+                        <field name="name"/>
+                        <field name="cnss"/>
+                        <field name="date_cin"/>
+                        <field name="date_naissance"/>
+                        <field name="lieu_naissance"/>
+                        <field name="employee_age" />
+                        <field name="gender"/>
+                        <field name="marital"/>
+                        <field name="nombre_enfants" />
+                        <field name="adress_personnel" />
+                        <field name="mobile_phone" />
+                        <field name="phone1" />
+                        <field name="phone2" />
+                        <field name="phone3" />
+                    </group>
+                    <group>
+                        <field name="company_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="active"/>
+                        <field name="black_list"/>
+                        <field name="bool_company"/> 
+                    </group>
+                    <group>
+					    <group string="Qualification">
+                            <field name="type_emp"/> 
+                            <field name="job"/>
+                            <field name="diplome"/>
+                            <field name="embaucher_par" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="recommander_par" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="motif_enbauche"/>
+                            <field name="obs_embauche" />
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="working_years"/>
+                           <!-- <field name="payslip_count"/> -->
+                            <field name="wage" string="Salaire de base"/>
+							<field name="wage_jour" />
+                            <field name="chantier_id" options="{'no_create': True}"/> 
+                            <field name="emplacement_chantier_id" options="{'no_create': True}"/>
+                            <field name="responsable_id" options="{'no_create': True, 'no_open': True}" groups="hr_management.group_admin_paie"/>
+                        </group> 
+                        <group string="Informations bancaires">
+                            <group>
+                                <!--<field name="bank"/>-->
+                                <field name="bank_account"/>
+                                <field name="bank_agence"/>
+                                <field name="ville_bank"/>
+                            </group>	
+					    </group>
+                    </group>
+
+                    <group>
+                        <group string="CIMR">
+                            <group>
+                                <field name="cotisation"/>
+                                <field name="montant_cimr"/>
+                            </group>	
+                        </group>
+                        <group string="Panier de Congés">
+                            <group>
+                                <field name="remaining_days" readonly="1"/>
+                                <!--<field name="nbr_jour_ferie"/>-->
+                            </group>	
+                        </group>
+                    </group>
+                    <group string="Historique Blacklist" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">
+                        <group>
+                            <field name="blacklist_histo" nolabel="1">
+                                <tree class="table" create="false" edit="false">
+                                    <field name="responsable_id"/>
+                                    <field name="directeur_id"/>
+                                    <field name="chantier_id"/>
+                                    <field name="motif"/>
+                                    <field name="date_effet"/>
+                                    <field name="action"/>
+                                    <field name="user_doing_action"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="employee_search" model="ir.ui.view">
+        <field name="name">Employee Recherche</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+				<field name="identification_id" />
+                <field name="cin"/>
+                <field name="cnss"/>
+                <field name="chantier_id"/>
+                <field name="emplacement_chantier_id"/>				
+            </search>
+        </field>
+    </record>
+
+    <record id='employee_action' model='ir.actions.act_window'>
+        <field name="name"> HR Management - Employees </field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_id" ref="employee_tree"/> 
+        <field name="view_mode">tree,form,search</field>
+        
+    </record>
+
+</odoo>
+>>>>>>> Stashed changes
