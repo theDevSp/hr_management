@@ -16,7 +16,7 @@
                 <field name="title_poste"/>
                 <field name="nbr_effectif_demande"/>
                 <field name="nbr_effectif_accepte"/>
-                <field name="status"/>
+                <field name="state"/>
                 <field name="observation"/>
             </tree>
         </field>
@@ -27,8 +27,16 @@
         <field name="model">hr.recrutement</field>
         <field name="arch" type="xml">
             <form>
-                <header>
-                    <field name="status" widget="statusbar" nolabel="1" options="{'clickable': '1'}"/>
+                <header>            
+                    <button name="B0" string="Brouillon" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'encours', 'acceptee', 'refusee', 'terminee'))]}"/>
+                    <button name="B0" string="Validée" type="object" attrs="{'invisible': [('state', 'in', ('validee', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_pointeur,hr_management.group_admin_paie"/>
+                    <button name="B0" string="En cours" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="B0" string="Acceptée" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="B0" string="Refusée" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="B0" string="Annulée" type="object" groups ="hr_management.group_pointeur,hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="B0" string="Terminée" class="oe_highlight" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'encours', 'refusee', 'annulee', 'terminee'))]}"/>
+
+                    <field name="state" widget="statusbar" nolabel="1"/>
                 </header>
                 <sheet>
                     <group>
@@ -36,7 +44,10 @@
                         <field name="responsable_id" options="{'no_create': True, 'no_open': True}"/>
                         <field name="title_poste" options="{'no_create': True, 'no_open': True}"/>
                         <field name="nbr_effectif_demande"/>
-                        <field name="nbr_effectif_accepte"/>
+
+                        <field name="compute_readonly_eff_accepte" invisible="1"/>
+                        <field name="nbr_effectif_accepte" attrs="{'readonly': [('compute_readonly_eff_accepte', '=', True)]}" />
+                      
                         <field name="observation"/>
                     </group>
                 </sheet>
@@ -57,7 +68,7 @@
                 <field name="chantier_id"/>
                 <field name="responsable_id"/>
                 <field name="title_poste"/>
-                <field name="status"/>	
+                <field name="state"/>	
             </search>
         </field>
     </record>

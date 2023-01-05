@@ -4,7 +4,7 @@ class responsable_chantier(models.Model):
     _name = "hr.responsable.chantier"
     _description = "Responsable_Chantier"
     _order = 'name'
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'resource.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
 
     name = fields.Char("Nom")
