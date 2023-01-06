@@ -26,6 +26,8 @@ class wizard_blacklist(models.TransientModel):
             'action': self.action,
             'user_doing_action': user
         }
+
         res = self.env['hr.blacklist'].create(vals)
+
         if res :
             self.employee_id.write({"black_list": False if self.action == "debloque" else True })
