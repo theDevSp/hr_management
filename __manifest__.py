@@ -1,35 +1,44 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "hr_management",
-
-    'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
-
-    'description': """
-        Long description of module's purpose
-    """,
-
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
+    'name': "Human Ressources Management",
+    'summary': "The Human Ressources Management",
+    'description': "Description Of Human Ressources Management",
     'category': 'Uncategorized',
     'version': '0.1',
+    'license': 'LGPL-3',
 
-    # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': [
+        'base', 'mail', 'hr', 'stock', 'hr_contract', 'construction_site_management'
+        ],
 
-    # always loaded
-    'data': [
-        # 'security/ir.model.access.csv',
+    'data': [         
         'views/views.xml',
         'views/templates.xml',
+        'security/groups.xml',
+        'security/ir.model.access.csv',
+        'wizard/wizard_blacklist_view.xml',
+
+        'views/employee_model/employee_view.xml',
+        'views/employee_model/responsable_chantier_view.xml',
+        'views/employee_model/directeur_view.xml',
+        'views/employee_blacklist_model/blacklist_view.xml',
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/recruit_view.xml',
+        
+        'views/employee_model/employee_menu.xml',
+        'views/employee_model/responsable_chantier_menu.xml',
+        'views/employee_model/directeur_menu.xml',
+        'views/employee_blacklist_model/blacklist_menu.xml',
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/recruit_menu.xml',
     ],
-    # only loaded in demonstration mode
+
     'demo': [
-        'demo/demo.xml',
     ],
+
+    'application': True ,
+    'installable': True ,
+    'auto_install': False,
+    'sequence': 2,
+
+    'assets': {
+    },
 }

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='recrutement_action' model='ir.actions.act_window'>
+        <field name="name"> HR Management - Recrutement </field>
+        <field name="res_model">hr.recrutement</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <record id="recrutement_tree" model="ir.ui.view">
+        <field name="name">HR Recrutement List</field>
+        <field name="model">hr.recrutement</field>
+        <field name="arch" type="xml">
+            <tree class="table">
+                <field name="chantier_id"/>
+                <field name="responsable_id"/>
+                <field name="title_poste"/>
+                <field name="nbr_effectif_demande"/>
+                <field name="nbr_effectif_accepte"/>
+                <field name="state"/>
+                <field name="observation"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="recrutement_view_form" model="ir.ui.view">
+        <field name="name">Recrutement Form</field>
+        <field name="model">hr.recrutement</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>            
+                    <button name="B0" string="Brouillon" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'encours', 'acceptee', 'refusee', 'terminee'))]}"/>
+                    <button name="B0" string="Validée" type="object" attrs="{'invisible': [('state', 'in', ('validee', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_pointeur,hr_management.group_admin_paie"/>
+                    <button name="B0" string="En cours" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="B0" string="Acceptée" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="B0" string="Refusée" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="B0" string="Annulée" type="object" groups ="hr_management.group_pointeur,hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="B0" string="Terminée" class="oe_highlight" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'encours', 'refusee', 'annulee', 'terminee'))]}"/>
+
+                    <field name="state" widget="statusbar" nolabel="1"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="chantier_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="responsable_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="title_poste" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="nbr_effectif_demande"/>
+
+                        <field name="compute_readonly_eff_accepte" invisible="1"/>
+                        <field name="nbr_effectif_accepte" attrs="{'readonly': [('compute_readonly_eff_accepte', '=', True)]}" />
+                      
+                        <field name="observation"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="recrutement_search" model="ir.ui.view">
+        <field name="name">Recrutement Recherche</field>
+        <field name="model">hr.recrutement</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="chantier_id"/>
+                <field name="responsable_id"/>
+                <field name="title_poste"/>
+                <field name="state"/>	
+            </search>
+        </field>
+    </record>
+</odoo>

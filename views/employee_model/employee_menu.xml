@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="HR Management" id="hr_management_base_menu" />
+    <menuitem name="Employees" id="employees_menu" parent="hr_management_base_menu" action="employee_action"/>
+</odoo>
