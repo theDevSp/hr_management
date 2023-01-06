@@ -5,7 +5,6 @@ class blacklist(models.Model):
     _name = 'hr.blacklist'
     _description = "Black List"
 
-    
     employee_id = fields.Many2one("hr.employee", "Employee", readonly=True)
     responsable_id = fields.Many2one("hr.responsable.chantier", "Responsable")
     directeur_id = fields.Many2one("hr.directeur", "Directeur")

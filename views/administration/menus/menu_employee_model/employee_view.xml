@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--on met les enregistrement ici dans la balise odoo -->
+    <record id='employee_action' model='ir.actions.act_window'>
+        <field name="name"> HR Management  </field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!--
+    <record id="sequence_code_increment" model="ir.sequence">
+        <field name="name">Code Number Sequence</field>
+        <field name="code">fleet.vehicle.chantier.sequence</field>
+        <field name="active">TRUE</field>
+        <field name="prefix">TSK</field>
+        <field name="number_increment">1</field>
+        <field name="number_next">1</field>
+        <field name="padding">3</field>
+        <field name="implementation">standard</field>
+    </record>
+    -->
+    <menuitem name="HR Management" id="hr_management_base_menu" />
+    <menuitem name="Employees" id="employees_menu" parent="hr_management_base_menu" action="employee_action"/>
+
+    <record id="employee_view_form" model="ir.ui.view">
+        <field name="name">Employees Form</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="cin"/>
+                            <field name="is_salary"/>
+                            <field name="ville_bank"/>
+                            <field name="bank_agence"/>
+                            <field name="adress_personnel"/>
+                            <field name="bank_account"/>
+                        </group>
+                        <group>
+                            <field name="job"/>
+                            <field name="bool_company"/> 
+                            <field name="cotisation"/>
+                            <field name="black_list"/>
+                            <field name="motif_ln"/> 
+                            <field name="diplome"/>
+                        </group>
+                        <group>
+                            <field name="motif_enbauche"/>
+                            <field name="obs_embauche"/> 
+                            <field name="employee_age"/>
+                            <field name="date_naissance"/>
+                            <field name="lieu_naissance"/> 
+                            <field name="montant_cimr"/>
+                        </group>
+                        <group>
+                            <field name="date_cin"/>
+                            <field name="phone1"/> 
+                            <field name="phone2"/>
+                            <field name="phone3"/>
+                            <field name="panier_done"/> 
+                            <field name="state_employee_wtf"/>
+                        </group>
+                    </group>
+                </sheet>
+                <!-- Mail mixin fields -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="employee_tree" model="ir.ui.view">
+        <field name="name">HR Employee List</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="cin"/>
+                <field name="job"/>
+                <field name="diplome"/>
+                <!--field name="employee_age"/-->
+                <field name="montant_cimr"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="employee_search" model="ir.ui.view">
+        <field name="name">Employee Recherche</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="cin"/>
+                <field name="job"/>
+                <field name="diplome"/>
+                <!--field name="employee_age"/-->
+                <field name="montant_cimr"/>
+            </search>
+        </field>
+    </record>
+</odoo>

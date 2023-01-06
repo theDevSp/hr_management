@@ -14,7 +14,7 @@
             </tree>
         </field>
     </record>
-    
+
     <record id='blacklist_action' model='ir.actions.act_window'>
         <field name="name"> HR Management - Black List </field>
         <field name="res_model">hr.employee</field>
@@ -22,9 +22,7 @@
         <field name="view_mode">tree,search</field>
         <field name="domain">[('black_list', '=', 'True')]</field>
     </record>
-
     
-
     <record id="blacklist_search" model="ir.ui.view">
         <field name="name">Black List Recherche</field>
         <field name="model">hr.employee</field>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <menuitem name="HR Management" id="hr_management_base_menu" />
+
     <menuitem name="Employés" id="employees_main_menu" parent="hr_management_base_menu" sequence="1"/>
     <menuitem name="Employés Actifs" id="employees_menu" parent="employees_main_menu" action="employee_action" sequence="1"/>
+
 </odoo>
