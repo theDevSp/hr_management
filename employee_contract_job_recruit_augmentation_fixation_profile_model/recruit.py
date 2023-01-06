@@ -62,11 +62,8 @@ class recruit(models.Model):
 
     @api.depends('compute_readonly_eff_accepte')
     def get_user(self):
-        res_user = self.env['res.users'].search([('id', '=', self._uid)])
-        if res_user.has_group('hr_management.group_pointeur'):
-            self.compute_readonly_eff_accepte = True
-        else:
-            self.compute_readonly_eff_accepte = False
+        self.compute_readonly_eff_accepte = self.user_has_groups('hr_management.group_pointeur')
+        
 
     def B0(self):
         res_user = self.env['res.users'].search([('id', '=', self._uid)])

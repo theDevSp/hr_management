@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem name="Configuration" id="config_menu" parent="hr_management_base_menu" sequence="10000"/>
+
+</odoo>

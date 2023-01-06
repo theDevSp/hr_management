@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Directeur" id="directeur_menu" parent="hr_management_base_menu" action="directeur_action"/>
+    <menuitem name="Directeur" id="directeur_menu" parent="config_menu" action="directeur_action" sequence="1"/>
 </odoo>
