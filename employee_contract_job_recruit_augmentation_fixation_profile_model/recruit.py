@@ -5,14 +5,6 @@ class recruit(models.Model):
     _description = "Recrutement"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier:")
-    responsable_id = fields.Many2one("hr.responsable.chantier","Responsable:")
-    title_poste = fields.Many2one("hr.job","Titre du poste:")
-    nbr_effectif_demande = fields.Integer("Nombre d'effectif demandé:")
-    nbr_effectif_accepte = fields.Integer("Nombre d'effectif accepté:")
-    status  = fields.Selection([("brouillon","Brouillon"),("validee","Validée"),("encours","En cours de traitement"),("acceptee","Acceptée"),("refusee","Refusée"),("annulee","Annulée"),("terminee","Terminée")],u"Status:")
-    observation = fields.Char("Observation:")
-
     READONLY_STATES = {
         'draft': [('readonly', False)],
         'validee': [('readonly', True)],
@@ -52,7 +44,6 @@ class recruit(models.Model):
         ("terminee","Terminée")
         ],"Status", 
         default="draft",
-        readonly = True  
     )
 
     @api.onchange("nbr_effectif_demande")
@@ -63,7 +54,39 @@ class recruit(models.Model):
     @api.depends('compute_readonly_eff_accepte')
     def get_user(self):
         self.compute_readonly_eff_accepte = self.user_has_groups('hr_management.group_pointeur')
-        
 
-    def B0(self):
-        res_user = self.env['res.users'].search([('id', '=', self._uid)])
+
+    @api.model
+    def create(self, values):
+        return super(recruit, self).create(values)
+
+
+    def write(self, values):
+        return super(recruit, self).write(values)
+
+
+    def to_draft(self):
+        self.state = 'draft'
+
+    def to_validee(self):
+        self.state = 'validee'
+
+    def to_encours(self):
+        self.state = 'encours'
+
+    def to_acceptee(self):
+        self.state = 'acceptee'
+    
+    def to_refusee(self):
+        self.state = 'refusee'
+    
+    def to_annulee(self):
+        if self.user_has_groups('hr_management.group_admin_paie'):
+            self.state = 'annulee'
+        elif self.user_has_groups('hr_management.group_agent_paie') and self.state in {'validee', 'encours', 'acceptee'} :
+            self.state = 'annulee'
+        elif self.user_has_groups('hr_management.group_pointeur') and self.state in {'draft', 'validee'} :
+            self.state = 'annulee'
+
+    def to_terminee(self):  
+        self.state = 'terminee'
