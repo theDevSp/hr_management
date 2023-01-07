@@ -316,7 +316,7 @@ class hr_employee(models.Model):
     def open_wizard(self):
         view = self.env.ref('hr_management.wizard_blacklist_view_form')
 
-        if self.black_list == 1 :
+        if self.black_list:
             action_index = "debloque"
             action_value = "Débloquer"
         else:

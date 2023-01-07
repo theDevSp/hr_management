@@ -6,7 +6,7 @@
         <field name="model">hr.employee</field>
         <field name="priority" eval="1"/>
         <field name="arch" type="xml">
-            <tree decoration-success="state_employee_wtf == 'new'" decoration-danger="state_employee_wtf == 'stc'" class="table">
+            <tree>
                 <field name="name"/>
 				<field name="identification_id"/>
                 <field name="cin"/>
@@ -15,7 +15,7 @@
                 <field name="type_emp" optional="show"/>
                 <field name="chantier_id" optional="show"/>
                 <field name="emplacement_chantier_id" optional="show"/>
-                <field name="state_employee_wtf"/>
+                <field name="state_employee_wtf" widget="badge" decoration-success="state_employee_wtf == 'new'" decoration-danger="state_employee_wtf == 'stc'" class="table"/>
                 <field name="diplome" optional="hide"/>				
 				<field name="bank_account" optional="hide"/>
                 
@@ -61,13 +61,22 @@
         <field name="arch" type="xml">
             <form>
                 <header>            
-                    <button name="open_wizard" string="Blacklist Treatment" class="oe_highlight" type="object"/>
+                    <button name="open_wizard" string="Add to black list" class="oe_highlight" attrs="{'invisible': [('black_list', '=', True)]}"
+                     type="object" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+                    <button name="open_wizard" string="Remove from black list" class="oe_highlight" attrs="{'invisible': [('black_list', '=', False)]}"
+                     type="object" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                     <field name="state_employee_wtf" widget="statusbar" nolabel="1" options="{'clickable': '1'}"/>
                 </header>
                 <header>
                     
                 </header>
+                
                 <sheet>
+                    <div class="row mx-md-n5" attrs="{'invisible': [('black_list', '=', False)]}">
+                        <div class="alert alert-danger text-center " role="alert">
+                            Attention ! Cet Employé figure dans la liste noire
+                        </div>
+                    </div>
                     <group string="Informations Personnels">
                         <field name="cin"/>
                         <field name="name"/>
@@ -88,7 +97,7 @@
                     <group>
                         <field name="company_id" options="{'no_create': True, 'no_open': True}"/>
                         <field name="active"/>
-                        <field name="black_list"/>
+                        <field name="black_list" invisible="1"/>
                         <field name="bool_company"/> 
                     </group>
                     <group>
@@ -134,20 +143,22 @@
                             </group>	
                         </group>
                     </group>
-                    <group string="Historique Blacklist" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">
-                        <group>
-                            <field name="blacklist_histo" nolabel="1">
-                                <tree class="table" create="false" edit="false">
-                                    <field name="responsable_id"/>
-                                    <field name="directeur_id"/>
-                                    <field name="chantier_id"/>
-                                    <field name="motif"/>
-                                    <field name="date_effet"/>
-                                    <field name="action"/>
-                                    <field name="user_doing_action"/>
-                                </tree>
-                            </field>
-                        </group>
+                    <group string="Historique Blacklist" 
+                        groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                hr_management.group_cnss_juridique">
+                        <field name="blacklist_histo" nolabel="1">
+                            <tree class="table" create="false" edit="false">
+                                <field name="responsable_id"/>
+                                <field name="directeur_id"/>
+                                <field name="chantier_id"/>
+                                <field name="motif"/>
+                                <field name="date_effet"/>
+                                <field name="action"/>
+                                <field name="user_doing_action"/>
+                            </tree>
+                        </field>
+
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -180,7 +191,7 @@
         <field name="res_model">hr.employee</field>
         <field name="view_id" ref="employee_tree"/> 
         <field name="view_mode">tree,form,search</field>
-        
+        <field name="domain">[('black_list', '=', False)]</field>
     </record>
 
 </odoo>

@@ -2,9 +2,9 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 
 hr_employ_admin_paie,hr_management_employee_admin,model_hr_employee,group_admin_paie,1,1,1,1
 hr_employ_agent_paie,hr_management_employee,model_hr_employee,group_agent_paie,1,1,1,0
-hr_employ_service_analytique,hr_management_employee,model_hr_employee,group_service_analytique,1,1,0,0
+hr_employ_service_analytique,hr_management_employee,model_hr_employee,group_service_analytique,1,0,0,0
 hr_employ_controle_gestion,hr_management_employee,model_hr_employee,group_controle_gestion,1,0,0,0
-hr_employ_pointeur,hr_management_employee,model_hr_employee,group_pointeur,1,1,1,0
+hr_employ_pointeur,hr_management_employee,model_hr_employee,group_pointeur,1,1,0,0
 hr_employ_cnss_juridique,hr_management_employee default,model_hr_employee,group_cnss_juridique,1,0,0,0
 
 hr_responsable_admin_paie,hr_management_responsable_admin,model_hr_responsable_chantier,group_admin_paie,1,1,1,1
