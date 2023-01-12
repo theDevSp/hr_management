@@ -25,7 +25,7 @@ class recruit(models.Model):
         'terminee': [('readonly', False)]
     }
 
-    chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier", states = READONLY_STATES,track_visibility='onchange')
+    chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier", states = READONLY_STATES)
     responsable_id = fields.Many2one("hr.responsable.chantier","Responsable", states = READONLY_STATES)
     title_poste = fields.Many2one("hr.job","Titre du poste", states = READONLY_STATES)
     observation = fields.Char("Observation", states = READONLY_STATES)

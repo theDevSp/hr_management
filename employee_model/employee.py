@@ -354,3 +354,7 @@ class hr_employee(models.Model):
                 rec.motif_blacklist = res[0][0]
             else :
                 rec.motif_blacklist = ""
+
+
+class Test(models.Model):
+    _inherit = ['fleet.vehicle.chantier']
