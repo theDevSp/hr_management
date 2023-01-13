@@ -193,7 +193,7 @@
                             
                             <div class="col-md-8 col-lg-8">
                                 <div class="card border-dark mb-3">
-                                    <div class="card-header">Qualification</div>
+                                    <div class="card-header">Qualification et affectation</div>
                                     <div class="card-body text-dark">
                                         <div class="row">
                                             <div class="col-md-4 col-sm-6">
@@ -220,6 +220,26 @@
                                                     <div class="form-group">
                                                         <span class="fas fa-500px form-control-icon"></span>
                                                         <field name="job" class="form-control" />
+                                                    </div>  
+                                                </div>      
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="chantier_id" class=""/>
+                                                <div class="main">
+                                                    <div class="form-group">
+                                                        <span class="fas fa-city form-control-icon"></span>
+                                                        <field name="chantier_id" options="{'no_create': True, 'no_open': True}" class="form-control" />
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="emplacement_chantier_id" class=""/>
+                                                <div class="main">
+                                                    <div class="form-group">
+                                                        <span class="fas fa-users form-control-icon"></span>
+                                                        <field name="emplacement_chantier_id" options="{'no_create': True, 'no_open': True}" class="form-control" />
                                                     </div>  
                                                 </div>      
                                             </div>
@@ -309,55 +329,25 @@
                                     </div>
                                 </div> 
 
-                                    
+                                <div class="card border-dark mb-3">
+                                    <div class="card-header">Information sur contrat</div>
+                                    <div class="card-body text-dark">
+                                    </div>
+                                </div>
 
-                                <group>
-                                    <group string="Qualification">
-                                        <field name="type_emp"/> 
-                                        <field name="job"/>
-                                        <field name="diplome"/>
-                                        <field name="embaucher_par" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="recommander_par" options="{'no_create': True, 'no_open': True}"/>
-                                        <field name="motif_enbauche"/>
-                                        <field name="obs_embauche" />
-                                        <field name="date_start"/>
-                                        <field name="date_end"/>
-                                        
-                                    <!-- <field name="payslip_count"/> -->
-                                        <field name="wage" string="Salaire de base"/>
-                                        <field name="wage_jour" />
-                                        <field name="chantier_id" options="{'no_create': True}"/> 
-                                        <field name="emplacement_chantier_id" options="{'no_create': True}"/>
-                                        <field name="responsable_id" options="{'no_create': True, 'no_open': True}" groups="hr_management.group_admin_paie"/>
-                                    </group> 
-                                    <group string="Informations bancaires">
-                                        <group>
-                                            <!--<field name="bank"/>-->
-                                            <field name="bank_account"/>
-                                            <field name="bank_agence"/>
-                                            <field name="ville_bank"/>
-                                        </group>	
-                                    </group>
-                                </group>
-
-                                <group>
-                                    <group string="CIMR">
-                                        <group>
-                                            <field name="cotisation"/>
-                                            <field name="montant_cimr"/>
-                                        </group>	
-                                    </group>
-                                    <group string="Panier de Congés">
-                                        <group>
-                                            <field name="remaining_days" readonly="1"/>
-                                            <!--<field name="nbr_jour_ferie"/>-->
-                                        </group>	
-                                    </group>
-                                </group>
-                                <group string="Historique Blacklist" 
-                                    groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
-                                            hr_management.group_service_analytique,hr_management.group_controle_gestion,
-                                            hr_management.group_cnss_juridique">
+                                <div class="card border-dark mb-3">
+                                    <div class="card-header">Information Banquaire et Cotisation</div>
+                                    <div class="card-body text-dark">
+                                    </div>
+                                </div>   
+                            </div>
+                        </div>
+                        <div class="card border-dark mb-5">
+                            <div class="card-header">Historique Liste Noire</div>
+                            <div class="card-body text-dark">
+                                <group groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                    hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                    hr_management.group_cnss_juridique">
                                     <field name="blacklist_histo" nolabel="1">
                                         <tree class="table" create="false" edit="false">
                                             <field name="responsable_id"/>
@@ -369,10 +359,10 @@
                                             <field name="user_doing_action"/>
                                         </tree>
                                     </field>
-
                                 </group>
                             </div>
                         </div>
+                        
                     </sheet>
                     <div class="row mx-md-n5" attrs="{'invisible': [('black_list', '=', False)]}">
                         <div class="alert alert-danger text-center" role="alert">
