@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Responsables" id="responsables_hr_menu" parent="config_hr_menu" action="construction_site_management.responsable_action" sequence="2"/>
+</odoo>

@@ -21,7 +21,29 @@
             </tree>
         </field>
     </record>
+<!--
+    <record id='blacklist_action' model='ir.actions.act_window'>
+        <field name="name"> HR Management - Black List </field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_id" ref="blacklist_tree"/>
+        <field name="view_mode">tree,search</field>
+        <field name="domain">[('black_list', '=', 'True')]</field>
+    </record>
 
+    <record id="recruitment_request_rule" model="ir.rule">
+        <field name="name">Recruitment Request</field>
+        <field ref="model_hr_recrutement" name="model_id"/>
+        <field name="domain_force">[('state', '=', 'waiting_approval')]</field>
+        <field name="groups" eval="[(4, ref('employee_recruitment.group_hr_manager'))]"/>
+    </record>
+
+    <record id="recruitment_request_rule" model="ir.rule">
+        <field name="name">Recruitment Request</field>
+        <field ref="model_hr_recrutement" name="model_id"/>
+        <field name="domain_force">[('state', '=', 'waiting_approval')]</field>
+        <field name="groups" eval="[(4, ref('hr_management.group_hr_manager'))]"/>
+    </record>
+-->
     <record id="recrutement_view_form" model="ir.ui.view">
         <field name="name">Recrutement Form</field>
         <field name="model">hr.recrutement</field>
@@ -29,12 +51,12 @@
             <form>
                 <header>            
                     <button name="to_draft" string="Brouillon" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'encours', 'acceptee', 'refusee', 'terminee'))]}"/>
-                    <button name="to_validee" string="Validée" type="object" attrs="{'invisible': [('state', 'in', ('validee', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_pointeur,hr_management.group_admin_paie"/>
+                    <button name="to_validee" string="Valider" type="object" attrs="{'invisible': [('state', 'in', ('validee', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_pointeur,hr_management.group_admin_paie"/>
                     <button name="to_encours" string="En cours" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                    <button name="to_acceptee" string="Acceptée" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                    <button name="to_refusee" string="Refusée" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                    <button name="to_annulee" string="Annulée" type="object" attrs="{'invisible': [('state', 'in', ('annulee'))]}" groups ="hr_management.group_pointeur,hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                    <button name="to_terminee" string="Terminée" class="oe_highlight" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'encours', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_acceptee" string="Accepter" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_refusee" string="Refuser" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_annulee" string="Annuler" type="object" attrs="{'invisible': [('state', 'in', ('annulee'))]}" groups ="hr_management.group_pointeur,hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_terminee" string="Terminer" class="oe_highlight" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'encours', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
                     <field name="state" widget="statusbar" nolabel="1"/>
                 </header>
                 <sheet>

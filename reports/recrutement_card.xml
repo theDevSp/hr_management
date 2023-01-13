@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_recrutement">
+        <t t-call="web.external_layout">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <center><h2>DEMANDE DE RECRUTEMENT</h2></center>
+                    <br/><br/><br/>
+                    <p>Chantier : <t t-esc="doc.chantier_id.name"/> </p>
+                    <p>Resonsable : <t t-esc="doc.responsable_id.name"/> </p>
+                    <p>Titre du poste : <t t-esc="doc.title_poste.name"/> </p>
+                    <p>Observation : <t t-esc="doc.observation"/> </p>
+                    <p>Nombre d'effectif demand&#233; : <t t-esc="doc.nbr_effectif_demande"/> </p>
+                    <p>Nombre d'effectif accept&#233; : <t t-esc="doc.nbr_effectif_accepte"/> </p>
+                    <p>state : <t t-esc="doc.state"/> </p>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
