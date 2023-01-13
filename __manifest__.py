@@ -32,6 +32,7 @@
         'views/employee_model/directeur_menu.xml',
         'views/employee_blacklist_model/blacklist_menu.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/recruit_menu.xml',
+        #'views/employee_contract_job_recruit_augmentation_fixation_profile_model/job_menu.xml',
     ],
 
     'demo': [

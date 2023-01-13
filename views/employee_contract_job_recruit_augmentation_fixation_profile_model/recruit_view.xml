@@ -61,7 +61,7 @@
                 </header>
                 <sheet>
                     <group>
-                        <field name="chantier_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="chantier_id" options="{'no_create': True, 'no_open': False}"/>
                         <field name="responsable_id" options="{'no_create': True, 'no_open': True}"/>
                         <field name="title_poste" options="{'no_create': True, 'no_open': True}"/>
                         <field name="nbr_effectif_demande"/>
