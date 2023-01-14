@@ -40,7 +40,6 @@
                         </group>
                         <group>
                             <field name="job"/>
-                            <field name="bool_company"/> 
                             <field name="cotisation"/>
                             <field name="black_list"/>
                             <field name="motif_ln"/> 
