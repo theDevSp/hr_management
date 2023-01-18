@@ -1,1 +1,55 @@
-hr.view_hr_job_tree
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='postes_action' model='ir.actions.act_window'>
+        <field name="name"> HR Management - Postes </field>
+        <field name="res_model">hr.job</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <record id="postes_tree" model="ir.ui.view">
+        <field name="name"> List of Postes</field>
+        <field name="model">hr.job</field>
+        <field name="arch" type="xml">
+            <tree class="table">
+                <field name="name"/>
+                <field name="nbr_demandes_recrutement_acceptees"/>
+                <field name="nbr_employees_active_for_this_job"/>
+                <field name="nbr_demandes_en_cours"/>
+                <field name="employee_ids"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="postes_view_form" model="ir.ui.view">
+        <field name="name">Postes Form</field>
+        <field name="model">hr.job</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name"/>
+                    <field name="nbr_demandes_recrutement_acceptees"/>
+                    <field name="nbr_employees_active_for_this_job"/>
+                    <field name="nbr_demandes_en_cours"/>
+                    <field name="employee_ids"/>
+                </group>
+                <div class="oe_chatter">
+                    <!--
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    -->
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="postes_search" model="ir.ui.view">
+        <field name="name">Postes Recherche</field>
+        <field name="model">hr.job</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+</odoo>

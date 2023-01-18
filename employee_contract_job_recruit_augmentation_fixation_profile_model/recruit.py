@@ -25,7 +25,8 @@ class recruit(models.Model):
         'terminee': [('readonly', False)]
     }
 
-    chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier", states = READONLY_STATES)
+    name = fields.Char('Référence', readonly=True, required=True, copy=False, default='New')
+    chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier", states = READONLY_STATES, required=True)
     responsable_id = fields.Many2one("hr.responsable.chantier","Responsable", states = READONLY_STATES)
     title_poste = fields.Many2one("hr.job","Titre du poste", states = READONLY_STATES)
     observation = fields.Char("Observation", states = READONLY_STATES)
@@ -46,6 +47,10 @@ class recruit(models.Model):
         default="draft",
     )
 
+    _sql_constraints = [
+		('name_uniq', 'UNIQUE(name)', 'Cette référence est déjà utilisée.'),
+	]
+
     @api.onchange("nbr_effectif_demande")
     def onchange_nbr_effectif_demande(self):
         self.nbr_effectif_accepte = self.nbr_effectif_demande
@@ -57,12 +62,14 @@ class recruit(models.Model):
 
 
     @api.model
-    def create(self, values):
-        return super(recruit, self).create(values)
+    def create(self, vals):
+        code_recrut = self.env['ir.sequence'].next_by_code('hr.recrutement.sequence') or ('New')
+        code_chantier = self.env['fleet.vehicle.chantier'].browse(vals.get('chantier_id')).code
+        vals['name'] = code_chantier + '/' + code_recrut
+        return super(recruit, self).create(vals)
 
-
-    def write(self, values):
-        return super(recruit, self).write(values)
+    def write(self, vals):
+        return super(recruit, self).write(vals)
 
 
     def to_draft(self):
