@@ -14,12 +14,23 @@ class job_hr(models.Model):
     nbr_effectif_prevu_where_state_encours = fields.Integer(compute='_compute_nbr_effectif_prevu_where_state_encours', store = False, string="Nombre d'effectif prévu",readonly=True,
         help="Le Nombre d'Effectif Prévu.")
 
+    nbr_total_demandes_of_this_job = fields.Integer(compute='_compute_nbr_total_demandes_of_this_job', store = False, string="Nombre total des demandes de ce poste.",readonly=True,
+        help="Le nombre total des demandes de ce poste.")
 
-    nbr_demandes_recrutement_acceptees = fields.Integer(compute='_compute_count_nbr_demandes_recrutement_acceptees', store = False, string='Total des demandes acceptées',readonly=True,
+    nbr_demandes_draft = fields.Integer(compute='_compute_counts_nbr_demandes_selon_state', store = False, string="En Brouillon",readonly=True,
+        help='Le nombre des demandes de recrutement en brouillon.')
+    nbr_demandes_validee = fields.Integer(compute='_compute_counts_nbr_demandes_selon_state', store = False, string='Validées',readonly=True,
+        help='Le nombre des demandes de recrutement validées.')
+    nbr_demandes_en_cours = fields.Integer(compute='_compute_counts_nbr_demandes_selon_state', store = False, string='En Cours',readonly=True,
+        help='Le nombre des demandes de recrutement en cours.')
+    nbr_demandes_acceptee = fields.Integer(compute='_compute_counts_nbr_demandes_selon_state', store = False, string='Acceptées',readonly=True,
         help='Le nombre des demandes de recrutement acceptées.')
-    nbr_demandes_en_cours = fields.Integer(compute='_compute_nbr_demandes_en_cours', store = False, string='Total des demandes en cours',readonly=True,
-        help='Le nombre des demandes de recrutement En cours.')
-
+    nbr_demandes_refusee = fields.Integer(compute='_compute_counts_nbr_demandes_selon_state', store = False, string='Refusées',readonly=True,
+        help='Le nombre des demandes de recrutement refusées.')
+    nbr_demandes_annulee = fields.Integer(compute='_compute_counts_nbr_demandes_selon_state', store = False, string='Annulées',readonly=True,
+        help='Le nombre des demandes de recrutement annulées.')
+    nbr_demandes_terminee = fields.Integer(compute='_compute_counts_nbr_demandes_selon_state', store = False, string='Terminées',readonly=True,
+        help='Le nombre des demandes de recrutement terminées.')
     #employeee_ids = fields.One2many('hr.employee', 'job_id', string='Employees', groups='base.group_user', domain="[('name','=','Employee 3')]")
 
 
@@ -71,23 +82,41 @@ class job_hr(models.Model):
             else :
                 rec.nbr_effectif_prevu_where_state_encours = 0
 
-
-
-
-
-    def _compute_count_nbr_demandes_recrutement_acceptees(self):
+    def _compute_nbr_total_demandes_of_this_job(self):
         for rec in self :
             query = """
-                SELECT count(state)
+                SELECT count(*)
                 FROM hr_recrutement
-                WHERE state = 'acceptee'
+                WHERE title_poste=%s
                 ;
-            """
+            """ % (rec.id)
             rec.env.cr.execute(query)
             res = rec.env.cr.fetchall()
             if len(res) > 0:
-                rec.nbr_demandes_recrutement_acceptees = len(res)
+                rec.nbr_total_demandes_of_this_job = res[0][0]
             else :
-                rec.nbr_demandes_recrutement_acceptees = 0
+                rec.nbr_total_demandes_of_this_job = 0
 
-    
+    def _compute_counts_nbr_demandes_selon_state(self):
+        query = """
+                    select 
+                    count(1) filter (where state='draft') as d_draft,
+                    count(1) filter (where state='validee') as d_validee,
+                    count(1) filter (where state='encours') as d_encours,
+                    count(1) filter (where state='acceptee') as d_acceptee,
+                    count(1) filter (where state='refusee') as d_refusee,
+                    count(1) filter (where state='annulee') as d_annulee,
+                    count(1) filter (where state='terminee') as d_terminee
+                    from hr_recrutement where title_poste = %s;
+                """ % (self.id)
+
+        self.env.cr.execute(query)
+        res = self.env.cr.dictfetchall()[0]
+            
+        self.nbr_demandes_draft = res['d_draft']
+        self.nbr_demandes_validee = res['d_validee']
+        self.nbr_demandes_en_cours = res['d_encours']
+        self.nbr_demandes_acceptee = res['d_acceptee']
+        self.nbr_demandes_refusee = res['d_refusee']
+        self.nbr_demandes_annulee = res['d_annulee']
+        self.nbr_demandes_terminee = res['d_terminee']
