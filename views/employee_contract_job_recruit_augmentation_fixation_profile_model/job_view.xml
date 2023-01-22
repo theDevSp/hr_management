@@ -26,61 +26,108 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <center>
-                        <h1 ><field name="name" style="text-decoration: underline;"/></h1>
-                    </center>
-                    <br/><br/>
-                    <div class="card-deck">
-                        <div class="card border-dark mb-3 bg-info">
-                            <div class="card-body">
-                                <div class="card-header"><h5>Total des demandes sur ce poste</h5></div>
+                    <div class="row">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="name" class=""/>
+                            <div class="main">
+                                <div class="form-group">
+                                    <span class="fas fa-500px form-control-icon"></span>
+                                    <field name="name"  class="form-control" />
+                                </div>  
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-dark mb-3 bg-info job-card-fixed">
+                                <div class="card-header text-center"><h5>Total des demandes sur ce poste</h5></div>
                                 <div class="card-body text-dark">
-                                    <center><h1><field name="nbr_total_demandes_of_this_job" nolabel="1"/></h1></center>
+                                    <h1>
+                                        <field name="nbr_total_demandes_of_this_job"/>
+                                    </h1>
                                 </div>
-                                <div class="card-footer">
-                                    
-                                    <ul class="list-group">
-                                        <li class="list-group-item active">Statistiques :</li>
-                                        <li class="list-group-item">
-                                            <p>En Brouillon :<h3><span class="badge badge-primary" style="float:right;"><field name="nbr_demandes_draft" style="vertical-align:middle;" nolabel="1"/></span></h3></p>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <p>Validées :</p><h3><span class="badge badge-primary" style="float:right;"><field name="nbr_demandes_validee" style="vertical-align:middle;" nolabel="1"/></span></h3>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <p>En Cours :</p><h3><span class="badge badge-primary" style="float:right;"><field name="nbr_demandes_en_cours" nolabel="1"/></span></h3>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <p>Acceptées :</p><h3><span class="badge badge-primary" style="float:right;"><field name="nbr_demandes_acceptee" nolabel="1"/></span></h3>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <p>Refusées :</p><h3><span class="badge badge-primary" style="float:right;"><field name="nbr_demandes_refusee" nolabel="1"/></span></h3>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <p>Annulées :</p><h3><span class="badge badge-primary" style="float:right;"><field name="nbr_demandes_annulee" nolabel="1"/></span></h3>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <p>Terminées :</p><h3><span class="badge badge-primary" style="float:right;"><field name="nbr_demandes_terminee" nolabel="1"/></span></h3>
-                                        </li>
-                                    </ul>
+                            </div>
+                            <div class="card border-dark mb-3 bg-success job-card-fixed">
+                                <div class="card-header text-center">
+                                    <h5>Nombre d'effectif recrutés</h5>
+                                </div>
+                                <div class="card-body text-dark">
+                                    <h1><field name="nbr_effectif_recrutes"/></h1>
+                                </div>
+                            </div>
+                            <div class="card border-dark mb-3 bg-warning job-card-fixed">
+                                <div class="card-header text-center">
+                                    <h5>Nombre d'effectif prévus</h5>
+                                </div>
+                                <div class="card-body text-dark">
+                                    <h1><field name="nbr_effectif_prevu_where_state_encours"/></h1>
                                 </div>
                             </div>
                         </div>
-                        <div class="card border-dark mb-3 bg-success" style="max-height: 14rem;">
-                            <div class="card-body">
-                                <div class="card-header"><h5>Nombre d'effectif recrutés</h5></div>
-                                <div class="card-body text-dark">
-                                    <center><h1><field name="nbr_effectif_recrutes" nolabel="1"/></h1></center>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card border-dark mb-3 bg-danger" style="max-height: 14rem;">
-                            <div class="card-body">
-                                <div class="card-header"><h5>Nombre d'effectif prévus</h5></div>
-                                <div class="card-body text-dark">
-                                    <center><h1><field name="nbr_effectif_prevu_where_state_encours" nolabel="1"/></h1></center>
-                                </div>
-                            </div>
+                        <div class="col-md-6">
+                            <ul class="list-group">
+                                    <li class="list-group-item active">Statistiques :</li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Brouillon
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_draft" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Validées
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_validee" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        En Cours
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_en_cours" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Acceptées
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_acceptee" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Refusées
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_refusee" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Annulées
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_annulee" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Terminées
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_terminee" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                </ul>
                         </div>
                     </div>
                 </sheet>
