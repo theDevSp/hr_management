@@ -1,1 +1,167 @@
-hr.view_hr_job_tree
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='postes_action' model='ir.actions.act_window'>
+        <field name="name"> HR Management - Postes </field>
+        <field name="res_model">hr.job</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <record id="postes_tree" model="ir.ui.view">
+        <field name="name"> List of Postes</field>
+        <field name="model">hr.job</field>
+        <field name="arch" type="xml">
+            <tree class="table">
+                <field name="name"/>
+                <field name="nbr_effectif_recrutes"/>
+                <field name="nbr_effectif_prevu_where_state_encours"/>
+                <field name="nbr_employees_active_for_this_job"/>
+                <field name="nbr_total_demandes_of_this_job"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="postes_view_form" model="ir.ui.view">
+        <field name="name">Postes Form</field>
+        <field name="model">hr.job</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="row">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="name" class=""/>
+                            <div class="main">
+                                <div class="form-group">
+                                    <span class="fas fa-users form-control-icon"></span>
+                                    <field name="name"  class="form-control" />
+                                </div>  
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-dark mb-3 bg-info job-card-fixed">
+                                <div class="card-header text-center"><h5>Total des demandes sur ce poste</h5></div>
+                                <div class="card-body text-dark">
+                                    <h1>
+                                        <field name="nbr_total_demandes_of_this_job"/>
+                                    </h1>
+                                </div>
+                            </div>
+                            <div class="card border-dark mb-3 bg-success job-card-fixed">
+                                <div class="card-header text-center">
+                                    <h5>Nombre d'effectif recrutés</h5>
+                                </div>
+                                <div class="card-body text-dark">
+                                    <h1><field name="nbr_effectif_recrutes"/></h1>
+                                </div>
+                            </div>
+                            <div class="card border-dark mb-3 bg-warning job-card-fixed">
+                                <div class="card-header text-center">
+                                    <h5>Nombre d'effectif prévus</h5>
+                                </div>
+                                <div class="card-body text-dark">
+                                    <h1><field name="nbr_effectif_prevu_where_state_encours"/></h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-group">
+                                    <li class="list-group-item active">Statistiques :</li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Brouillon
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_draft" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Validées
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_validee" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        En Cours
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_en_cours" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Acceptées
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_acceptee" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Refusées
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_refusee" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Annulées
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_annulee" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Terminées
+                                        <span class="badge badge-primary badge-pill">
+                                            <h4>
+                                                <field name="nbr_demandes_terminee" class="px-4 py-2"/>
+                                            </h4>
+                                        </span>
+                                    </li>
+                                </ul>
+                        </div>
+                    </div>
+                    <div class="card border-dark mb-3 bg-warning">
+                        <div class="card-body">
+                            <div class="card-header"><h5>Liste des employés occupant ce poste :</h5></div>
+                            <div class="card-body text-dark">
+                                <field name="employees_not_in_blacklist" nolabel="1">
+                                    <tree class="table" create="false" edit="false">
+                                        <field name="name"/>
+                                        <field name="cin"/>
+                                        <field name="chantier_id"/>
+                                        <field name="emplacement_chantier_id"/>
+                                        <field name="black_list"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="postes_search" model="ir.ui.view">
+        <field name="name">Postes Recherche</field>
+        <field name="model">hr.job</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+</odoo>

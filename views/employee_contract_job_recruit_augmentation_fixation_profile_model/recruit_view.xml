@@ -11,6 +11,7 @@
         <field name="model">hr.recrutement</field>
         <field name="arch" type="xml">
             <tree class="table">
+                <field name="name"/>
                 <field name="chantier_id"/>
                 <field name="responsable_id"/>
                 <field name="title_poste"/>
@@ -21,29 +22,7 @@
             </tree>
         </field>
     </record>
-<!--
-    <record id='blacklist_action' model='ir.actions.act_window'>
-        <field name="name"> HR Management - Black List </field>
-        <field name="res_model">hr.employee</field>
-        <field name="view_id" ref="blacklist_tree"/>
-        <field name="view_mode">tree,search</field>
-        <field name="domain">[('black_list', '=', 'True')]</field>
-    </record>
 
-    <record id="recruitment_request_rule" model="ir.rule">
-        <field name="name">Recruitment Request</field>
-        <field ref="model_hr_recrutement" name="model_id"/>
-        <field name="domain_force">[('state', '=', 'waiting_approval')]</field>
-        <field name="groups" eval="[(4, ref('employee_recruitment.group_hr_manager'))]"/>
-    </record>
-
-    <record id="recruitment_request_rule" model="ir.rule">
-        <field name="name">Recruitment Request</field>
-        <field ref="model_hr_recrutement" name="model_id"/>
-        <field name="domain_force">[('state', '=', 'waiting_approval')]</field>
-        <field name="groups" eval="[(4, ref('hr_management.group_hr_manager'))]"/>
-    </record>
--->
     <record id="recrutement_view_form" model="ir.ui.view">
         <field name="name">Recrutement Form</field>
         <field name="model">hr.recrutement</field>
@@ -61,6 +40,7 @@
                 </header>
                 <sheet>
                     <group>
+                        <field name="name"/>
                         <field name="chantier_id" options="{'no_create': True, 'no_open': False}"/>
                         <field name="responsable_id" options="{'no_create': True, 'no_open': True}"/>
                         <field name="title_poste" options="{'no_create': True, 'no_open': True}"/>
@@ -86,10 +66,13 @@
         <field name="model">hr.recrutement</field>
         <field name="arch" type="xml">
             <search>
+                <field name="name"/>
                 <field name="chantier_id"/>
                 <field name="responsable_id"/>
                 <field name="title_poste"/>
-                <field name="state"/>	
+                <field name="state"/>
+                <filter name="group_by_chantier" string="Chantier" icon="terp-partner" context="{'group_by':'chantier_id'}"/>   
+                <filter name="group_by_poste" string="Poste" icon="terp-partner" context="{'group_by':'title_poste'}"/>   
             </search>
         </field>
     </record>

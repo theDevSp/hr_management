@@ -12,3 +12,4 @@ from . import employee_prelevement_model
 from . import employee_prime_rembourssement_model
 from . import employee_stc_model
 from . import wizard
+from . import reports
