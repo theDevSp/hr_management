@@ -3,16 +3,7 @@
     <template id="report_demande_recrutement">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
-                <div class="header">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <img alt="image" src="hr_management/static/img/logo.jpg" style="max-width: 40%;"/>				
-                        </div>
-                        <div class="col-md-8">
-                            <h2>DEMANDE DE RECRUTEMENT</h2>
-                        </div>
-                    </div>
-                </div> 
+                <t t-call="reports_templates.common_header"/>
                
                 <div class="page">
                     
