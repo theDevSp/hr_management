@@ -49,7 +49,7 @@ class hr_employee(models.Model):
     state_employee_wtf = fields.Selection([("new","Nouveau Embauche"),("transfert","Transfert"),("active","Active"),("stc","STC")],u"Situation Employée",index=True, copy=False, default='new', tracking=True)
     active = fields.Boolean('Active', related='resource_id.active', default=True, store=True, readonly=False)
     chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier")
-    emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Emplacement")
+    emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Équipe")
     company_id = fields.Many2one('res.company', 'Company', required=True,default=1)
     nombre_enfants = fields.Integer(u"Nombre d'enfants")
     responsable_id = fields.Many2one("hr.responsable.chantier","Responsable")

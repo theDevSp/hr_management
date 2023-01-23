@@ -27,9 +27,8 @@
             <form>
                 <sheet>
                     <center>
-                        <h1 ><field name="name" style="text-decoration: underline;"/></h1>
+                        <h1 ><field name="name" style="text-decoration: underline; margin-bottom: 40px;"/></h1>
                     </center>
-                    <br/><br/>
                     <div class="card-deck">
                         <div class="card border-dark mb-3 bg-info">
                             <div class="card-body">
@@ -80,6 +79,22 @@
                                 <div class="card-body text-dark">
                                     <center><h1><field name="nbr_effectif_prevu_where_state_encours" nolabel="1"/></h1></center>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border-dark mb-3 bg-warning">
+                        <div class="card-body">
+                            <div class="card-header"><h5>Liste des employés occupant ce poste :</h5></div>
+                            <div class="card-body text-dark">
+                                <field name="employees_not_in_blacklist" nolabel="1">
+                                    <tree class="table" create="false" edit="false">
+                                        <field name="name"/>
+                                        <field name="cin"/>
+                                        <field name="chantier_id"/>
+                                        <field name="emplacement_chantier_id"/>
+                                        <field name="black_list"/>
+                                    </tree>
+                                </field>
                             </div>
                         </div>
                     </div>

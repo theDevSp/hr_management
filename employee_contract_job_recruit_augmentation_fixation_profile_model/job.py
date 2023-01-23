@@ -31,7 +31,8 @@ class job_hr(models.Model):
         help='Le nombre des demandes de recrutement annulées.')
     nbr_demandes_terminee = fields.Integer(compute='_compute_counts_nbr_demandes_selon_state', store = False, string='Terminées',readonly=True,
         help='Le nombre des demandes de recrutement terminées.')
-    #employeee_ids = fields.One2many('hr.employee', 'job_id', string='Employees', groups='base.group_user', domain="[('name','=','Employee 3')]")
+
+    employees_not_in_blacklist = fields.Many2many('hr.employee', string='Liste des employés occupant ce poste', compute="_employees_not_in_blacklist")
 
 
     def _compute_nbr_effectif_recrutes(self):
@@ -120,3 +121,9 @@ class job_hr(models.Model):
         self.nbr_demandes_refusee = res['d_refusee']
         self.nbr_demandes_annulee = res['d_annulee']
         self.nbr_demandes_terminee = res['d_terminee']
+
+
+    @api.depends('employee_ids')
+    def _employees_not_in_blacklist(self):
+        for rec in self:
+            self.employees_not_in_blacklist = self.employee_ids.filtered(lambda l: l.black_list == False)
