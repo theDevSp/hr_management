@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Contrats" id="contrats_main_menu" parent="hr_management_base_menu" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+    <menuitem name="Historique des contrats" id="historique_contrat_menu" parent="contrats_main_menu" action="contrats_histo_action"/>
+</odoo>

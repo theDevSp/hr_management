@@ -97,3 +97,55 @@ class recruit(models.Model):
 
     def to_terminee(self):  
         self.state = 'terminee'
+
+
+    #@api.multi
+    def action_pointeur_user(self,employee_type,etat):
+
+        pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
+        view = self.env.ref('hr_management.recrutement_tree_pointeur') if pointeur else self.env.ref('hr_management.recrutement_tree')
+        form = self.env.ref('hr_management.recrutement_form_pointeur') if pointeur else self.env.ref('hr_management.recrutement_view_form')
+        res=[]
+        where = ''
+        #if etat:
+        #    where += 'etat = '+str(etat)
+        #else:
+        #    where +='(etat = 5 or etat is null or etat = 9)'
+        
+        #dest = 'Salariés' if type_emp == 's' else 'Ouvriers'
+
+        query = ""
+
+        if pointeur:
+            query = """
+                    select id from hr_rapport_pointage where chantier_id in (select chantier_id from chantier_responsable_relation where user_id = %s) and %s;
+                """   % (self.env.user.id,where)
+        else:
+            query = """
+                    select id from hr_rapport_pointage where %s;
+                """   % (where)
+        self.env.cr.execute(query)
+        for result in self.env.cr.fetchall():
+            res.append(result[0])
+        
+        context = {
+                "search_default_group_by_public_market_id":1,
+                "search_default_group_by_period_id":1,
+                "search_default_group_by_emplacement_chantier_id":1
+            }
+        #if employee_type == 'employee2':
+        #    context['search_default_group_by_quinzaine'] = 1
+        
+        return {
+            'name':'Demandes de recrutement',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'tree,form,search',
+            'res_model': self._name,
+            'views': [(view.id, 'tree'),(form.id, 'form')],
+            #'view_id': view.id,
+            'target': 'current',
+            'domain':[('id','in',res)],
+            'context':context
+        }
+

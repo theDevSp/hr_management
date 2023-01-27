@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='typecontrat_action' model='ir.actions.act_window'>
+        <field name="name">Type des contrats</field>
+        <field name="res_model">hr.contract.type</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <record id="type_of_contrat_tree" model="ir.ui.view">
+        <field name="name">Liste des Types Contrats</field>
+        <field name="model">hr.contract.type</field>
+        <field name="arch" type="xml">
+            <tree class="table">
+                <field name="name"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="contrats_type_view_form" model="ir.ui.view">
+        <field name="name">Formulaire des Types Contrats</field>
+        <field name="model">hr.contract.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group name="top_info">
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="contrats_type_search" model="ir.ui.view">
+        <field name="name">Recherche des Types Contrats</field>
+        <field name="model">hr.contract.type</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Nouveaux Contrats" id="contrat_nouveaux_menu" parent="contrats_main_menu" action="contrats_nouveaux_action"/>
+</odoo>
