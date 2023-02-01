@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Contrats Actifs" id="contrat_actif_menu" parent="contrats_main_menu" action="contrats_actifs_action"/>
+    <menuitem name="Contrats Actifs" id="contrat_actif_menu" parent="contrats_main_menu" action="contrats_actifs_action"  sequence="3"/>
 </odoo>

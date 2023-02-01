@@ -344,6 +344,17 @@ class hr_employee(models.Model):
             else :
                 rec.motif_blacklist = ""
 
+    def all_contracts(self):
+        return {
+            'name': 'Les contrats de ' + self.name,
+            'view_type':'form',
+            'res_model':'hr.contract',
+            'view_id':False,
+            'view_mode':'tree,form',
+            'type':'ir.actions.act_window',
+            'domain': [('employee_id', '=', self.id)],
+            }
+            
 
 class Test(models.Model):
     _inherit = ['fleet.vehicle.chantier']

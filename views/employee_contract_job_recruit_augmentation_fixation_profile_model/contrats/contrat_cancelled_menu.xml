@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Contrats Annulés" id="contrat_annules_menu" parent="contrats_main_menu" action="contrats_cancelled_action"  sequence="4"/>
+</odoo>

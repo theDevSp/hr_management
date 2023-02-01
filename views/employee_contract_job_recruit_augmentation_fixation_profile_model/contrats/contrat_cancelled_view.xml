@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id='contrats_nouveaux_action' model='ir.actions.act_window'>
-        <field name="name">Nouveaux Contrats </field>
+    <record id='contrats_cancelled_action' model='ir.actions.act_window'>
+        <field name="name">Contrats Annulés</field>
         <field name="res_model">hr.contract</field>
-        <field name="domain">[('state', '=', 'draft')]</field>
+        <field name="domain">[('state', '=', 'cancel')]</field>
         <field name="view_mode">tree,form,search</field>
     </record>
 
-    <record id="contrats_nouveaux_tree" model="ir.ui.view">
-        <field name="name">Liste des Nouveaux Contrats</field>
+    <record id="contrats_cancelled_tree" model="ir.ui.view">
+        <field name="name">Liste des Contrats Annulés</field>
         <field name="model">hr.contract</field>
         <field name="arch" type="xml">
             <tree string="Contrats" multi_edit="1" sample="1" default_order='date_start ASC' class="table">
@@ -26,8 +26,8 @@
         </field>
     </record>
 
-    <record id="contrats_actifs_view_form" model="ir.ui.view">
-        <field name="name">Formulaire des Nouveaux Contrats</field>
+    <record id="contrats_cancelled_view_form" model="ir.ui.view">
+        <field name="name">Formulaire des Contrats Annulés</field>
         <field name="model">hr.contract</field>
         <field name="arch" type="xml">
             <form>
@@ -38,7 +38,7 @@
                     <button name="to_cancelled" string="Cancelled" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'open', 'cancel'))]}" groups ="hr_management.group_admin_paie"/>
                     <field name="state" widget="statusbar" nolabel="1"/>
                 </header>
-                <sheet>
+<sheet>
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-4">
@@ -197,7 +197,7 @@
     </record>
 
     <record id="contrats_actifs_search" model="ir.ui.view">
-        <field name="name">Recherche desContrats</field>
+        <field name="name">Recherche des Contrats</field>
         <field name="model">hr.contract</field>
         <field name="arch" type="xml">
             <search>

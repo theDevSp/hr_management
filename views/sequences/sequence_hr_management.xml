@@ -15,7 +15,7 @@
             <field name="name">Contrat Sequence</field>
             <field name="code">hr.contract.sequence</field>
             <field name="active">TRUE</field>
-            <field name="prefix">CONTRAT</field>
+            <field name="prefix"></field>
             <field name="number_increment">1</field>
             <field name="number_next">1</field>
             <field name="padding">5</field>

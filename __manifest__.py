@@ -26,9 +26,10 @@
         'views/sequences/sequence_hr_management.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/job_view.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/contrat_histo_view.xml',
-        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/contrat_actif_view.xml',
-        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/type_contrat_view.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/contrat_new_view.xml',
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/contrat_actif_view.xml',
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/contrat_cancelled_view.xml',
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/type_contrat_view.xml',
         
         'reports/report_demande_recrutement.xml',
         'reports/paper_format/paper_format.xml',
@@ -42,9 +43,10 @@
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/recruit_menu.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/job_menu.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/contrat_histo_menu.xml',
-        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/contrat_actif_menu.xml',
-        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/type_contrat_menu.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/contrat_new_menu.xml',
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/contrat_actif_menu.xml',
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/contrat_cancelled_menu.xml',
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/type_contrat_menu.xml',
     ],
 
     'demo': [
