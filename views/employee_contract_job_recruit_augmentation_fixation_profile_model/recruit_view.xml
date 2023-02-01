@@ -80,13 +80,13 @@
                 <field name="state"/>
                 <filter name="group_by_chantier" string="Chantier" icon="terp-partner" context="{'group_by':'chantier_id'}"/>   
                 <filter name="group_by_poste" string="Poste" icon="terp-partner" context="{'group_by':'title_poste'}"/>   
+                <searchpanel>
+                    <field name="chantier_id" icon="fa-gear" enable_counters="1"/>
+                    <field name="responsable_id" icon="fa-male" enable_counters="1"/>
+                    <field name="title_poste" icon="fa-archive" enable_counters="1"/>
+                    <field name="state" icon="fa-align-center" enable_counters="1"/>
+                </searchpanel>
             </search>
-            <searchpanel>
-                <field name="chantier_id" icon="fa-gear" enable_counters="1"/>
-                <field name="responsable_id" icon="fa-male" enable_counters="1"/>
-                <field name="title_poste" icon="fa-archive" enable_counters="1"/>
-                <field name="state" icon="fa-align-center" enable_counters="1"/>
-            </searchpanel>
         </field>
     </record>
 

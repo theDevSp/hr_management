@@ -395,12 +395,12 @@
                 <field name="cnss"/>
                 <field name="chantier_id"/>
                 <field name="emplacement_chantier_id"/>				
+                <searchpanel>
+                    <field name="chantier_id" icon="fa-gear" enable_counters="1"/>
+                    <field name="emplacement_chantier_id" icon="fa-male" enable_counters="1"/>
+                    <field name="type_emp" icon="fa-money" enable_counters="1"/>
+                </searchpanel>
             </search>
-            <searchpanel>
-                <field name="chantier_id" icon="fa-gear" enable_counters="1"/>
-                <field name="emplacement_chantier_id" icon="fa-male" enable_counters="1"/>
-                <field name="type_emp" icon="fa-money" enable_counters="1"/>
-            </searchpanel>
         </field>
     </record>
 
@@ -412,4 +412,3 @@
         <field name="domain">[('black_list', '=', False)]</field>
     </record>
 </odoo>
-
