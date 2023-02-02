@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='contrats_histo_action' model='ir.actions.act_window'>
+        <field name="name">Historique des Contrats</field>
+        <field name="res_model">hr.contract.history</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <record id="contrats_histo_tree" model="ir.ui.view">
+        <field name="name">Liste des Contrats</field>
+        <field name="model">hr.contract.history</field>
+        <field name="arch" type="xml">
+            <tree string="Contracts"
+                  default_order = 'is_under_contract, date_start desc'
+                  create="false"
+                  edit="false"
+                  delete="false"
+                  duplicate="false"
+                  import="false">
+                <field name="employee_id" widget="many2one_avatar_employee"/>
+                <field name="date_hired"/>
+                <field name="is_under_contract" invisible="1"/>
+                <field name="name"/>
+                <field name="date_start"/>
+                <field string="Reference Working Time" name="resource_calendar_id" optional="hide"/>
+                <field name="under_contract_state" widget="state_selection" optional="hide"/>
+                <field name="structure_type_id" optional="hide"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="wage" optional="hide"/>
+                <field name="state"
+                       widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'close'"
+                       decoration-success="state == 'open'"/>
+                <field name="contract_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="contrats_histo_view_form" model="ir.ui.view">
+        <field name="name">Form Contrats History</field>
+        <field name="model">hr.contract.history</field>
+        <field name="arch" type="xml">
+            <form string="Contract History"
+                  create="false"
+                  edit="false"
+                  delete="false"
+                  duplicate="false"
+                  import="false">
+                <sheet>
+                    <div class="oe_button_box" name="button_box"/>
+                    <h1>
+                        <div class="d-flex justify-content-start">
+                            <div>
+                                <field name="display_name"/>
+                            </div>
+                            <div class="pl-3">
+                                <field name="under_contract_state" widget="state_selection" readonly="1"/>
+                            </div>
+                        </div>
+                    </h1>
+                    <h2>
+                        <field name="employee_id"/>
+                        <field name="contract_id" invisible="1"/>
+                    </h2>
+                    <group>
+                    <field name="contract_ids" widget="one2many" readonly="0" nolabel="1">
+                        <tree string="Current Contracts"
+                                decoration-primary="state == 'open'"
+                                decoration-muted="state == 'close'"
+                                decoration-bf="id == parent.contract_id"
+                                default_order = "date_start desc, state desc"
+                                editable="bottom"
+                                no_open="1"
+                                create="0" delete="0">
+                            <button name="action_open_contract_form" type="object" icon="fa-external-link"/>
+                            <field name="id" invisible="1"/>
+                            <field name="name" string="Contract Name"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="resource_calendar_id"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="wage" string="Monthly Wage"/>
+                            <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'close'" decoration-success="state == 'open'"/>
+                        </tree>
+                    </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="contrats_histo_search" model="ir.ui.view">
+        <field name="name">Search History Contrats</field>
+        <field name="model">hr.contract.history</field>
+        <field name="arch" type="xml">
+            <search string="Search Reference Contracts">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="job_id"/>
+                <field name="department_id" operator="child_of"/>
+                <field name="resource_calendar_id"/>
+                <field name="state"/>
+                <field name="is_under_contract"/>
+                <filter string="Running Contracts" name="open_contracts" domain="[('state', '=', 'open')]"/>
+                <filter string="Contracts to Review" name="contract_to_review" domain="['|', ('state', 'in', ['draft', 'close', 'cancel']), ('is_under_contract', '!=', True)]"/>
+                <filter string="No Contracts" name="no_contracts" domain="[('contract_id', '=', False)]"/>
+                <filter string="Currently Under Contract" name="currently_under_contract" domain="[('is_under_contract', '=', True)]"/>
+                <filter string="Active Employees" name="active_employees" domain="[('active_employee', '=', True)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Job Position" name="job" domain="[]" context="{'group_by': 'job_id'}"/>
+                    <filter string="Status" name='group_by_state' domain="[]" context="{'group_by': 'state'}"/>
+                    <filter string="Reference Working Time" name="group_by_resource_calendar_id" domain="[]" context="{'group_by': 'resource_calendar_id'}"/>
+                    <filter string="Salary Structure Type" name="group_by_structure_type_id" domain="[]" context="{'group_by': 'structure_type_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

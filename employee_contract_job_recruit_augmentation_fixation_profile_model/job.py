@@ -126,4 +126,4 @@ class job_hr(models.Model):
     @api.depends('employee_ids')
     def _employees_not_in_blacklist(self):
         for rec in self:
-            self.employees_not_in_blacklist = self.employee_ids.filtered(lambda l: l.black_list == False)
+            self.employees_not_in_blacklist = self.employee_ids.filtered(lambda l: not l.black_list)

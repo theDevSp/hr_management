@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='contrats_nouveaux_action' model='ir.actions.act_window'>
+        <field name="name">Nouveaux Contrats </field>
+        <field name="res_model">hr.contract</field>
+        <field name="domain">[('state', '=', 'draft')]</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <record id="contrats_nouveaux_tree" model="ir.ui.view">
+        <field name="name">Liste des Nouveaux Contrats</field>
+        <field name="model">hr.contract</field>
+        <field name="arch" type="xml">
+            <tree string="Contrats" multi_edit="1" sample="1" default_order='date_start ASC' class="table">
+                <field name="employee_id" readonly="1" widget="many2one_avatar_employee"/>
+                <field name="name" readonly="1"/>
+                <field name="job_id"/>
+                <field name="date_start" readonly="1"/>
+                <field name="date_end" readonly="1"/>
+                <field name="resource_calendar_id" optional="show"/>
+                <field name="chantier_id"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'close'" decoration-success="state == 'open'"/>
+                <field name="wage" invisible="1"/>
+                <field name="message_needaction" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="contrats_actifs_view_form" model="ir.ui.view">
+        <field name="name">Formulaire des Nouveaux Contrats</field>
+        <field name="model">hr.contract</field>
+        <field name="arch" type="xml">
+            <form>
+                <header class="bar-box-shadow mb-4">            
+                    <button name="to_new" string="New" type="object" attrs="{'invisible': [('state', 'in', ('draft','close'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_running" string="Running" type="object" attrs="{'invisible': [('state', 'in', ('open','close'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_expired" string="Expired" type="object" attrs="{'invisible': [('state', 'in', ('draft','close','cancel'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_cancelled" string="Cancelled" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'open', 'cancel'))]}" groups ="hr_management.group_admin_paie"/>
+                    <field name="state" widget="statusbar" nolabel="1"/>
+                </header>
+                <sheet>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-4">
+                            <div class="card border-dark mb-3 bg-info">
+                                <div class="card-header text-center">
+                                    <h5>Référence contrat</h5>
+                                </div>
+                                <div class="card-body text-dark text-center">
+                                    <h1>
+                                        <field name="name"/>
+                                    </h1>
+                                </div>
+                            </div>
+                            <div class="card border-dark mb-3 bg-success">
+                                <div class="card-header text-center">
+                                    <h5>Status</h5>
+                                </div>
+                                <div class="card-body text-dark text-center">
+                                    <h1><field name="kanban_state" widget="state_selection"/></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oe_button_box" name="button_box"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div class="oe_title pr-0" name="title">
+                        <h2>
+                            <field name="company_id" groups="base.group_multi_company" invisible="1"/>
+                            <field name="active" invisible="1"/>
+                        </h2>
+                    </div>
+
+                    <div class="card border-dark mb-3 bg-light">
+                        <div class="card-body text-dark">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="employee_id" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-map-marker-alt form-control-icon"></span>
+                                            <field name="employee_id" class="form-control" required="1" options="{'no_create': True, 'no_open': False}"/>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="chantier_id" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-map-marker-alt form-control-icon"></span>
+                                            <field name="chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="date_start" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <field name="date_start" class="form-control" string="Date début du contrat" required="1"/>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="job_id" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <field name="job_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="date_end" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <field name="date_end" class="form-control" string="Date fin du contrat"/>
+                                        </div>  
+                                    </div>      
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="contract_type_id" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <field name="contract_type_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                        </div>  
+                                    </div>    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="resource_calendar_id" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <field name="resource_calendar_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="hr_responsible_id" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <field name="hr_responsible_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="wage" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <field name="wage" class="form-control" />
+                                        </div>  
+                                    </div>      
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="company_id" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <field name="company_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                        </div>  
+                                    </div>    
+                                </div>
+                            </div>
+                            <div class="row">
+                                 <div class="col-md-12">
+                                    <label for="notes" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <field name="notes" class="form-control" />
+                                        </div>  
+                                    </div>      
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="contrats_actifs_search" model="ir.ui.view">
+        <field name="name">Recherche desContrats</field>
+        <field name="model">hr.contract</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Contract"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="employee_id"/>
+                <field name="job_id"/>
+                <field name="chantier_id"/>
+                <field name="resource_calendar_id"/>
+                <searchpanel>
+                    <field name="chantier_id" icon="fa-gear" enable_counters="1"/>
+                    <field name="company_id" icon="fa-building" enable_counters="1"/>
+                    <field name="contract_type_id" icon="fa-archive" enable_counters="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+</odoo>

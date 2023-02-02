@@ -5,6 +5,13 @@
         <field name="res_model">hr.recrutement</field>
         <field name="view_mode">tree,form,search</field>
     </record>
+    <record model="ir.actions.server" id="pointeur_responsable_sur_chantier">
+        <field name="model_id" ref="model_hr_recrutement"/>
+        <field name="name" >Pointeur Responsable Chantier</field >
+        <field name="code">
+            action = self.action_pointeur_user(cr,uid,context.get('active_ids',[]),context=context)
+        </field>
+    </record>
 
     <record id="recrutement_tree" model="ir.ui.view">
         <field name="name">HR Recrutement List</field>
@@ -28,7 +35,7 @@
         <field name="model">hr.recrutement</field>
         <field name="arch" type="xml">
             <form>
-                <header>            
+                <header class="bar-box-shadow mb-4">
                     <button name="to_draft" string="Brouillon" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'encours', 'acceptee', 'refusee', 'terminee'))]}"/>
                     <button name="to_validee" string="Valider" type="object" attrs="{'invisible': [('state', 'in', ('validee', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_pointeur,hr_management.group_admin_paie"/>
                     <button name="to_encours" string="En cours" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
@@ -73,7 +80,60 @@
                 <field name="state"/>
                 <filter name="group_by_chantier" string="Chantier" icon="terp-partner" context="{'group_by':'chantier_id'}"/>   
                 <filter name="group_by_poste" string="Poste" icon="terp-partner" context="{'group_by':'title_poste'}"/>   
+                <searchpanel>
+                    <field name="chantier_id" icon="fa-gear" enable_counters="1"/>
+                    <field name="responsable_id" icon="fa-male" enable_counters="1"/>
+                    <field name="title_poste" icon="fa-archive" enable_counters="1"/>
+                    <field name="state" icon="fa-align-center" enable_counters="1"/>
+                </searchpanel>
             </search>
         </field>
     </record>
+
+
+    <record id="recrutement_tree_pointeur" model="ir.ui.view">
+        <field name="name">HR Recrutement List For Pointeur</field>
+        <field name="model">hr.recrutement</field>
+        <field name="arch" type="xml">
+            <tree class="table">
+                <field name="name"/>
+                <field name="chantier_id"/>
+                <field name="responsable_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="recrutement_form_pointeur" model="ir.ui.view">
+        <field name="name">Recrutement Form For Pointeur</field>
+        <field name="model">hr.recrutement</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>            
+                    <button name="to_draft" string="Brouillon" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'encours', 'acceptee', 'refusee', 'terminee'))]}"/>
+                    <button name="to_validee" string="Valider" type="object" attrs="{'invisible': [('state', 'in', ('validee', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_pointeur,hr_management.group_admin_paie"/>
+                    <button name="to_encours" string="En cours" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_acceptee" string="Accepter" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_refusee" string="Refuser" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_annulee" string="Annuler" type="object" attrs="{'invisible': [('state', 'in', ('annulee'))]}" groups ="hr_management.group_pointeur,hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_terminee" string="Terminer" class="oe_highlight" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'encours', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <field name="state" widget="statusbar" nolabel="1"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="chantier_id" options="{'no_create': True, 'no_open': False}"/>
+                        <field name="responsable_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="title_poste" options="{'no_create': True, 'no_open': True}"/>
+
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
 </odoo>

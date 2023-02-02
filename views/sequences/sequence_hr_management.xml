@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="sequence_code_increment" model="ir.sequence">
-        <field name="name">Code Number Sequence</field>
-        <field name="code">hr.recrutement.sequence</field>
-        <field name="active">TRUE</field>
-        <field name="prefix">RECRUT</field>
-        <field name="number_increment">1</field>
-        <field name="number_next">1</field>
-        <field name="padding">5</field>
-        <field name="implementation">standard</field>
-    </record>
+    <data noupdate="1">
+        <record id="sequence_code_increment" model="ir.sequence">
+            <field name="name">Code Number Sequence</field>
+            <field name="code">hr.recrutement.sequence</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">RECRUT</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+            <field name="padding">5</field>
+            <field name="implementation">standard</field>
+        </record>
+        <record id="sequence_contrat_increment" model="ir.sequence">
+            <field name="name">Contrat Sequence</field>
+            <field name="code">hr.contract.sequence</field>
+            <field name="active">TRUE</field>
+            <field name="prefix"></field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+            <field name="padding">5</field>
+            <field name="implementation">standard</field>
+        </record>
+    </data>
 </odoo>

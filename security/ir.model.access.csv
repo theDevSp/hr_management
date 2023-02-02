@@ -8,7 +8,7 @@ hr_employ_pointeur,hr_management_employee,model_hr_employee,group_pointeur,1,1,0
 hr_employ_cnss_juridique,hr_management_employee default,model_hr_employee,group_cnss_juridique,1,0,0,0
 
 hr_directeur_admin_paie,hr_management_directeur_admin,model_hr_directeur,group_admin_paie,1,1,1,1
-hr_directeur_agent_paie,hr_management_directeur,model_hr_directeur,group_agent_paie,1,0,0,0
+hr_directeur_agent_paie,hr_management_directeur,model_hr_directeur,group_agent_paie,1,1,1,1
 hr_directeur_service_analytique,hr_management_directeur,model_hr_directeur,group_service_analytique,1,0,0,0
 hr_directeur_controle_gestion,hr_management_directeur,model_hr_directeur,group_controle_gestion,1,0,0,0
 hr_directeur_pointeur,hr_management_directeur,model_hr_directeur,group_pointeur,1,0,0,0
@@ -41,3 +41,11 @@ hr_job_service_analytique,hr_management_job,model_hr_job,group_service_analytiqu
 hr_job_controle_gestion,hr_management_job,model_hr_job,group_controle_gestion,1,0,0,0
 hr_job_pointeur,hr_management_job,model_hr_job,group_pointeur,1,0,0,0
 hr_job_cnss_juridique,hr_management_job,model_hr_job,group_cnss_juridique,1,0,0,0
+
+hr_contract_admin_paie,hr_management_contract_admin,model_hr_contract,group_admin_paie,1,1,1,1
+hr_contract_agent_paie,hr_management_contract,model_hr_contract,group_agent_paie,1,1,1,0
+hr_contract_service_analytique,hr_management_contract,model_hr_contract,group_service_analytique,0,0,0,0
+hr_contract_controle_gestion,hr_management_contract,model_hr_contract,group_controle_gestion,1,0,0,0
+hr_contract_pointeur,hr_management_contract,model_hr_contract,group_pointeur,0,0,0,0
+hr_contract_cnss_juridique,hr_management_contract,model_hr_contract,group_cnss_juridique,1,0,0,0
+
