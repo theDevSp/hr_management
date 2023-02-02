@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='augmentation_action' model='ir.actions.act_window'>
+        <field name="name">Augmentation de Salaire </field>
+        <field name="res_model">hr.augmentation</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <record id="augmentation_tree" model="ir.ui.view">
+        <field name="name">Liste des augmentations</field>
+        <field name="model">hr.augmentation</field>
+        <field name="arch" type="xml">
+            <tree string="Contrats" multi_edit="1" sample="1" default_order='date_fait DESC' class="table">
+                <field name="employee_id" readonly="1" widget="many2one_avatar_employee"/>
+                <field name="chantier_id"/>
+                <field name="responsable_id"/>
+                <field name="directeur_id"/>
+                <field name="period_id"/>
+                <field name="date_fait"/>
+                <field name="montant_propose"/>
+                <field name="montant_valide"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
+                <field name="motif"/>
+                <field name="observation"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="augmentation_form" model="ir.ui.view">
+        <field name="name">Formulaire des Augmentations</field>
+        <field name="model">hr.augmentation</field>
+        <field name="arch" type="xml">
+            <form>
+                <header class="bar-box-shadow mb-4">            
+                    <!--
+                    <button name="to_new" string="New" type="object" attrs="{'invisible': [('state', 'in', ('draft','close'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_running" string="Running" type="object" attrs="{'invisible': [('state', 'in', ('open','close'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_expired" string="Expired" type="object" attrs="{'invisible': [('state', 'in', ('draft','close','cancel'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_cancelled" string="Cancelled" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'open', 'cancel'))]}" groups ="hr_management.group_admin_paie"/>
+                    -->
+                    <field name="state" widget="statusbar" nolabel="1"/>
+                </header>
+                <sheet>
+                    <!--
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-4">
+                            <div class="card border-dark mb-3 bg-info">
+                                <div class="card-header text-center">
+                                    <h5>Référence contrat</h5>
+                                </div>
+                                <div class="card-body text-dark text-center">
+                                    <h1>
+                                        <field name="name"/>
+                                    </h1>
+                                </div>
+                            </div>
+                            <div class="card border-dark mb-3 bg-success">
+                                <div class="card-header text-center">
+                                    <h5>Status</h5>
+                                </div>
+                                <div class="card-body text-dark text-center">
+                                    <h1><field name="kanban_state" widget="state_selection"/></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oe_button_box" name="button_box"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div class="oe_title pr-0" name="title">
+                        <h2>
+                            <field name="company_id" groups="base.group_multi_company" invisible="1"/>
+                            <field name="active" invisible="1"/>
+                        </h2>
+                    </div>
+                    -->
+                    <div class="card border-dark mb-3 bg-light">
+                        <div class="card-body text-dark">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="employee_id" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-user form-control-icon"></span>
+                                            <field name="employee_id" class="form-control" required="1" options="{'no_create': True, 'no_open': False}"/>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="chantier_id" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-building form-control-icon"></span>
+                                            <field name="chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="responsable_id" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-user form-control-icon"></span>
+                                            <field name="responsable_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="directeur_id" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-user form-control-icon"></span>
+                                            <field name="directeur_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="period_id" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-clock form-control-icon"></span>
+                                            <field name="period_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                        </div>  
+                                    </div>      
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="montant_propose" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-money-bill-wave form-control-icon"></span>
+                                            <field name="montant_propose" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="date_fait" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-calendar form-control-icon"></span>
+                                            <field name="date_fait" class="form-control"/>
+                                        </div>  
+                                    </div>    
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="montant_valide" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-money-bill-wave form-control-icon"></span>
+                                            <field name="montant_valide" class="form-control" />
+                                        </div>  
+                                    </div>      
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="motif" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-align-justify form-control-icon"></span>
+                                            <field name="motif" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="observation" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-comment form-control-icon"></span>
+                                            <field name="observation" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                        </div>  
+                                    </div>    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="augmentation_search" model="ir.ui.view">
+        <field name="name">Recherche des Augmentations</field>
+        <field name="model">hr.augmentation</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="chantier_id"/>
+                <field name="period_id"/>
+                <field name="date_fait"/>
+                <field name="state"/>
+                <field name="motif"/>
+                <searchpanel>
+                    <field name="chantier_id" icon="fa-gear" enable_counters="1"/>
+                    <field name="period_id" icon="fa-building" enable_counters="1"/>
+                    <field name="state" icon="fa-archive" enable_counters="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+</odoo>
