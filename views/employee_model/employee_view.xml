@@ -69,7 +69,7 @@
                     
                 </header>
                     <field name="black_list" invisible="1"/>
-                    <div class="side-display" >
+                    <div class="container" attrs="{'invisible': [('black_list', '=', False)]}">
                         <div class="alert alert-danger text-center" role="alert">
                             Attention ! Cet Employé figure dans la liste noire
                         </div>
@@ -370,11 +370,7 @@
                         </div>
                         
                     </sheet>
-                    <div class="container" >
-                        <div class="alert alert-danger text-center" role="alert">
-                            Attention ! Cet Employé figure dans la liste noire
-                        </div>
-                    </div>
+
                     
                 
                 <div class="oe_chatter">
@@ -411,4 +407,3 @@
     </record>
 
 </odoo>
-
