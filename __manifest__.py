@@ -32,8 +32,6 @@
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/type_contrat_view.xml',
         
         'reports/report_demande_recrutement.xml',
-        'reports/paper_format/paper_format.xml',
-        'reports/report/report.xml',
         
         'views/employee_model/employee_menu.xml',
         'views/config/config_menu.xml',

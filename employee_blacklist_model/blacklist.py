@@ -10,6 +10,6 @@ class blacklist(models.Model):
     directeur_id = fields.Many2one("hr.directeur", "Directeur")
     chantier_id = fields.Many2one("fleet.vehicle.chantier", "Chantier")
     motif = fields.Text("Motif")
-    date_effet = fields.Date("Date d'Effet :", default = datetime.today())
+    date_effet = fields.Date("Date d'Effet", default = datetime.today())
     action = fields.Selection([('bloque', 'Bloquer'),('debloque','Débloquer')], "Action")
-    user_doing_action = fields.Many2one("res.users","User doing action")
+    user_doing_action = fields.Many2one("res.users","Excuter Par")
