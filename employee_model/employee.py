@@ -45,7 +45,7 @@ class hr_employee(models.Model):
     wage = fields.Monetary(related="contract_id.wage",string='Salaire', required=True, tracking=True, currency_field = "currency_f")
     chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier")
     
-    wage_jour = fields.Float(string='Salaire Journalier')
+    wage_jour = fields.Float(compute='_compute_salaire_jour',string='Salaire Journalier')
     state_employee_wtf = fields.Selection([("new","Nouveau Embauche"),("transfert","Transfert"),("active","Active"),("stc","STC")],u"Situation Employée",index=True, copy=False, default='new', tracking=True)
     active = fields.Boolean('Active', related='resource_id.active', default=True, store=True, readonly=False)
     chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier")
@@ -98,6 +98,17 @@ class hr_employee(models.Model):
                 employee.working_years = res
             else :
                 employee.working_years = str(0) + ' jours'
+
+
+    def _compute_salaire_jour(self):
+        for employee in self:
+            if employee.wage:
+                if employee.contract_id.function.function_id.code != "Gc" :
+                    employee.wage_jour = employee.wage/26
+                else:
+                    employee.wage_jour = employee.wage/30
+            else :
+                employee.wage_jour = 0
 
 
     @api.model
@@ -345,16 +356,13 @@ class hr_employee(models.Model):
                 rec.motif_blacklist = ""
 
     def all_contracts(self):
+
         return {
             'name': 'Les contrats de ' + self.name,
-            'view_type':'form',
             'res_model':'hr.contract',
-            'view_id':False,
-            'view_mode':'tree,form',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'views': [[False, 'list'], [False, 'form']],
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id)],
             }
-            
-
-class Test(models.Model):
-    _inherit = ['fleet.vehicle.chantier']
