@@ -11,7 +11,7 @@ class hr_employee(models.Model):
 
     cin = fields.Char('CIN', required=True)
     cnss = fields.Char('CNSS')
-    type_emp = fields.Selection([("employee1","Salarié"),("employee2","Ouvrier")],string=u"Type d'employé",default="employee1")
+    type_emp = fields.Selection([("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé",default="s")
     title_id = fields.Many2one("res.partner.title","Titre")
     #bank = fields.Many2one("bank","Banque")
     ville_bank = fields.Char(u"Ville")
@@ -213,7 +213,7 @@ class hr_employee(models.Model):
             'res_model': 'hr.employee',
             'views': [(view.id, 'tree'),(form.id,'form')],
             'target': 'current',
-            'domain':[('id', 'in',self._get_active_employee('employee1'))]
+            'domain':[('id', 'in',self._get_active_employee('s'))]
         }
     
         
@@ -230,7 +230,7 @@ class hr_employee(models.Model):
             'res_model': 'hr.employee',
             'views': [(view.id, 'tree'),(form.id,'form')],
             'target': 'current',
-            'domain':[('id', 'in',self._get_active_employee('employee2'))]
+            'domain':[('id', 'in',self._get_active_employee('o'))]
         }
 
 
@@ -354,3 +354,15 @@ class hr_employee(models.Model):
                 rec.motif_blacklist = res[0][0]
             else :
                 rec.motif_blacklist = ""
+
+    def all_contracts(self):
+
+        return {
+            'name': 'Les contrats de ' + self.name,
+            'res_model':'hr.contract',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'views': [[False, 'list'], [False, 'form']],
+            'type':'ir.actions.act_window',
+            'domain': [('employee_id', '=', self.id)],
+            }
