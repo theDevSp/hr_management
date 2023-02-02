@@ -345,12 +345,13 @@ class hr_employee(models.Model):
                 rec.motif_blacklist = ""
 
     def all_contracts(self):
+
         return {
             'name': 'Les contrats de ' + self.name,
-            'view_type':'form',
             'res_model':'hr.contract',
-            'view_id':False,
-            'view_mode':'tree,form',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'views': [[False, 'list'], [False, 'form']],
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id)],
             }
