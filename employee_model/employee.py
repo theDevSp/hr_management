@@ -45,7 +45,7 @@ class hr_employee(models.Model):
     wage = fields.Monetary(related="contract_id.wage",string='Salaire', required=True, tracking=True, currency_field = "currency_f")
     chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier")
     
-    wage_jour = fields.Float(compute='_compute_salaire_jour',string='Salaire Journalier')
+    wage_jour = fields.Float(string='Salaire Journalier')
     state_employee_wtf = fields.Selection([("new","Nouveau Embauche"),("transfert","Transfert"),("active","Active"),("stc","STC")],u"Situation Employée",index=True, copy=False, default='new', tracking=True)
     active = fields.Boolean('Active', related='resource_id.active', default=True, store=True, readonly=False)
     chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier")
@@ -360,6 +360,18 @@ class hr_employee(models.Model):
         return {
             'name': 'Les contrats de ' + self.name,
             'res_model':'hr.contract',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'views': [[False, 'list'], [False, 'form']],
+            'type':'ir.actions.act_window',
+            'domain': [('employee_id', '=', self.id)],
+            }
+    
+    def all_augmentations(self):
+
+        return {
+            'name': 'Les augmentations de ' + self.name,
+            'res_model':'hr.augmentation',
             'view_type': 'list',
             'view_mode': 'list',
             'views': [[False, 'list'], [False, 'form']],

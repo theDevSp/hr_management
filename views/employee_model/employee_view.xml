@@ -58,321 +58,323 @@
         <field name="model">hr.employee</field>
         <field name="arch" type="xml">
             <form>
-                <header  class="bar-box-shadow mb-4">            
+                <header class="bar-box-shadow mb-4">            
                     <button name="open_wizard" string="Add to black list" class="oe_highlight" attrs="{'invisible': [('black_list', '=', True)]}"
                      type="object" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                     <button name="open_wizard" string="Remove from black list" class="oe_highlight" attrs="{'invisible': [('black_list', '=', False)]}"
                      type="object" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                     <field name="state_employee_wtf" widget="statusbar" nolabel="1" options="{'clickable': '1'}"/>
                 </header>
-                <header>
-                    
-                </header>
-                    <field name="black_list" invisible="1"/>
-                    <div class="container" attrs="{'invisible': [('black_list', '=', False)]}">
-                        <div class="alert alert-danger text-center" role="alert">
-                            Attention ! Cet Employé figure dans la liste noire
+
+                <field name="black_list" invisible="1"/>
+                <div class="side-display" attrs="{'invisible':[('black_list', '!=', True)]}">
+                    <div class="alert alert-danger text-center" role="alert">
+                        Attention ! Cet Employé figure dans la liste noire
+                    </div>
+                </div>
+                <sheet>   
+                    <div class="oe_button_box bar-box-shadow" name="button_box">
+                        <button name="all_augmentations" type="object" class="oe_stat_button" icon="fa-chart-line" string="Augmentations" width="150"/>
+                        <button name="all_contracts" type="object" class="oe_stat_button" icon="fa-paste" string="Contracts" width="150"/>
+                    </div>              
+                    <div class="row mt-3">
+                        <div class="col-md-4 col-lg-4">
+                            <div class="card-deck">
+                                <div class="card">
+                                    <center>
+                                        <field name="image_1920" widget='image' class="card-img-top mt-3 mb-2"/>
+                                    </center>
+                                    <div class="card-body">
+                                        <div class="md-form mb-n3">
+                                            <label for="company_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-building form-control-icon"></span>
+                                                    <field name="company_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="md-form mb-n3">
+                                            <label for="name" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-user form-control-icon"></span>
+                                                    <field name="name" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="md-form mb-n3">
+                                            <label for="cin" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-id-card form-control-icon"></span>
+                                                    <field name="cin" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="md-form mb-n3">
+                                            <label for="cnss" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-id-card form-control-icon"></span>
+                                                    <field name="cnss" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="md-form mb-n3">
+                                            <label for="date_naissance" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-calendar form-control-icon"></span>
+                                                    <field name="date_naissance" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="md-form mb-n3">
+                                            <label for="lieu_naissance" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-city form-control-icon"></span>
+                                                    <field name="lieu_naissance" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="md-form mb-n3">
+                                            <label for="gender" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-male form-control-icon"></span>
+                                                    <field name="gender" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="md-form mb-n3">
+                                            <label for="marital" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-chain form-control-icon"></span>
+                                                    <field name="marital" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="md-form mb-n3">
+                                            <label for="nombre_enfants" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-users form-control-icon"></span>
+                                                    <field name="nombre_enfants" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="card text-white bg-dark mb-3">
+                                                <div class="card-body">
+                                                    <h4 class="card-title text-center align-middle"><field name="employee_age"/> Ans</h4>
+                                                </div>
+                                            </div>
+                                        
+                                            <div class="card text-white bg-dark mb-3">
+                                                <div class="card-body">
+                                                    <h4 class="card-title text-center align-middle"><field name="working_years"/></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <small class="text-muted">
+                                            <label for="date_cin" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-calendar form-control-icon"></span>
+                                                    <field name="date_cin" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-8 col-lg-8">
+                            <div class="card border-dark mb-3">
+                                <div class="card-header">Qualification et affectation</div>
+                                <div class="card-body text-dark">
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-6">
+                                            <label for="type_emp" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="type_emp" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-6">
+                                            <label for="job_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-briefcase form-control-icon"></span>
+                                                    <field name="job_id" options="{'no_create': True, 'no_open': True}" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-6">
+                                            <label for="job" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-tasks form-control-icon"></span>
+                                                    <field name="job" class="form-control" />
+                                                </div>  
+                                            </div>      
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="chantier_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-city form-control-icon"></span>
+                                                    <field name="chantier_id" options="{'no_create': True, 'no_open': True}" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="emplacement_chantier_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-users form-control-icon"></span>
+                                                    <field name="emplacement_chantier_id" options="{'no_create': True, 'no_open': True}" class="form-control" />
+                                                </div>  
+                                            </div>      
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="embaucher_par" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="embaucher_par" options="{'no_create': True, 'no_open': True}" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="recommander_par" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="recommander_par" options="{'no_create': True, 'no_open': True}" class="form-control" />
+                                                </div>  
+                                            </div>      
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="motif_enbauche" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-envelope form-control-icon"></span>
+                                                    <field name="motif_enbauche" options="{'no_create': True, 'no_open': True}" class="form-control" />
+                                                </div>  
+                                            </div>      
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card border-dark mb-3">
+                                <div class="card-header">Contacts</div>
+                                <div class="card-body text-dark">
+                                    <label for="adress_personnel" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-map-marker-alt form-control-icon"></span>
+                                            <field name="adress_personnel" class="form-control" />
+                                        </div>  
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="mobile_phone" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-mobile-alt form-control-icon"></span>
+                                                    <field name="mobile_phone" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="phone1" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-mobile-alt form-control-icon"></span>
+                                                    <field name="phone1" class="form-control" />
+                                                </div>  
+                                            </div>      
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="phone2" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-mobile-alt form-control-icon"></span>
+                                                    <field name="phone2" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="phone3" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-mobile-alt form-control-icon"></span>
+                                                    <field name="phone3" class="form-control" />
+                                                </div>  
+                                            </div>      
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+
+                            <div class="card border-dark mb-3">
+                                <div class="card-header">Information sur contrat</div>
+                                <div class="card-body text-dark">
+                                </div>
+                            </div>
+
+                            <div class="card border-dark mb-3">
+                                <div class="card-header">Information Banquaire et Cotisation</div>
+                                <div class="card-body text-dark">
+                                </div>
+                            </div>   
                         </div>
                     </div>
-                    <sheet>
-                        
-                        <div class="row mt-3">
-                            <div class="col-md-4 col-lg-4">
-                                <div class="card-deck">
-                                    <div class="card">
-                                        <center>
-                                            <field name="image_1920" widget='image' class="card-img-top mt-3 mb-2"/>
-                                        </center>
-                                        <div class="card-body">
-                                            <div class="md-form mb-n3">
-                                                <label for="company_id" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-building form-control-icon"></span>
-                                                        <field name="company_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="md-form mb-n3">
-                                                <label for="name" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fa fa-user form-control-icon"></span>
-                                                        <field name="name" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="md-form mb-n3">
-                                                <label for="cin" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fa fa-id-card form-control-icon"></span>
-                                                        <field name="cin" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="md-form mb-n3">
-                                                <label for="cnss" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fa fa-id-card form-control-icon"></span>
-                                                        <field name="cnss" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="md-form mb-n3">
-                                                <label for="date_naissance" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fa fa-calendar form-control-icon"></span>
-                                                        <field name="date_naissance" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="md-form mb-n3">
-                                                <label for="lieu_naissance" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-city form-control-icon"></span>
-                                                        <field name="lieu_naissance" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="md-form mb-n3">
-                                                <label for="gender" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-city form-control-icon"></span>
-                                                        <field name="gender" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="md-form mb-n3">
-                                                <label for="marital" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-city form-control-icon"></span>
-                                                        <field name="marital" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="md-form mb-n3">
-                                                <label for="nombre_enfants" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-city form-control-icon"></span>
-                                                        <field name="nombre_enfants" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="card text-white bg-dark mb-3">
-                                                    <div class="card-body">
-                                                        <h4 class="card-title text-center align-middle"><field name="employee_age"/> Ans</h4>
-                                                    </div>
-                                                </div>
-                                            
-                                                <div class="card text-white bg-dark mb-3">
-                                                    <div class="card-body">
-                                                        <h4 class="card-title text-center align-middle"><field name="working_years"/></h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            <small class="text-muted">
-                                                <label for="date_cin" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-city form-control-icon"></span>
-                                                        <field name="date_cin" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-8 col-lg-8">
-                                <div class="card border-dark mb-3">
-                                    <div class="card-header">Qualification et affectation</div>
-                                    <div class="card-body text-dark">
-                                        <div class="row">
-                                            <div class="col-md-4 col-sm-6">
-                                                <label for="type_emp" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-user form-control-icon"></span>
-                                                        <field name="type_emp" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 col-sm-6">
-                                                <label for="job_id" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-500px form-control-icon"></span>
-                                                        <field name="job_id" options="{'no_create': True, 'no_open': True}" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 col-sm-6">
-                                                <label for="job" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-500px form-control-icon"></span>
-                                                        <field name="job" class="form-control" />
-                                                    </div>  
-                                                </div>      
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label for="chantier_id" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-city form-control-icon"></span>
-                                                        <field name="chantier_id" options="{'no_create': True, 'no_open': True}" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="emplacement_chantier_id" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-users form-control-icon"></span>
-                                                        <field name="emplacement_chantier_id" options="{'no_create': True, 'no_open': True}" class="form-control" />
-                                                    </div>  
-                                                </div>      
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <label for="embaucher_par" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-user form-control-icon"></span>
-                                                        <field name="embaucher_par" options="{'no_create': True, 'no_open': True}" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="recommander_par" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-user form-control-icon"></span>
-                                                        <field name="recommander_par" options="{'no_create': True, 'no_open': True}" class="form-control" />
-                                                    </div>  
-                                                </div>      
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="motif_enbauche" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-envelope form-control-icon"></span>
-                                                        <field name="motif_enbauche" options="{'no_create': True, 'no_open': True}" class="form-control" />
-                                                    </div>  
-                                                </div>      
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card border-dark mb-3">
-                                    <div class="card-header">Contacts</div>
-                                    <div class="card-body text-dark">
-                                        <label for="adress_personnel" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fas fa-map-marker-alt form-control-icon"></span>
-                                                <field name="adress_personnel" class="form-control" />
-                                            </div>  
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label for="mobile_phone" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-mobile-alt form-control-icon"></span>
-                                                        <field name="mobile_phone" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="phone1" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-mobile-alt form-control-icon"></span>
-                                                        <field name="phone1" class="form-control" />
-                                                    </div>  
-                                                </div>      
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label for="phone2" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-mobile-alt form-control-icon"></span>
-                                                        <field name="phone2" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="phone3" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-mobile-alt form-control-icon"></span>
-                                                        <field name="phone3" class="form-control" />
-                                                    </div>  
-                                                </div>      
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> 
-
-                                <div class="card border-dark mb-3">
-                                    <div class="card-header">Information sur contrat</div>
-                                    <div class="card-body text-dark">
-                                    </div>
-                                </div>
-
-                                <div class="card border-dark mb-3">
-                                    <div class="card-header">Information Banquaire et Cotisation</div>
-                                    <div class="card-body text-dark">
-                                    </div>
-                                </div>   
-                            </div>
+                    <div class="card border-dark mb-5">
+                        <div class="card-header">Historique Liste Noire</div>
+                        <div class="card-body text-dark">
+                            <group groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                hr_management.group_cnss_juridique">
+                                <field name="blacklist_histo" nolabel="1">
+                                    <tree class="table" create="false" edit="false">
+                                        <field name="responsable_id"/>
+                                        <field name="directeur_id"/>
+                                        <field name="chantier_id"/>
+                                        <field name="motif"/>
+                                        <field name="date_effet"/>
+                                        <field name="action"/>
+                                        <field name="user_doing_action"/>
+                                    </tree>
+                                </field>
+                            </group>
                         </div>
-                        <div class="card border-dark mb-5">
-                            <div class="card-header">Historique Liste Noire</div>
-                            <div class="card-body text-dark">
-                                <group groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
-                                    hr_management.group_service_analytique,hr_management.group_controle_gestion,
-                                    hr_management.group_cnss_juridique">
-                                    <field name="blacklist_histo" nolabel="1">
-                                        <tree class="table" create="false" edit="false">
-                                            <field name="responsable_id"/>
-                                            <field name="directeur_id"/>
-                                            <field name="chantier_id"/>
-                                            <field name="motif"/>
-                                            <field name="date_effet"/>
-                                            <field name="action"/>
-                                            <field name="user_doing_action"/>
-                                        </tree>
-                                    </field>
-                                </group>
-                            </div>
-                        </div>
-                        
-                    </sheet>
-
+                    </div>
                     
-                
+                </sheet>
+                <div class="container" >
+                    <div class="alert alert-danger text-center" role="alert" attrs="{'invisible':[('black_list', '!=', True)]}">
+                        Attention ! Cet Employé figure dans la liste noire
+                    </div>
+                </div>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
@@ -392,11 +394,15 @@
                 <field name="cin"/>
                 <field name="cnss"/>
                 <field name="chantier_id"/>
-                <field name="emplacement_chantier_id"/>				
+                <field name="emplacement_chantier_id"/>
+                <searchpanel>
+                    <field name="chantier_id" icon="fa-city" enable_counters="1"/>
+                    <field name="emplacement_chantier_id" icon="fa-users" enable_counters="1"/>
+                    <field name="type_emp" icon="fa-money" enable_counters="1"/>
+                </searchpanel>
             </search>
         </field>
     </record>
-
 
     <record id='employee_action' model='ir.actions.act_window'>
         <field name="name"> HR Management - Employees </field>
@@ -405,5 +411,5 @@
         <field name="view_mode">tree,form,search</field>
         <field name="domain">[('black_list', '=', False)]</field>
     </record>
-
 </odoo>
+

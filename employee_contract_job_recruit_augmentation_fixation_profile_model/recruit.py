@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import ValidationError
 
 class recruit(models.Model):
     _name = "hr.recrutement"
@@ -73,19 +74,64 @@ class recruit(models.Model):
 
 
     def to_draft(self):
-        self.state = 'draft'
+        if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
+            if self.state not in {'draft', 'encours', 'acceptee', 'refusee', 'terminee'} :
+                self.state = 'draft'
+            else:
+                raise ValidationError("Erreur, Cette action n'est pas autorisée.")
+        elif self.user_has_groups('hr_management.group_pointeur'):
+            if self.state in {'validee'} :
+                self.state = 'draft'
+            else:
+                raise ValidationError("Erreur, Cette action n'est pas autorisée.")
+        else:
+            raise ValidationError("Erreur, Seulement les administrateurs, les agents de paie et les pointeurs qui peuvent changer le status.")
+
 
     def to_validee(self):
-        self.state = 'validee'
+        if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
+            if self.state not in {'validee', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'} :
+                self.state = 'validee'
+            else:
+                raise ValidationError("Erreur, Cette action n'est pas autorisée.")
+        elif self.user_has_groups('hr_management.group_pointeur'):
+            if self.state in {'draft'} :
+                self.state = 'validee'
+            else:
+                raise ValidationError("Erreur, Cette action n'est pas autorisée.")
+        else:
+            raise ValidationError("Erreur, Seulement les administrateurs, les agents de paie et les pointeurs qui peuvent changer le status.")
+
 
     def to_encours(self):
-        self.state = 'encours'
+        if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
+            if self.state not in {'draft', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'} :
+                self.state = 'encours'
+            else:
+                raise ValidationError("Erreur, Cette action n'est pas autorisée.")
+        else:
+            raise ValidationError("Erreur, Seulement les administrateurs, les agents de paie qui peuvent changer ce status.")
+        
 
     def to_acceptee(self):
-        self.state = 'acceptee'
+        if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
+            if self.state not in {'draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'} :
+                self.state = 'acceptee'
+            else:
+                raise ValidationError("Erreur, Cette action n'est pas autorisée.")
+        else:
+            raise ValidationError("Erreur, Seulement les administrateurs, les agents de paie qui peuvent changer ce status.")
+        
     
     def to_refusee(self):
-        self.state = 'refusee'
+        if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
+            if self.state not in {'draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'} :
+                self.state = 'refusee'
+            else:
+                raise ValidationError("Erreur, Cette action n'est pas autorisée.")
+        else:
+            raise ValidationError("Erreur, Seulement les administrateurs, les agents de paie qui peuvent changer ce status.")
+        
     
     def to_annulee(self):
         if self.user_has_groups('hr_management.group_admin_paie'):
@@ -94,9 +140,18 @@ class recruit(models.Model):
             self.state = 'annulee'
         elif self.user_has_groups('hr_management.group_pointeur') and self.state in {'draft', 'validee'} :
             self.state = 'annulee'
+        else:
+            raise ValidationError("Erreur, Cette action n'est pas autorisée.")
 
-    def to_terminee(self):  
-        self.state = 'terminee'
+    def to_terminee(self):
+        if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
+            if self.state not in {'draft', 'validee', 'encours', 'refusee', 'annulee', 'terminee'} :
+                self.state = 'terminee'
+            else:
+                raise ValidationError("Erreur, Cette action n'est pas autorisée.")
+        else:
+            raise ValidationError("Erreur, Seulement les administrateurs, les agents de paie qui peuvent changer ce status.")  
+        
 
 
     #@api.multi
