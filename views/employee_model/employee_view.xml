@@ -76,7 +76,10 @@
                     </div>
                     
                     <sheet>
-                        
+                        <div class="oe_button_box bar-box-shadow" name="button_box">
+                            <button name="all_augmentations" type="object" class="oe_stat_button" icon="fa-chart-line" string="Augmentations" width="150"/>
+                            <button name="all_contracts" type="object" class="oe_stat_button" icon="fa-paste" string="Contracts" width="150"/>
+                        </div> 
                         <div class="row mt-3">
                             <div class="col-md-4 col-lg-4">
                                 <div class="card-deck">

@@ -63,16 +63,19 @@ class hr_employee(models.Model):
     salaire_actuel = fields.Monetary('Salaire Actuel', readonly=True, currency_field = 'currency_f')
     
     def _compute_augmentation_montants_valides(self):
-        for rec in self :
-            query = """
-                        SELECT SUM(montant_valide)
-                        FROM hr_augmentation aug,hr_contract ctr, account_month_period mnth
-                        WHERE aug.employee_id=ctr.employee_id AND aug.period_id=mnth.id AND ctr.state='open' AND ctr.employee_id=%s
-                        AND mnth.date_start BETWEEN ctr.date_start AND CURRENT_DATE
-                    """ % (rec.id)
-            self.env.cr.execute(query)
-            res = self.env.cr.fetchall()
-            rec.salaire_actuel = rec.wage + res[0][0]
+        query = """
+                SELECT SUM(montant_valide)
+                FROM hr_augmentation aug,hr_contract ctr, account_month_period mnth
+                WHERE aug.employee_id=ctr.employee_id AND aug.period_id=mnth.id AND ctr.state='open' AND ctr.employee_id=%s
+                AND mnth.date_start BETWEEN ctr.date_start AND CURRENT_DATE
+            """ % (self.id)
+        self.env.cr.execute(query)
+        res = self.env.cr.fetchall()
+        if(res[0][0] is not None):
+            self.salaire_actuel = self.wage + res[0][0]
+        else:
+            self.salaire_actuel = 0
+
 
 
     def _compute_age(self):
@@ -391,7 +394,7 @@ class hr_employee(models.Model):
             'res_model':'hr.augmentation',
             'view_type': 'list',
             'view_mode': 'list',
-            'views': [[False, 'list'], [False, 'form']],
+            'view_id': self.env.ref('hr_management.augmentation_par_employee_tree_view').id,
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id)],
             }

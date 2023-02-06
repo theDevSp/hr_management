@@ -26,6 +26,26 @@
         </field>
     </record>
 
+    <record id="augmentation_par_employee_tree_view" model="ir.ui.view">
+        <field name="name">Liste des augmentations</field>
+        <field name="model">hr.augmentation</field>
+        <field name="arch" type="xml">
+            <tree string="Contrats" multi_edit="1" sample="1" default_order='date_fait ASC' class="table">
+                <field name="employee_id" readonly="1" widget="many2one_avatar_employee"/>
+                <field name="chantier_id"/>
+                <field name="responsable_id"/>
+                <field name="directeur_id"/>
+                <field name="period_id"/>
+                <field name="date_fait"/>
+                <field name="montant_propose"/>
+                <field name="montant_valide" sum="Total Montant(s) Validé(s)"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
+                <field name="motif"/>
+                <field name="observation"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="augmentation_form" model="ir.ui.view">
         <field name="name">Formulaire des Augmentations</field>
         <field name="model">hr.augmentation</field>
