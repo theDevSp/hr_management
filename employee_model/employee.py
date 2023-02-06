@@ -2,6 +2,7 @@ from odoo import fields, models, api
 from odoo.osv import expression
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from lxml import etree
 
 class hr_employee(models.Model):
     _description = "Employee"
@@ -56,6 +57,21 @@ class hr_employee(models.Model):
     black_list = fields.Boolean("Liste Noire", readonly=True, default=False)
     blacklist_histo = fields.One2many('hr.blacklist', 'employee_id',readonly=True)
     motif_blacklist = fields.Char("Motif Blacklist", compute = "_compute_motif_blacklist")
+
+    @api.model
+    def fields_view_get(self,view_id=None, view_type='tree',toolbar=False, submenu=False):
+        
+        res = super(hr_employee, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=False)
+        group_admin = self.env.user.has_group('hr_management.group_admin_paie')
+        group_agent_paie = self.env.user.has_group('hr_management.group_agent_paie')
+        update = view_type in ['form', 'tree']
+        doc = etree.XML(res['arch'])
+        if not group_admin and not group_agent_paie:
+            if update:
+                for node in doc.xpath("//"+view_type):
+                    node.set('create', '0')
+                res['arch'] = etree.tostring(doc)
+        return res
    
     def _compute_age(self):
         for employee in self:
@@ -301,7 +317,7 @@ class hr_employee(models.Model):
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):
         args = args or []
-        args2 = ['|',['name',operator,name],['identification_id',operator,name], ['cin',operator,name], ['cnss',operator,name],['chantier_id',operator,name],['emplacement_chantier_id',operator,name]]
+        args2 = ['|',['name',operator,name],['identification_id',operator,name], ['cin',operator,name], ['cnss',operator,name]]
         
         args = args2+args
         recs = self.search(args, limit=limit)

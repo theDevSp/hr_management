@@ -48,7 +48,7 @@
                                     <div class="main">
                                         <div class="form-group">
                                             <span class="fas fa-user form-control-icon"></span>
-                                            <field name="employee_id" class="form-control" required="1" options="{'no_create': True, 'no_open': False}"/>
+                                            <field name="employee_id" class="form-control" options="{'no_create': True, 'no_open': False}"/>
                                         </div>  
                                     </div>
                                 </div>
