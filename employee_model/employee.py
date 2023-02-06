@@ -30,8 +30,6 @@ class hr_employee(models.Model):
     lieu_naissance = fields.Char(u"Lieu Naissance")
     montant_cimr = fields.Float(u"Montant Cotisation CIMR")
 
-    date_start = fields.Date(related="contract_id.date_start",string='Date Debut')
-    date_end = fields.Date(related="contract_id.date_end",string='Date Fin')
     remaining_days = fields.Char(compute="_compute_remaining_days",string='Jours Restants')
     date_cin = fields.Date(u'Date validité CIN')
     phone1 = fields.Char(u"Tél. Portable 1")
@@ -40,9 +38,7 @@ class hr_employee(models.Model):
     #payslip_count = fields.Integer(compute='_compute_payslip')    
     #nbr_jour_ferie = fields.Float(u"Nombre de Jours Fériés",compute="_compute_jf")
     working_years = fields.Char(compute='_compute_working_years',string="Ancienneté")
-    
     currency_f = fields.Many2one('res.currency', string='Currency')
-    wage = fields.Monetary(related="contract_id.wage",string='Salaire', required=True, tracking=True, currency_field = "currency_f")
     chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier")
     
     wage_jour = fields.Float(string='Salaire Journalier')
@@ -57,6 +53,28 @@ class hr_employee(models.Model):
     blacklist_histo = fields.One2many('hr.blacklist', 'employee_id',readonly=True)
     motif_blacklist = fields.Char("Motif Blacklist", compute = "_compute_motif_blacklist")
    
+    ref_contrat = fields.Char(related="contract_id.name",string='Référence')
+    date_start = fields.Date(related="contract_id.date_start",string='Date de début')
+    date_end = fields.Date(related="contract_id.date_end",string='Date de fin')
+    chantier_related = fields.Many2one(related="contract_id.chantier_id",string='Chantier')
+    type_contrat = fields.Many2one(related="contract_id.contract_type_id",string='Type du contrat')
+    wage = fields.Monetary(related="contract_id.wage",string='Salaire de base', required=True, tracking=True, currency_field = "currency_f")
+    tt_montant_a_ajouter = fields.Monetary(string='Montans Validés', required=True, tracking=True, currency_field = "currency_f", compute = "_compute_augmentation_montants_valides")
+    salaire_actuel = fields.Monetary('Salaire Actuel', readonly=True, currency_field = 'currency_f')
+    
+    def _compute_augmentation_montants_valides(self):
+        for rec in self :
+            query = """
+                        SELECT SUM(montant_valide)
+                        FROM hr_augmentation aug,hr_contract ctr, account_month_period mnth
+                        WHERE aug.employee_id=ctr.employee_id AND aug.period_id=mnth.id AND ctr.state='open' AND ctr.employee_id=%s
+                        AND mnth.date_start BETWEEN ctr.date_start AND CURRENT_DATE
+                    """ % (rec.id)
+            self.env.cr.execute(query)
+            res = self.env.cr.fetchall()
+            rec.salaire_actuel = res[0][0]
+
+
     def _compute_age(self):
         for employee in self:
             if employee.date_naissance:
@@ -355,8 +373,8 @@ class hr_employee(models.Model):
             else :
                 rec.motif_blacklist = ""
 
-    def all_contracts(self):
 
+    def all_contracts(self):
         return {
             'name': 'Les contrats de ' + self.name,
             'res_model':'hr.contract',
@@ -368,7 +386,6 @@ class hr_employee(models.Model):
             }
     
     def all_augmentations(self):
-
         return {
             'name': 'Les augmentations de ' + self.name,
             'res_model':'hr.augmentation',

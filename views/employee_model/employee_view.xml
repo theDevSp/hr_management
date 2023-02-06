@@ -336,13 +336,88 @@
                             </div> 
 
                             <div class="card border-dark mb-3">
-                                <div class="card-header">Information sur contrat</div>
+                                <div class="card-header">Informations sur contrat</div>
                                 <div class="card-body text-dark">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="ref_contrat" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-barcode form-control-icon"></span>
+                                                    <field name="ref_contrat" class="form-control" required="1" options="{'no_create': True, 'no_open': False}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="chantier_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-city form-control-icon"></span>
+                                                    <field name="chantier_related" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="date_start" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-calendar form-control-icon"></span>
+                                                    <field name="date_start" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="type_contrat" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-file-contract form-control-icon"></span>
+                                                    <field name="type_contrat" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="date_end" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-calendar form-control-icon"></span>
+                                                    <field name="date_end" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="wage" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
+                                                    <field name="wage" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                </div>  
+                                            </div>      
+                                        </div>
+                                    </div>
+
+                                    <center>
+                                        <div class="row" style="max-width: 20em;">
+                                            <div class="col-12">
+                                                <label for="salaire_actuel" class=""/>
+                                                <div class="card text-white bg-dark mb-3">
+                                                    <div class="card-body">
+                                                        <field name="tt_montant_a_ajouter" invisible="1"/>
+                                                        <h4 class="card-title text-center align-middle"><field name="salaire_actuel"/> </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </center>
+
                                 </div>
                             </div>
 
                             <div class="card border-dark mb-3">
-                                <div class="card-header">Information Banquaire et Cotisation</div>
+                                <div class="card-header">Informations Bancaires et Cotisations</div>
                                 <div class="card-body text-dark">
                                 </div>
                             </div>   
