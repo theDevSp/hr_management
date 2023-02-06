@@ -3,69 +3,74 @@
     <template id="report_demande_recrutement">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
-                <t t-call="reports_templates.common_header">
+                <t t-call="web.internal_layout">
                     <t t-set="documents_title" t-value="'demande de recrutement'"/>
                     <t t-set="documents_ref" t-value="doc.name"/>
+                    <div class="page">
+                    
+                        <div class="row">
+                            <div class="col-4"></div>   
+                            <div class="col-4">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading text-center">
+                                        <h4 class="text-center"><strong>DEMANDE DE RECRUTEMEN<span t-field="doc.chantier_id.name"/> </strong></h4>
+                                    </div>
+                                    <div class="panel-body text-center">
+                                        <table width="100%"  class="stc_table" style="border-collapse:separate;border-spacing:0 5px;">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-right" width="49%"><strong>Chantier :</strong></td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-left" width="49%"><span t-field="doc.chantier_id.name"/> </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td class="text-right" width="49%"><strong>Responsable :</strong></td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-left" width="49%"><span t-field="doc.responsable_id.name"/> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right" width="49%"><strong>Titre du poste :</strong></td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-left" width="49%"><span t-field="doc.title_poste"/> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right" width="49%"><strong>OBSERVATION :</strong></td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-left" width="49%"><span t-field="doc.observation"/> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right" width="49%"><strong>NOMBRE D'EFFECTIF DEMANDÉ :</strong></td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-left" width="49%"><span t-field="doc.nbr_effectif_demande"/> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right" width="49%"><strong>NOMBRE D'EFFECTIF ACCEPTÉ :</strong></td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-left" width="49%"><span t-field="doc.nbr_effectif_accepte"/> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-right" width="49%"><strong>STATUS :</strong></td>
+                                                    <td width="2%"></td>
+                                                    <td class="text-left" width="49%"><span t-field="doc.state"/> </td>
+                                                </tr>                                          
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                            <div class="col-4"></div>
+                        </div>
+                    </div>
+                <t t-call="reports_templates.common_footer">
+                    <t t-call="reports_templates.bc_achat_nb"/>
+                    <t t-call="reports_templates.bc_achat_signature"/>
+                </t>
                 </t>
                
-                <div class="page">
-                    
-                    <div class="row">
-                        <div class="col-md-4"></div>   
-                        <div class="col-md-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading text-center">
-                                    <h4 class="text-center"><strong>DEMANDE DE RECRUTEMEN<span t-field="doc.chantier_id.name"/> </strong></h4>
-                                </div>
-                                <div class="panel-body text-center">
-                                    <table width="100%"  class="stc_table" style="border-collapse:separate;border-spacing:0 5px;">
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-right" width="49%"><strong>Chantier :</strong></td>
-                                                <td width="2%"></td>
-                                                <td class="text-left" width="49%"><span t-field="doc.chantier_id.name"/> </td>
-                                            </tr>
-                                            
-                                            <tr>
-                                                <td class="text-right" width="49%"><strong>Responsable :</strong></td>
-                                                <td width="2%"></td>
-                                                <td class="text-left" width="49%"><span t-field="doc.responsable_id.name"/> </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-right" width="49%"><strong>Titre du poste :</strong></td>
-                                                <td width="2%"></td>
-                                                <td class="text-left" width="49%"><span t-field="doc.title_poste"/> </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-right" width="49%"><strong>OBSERVATION :</strong></td>
-                                                <td width="2%"></td>
-                                                <td class="text-left" width="49%"><span t-field="doc.observation"/> </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-right" width="49%"><strong>NOMBRE D'EFFECTIF DEMANDÉ :</strong></td>
-                                                <td width="2%"></td>
-                                                <td class="text-left" width="49%"><span t-field="doc.nbr_effectif_demande"/> </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-right" width="49%"><strong>NOMBRE D'EFFECTIF ACCEPTÉ :</strong></td>
-                                                <td width="2%"></td>
-                                                <td class="text-left" width="49%"><span t-field="doc.nbr_effectif_accepte"/> </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-right" width="49%"><strong>STATUS :</strong></td>
-                                                <td width="2%"></td>
-                                                <td class="text-left" width="49%"><span t-field="doc.state"/> </td>
-                                            </tr>                                          
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                        </div>
-                        
-                        <div class="col-md-4"></div>
-                    </div>
-                </div>
+                
             </t>
         </t>
     </template>

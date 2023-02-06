@@ -74,6 +74,7 @@
                             Attention ! Cet Employé figure dans la liste noire
                         </div>
                     </div>
+                    
                     <sheet>
                         
                         <div class="row mt-3">
@@ -98,7 +99,7 @@
                                                 <div class="main">
                                                     <div class="form-group">
                                                         <span class="fa fa-user form-control-icon"></span>
-                                                        <field name="name" class="form-control" />
+                                                        <field name="name" class="form-control" required="1"/>
                                                     </div>  
                                                 </div>
                                             </div>
