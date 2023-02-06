@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <menuitem name="Black List" id="blacklist_menu" parent="employees_main_menu" action="blacklist_action" sequence="1"/>
+    <menuitem name="Black List" id="blacklist_menu" parent="employees_main_menu" 
+                action="blacklist_action" sequence="1" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
 
 </odoo>
