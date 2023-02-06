@@ -12,8 +12,7 @@
         ],
 
     'data': [         
-        'views/views.xml',
-        'views/templates.xml',
+        
         'security/groups.xml',
         'security/ir.model.access.csv',
         'wizard/wizard_blacklist_view.xml',
@@ -56,11 +55,21 @@
     'demo': [
     ],
 
+    'assets': {
+        'web.assets_qweb': [
+            
+        ],
+        'web.assets_backend': [
+
+            
+
+        ],
+        
+    },
+
     'application': True ,
     'installable': True ,
     'auto_install': False,
     'sequence': 2,
 
-    'assets': {
-    },
 }
