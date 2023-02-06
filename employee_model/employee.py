@@ -72,7 +72,7 @@ class hr_employee(models.Model):
                     """ % (rec.id)
             self.env.cr.execute(query)
             res = self.env.cr.fetchall()
-            rec.salaire_actuel = res[0][0]
+            rec.salaire_actuel = rec.wage + res[0][0]
 
 
     def _compute_age(self):
