@@ -366,3 +366,15 @@ class hr_employee(models.Model):
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id)],
             }
+    
+    def all_augmentations(self):
+
+        return {
+            'name': 'Les augmentations de ' + self.name,
+            'res_model':'hr.augmentation',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'views': [[False, 'list'], [False, 'form']],
+            'type':'ir.actions.act_window',
+            'domain': [('employee_id', '=', self.id)],
+            }

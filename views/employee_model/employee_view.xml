@@ -58,7 +58,7 @@
         <field name="model">hr.employee</field>
         <field name="arch" type="xml">
             <form>
-                <header  class="bar-box-shadow mb-4">            
+                <header class="bar-box-shadow mb-4">            
                     <button name="open_wizard" string="Add to black list" class="oe_highlight" attrs="{'invisible': [('black_list', '=', True)]}"
                      type="object" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                     <button name="open_wizard" string="Remove from black list" class="oe_highlight" attrs="{'invisible': [('black_list', '=', False)]}"
@@ -283,97 +283,99 @@
                                     </div>
                                 </div>
 
-                                <div class="card border-dark mb-3">
-                                    <div class="card-header">Contacts</div>
-                                    <div class="card-body text-dark">
-                                        <label for="adress_personnel" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fas fa-map-marker-alt form-control-icon"></span>
-                                                <field name="adress_personnel" class="form-control" />
-                                            </div>  
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label for="mobile_phone" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-mobile-alt form-control-icon"></span>
-                                                        <field name="mobile_phone" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="phone1" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-mobile-alt form-control-icon"></span>
-                                                        <field name="phone1" class="form-control" />
-                                                    </div>  
-                                                </div>      
+                            <div class="card border-dark mb-3">
+                                <div class="card-header">Contacts</div>
+                                <div class="card-body text-dark">
+                                    <label for="adress_personnel" class=""/>
+                                    <div class="main">
+                                        <div class="form-group">
+                                            <span class="fas fa-map-marker-alt form-control-icon"></span>
+                                            <field name="adress_personnel" class="form-control" />
+                                        </div>  
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="mobile_phone" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-mobile-alt form-control-icon"></span>
+                                                    <field name="mobile_phone" class="form-control" />
+                                                </div>  
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label for="phone2" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-mobile-alt form-control-icon"></span>
-                                                        <field name="phone2" class="form-control" />
-                                                    </div>  
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="phone3" class=""/>
-                                                <div class="main">
-                                                    <div class="form-group">
-                                                        <span class="fas fa-mobile-alt form-control-icon"></span>
-                                                        <field name="phone3" class="form-control" />
-                                                    </div>  
-                                                </div>      
-                                            </div>
+                                        <div class="col-md-6">
+                                            <label for="phone1" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-mobile-alt form-control-icon"></span>
+                                                    <field name="phone1" class="form-control" />
+                                                </div>  
+                                            </div>      
                                         </div>
                                     </div>
-                                </div> 
-
-                                <div class="card border-dark mb-3">
-                                    <div class="card-header">Information sur contrat</div>
-                                    <div class="card-body text-dark">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="phone2" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-mobile-alt form-control-icon"></span>
+                                                    <field name="phone2" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="phone3" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-mobile-alt form-control-icon"></span>
+                                                    <field name="phone3" class="form-control" />
+                                                </div>  
+                                            </div>      
+                                        </div>
                                     </div>
                                 </div>
+                            </div> 
 
-                                <div class="card border-dark mb-3">
-                                    <div class="card-header">Information Banquaire et Cotisation</div>
-                                    <div class="card-body text-dark">
-                                    </div>
-                                </div>   
+                            <div class="card border-dark mb-3">
+                                <div class="card-header">Information sur contrat</div>
+                                <div class="card-body text-dark">
+                                </div>
                             </div>
-                        </div>
-                        <div class="card border-dark mb-5">
-                            <div class="card-header">Historique Liste Noire</div>
-                            <div class="card-body text-dark">
-                                <group groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
-                                    hr_management.group_service_analytique,hr_management.group_controle_gestion,
-                                    hr_management.group_cnss_juridique">
-                                    <field name="blacklist_histo" nolabel="1">
-                                        <tree class="table" create="false" edit="false">
-                                            <field name="responsable_id"/>
-                                            <field name="directeur_id"/>
-                                            <field name="chantier_id"/>
-                                            <field name="motif"/>
-                                            <field name="date_effet"/>
-                                            <field name="action"/>
-                                            <field name="user_doing_action"/>
-                                        </tree>
-                                    </field>
-                                </group>
-                            </div>
-                        </div>
-                        
-                    </sheet>
 
+                            <div class="card border-dark mb-3">
+                                <div class="card-header">Information Banquaire et Cotisation</div>
+                                <div class="card-body text-dark">
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                    <div class="card border-dark mb-5">
+                        <div class="card-header">Historique Liste Noire</div>
+                        <div class="card-body text-dark">
+                            <group groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                hr_management.group_cnss_juridique">
+                                <field name="blacklist_histo" nolabel="1">
+                                    <tree class="table" create="false" edit="false">
+                                        <field name="responsable_id"/>
+                                        <field name="directeur_id"/>
+                                        <field name="chantier_id"/>
+                                        <field name="motif"/>
+                                        <field name="date_effet"/>
+                                        <field name="action"/>
+                                        <field name="user_doing_action"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </div>
+                    </div>
                     
-                
+                </sheet>
+                <div class="container" >
+                    <div class="alert alert-danger text-center" role="alert" attrs="{'invisible':[('black_list', '!=', True)]}">
+                        Attention ! Cet Employé figure dans la liste noire
+                    </div>
+                </div>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
@@ -393,11 +395,15 @@
                 <field name="cin"/>
                 <field name="cnss"/>
                 <field name="chantier_id"/>
-                <field name="emplacement_chantier_id"/>				
+                <field name="emplacement_chantier_id"/>
+                <searchpanel>
+                    <field name="chantier_id" icon="fa-city" enable_counters="1"/>
+                    <field name="emplacement_chantier_id" icon="fa-users" enable_counters="1"/>
+                    <field name="type_emp" icon="fa-money" enable_counters="1"/>
+                </searchpanel>
             </search>
         </field>
     </record>
-
 
     <record id='employee_action' model='ir.actions.act_window'>
         <field name="name"> HR Management - Employees </field>
@@ -406,5 +412,4 @@
         <field name="view_mode">tree,form,search</field>
         <field name="domain">[('black_list', '=', False)]</field>
     </record>
-
 </odoo>

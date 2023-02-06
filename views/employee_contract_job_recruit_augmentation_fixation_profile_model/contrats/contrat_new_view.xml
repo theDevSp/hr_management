@@ -78,7 +78,7 @@
                                     <label for="employee_id" class=""/>
                                     <div class="main">
                                         <div class="form-group">
-                                            <span class="fas fa-map-marker-alt form-control-icon"></span>
+                                            <span class="fas fa-user form-control-icon"></span>
                                             <field name="employee_id" class="form-control" required="1" options="{'no_create': True, 'no_open': False}"/>
                                         </div>  
                                     </div>
@@ -87,7 +87,7 @@
                                     <label for="chantier_id" class=""/>
                                     <div class="main">
                                         <div class="form-group">
-                                            <span class="fas fa-map-marker-alt form-control-icon"></span>
+                                            <span class="fas fa-city form-control-icon"></span>
                                             <field name="chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
                                         </div>  
                                     </div>
@@ -98,7 +98,7 @@
                                     <label for="date_start" class=""/>
                                     <div class="main">
                                         <div class="form-group">
-                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <span class="fas fa-calendar form-control-icon"></span>
                                             <field name="date_start" class="form-control" string="Date début du contrat" required="1"/>
                                         </div>  
                                     </div>
@@ -107,7 +107,7 @@
                                     <label for="job_id" class=""/>
                                     <div class="main">
                                         <div class="form-group">
-                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <span class="fa fa-briefcase form-control-icon"></span>
                                             <field name="job_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
                                         </div>  
                                     </div>
@@ -118,7 +118,7 @@
                                     <label for="date_end" class=""/>
                                     <div class="main">
                                         <div class="form-group">
-                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <span class="fas fa-calendar form-control-icon"></span>
                                             <field name="date_end" class="form-control" string="Date fin du contrat"/>
                                         </div>  
                                     </div>      
@@ -127,7 +127,7 @@
                                     <label for="contract_type_id" class=""/>
                                     <div class="main">
                                         <div class="form-group">
-                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <span class="fas fa-file-contract form-control-icon"></span>
                                             <field name="contract_type_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
                                         </div>  
                                     </div>    
@@ -138,7 +138,7 @@
                                     <label for="resource_calendar_id" class=""/>
                                     <div class="main">
                                         <div class="form-group">
-                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <span class="fas fa-clock form-control-icon"></span>
                                             <field name="resource_calendar_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
                                         </div>  
                                     </div>
@@ -147,7 +147,7 @@
                                     <label for="hr_responsible_id" class=""/>
                                     <div class="main">
                                         <div class="form-group">
-                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <span class="fas fa-user form-control-icon"></span>
                                             <field name="hr_responsible_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
                                         </div>  
                                     </div>
@@ -158,7 +158,7 @@
                                     <label for="wage" class=""/>
                                     <div class="main">
                                         <div class="form-group">
-                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <span class="fas fa-money-bill-wave form-control-icon"></span>
                                             <field name="wage" class="form-control" />
                                         </div>  
                                     </div>      
@@ -167,7 +167,7 @@
                                     <label for="company_id" class=""/>
                                     <div class="main">
                                         <div class="form-group">
-                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <span class="fas fa-building form-control-icon"></span>
                                             <field name="company_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
                                         </div>  
                                     </div>    
@@ -178,7 +178,7 @@
                                     <label for="notes" class=""/>
                                     <div class="main">
                                         <div class="form-group">
-                                            <span class="fas fa-mobile-alt form-control-icon"></span>
+                                            <span class="fas fa-comment form-control-icon"></span>
                                             <field name="notes" class="form-control" />
                                         </div>  
                                     </div>      
@@ -197,7 +197,7 @@
     </record>
 
     <record id="contrats_actifs_search" model="ir.ui.view">
-        <field name="name">Recherche desContrats</field>
+        <field name="name">Recherche des Contrats</field>
         <field name="model">hr.contract</field>
         <field name="arch" type="xml">
             <search>
@@ -209,9 +209,9 @@
                 <field name="chantier_id"/>
                 <field name="resource_calendar_id"/>
                 <searchpanel>
-                    <field name="chantier_id" icon="fa-gear" enable_counters="1"/>
+                    <field name="chantier_id" icon="fa-city" enable_counters="1"/>
                     <field name="company_id" icon="fa-building" enable_counters="1"/>
-                    <field name="contract_type_id" icon="fa-archive" enable_counters="1"/>
+                    <field name="contract_type_id" icon="fa-file-contract" enable_counters="1"/>
                 </searchpanel>
             </search>
         </field>

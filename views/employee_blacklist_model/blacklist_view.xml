@@ -31,12 +31,12 @@
                 <field name="name" />
                 <field name="cin"/>		
                 <field name="chantier_id"/>		
+                <searchpanel>
+                    <field name="chantier_id" icon="fa-city" enable_counters="1"/>
+                    <field name="emplacement_chantier_id" icon="fa-users" enable_counters="1"/>
+                    <field name="type_emp" icon="fa-money" enable_counters="1"/>
+                </searchpanel>
             </search>
-            <searchpanel>
-                <field name="chantier_id" icon="fa-gear" enable_counters="1"/>
-                <field name="emplacement_chantier_id" icon="fa-male" enable_counters="1"/>
-                <field name="type_emp" icon="fa-money" enable_counters="1"/>
-            </searchpanel>
         </field>
     </record>
 </odoo>
