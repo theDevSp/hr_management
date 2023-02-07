@@ -30,8 +30,9 @@
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/contrat_cancelled_view.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/type_contrat_view.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/augmentation_view.xml',
-        #'views/employee_prelevement_model/prelevement_view.xml',
+        'views/employee_prime_rembourssement_model/prime_type_view.xml',
         #'views/employee_prime_rembourssement_model/prime_view.xml',
+        #'views/employee_prelevement_model/prelevement_view.xml',
 
         'reports/report_demande_recrutement.xml',
         
@@ -48,8 +49,9 @@
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/contrat_cancelled_menu.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/type_contrat_menu.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/augmentation_menu.xml',
-        'views/employee_prelevement_model/prelevement_menu.xml',
+        'views/employee_prime_rembourssement_model/prime_type_menu.xml',
         'views/employee_prime_rembourssement_model/prime_menu.xml',
+        'views/employee_prelevement_model/prelevement_menu.xml',
     ],
 
     'demo': [
