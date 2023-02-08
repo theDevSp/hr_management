@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='profile_paie_action' model='ir.actions.act_window'>
+        <field name="name">Profile de paie</field>
+        <field name="res_model">hr.profile.paie</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <record id="profile_paie_tree" model="ir.ui.view">
+        <field name="name">Les profiles de paie</field>
+        <field name="model">hr.profile.paie</field>
+        <field name="arch" type="xml">
+            <tree string="Profiles de paie" multi_edit="1" sample="1" default_order='period_id ASC' class="table">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="type_profile"/>
+                <field name="definition_nbre_jour_worked_par_mois"/>
+                <field name="period_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="profile_paie_form" model="ir.ui.view">
+        <field name="name">Formulaire des profiles de paie</field>
+        <field name="model">hr.profile.paie</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card border-dark mb-3 bg-info">
+                                <div class="card-header text-center">
+                                    <h5>Code</h5>
+                                </div>
+                                <div class="card-body text-dark text-center">
+                                    <h3>
+                                        <field name="code"/>
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="card border-dark mb-3 bg-success">
+                                <div class="card-header text-center">
+                                    <h5>Nom</h5>
+                                </div>
+                                <div class="card-body text-dark text-center">
+                                    <h3><field name="name"/></h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-9">
+                            <div class="card border-dark mb-3 bg-light">
+                                <div class="card-body text-dark">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="completer_salaire" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <field name="completer_salaire" widget="boolean_toggle"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="plafonner_bonus" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <field name="plafonner_bonus" widget="boolean_toggle"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="avoir_conge" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <field name="avoir_conge" widget="boolean_toggle"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="type_profile" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="type_profile" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="nbre_heure_worked_par_demi_jour" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-building form-control-icon"></span>
+                                                    <field name="nbre_heure_worked_par_demi_jour" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="nbre_heure_worked_par_jour" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="nbre_heure_worked_par_jour" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="nbre_heure_worked_par_mois" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-building form-control-icon"></span>
+                                                    <field name="nbre_heure_worked_par_mois" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="definition_nbre_jour_worked_par_mois" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="definition_nbre_jour_worked_par_mois" class="form-control"/>
+                                                    <field name="nbr_saisie_champs" class="form-control" attrs="{'invisible': [('definition_nbre_jour_worked_par_mois', '!=', 'nbr_saisie')]}" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="period_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="period_id" widget="many2one_tags" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="profile_paie_search" model="ir.ui.view">
+        <field name="name">Recherche des Profiles de paie</field>
+        <field name="model">hr.profile.paie</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="type_profile"/>
+                <field name="definition_nbre_jour_worked_par_mois"/>
+                <field name="period_id"/>
+                <searchpanel>
+                    <field name="type_profile" icon="fa-city" enable_counters="1"/>
+                    <field name="period_id" icon="fa-clock" enable_counters="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+</odoo>

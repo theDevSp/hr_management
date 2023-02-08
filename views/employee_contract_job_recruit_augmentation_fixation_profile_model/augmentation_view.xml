@@ -46,7 +46,7 @@
         </field>
     </record>
 
-    <record id="augmentation_form" model="ir.ui.view">
+    <record id="augmentation_formulaire" model="ir.ui.view">
         <field name="name">Formulaire des Augmentations</field>
         <field name="model">hr.augmentation</field>
         <field name="arch" type="xml">

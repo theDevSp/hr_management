@@ -21,5 +21,15 @@
             <field name="padding">5</field>
             <field name="implementation">standard</field>
         </record>
+        <record id="sequence_profile_paie_increment" model="ir.sequence">
+            <field name="name">Profile de Paie Sequence</field>
+            <field name="code">hr.profile.paie.sequence</field>
+            <field name="active">TRUE</field>
+            <field name="prefix"></field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+            <field name="padding">5</field>
+            <field name="implementation">standard</field>
+        </record>
     </data>
 </odoo>

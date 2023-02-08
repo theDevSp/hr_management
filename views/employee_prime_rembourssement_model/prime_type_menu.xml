@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Types des primes" id="prime_type_menu" parent="config_hr_menu" action="prime_type_action" sequence="4"/>
+    <menuitem name="Types des primes" id="prime_type_menu" parent="config_hr_menu" action="prime_type_action" sequence="6"/>
 </odoo>

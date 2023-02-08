@@ -32,7 +32,7 @@
                                         <label for="name" class=""/>
                                         <div class="main">
                                             <div class="form-group">
-                                                <span class="fas fa-align-justify form-control-icon"></span>
+                                                <span class="fas fa-comment form-control-icon"></span>
                                                 <field name="name" class="form-control"/>
                                             </div>  
                                         </div>
