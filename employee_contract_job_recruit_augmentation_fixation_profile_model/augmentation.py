@@ -41,6 +41,8 @@ class augmentation(models.Model):
         string='Motif'
     )
 
+    motif_autres = fields.Char("Motif Autres")
+
     observation = fields.Html('Observation')
 
     @api.model

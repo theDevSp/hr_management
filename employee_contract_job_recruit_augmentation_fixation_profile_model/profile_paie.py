@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 from datetime import datetime
+from odoo.exceptions import ValidationError
 
 
 class profilepaie(models.Model):
@@ -19,7 +20,7 @@ class profilepaie(models.Model):
         required=True)
     nbre_heure_worked_par_demi_jour = fields.Float("Heures travaillés par demi jour", required=True)
     nbre_heure_worked_par_jour = fields.Float("Heures travaillés par jour", required=True)
-    nbre_heure_worked_par_mois = fields.Float("Heures travaillés par mois", required=True, default=26)
+    nbre_jour_worked_par_mois = fields.Float("Jours travaillés par mois", required=True, default=26)
 
     definition_nbre_jour_worked_par_mois = fields.Selection(
         [("jr_mois","Jours du mois"),
@@ -29,11 +30,6 @@ class profilepaie(models.Model):
 
     nbr_saisie_champs = fields.Integer( string='Champs selon definition nombre jours')
 
-    salaire_mois = fields.Float("Salaire du mois")
-    salaire_jour = fields.Float("Salaire du jour")
-    salaire_heure = fields.Float("Salaire d'heure")
-    salaire_demi_jour = fields.Float("Salaire du demi-jour")
-
     completer_salaire = fields.Boolean("Compléter le salaire", default=True)
     plafonner_bonus = fields.Boolean("Plafonner le bonus", default=True)
     avoir_conge = fields.Boolean("Peut avoir un congé", default=True)
@@ -41,8 +37,18 @@ class profilepaie(models.Model):
 
     @api.model
     def create(self, vals):
-        return super(profilepaie, self).create(vals)
+        if (vals['nbre_heure_worked_par_demi_jour'] == 0 or vals['nbre_heure_worked_par_jour'] == 0 or vals['nbre_jour_worked_par_mois'] == 0):
+            raise ValidationError(
+                "Erreur, Les Heures et Jours travaillés doivent être supérieurs de la valeur 0."
+            )
+        else :
+            return super(profilepaie, self).create(vals)
 
 
     def write(self, vals):
-        return super(profilepaie, self).write(vals)
+        if (vals['nbre_heure_worked_par_demi_jour'] == 0 or vals['nbre_heure_worked_par_jour'] == 0 or vals['nbre_jour_worked_par_mois'] == 0):
+            raise ValidationError(
+                "Erreur, Les Heures et Jours travaillés doivent être supérieurs de la valeur 0."
+            )
+        else :
+            return super(profilepaie, self).write(vals)

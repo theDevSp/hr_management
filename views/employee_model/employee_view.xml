@@ -340,7 +340,9 @@
                             </div> 
 
                             <div class="card border-dark mb-3">
-                                <div class="card-header">Informations sur contrat</div>
+                                <div class="card-header" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                        hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                            hr_management.group_cnss_juridique">Informations sur contrat</div>
                                 <div class="card-body text-dark">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -409,13 +411,24 @@
                                                 <label for="salaire_actuel" class=""/>
                                                 <div class="card text-white bg-dark mb-3">
                                                     <div class="card-body">
-                                                        <field name="tt_montant_a_ajouter" invisible="1"/>
                                                         <h4 class="card-title text-center align-middle"><field name="salaire_actuel"/> </h4>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </center>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label for="profile_paie_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-sliders form-control-icon"></span>
+                                                    <field name="profile_paie_related" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                </div>  
+                                            </div> 
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>

@@ -75,24 +75,8 @@ class hr_employee(models.Model):
     chantier_related = fields.Many2one(related="contract_id.chantier_id",string='Chantier')
     type_contrat = fields.Many2one(related="contract_id.contract_type_id",string='Type du contrat')
     wage = fields.Monetary(related="contract_id.wage",string='Salaire de base', required=True, tracking=True, currency_field = "currency_f")
-    tt_montant_a_ajouter = fields.Monetary(string='Montans Validés', required=True, tracking=True, currency_field = "currency_f", compute = "_compute_augmentation_montants_valides")
-    salaire_actuel = fields.Monetary('Salaire Actuel', readonly=True, currency_field = 'currency_f')
-    
-    def _compute_augmentation_montants_valides(self):
-        query = """
-                SELECT SUM(montant_valide)
-                FROM hr_augmentation aug,hr_contract ctr, account_month_period mnth
-                WHERE aug.employee_id=ctr.employee_id AND aug.period_id=mnth.id AND ctr.state='open' AND ctr.employee_id=%s
-                AND mnth.date_start BETWEEN ctr.date_start AND CURRENT_DATE
-            """ % (self.id)
-        self.env.cr.execute(query)
-        res = self.env.cr.fetchall()
-        if(res[0][0] is not None):
-            self.salaire_actuel = self.wage + res[0][0]
-        else:
-            self.salaire_actuel = 0
-
-
+    salaire_actuel = fields.Monetary(related="contract_id.salaire_actuel",string='Salaire Actuel', required=True, tracking=True, currency_field = "currency_f")
+    profile_paie_related = fields.Many2one(related="contract_id.profile_paie_id",string='Profile de paie')
 
     def _compute_age(self):
         for employee in self:
