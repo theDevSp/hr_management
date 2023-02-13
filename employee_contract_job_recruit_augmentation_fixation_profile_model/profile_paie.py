@@ -35,20 +35,32 @@ class profilepaie(models.Model):
     avoir_conge = fields.Boolean("Peut avoir un congé", default=True)
     period_id = fields.Many2one("account.month.period", string = "Période")
 
+
+    _sql_constraints = [
+		('name_contract_uniq', 'UNIQUE(name)', 'Cette référence est déjà utilisée.'),
+	]
+
+    @api.constrains('nbre_heure_worked_par_jour')
+    def _check_nbre_heure_worked_par_jour(self):
+        if self.nbre_heure_worked_par_jour <= 0:
+            raise ValidationError("Les Heures et Jours travaillés doivent être supérieurs de la valeur 0.")
+
+    
+    @api.constrains('nbre_heure_worked_par_demi_jour')
+    def _check_nbre_heure_worked_par_demi_jour(self):
+        if self.nbre_heure_worked_par_demi_jour <= 0:
+            raise ValidationError("Les Heures et Jours travaillés doivent être supérieurs de la valeur 0.")
+
+
+    @api.constrains('nbre_jour_worked_par_mois')
+    def _check_nbre_jour_worked_par_mois(self):
+        if self.nbre_jour_worked_par_mois <= 0:
+            raise ValidationError("Les Heures et Jours travaillés doivent être supérieurs de la valeur 0.")
+
     @api.model
     def create(self, vals):
-        if (vals['nbre_heure_worked_par_demi_jour'] == 0 or vals['nbre_heure_worked_par_jour'] == 0 or vals['nbre_jour_worked_par_mois'] == 0):
-            raise ValidationError(
-                "Erreur, Les Heures et Jours travaillés doivent être supérieurs de la valeur 0."
-            )
-        else :
-            return super(profilepaie, self).create(vals)
+        return super(profilepaie, self).create(vals)
 
 
-    def write(self, vals):
-        if (vals['nbre_heure_worked_par_demi_jour'] == 0 or vals['nbre_heure_worked_par_jour'] == 0 or vals['nbre_jour_worked_par_mois'] == 0):
-            raise ValidationError(
-                "Erreur, Les Heures et Jours travaillés doivent être supérieurs de la valeur 0."
-            )
-        else :
-            return super(profilepaie, self).write(vals)
+    def write(self, vals):        
+        return super(profilepaie, self).write(vals)

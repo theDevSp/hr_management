@@ -69,14 +69,28 @@ class hr_employee(models.Model):
                 res['arch'] = etree.tostring(doc)
         return res
    
-    ref_contrat = fields.Char(related="contract_id.name",string='Référence')
-    date_start = fields.Date(related="contract_id.date_start",string='Date de début')
-    date_end = fields.Date(related="contract_id.date_end",string='Date de fin')
-    chantier_related = fields.Many2one(related="contract_id.chantier_id",string='Chantier')
-    type_contrat = fields.Many2one(related="contract_id.contract_type_id",string='Type du contrat')
-    wage = fields.Monetary(related="contract_id.wage",string='Salaire de base', required=True, tracking=True, currency_field = "currency_f")
-    salaire_actuel = fields.Monetary(related="contract_id.salaire_actuel",string='Salaire Actuel', required=True, tracking=True, currency_field = "currency_f")
-    profile_paie_related = fields.Many2one(related="contract_id.profile_paie_id",string='Profile de paie')
+    ref_contrat = fields.Char(related="contract_id.name",string='Référence', required=False)
+    date_start = fields.Date(related="contract_id.date_start",string='Date de début', required=False)
+    date_end = fields.Date(related="contract_id.date_end",string='Date de fin', required=False)
+    chantier_related = fields.Many2one(related="contract_id.chantier_id",string='Chantier', required=False)
+    type_contrat = fields.Many2one(related="contract_id.contract_type_id",string='Type du contrat', required=False)
+    wage = fields.Monetary(related="contract_id.wage",string='Salaire de base', required=False, tracking=True, currency_field = "currency_f")
+    salaire_actuel = fields.Monetary(related="contract_id.salaire_actuel",string='Salaire Actuel', required=False, tracking=True, currency_field = "currency_f")
+    pp_personnel_id_many2one = fields.Many2one(related="contract_id.pp_personnel_id_many2one",string='Profile de paie')
+
+    type_profile_related = fields.Selection(related="pp_personnel_id_many2one.type_profile", readonly=True)
+    nbre_heure_worked_par_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.nbre_heure_worked_par_demi_jour", readonly=True)
+    nbre_heure_worked_par_jour_related = fields.Float(related="pp_personnel_id_many2one.nbre_heure_worked_par_jour", readonly=True)
+    nbre_jour_worked_par_mois_related = fields.Float(related="pp_personnel_id_many2one.nbre_jour_worked_par_mois", readonly=True)
+    definition_nbre_jour_worked_par_mois_related = fields.Selection(related="pp_personnel_id_many2one.definition_nbre_jour_worked_par_mois", readonly=True)
+    nbr_saisie_champs_related = fields.Integer(related="pp_personnel_id_many2one.nbr_saisie_champs", readonly=True)
+    completer_salaire_related = fields.Boolean(related="pp_personnel_id_many2one.completer_salaire", readonly=True)
+    plafonner_bonus_related = fields.Boolean(related="pp_personnel_id_many2one.plafonner_bonus", readonly=True)
+    avoir_conge_related = fields.Boolean(related="pp_personnel_id_many2one.avoir_conge", readonly=True)
+    period_id_related = fields.Many2one(related="pp_personnel_id_many2one.period_id", readonly=True)
+    salaire_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_jour", readonly=True)
+    salaire_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_demi_jour", readonly=True)
+    salaire_heure_related = fields.Float(related="pp_personnel_id_many2one.salaire_heure", readonly=True)
 
     def _compute_age(self):
         for employee in self:

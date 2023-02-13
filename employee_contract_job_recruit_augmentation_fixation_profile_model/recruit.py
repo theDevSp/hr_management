@@ -62,6 +62,17 @@ class recruit(models.Model):
         self.compute_readonly_eff_accepte = self.user_has_groups('hr_management.group_pointeur')
 
 
+    @api.constrains('nbr_effectif_demande')
+    def _check_nbr_effectif_demande(self):
+        if self.nbr_effectif_demande <= 0:
+            raise ValidationError("Le nombre d'effectif doit être supérieur de la valeur 0.")
+
+    @api.constrains('nbr_effectif_accepte')
+    def _check_nbr_effectif_accepte(self):
+        if self.nbr_effectif_accepte <= 0:
+            raise ValidationError("Le nombre d'effectif doit être supérieur de la valeur 0.")
+
+
     @api.model
     def create(self, vals):
         code_recrut = self.env['ir.sequence'].next_by_code('hr.recrutement.sequence') or ('New')

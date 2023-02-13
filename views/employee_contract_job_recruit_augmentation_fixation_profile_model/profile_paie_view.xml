@@ -88,11 +88,11 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="nbre_heure_worked_par_demi_jour" class=""/>
+                                            <label for="nbre_jour_worked_par_mois" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="nbre_heure_worked_par_demi_jour" class="form-control"/>
+                                                    <span class="fas fa-calendar form-control-icon"></span>
+                                                    <field name="nbre_jour_worked_par_mois" class="form-control"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -108,11 +108,11 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="nbre_jour_worked_par_mois" class=""/>
+                                            <label for="nbre_heure_worked_par_demi_jour" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="nbre_jour_worked_par_mois" class="form-control"/>
+                                                    <span class="fas fa-clock form-control-icon"></span>
+                                                    <field name="nbre_heure_worked_par_demi_jour" class="form-control"/>
                                                 </div>  
                                             </div>
                                         </div>

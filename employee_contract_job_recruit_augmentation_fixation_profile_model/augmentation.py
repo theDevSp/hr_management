@@ -45,6 +45,18 @@ class augmentation(models.Model):
 
     observation = fields.Html('Observation')
 
+    @api.constrains('montant_propose')
+    def _check_montant_propose(self):
+        if self.montant_propose <= 0:
+            raise ValidationError("Les montants doivent être supérieurs de la valeur 0.")
+
+    
+    @api.constrains('montant_valide')
+    def _check_montant_valide(self):
+        if self.montant_valide <= 0:
+            raise ValidationError("Les montants doivent être supérieurs de la valeur 0.")
+
+
     @api.model
     def create(self, vals):
         return super(augmentation, self).create(vals)

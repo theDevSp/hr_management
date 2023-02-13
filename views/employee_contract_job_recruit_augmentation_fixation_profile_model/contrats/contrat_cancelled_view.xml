@@ -148,7 +148,7 @@
                                             <div class="card text-white bg-dark mb-3">
                                                 <div class="card-body">
                                                     <field name="tt_montant_a_ajouter" invisible="1" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
-                                                    <h4 class="card-title text-center align-middle"><field name="salaire_actuel" style="height:0.3em;" attrs="{'readonly': [('state', '=', 'cancel')]}"/> </h4>
+                                                    <h4 class="card-title text-center align-middle"><field name="salaire_actuel" style="height:0.3em;"/> </h4>
                                                 </div>
                                             </div>
                                             <div class="alert alert-info text-center" role="alert">
@@ -177,14 +177,15 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fa fa-sliders form-control-icon"></span>
-                                                    <field name="profile_paie_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="profile_paie_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div> 
                                         </div>
-                                         <div class="col-md-4">
+                                        <div class="col-md-4">
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <button name="generer_profile" type="object" class="btn btn-success" icon="fa-upload" string="Générer Profile" max-width="200" attrs="{'invisible': [('state', '=', 'cancel')]}"/>
+                                                    <field name="pp_personnel_id_many2one" invisible="1" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <button name="generer_profile" type="object" class="btn btn-success" icon="fa-upload" string="Générer Profile" max-width="200" states="draft" attrs="{'invisible': [('pp_personnel_id_many2one', '!=', False )]}"/>
                                                 </div>  
                                             </div> 
                                         </div>
@@ -200,7 +201,7 @@
                                             <label for="completer_salaire_related" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <field name="completer_salaire_related" widget="boolean_toggle" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="completer_salaire_related" widget="boolean_toggle" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -208,7 +209,7 @@
                                             <label for="plafonner_bonus_related" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <field name="plafonner_bonus_related" widget="boolean_toggle" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="plafonner_bonus_related" widget="boolean_toggle" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -216,7 +217,7 @@
                                             <label for="avoir_conge_related" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <field name="avoir_conge_related" widget="boolean_toggle" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="avoir_conge_related" widget="boolean_toggle" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -227,27 +228,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fa fa-sliders form-control-icon"></span>
-                                                    <field name="type_profile_related" class="form-control" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="nbre_heure_worked_par_demi_jour_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="nbre_heure_worked_par_demi_jour_related" class="form-control" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="nbre_heure_worked_par_jour_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="nbre_heure_worked_par_jour_related" class="form-control" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="type_profile_related" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -256,7 +237,27 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="nbre_jour_worked_par_mois_related" class="form-control" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="nbre_jour_worked_par_mois_related" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="nbre_heure_worked_par_jour_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-clock form-control-icon"></span>
+                                                    <field name="nbre_heure_worked_par_jour_related" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="nbre_heure_worked_par_demi_jour_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-clock form-control-icon"></span>
+                                                    <field name="nbre_heure_worked_par_demi_jour_related" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -268,7 +269,7 @@
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
                                                     <field name="definition_nbre_jour_worked_par_mois_related" class="form-control"/>
-                                                    <field name="nbr_saisie_champs_related" class="form-control" attrs="{'invisible': [('definition_nbre_jour_worked_par_mois_related', '!=', 'nbr_saisie')], 'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="nbr_saisie_champs_related" class="form-control" attrs="{'invisible': [('definition_nbre_jour_worked_par_mois_related', '!=', 'nbr_saisie')], 'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -277,7 +278,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="period_id_related" widget="many2one_tags" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="period_id_related" widget="many2one_tags" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -288,7 +289,7 @@
                                             <div class="card text-white bg-dark mb-3">
                                                 <div class="card-body">
                                                     <h4 class="card-title text-center align-middle">
-                                                        <field name="salaire_jour_related"  style="height:0.3em;" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                        <field name="salaire_jour_related"  style="height:0.3em;"/>
                                                     </h4>
                                                 </div>
                                             </div>
@@ -298,7 +299,7 @@
                                             <div class="card text-white bg-dark mb-3">
                                                 <div class="card-body">
                                                     <h4 class="card-title text-center align-middle">
-                                                        <field name="salaire_demi_jour_related"  style="height:0.3em;" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                        <field name="salaire_demi_jour_related"  style="height:0.3em;"/>
                                                     </h4>
                                                 </div>
                                             </div>
@@ -308,7 +309,7 @@
                                             <div class="card text-white bg-dark mb-3">
                                                 <div class="card-body">
                                                     <h4 class="card-title text-center align-middle">
-                                                        <field name="salaire_heure_related"  style="height:0.3em;" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                        <field name="salaire_heure_related"  style="height:0.3em;"/>
                                                     </h4>
                                                 </div>
                                             </div>

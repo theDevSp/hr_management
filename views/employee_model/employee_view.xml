@@ -339,10 +339,10 @@
                                 </div>
                             </div> 
 
-                            <div class="card border-dark mb-3">
-                                <div class="card-header" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                            <div class="card border-dark mb-3" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
                                         hr_management.group_service_analytique,hr_management.group_controle_gestion,
-                                            hr_management.group_cnss_juridique">Informations sur contrat</div>
+                                            hr_management.group_cnss_juridique">
+                                <div class="card-header">Informations sur Contrat</div>
                                 <div class="card-body text-dark">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -350,7 +350,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-barcode form-control-icon"></span>
-                                                    <field name="ref_contrat" class="form-control" required="1" options="{'no_create': True, 'no_open': False}"/>
+                                                    <field name="ref_contrat" class="form-control" options="{'no_create': True, 'no_open': False}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -404,10 +404,10 @@
                                             </div>      
                                         </div>
                                     </div>
-
                                     <center>
-                                        <div class="row" style="max-width: 20em;">
-                                            <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-3" style="max-width: 30em;">
                                                 <label for="salaire_actuel" class=""/>
                                                 <div class="card text-white bg-dark mb-3">
                                                     <div class="card-body">
@@ -415,18 +415,151 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                             <div class="col-md-6 mt-4">
+                                                <div class="alert alert-info text-center" role="alert">
+                                                    Le salaire actuel représente le salaire de base plus les augmentations liées à cet employé.
+                                                </div>
+                                            </div>
                                         </div>
                                     </center>
-
                                     <div class="row">
                                         <div class="col-12">
-                                            <label for="profile_paie_related" class=""/>
+                                            <label for="pp_personnel_id_many2one" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fa fa-sliders form-control-icon"></span>
-                                                    <field name="profile_paie_related" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                    <field name="pp_personnel_id_many2one" class="form-control" options="{'no_create': True, 'no_open': True}"/>
                                                 </div>  
                                             </div> 
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="card border-dark mb-3" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                        hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                            hr_management.group_cnss_juridique">
+                                <div class="card-header">Informations sur Profile de Paie</div>
+                                <div class="card-body text-dark">
+                                    <div class="row mt-2"></div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-4">
+                                            <label for="completer_salaire_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <field name="completer_salaire_related" widget="boolean_toggle"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="plafonner_bonus_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <field name="plafonner_bonus_related" widget="boolean_toggle"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="avoir_conge_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <field name="avoir_conge_related" widget="boolean_toggle"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="type_profile_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-sliders form-control-icon"></span>
+                                                    <field name="type_profile_related" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="nbre_jour_worked_par_mois_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-calendar form-control-icon"></span>
+                                                    <field name="nbre_jour_worked_par_mois_related" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="nbre_heure_worked_par_jour_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-clock form-control-icon"></span>
+                                                    <field name="nbre_heure_worked_par_jour_related" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="nbre_heure_worked_par_demi_jour_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-clock form-control-icon"></span>
+                                                    <field name="nbre_heure_worked_par_demi_jour_related" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="definition_nbre_jour_worked_par_mois_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-calendar form-control-icon"></span>
+                                                    <field name="definition_nbre_jour_worked_par_mois_related" class="form-control"/>
+                                                    <field name="nbr_saisie_champs_related" class="form-control" attrs="{'invisible': [('definition_nbre_jour_worked_par_mois_related', '!=', 'nbr_saisie')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="period_id_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-clock form-control-icon"></span>
+                                                    <field name="period_id_related" widget="many2one_tags" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="salaire_jour_related" class=""/>
+                                            <div class="card text-white bg-dark mb-3">
+                                                <div class="card-body">
+                                                    <h4 class="card-title text-center align-middle">
+                                                        <field name="salaire_jour_related"  style="height:0.3em;"/>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="salaire_demi_jour_related" class=""/>
+                                            <div class="card text-white bg-dark mb-3">
+                                                <div class="card-body">
+                                                    <h4 class="card-title text-center align-middle">
+                                                        <field name="salaire_demi_jour_related"  style="height:0.3em;"/>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="salaire_heure_related" class=""/>
+                                            <div class="card text-white bg-dark mb-3">
+                                                <div class="card-body">
+                                                    <h4 class="card-title text-center align-middle">
+                                                        <field name="salaire_heure_related"  style="height:0.3em;"/>
+                                                    </h4>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
