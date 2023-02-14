@@ -92,7 +92,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="nbre_jour_worked_par_mois" class="form-control"/>
+                                                    <field name="nbre_heure_worked_par_demi_jour" class="form-control"/>
                                                 </div>  
                                             </div>
                                         </div>

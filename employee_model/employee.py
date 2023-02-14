@@ -83,7 +83,7 @@ class hr_employee(models.Model):
     nbre_heure_worked_par_jour_related = fields.Float(related="pp_personnel_id_many2one.nbre_heure_worked_par_jour", readonly=True)
     nbre_jour_worked_par_mois_related = fields.Float(related="pp_personnel_id_many2one.nbre_jour_worked_par_mois", readonly=True)
     definition_nbre_jour_worked_par_mois_related = fields.Selection(related="pp_personnel_id_many2one.definition_nbre_jour_worked_par_mois", readonly=True)
-    nbr_saisie_champs_related = fields.Integer(related="pp_personnel_id_many2one.nbr_saisie_champs", readonly=True)
+    
     completer_salaire_related = fields.Boolean(related="pp_personnel_id_many2one.completer_salaire", readonly=True)
     plafonner_bonus_related = fields.Boolean(related="pp_personnel_id_many2one.plafonner_bonus", readonly=True)
     avoir_conge_related = fields.Boolean(related="pp_personnel_id_many2one.avoir_conge", readonly=True)
