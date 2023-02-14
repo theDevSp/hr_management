@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id='directeur_action' model='ir.actions.act_window'>
-        <field name="name"> HR Management - Directeur </field>
-        <field name="res_model">hr.directeur</field>
+    <record id='prime_type_action' model='ir.actions.act_window'>
+        <field name="name">Type des Primes</field>
+        <field name="res_model">hr.prime.type</field>
         <field name="view_mode">tree,form,search</field>
     </record>
 
-    <record id="directeur_tree" model="ir.ui.view">
-        <field name="name">HR Directeur List</field>
-        <field name="model">hr.directeur</field>
+    <record id="prime_type_tree_view" model="ir.ui.view">
+        <field name="name">Les types des Primes</field>
+        <field name="model">hr.prime.type</field>
         <field name="arch" type="xml">
-            <tree class="table">
+            <tree string="Types des contrats" multi_edit="1" sample="1" class="table">
                 <field name="name"/>
-                <field name="poste"/>
+                <field name="type_addition"/>
+                <field name="montant"/>
             </tree>
         </field>
     </record>
 
-    <record id="directeur_view_form" model="ir.ui.view">
-        <field name="name">Directeur Form</field>
-        <field name="model">hr.directeur</field>
+    <record id="prime_type_view_form" model="ir.ui.view">
+        <field name="name">Formulaire des Types Primes</field>
+        <field name="model">hr.prime.type</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                <center>
+                    <center>
                         <div class="card border-dark mb-3 bg-light" style="max-width: 30em;text-align:left;">
                             <div class="card-body text-dark">
                                 <div class="row">
@@ -39,13 +40,24 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label for="poste" class=""/>
+                                        <label for="type_addition" class=""/>
                                         <div class="main">
                                             <div class="form-group">
-                                                <span class="fa fa-briefcase form-control-icon"></span>
-                                                <field name="poste" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                <span class="fa fa-plus form-control-icon"></span>
+                                                <field name="type_addition" class="form-control"/>
                                             </div>  
                                         </div>      
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label for="montant" class=""/>
+                                        <div class="main">
+                                            <div class="form-group">
+                                                <span class="fas fa-money-bill-wave form-control-icon"></span>
+                                                <field name="montant" class="form-control"/>
+                                            </div>  
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -61,13 +73,13 @@
         </field>
     </record>
 
-    <record id="directeur_search" model="ir.ui.view">
-        <field name="name">Directeur Recherche</field>
-        <field name="model">hr.directeur</field>
+    <record id="prime_type_search" model="ir.ui.view">
+        <field name="name">Recherche des Types Contrats</field>
+        <field name="model">hr.prime.type</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name" />
-                <field name="poste"/>		
+                <field name="name"/>
+                <field name="type_addition"/>
             </search>
         </field>
     </record>

@@ -46,18 +46,87 @@
                     <field name="state" widget="statusbar" nolabel="1"/>
                 </header>
                 <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="chantier_id" options="{'no_create': True, 'no_open': False}"/>
-                        <field name="responsable_id" options="{'no_create': True, 'no_open': True}"/>
-                        <field name="title_poste" options="{'no_create': True, 'no_open': True}"/>
-                        <field name="nbr_effectif_demande"/>
-
-                        <field name="compute_readonly_eff_accepte" invisible="1"/>
-                        <field name="nbr_effectif_accepte" attrs="{'readonly': [('compute_readonly_eff_accepte', '=', True)]}" />
-                      
-                        <field name="observation"/>
-                    </group>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card border-dark mb-3 bg-info">
+                                <div class="card-header text-center">
+                                    <h5>Référence</h5>
+                                </div>
+                                <div class="card-body text-dark text-center">
+                                    <h3>
+                                        <field name="name"/>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card border-dark mb-3 bg-light">
+                                <div class="card-body text-dark">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="chantier_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-city form-control-icon"></span>
+                                                    <field name="chantier_id" options="{'no_create': True, 'no_open': False}" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="responsable_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="responsable_id" options="{'no_create': True, 'no_open': True}" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="nbr_effectif_demande" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-users form-control-icon"></span>
+                                                    <field name="nbr_effectif_demande" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="title_poste" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-briefcase form-control-icon"></span>
+                                                    <field name="title_poste" options="{'no_create': True, 'no_open': True}" class="form-control" />
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="nbr_effectif_accepte" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-users form-control-icon"></span>
+                                                    <field name="compute_readonly_eff_accepte" invisible="1"/>
+                                                    <field name="nbr_effectif_accepte" attrs="{'readonly': [('compute_readonly_eff_accepte', '=', True)]}" class="form-control" style="background-color:#ddd;"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="observation" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-comment form-control-icon"></span>
+                                                    <field name="observation" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>

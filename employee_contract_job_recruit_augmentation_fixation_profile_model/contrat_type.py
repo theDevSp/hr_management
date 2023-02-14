@@ -6,4 +6,4 @@ class typecontrat(models.Model):
     _description = "Type Contrat"
     _inherit = ['hr.contract.type']
 
-    description = fields.Char('Description')
+    description = fields.Html('Description')

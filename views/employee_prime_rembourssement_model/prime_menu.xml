@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Prime" id="prime_menu" parent="ajout_deduction_main_menu" action="augmentation_action" sequence="3"/>
+    <menuitem name="Prime" id="prime_menu" parent="ajout_deduction_main_menu" action="prime_action" sequence="2"/>
 </odoo>

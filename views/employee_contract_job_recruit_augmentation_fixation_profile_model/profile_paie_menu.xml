@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Profile de paie" id="profile_paie_menu" parent="config_hr_menu" action="profile_paie_action" sequence="4"/>
+</odoo>

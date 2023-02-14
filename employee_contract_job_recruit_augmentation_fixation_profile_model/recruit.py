@@ -30,7 +30,7 @@ class recruit(models.Model):
     chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier", states = READONLY_STATES, required=True)
     responsable_id = fields.Many2one("hr.responsable.chantier","Responsable", states = READONLY_STATES)
     title_poste = fields.Many2one("hr.job","Titre du poste", states = READONLY_STATES)
-    observation = fields.Char("Observation", states = READONLY_STATES)
+    observation = fields.Html("Observation", states = READONLY_STATES)
     nbr_effectif_demande = fields.Integer("Nombre d'effectif demandé", states = READONLY_STATES)
    
     nbr_effectif_accepte = fields.Integer("Nombre d'effectif accepté", states = READONLY_STATES_NBR_EFF_ACCEPTE)
@@ -60,6 +60,17 @@ class recruit(models.Model):
     @api.depends('compute_readonly_eff_accepte')
     def get_user(self):
         self.compute_readonly_eff_accepte = self.user_has_groups('hr_management.group_pointeur')
+
+
+    @api.constrains('nbr_effectif_demande')
+    def _check_nbr_effectif_demande(self):
+        if self.nbr_effectif_demande <= 0:
+            raise ValidationError("Le nombre d'effectif doit être supérieur de la valeur 0.")
+
+    @api.constrains('nbr_effectif_accepte')
+    def _check_nbr_effectif_accepte(self):
+        if self.nbr_effectif_accepte <= 0:
+            raise ValidationError("Le nombre d'effectif doit être supérieur de la valeur 0.")
 
 
     @api.model
