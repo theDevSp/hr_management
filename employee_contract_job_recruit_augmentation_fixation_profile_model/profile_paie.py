@@ -25,15 +25,18 @@ class profilepaie(models.Model):
     definition_nbre_jour_worked_par_mois = fields.Selection(
         [("jr_mois","Jours du mois"),
         ("nbr_saisie","Nombre saisi")],
-        string=u"Définition nombre jours travaillés par mois",
-        required=True)
-
-    nbr_saisie_champs = fields.Integer( string='Champs selon definition nombre jours')
+        string=u"Définition des jours travaillés",
+        required=True,
+        default='nbr_saisie')
 
     completer_salaire = fields.Boolean("Compléter le salaire", default=True)
     plafonner_bonus = fields.Boolean("Plafonner le bonus", default=True)
     avoir_conge = fields.Boolean("Peut avoir un congé", default=True)
     period_id = fields.Many2one("account.month.period", string = "Période")
+
+    @api.onchange('definition_nbre_jour_worked_par_mois')
+    def _onchange_definition_nbre_jour_worked_par_mois(self):
+        self.nbre_jour_worked_par_mois = 0.0 if self.definition_nbre_jour_worked_par_mois == 'jr_mois' else 26
 
     @api.model
     def create(self, vals):
