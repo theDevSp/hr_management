@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Paiement des primes" id="paiement_prime_menu" parent="config_hr_menu" action="paiement_prime_action" sequence="7"/>
+</odoo>

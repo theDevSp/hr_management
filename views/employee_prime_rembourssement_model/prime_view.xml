@@ -1,18 +1,209 @@
-# -*- coding: utf-8 -*-
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='prime_action' model='ir.actions.act_window'>
+        <field name="name">Les Primes</field>
+        <field name="res_model">hr.prime</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
 
-# from odoo import models, fields, api
+    <record id="prime_tree_view" model="ir.ui.view">
+        <field name="name">Les Primes</field>
+        <field name="model">hr.prime</field>
+        <field name="arch" type="xml">
+            <tree string="Les primes" multi_edit="1" sample="1" class="table">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="date_fait"/>
+                <field name="type_prime"/>
+                <field name="montant_total_prime"/>
+                <field name="echeance"/>
+                <field name="montant_paye"/>
+                <field name="reste_a_paye"/>
+                <field name="first_period_id"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-danger="state == 'annulee'" decoration-success="state == 'validee'"/>
+            </tree>
+        </field>
+    </record>
 
+    <record id="prime_view_form" model="ir.ui.view">
+        <field name="name">Formulaire des Primes</field>
+        <field name="model">hr.prime</field>
+        <field name="arch" type="xml">
+            <form>
+                <header class="bar-box-shadow mb-4">
+                    <button name="to_draft" string="Brouillon" type="object" attrs="{'invisible': [('state', 'in', ('draft'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_validee" string="Valider" type="object" attrs="{'invisible': [('state', 'in', ('validee','annulee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_annulee" string="Annuler" type="object" attrs="{'invisible': [('state', 'in', ('annulee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_cloturer_payer" string="Clôturer et payer" type="object" attrs="{'invisible': [('state', 'in', ('cloture_paye','cloture'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_cloturer" string="Clôturer" type="object" attrs="{'invisible': [('state', 'in', ('cloture_paye','cloture'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <field name="state" widget="statusbar" nolabel="1"/>
+                </header>
+                <sheet>
+                    <div class="row mt-3">
+                        <div class="col-md-4 col-lg-4">
+                            <div class="card-deck">
+                                <div class="card">
+                                    <center>
+                                        <div class="card border-dark mb-3 bg-info mt-4">
+                                            <div class="card-header text-center">
+                                                <h5>Libellé</h5>
+                                            </div>
+                                            <div class="card-body text-dark text-center">
+                                                <h3>
+                                                    <field name="name" class="card-img-top mt-3 mb-2"/>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </center>
+                                    <div class="card-body">
+                                        <div class="md-form mb-n3">
+                                            <label for="type_prime" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-sliders form-control-icon"></span>
+                                                    <field name="type_prime" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="md-form mb-n3"  attrs="{'invisible':[('type_addition','!=','indiv')]}">
+                                            <label for="employee_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-user form-control-icon"></span>
+                                                    <field name="type_addition" class="card-img-top mt-3 mb-2" invisible="1"/>
+                                                    <field name="employee_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'required': [('type_addition','=', 'indiv')], 'invisible':[('type_addition','!=','indiv')], 'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="md-form mb-n3">
+                                            <label for="responsable_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-user form-control-icon"></span>
+                                                    <field name="responsable_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="md-form mb-n3">
+                                            <label for="donneur_order" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-user form-control-icon"></span>
+                                                    <field name="donneur_order" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card border-dark mb-3 bg-light">
+                                <div class="card-body text-dark">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="montant_total_prime" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
+                                                    <field name="montant_total_prime" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div> 
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="date_fait" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-calendar form-control-icon"></span>
+                                                    <field name="date_fait" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>    
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-md-5" style="height:5em;">
+                                            <label for="montant_paye" class=""/>
+                                            <div class="card text-white bg-dark mb-3">
+                                                <div class="card-body">
+                                                    <h4 class="card-title text-center align-middle">
+                                                        <field name="montant_paye" style="height:0.3em;"/> 
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1" style="height:5em;"></div>
+                                        <div class="col-md-5" style="height:5em;">
+                                            <label for="reste_a_paye" class=""/>
+                                            <div class="card text-white bg-dark mb-3">
+                                                <div class="card-body">
+                                                    <h4 class="card-title text-center align-middle">
+                                                        <field name="reste_a_paye" style="height:0.3em;"/>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1" style="height:5em;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card border-dark mb-3 mt-3">
+                                <div class="card-header">Période et échéance</div>
+                                <div class="card-body text-dark">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="first_period_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-clock form-control-icon"></span>
+                                                    <field name="first_period_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>      
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="echeance" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
+                                                    <field name="echeance" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="paiement_prime_ids" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <tree>
+                                                        <field name="paiement_prime_ids" options="{'no_create': True, 'no_open': True}" sum="Total Montant(s) Validé(s)"/>
+                                                    </tree>
+                                                </div>  
+                                            </div>      
+                                        </div>
+                                    </div>
+                                </div>
+                                   
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
 
-# class hr_management(models.Model):
-#     _name = 'hr_management.hr_management'
-#     _description = 'hr_management.hr_management'
-
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+    <record id="prime_search" model="ir.ui.view">
+        <field name="name">Recherche des Primes</field>
+        <field name="model">hr.prime</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="state"/>
+            </search>
+        </field>
+    </record>
+</odoo>

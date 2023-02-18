@@ -17,14 +17,13 @@ class contrats(models.Model):
     salaire_actuel = fields.Monetary('Salaire Actuel', readonly=True, currency_field = 'currency_id')
 
     profile_paie_personnel_id = fields.One2many('hr.profile.paie.personnel','contract_id', string = "Profile de paie")
-    pp_personnel_id_many2one = fields.Many2one('hr.profile.paie.personnel',string = "Profile de paie m2o")
+    pp_personnel_id_many2one = fields.Many2one('hr.profile.paie.personnel',string = "Profile de paie")
 
     type_profile_related = fields.Selection(related="pp_personnel_id_many2one.type_profile", readonly=False)
     nbre_heure_worked_par_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.nbre_heure_worked_par_demi_jour", readonly=False)
     nbre_heure_worked_par_jour_related = fields.Float(related="pp_personnel_id_many2one.nbre_heure_worked_par_jour", readonly=False)
     nbre_jour_worked_par_mois_related = fields.Float(related="pp_personnel_id_many2one.nbre_jour_worked_par_mois", readonly=False)
     definition_nbre_jour_worked_par_mois_related = fields.Selection(related="pp_personnel_id_many2one.definition_nbre_jour_worked_par_mois", readonly=False)
-
     completer_salaire_related = fields.Boolean(related="pp_personnel_id_many2one.completer_salaire", readonly=False)
     plafonner_bonus_related = fields.Boolean(related="pp_personnel_id_many2one.plafonner_bonus", readonly=False)
     avoir_conge_related = fields.Boolean(related="pp_personnel_id_many2one.avoir_conge", readonly=False)
@@ -85,7 +84,6 @@ class contrats(models.Model):
         """ % (vals['employee_id'])
         self.env.cr.execute(query)
         res = self.env.cr.dictfetchall()[0]
-
         if(res['count']==0):
             type_emp = self.env['hr.employee'].browse(vals["employee_id"]).type_emp
             today = datetime.now()
@@ -97,9 +95,7 @@ class contrats(models.Model):
             raise ValidationError(
                     "Erreur, Cet employé a déjà un contrat 'New' ou 'Running'."
                 )
-
         return super(contrats, self).create(vals)
-
 
 
     def write(self, vals):
@@ -107,9 +103,7 @@ class contrats(models.Model):
 
 
     def generer_profile(self):
-        
         if self.profile_paie_id :
-        
             champs = {
                 "name": self.profile_paie_id.name,
                 "code": self.profile_paie_id.code,
@@ -125,12 +119,10 @@ class contrats(models.Model):
                 "salaire_mois": self.salaire_actuel,
                 "contract_id": self.id,    
                 }
-
             obj = self.env['hr.profile.paie.personnel'].create(champs)
             self.pp_personnel_id_many2one = obj
-
         else:
            raise ValidationError(
-                    "Erreur, Vous devez séléctionner un profile de paie pour le générer."
+                    "Erreur, Vous devez séléctionner un profil de paie pour le générer."
                 )
         return True

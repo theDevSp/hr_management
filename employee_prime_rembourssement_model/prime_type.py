@@ -21,6 +21,6 @@ class primetype(models.Model):
 
     @api.constrains('montant')
     def _check_montant(self):
-        if self.montant <= 0:
-            raise ValidationError("Le montant doit être supérieur de la valeur 0.")
+        if self.montant < 0:
+            raise ValidationError("Le montant doit être supérieur ou égale à 0.")
   

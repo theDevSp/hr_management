@@ -56,7 +56,6 @@ class hr_employee(models.Model):
 
     @api.model
     def fields_view_get(self,view_id=None, view_type='tree',toolbar=False, submenu=False):
-        
         res = super(hr_employee, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=False)
         group_admin = self.env.user.has_group('hr_management.group_admin_paie')
         group_agent_paie = self.env.user.has_group('hr_management.group_agent_paie')
@@ -78,12 +77,13 @@ class hr_employee(models.Model):
     salaire_actuel = fields.Monetary(related="contract_id.salaire_actuel",string='Salaire Actuel', required=False, tracking=True, currency_field = "currency_f")
     pp_personnel_id_many2one = fields.Many2one(related="contract_id.pp_personnel_id_many2one",string='Profile de paie')
 
+    name_profile_related = fields.Char(related="pp_personnel_id_many2one.name", readonly=True)
+    code_profile_related = fields.Char(related="pp_personnel_id_many2one.code", readonly=True)
     type_profile_related = fields.Selection(related="pp_personnel_id_many2one.type_profile", readonly=True)
     nbre_heure_worked_par_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.nbre_heure_worked_par_demi_jour", readonly=True)
     nbre_heure_worked_par_jour_related = fields.Float(related="pp_personnel_id_many2one.nbre_heure_worked_par_jour", readonly=True)
     nbre_jour_worked_par_mois_related = fields.Float(related="pp_personnel_id_many2one.nbre_jour_worked_par_mois", readonly=True)
     definition_nbre_jour_worked_par_mois_related = fields.Selection(related="pp_personnel_id_many2one.definition_nbre_jour_worked_par_mois", readonly=True)
-    
     completer_salaire_related = fields.Boolean(related="pp_personnel_id_many2one.completer_salaire", readonly=True)
     plafonner_bonus_related = fields.Boolean(related="pp_personnel_id_many2one.plafonner_bonus", readonly=True)
     avoir_conge_related = fields.Boolean(related="pp_personnel_id_many2one.avoir_conge", readonly=True)
@@ -106,9 +106,9 @@ class hr_employee(models.Model):
     def _compute_remaining_days(self):
         for rec in self :
             query = """
-                        select cast(date_part('day',date_end::timestamp - CURRENT_DATE::timestamp) as int) from hr_contract where
-                        employee_id = %s;
-                    """   % (rec.id)
+                    select cast(date_part('day',date_end::timestamp - CURRENT_DATE::timestamp) as int) from hr_contract where
+                    employee_id = %s;
+                """   % (rec.id)
             rec.env.cr.execute(query)
             res = rec.env.cr.fetchall()
             if len(res) > 0:

@@ -10,7 +10,7 @@
         <field name="name">Liste des augmentations</field>
         <field name="model">hr.augmentation</field>
         <field name="arch" type="xml">
-            <tree string="Contrats" multi_edit="1" sample="1" default_order='date_fait ASC' class="table">
+            <tree string="Augmentations" multi_edit="1" sample="1" default_order='date_fait ASC' class="table">
                 <field name="employee_id" readonly="1" widget="many2one_avatar_employee"/>
                 <field name="chantier_id"/>
                 <field name="responsable_id"/>
@@ -30,7 +30,7 @@
         <field name="name">Liste des augmentations</field>
         <field name="model">hr.augmentation</field>
         <field name="arch" type="xml">
-            <tree string="Contrats" multi_edit="1" sample="1" default_order='date_fait ASC' class="table">
+            <tree string="Augmentations" multi_edit="1" sample="1" default_order='date_fait ASC' class="table">
                 <field name="employee_id" readonly="1" widget="many2one_avatar_employee"/>
                 <field name="chantier_id"/>
                 <field name="responsable_id"/>

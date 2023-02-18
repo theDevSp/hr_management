@@ -37,11 +37,9 @@ class profilepaiepersonnel(models.Model):
     @api.model
     def create(self, vals):
         res = super(profilepaiepersonnel, self).create(vals)
-        
         res.salaire_jour = res.salaire_mois / res.nbre_jour_worked_par_mois
         res.salaire_heure = res.salaire_jour / res.nbre_heure_worked_par_jour
         res.salaire_demi_jour = res.salaire_heure * res.nbre_heure_worked_par_demi_jour
-
         return res
 
 

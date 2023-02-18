@@ -1,61 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id='prime_type_action' model='ir.actions.act_window'>
-        <field name="name">Type des Primes</field>
-        <field name="res_model">hr.prime.type</field>
+    <record id='paiement_prime_action' model='ir.actions.act_window'>
+        <field name="name">Les Paiements des Primes</field>
+        <field name="res_model">hr.paiement.prime</field>
         <field name="view_mode">tree,form,search</field>
     </record>
 
-    <record id="prime_type_tree_view" model="ir.ui.view">
-        <field name="name">Les types des Primes</field>
-        <field name="model">hr.prime.type</field>
+    <record id="paiement_prime_tree_view" model="ir.ui.view">
+        <field name="name">Les Paiements des Primes</field>
+        <field name="model">hr.paiement.prime</field>
         <field name="arch" type="xml">
-            <tree string="Types des primes" multi_edit="1" sample="1" class="table">
-                <field name="name"/>
-                <field name="type_addition"/>
-                <field name="montant"/>
+            <tree string="Les paiements des primes" multi_edit="1" sample="1" class="table">
+                <field name="period_id"/>
+                <field name="prime_id"/>
+                <field name="montant_a_payer"/>
+                <field name="state" widget="badge" decoration-danger="state == 'non_paye'" decoration-success="state == 'paye'"/>
             </tree>
         </field>
     </record>
 
-    <record id="prime_type_view_form" model="ir.ui.view">
-        <field name="name">Formulaire des Types Primes</field>
-        <field name="model">hr.prime.type</field>
+    <record id="paiement_prime_view_form" model="ir.ui.view">
+        <field name="name">Form Paiements des Primes</field>
+        <field name="model">hr.paiement.prime</field>
         <field name="arch" type="xml">
             <form>
+                <header class="bar-box-shadow mb-4">
+                    <button name="changer_status" string="Changer l'état" type="object" class="oe_highlight"/>
+                    <button name="to_annuler" string="Annuler" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ('annule'))]}"/>
+                    <field name="state" widget="statusbar" nolabel="1"/>
+                </header>
                 <sheet>
                     <center>
                         <div class="card border-dark mb-3 bg-light" style="max-width: 30em;text-align:left;">
                             <div class="card-body text-dark">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label for="name" class=""/>
+                                        <label for="period_id" class=""/>
                                         <div class="main">
                                             <div class="form-group">
-                                                <span class="fas fa-comment form-control-icon"></span>
-                                                <field name="name" class="form-control"/>
+                                                <span class="fas fa-clock form-control-icon"></span>
+                                                <field name="period_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
                                             </div>  
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label for="type_addition" class=""/>
+                                        <label for="prime_id" class=""/>
                                         <div class="main">
                                             <div class="form-group">
                                                 <span class="fa fa-plus form-control-icon"></span>
-                                                <field name="type_addition" class="form-control"/>
+                                                <field name="prime_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
                                             </div>  
                                         </div>      
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label for="montant" class=""/>
+                                        <label for="montant_a_payer" class=""/>
                                         <div class="main">
                                             <div class="form-group">
                                                 <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                <field name="montant" class="form-control"/>
+                                                <field name="montant_a_payer" class="form-control"/>
                                             </div>  
                                         </div>
                                     </div>
@@ -73,13 +79,13 @@
         </field>
     </record>
 
-    <record id="prime_type_search" model="ir.ui.view">
-        <field name="name">Recherche des Types Primes</field>
-        <field name="model">hr.prime.type</field>
+    <record id="paiement_prime_search" model="ir.ui.view">
+        <field name="name">Recherche des Paiements Primes</field>
+        <field name="model">hr.paiement.prime</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name"/>
-                <field name="type_addition"/>
+                <field name="period_id"/>
+                <field name="state"/>
             </search>
         </field>
     </record>
