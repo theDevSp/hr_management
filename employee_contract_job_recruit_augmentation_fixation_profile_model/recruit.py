@@ -72,16 +72,40 @@ class recruit(models.Model):
         if self.nbr_effectif_accepte <= 0:
             raise ValidationError("Le nombre d'effectif doit être supérieur de la valeur 0.")
 
-
     @api.model
     def create(self, vals):
-        code_recrut = self.env['ir.sequence'].next_by_code('hr.recrutement.sequence') or ('New')
+        identifiant_chantier = self.env['fleet.vehicle.chantier'].browse(vals.get('chantier_id')).id
+        reference_demande = self.recuperer_reference(identifiant_chantier)
         code_chantier = self.env['fleet.vehicle.chantier'].browse(vals.get('chantier_id')).code
-        vals['name'] = code_chantier + '/' + code_recrut
+        vals['name'] = str(code_chantier) + '/RECRUT' + str(reference_demande)
         return super(recruit, self).create(vals)
 
     def write(self, vals):
+        if(vals.get("chantier_id")):
+            identifiant_chantier = self.env['fleet.vehicle.chantier'].browse(vals.get('chantier_id')).id
+            reference_demande = self.recuperer_reference(identifiant_chantier)
+            code_chantier = self.env['fleet.vehicle.chantier'].browse(vals.get('chantier_id')).code
+            vals['name'] = str(code_chantier) + '/RECRUT' + str(reference_demande)
         return super(recruit, self).write(vals)
+
+    def recuperer_reference(self,identifiant_chantier):
+        query = """
+                SELECT name FROM hr_recrutement
+                WHERE chantier_id = %s
+                ORDER BY name DESC
+                LIMIT 1;
+            """ % (identifiant_chantier)
+        self.env.cr.execute(query)
+        res = self.env.cr.fetchall()
+        if len(res) > 0:
+            chaine = res[0][0]
+            debut_word = chaine.find('RECRUT')
+            debut_chiffre = debut_word + 6
+            chiffre = int(chaine[debut_chiffre:])
+            reference_demande = chiffre + 1
+        else:
+            reference_demande = 1
+        return reference_demande
 
 
     def to_draft(self):
