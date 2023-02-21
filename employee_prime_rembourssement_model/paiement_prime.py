@@ -32,3 +32,11 @@ class paiementPrime(models.Model):
 
     def to_annuler(self):
         self.state = "annule"
+
+    @api.model
+    def create(self, vals):
+        return super(paiementPrime, self).create(vals)
+
+
+    def write(self, vals):
+        return super(paiementPrime, self).write(vals)

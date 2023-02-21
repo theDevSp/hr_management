@@ -136,8 +136,9 @@ class prime(models.Model):
             for ligne in self.paiement_prime_ids:
                 ligne.unlink()
         if vals.get("state") and vals["state"] == "validee":
-            for ligne in self.paiement_prime_ids:
-                ligne.unlink()
+            if vals.get("echeance") or vals.get("montant_total_prime"):
+                for ligne in self.paiement_prime_ids:
+                    ligne.unlink()
             self._compute_prime()
         return super(prime, self).write(vals)
 
