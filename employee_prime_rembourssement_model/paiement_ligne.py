@@ -9,6 +9,7 @@ class paiement_ligne(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     
     period_id = fields.Many2one("account.month.period", string = "Période")
+    #prime_id = fields.Many2one("hr.prime", string = "Prime")
     prime_id = fields.Many2one("hr.prime", string = "Prime", ondelete="cascade")
     currency_id = fields.Many2one("res.currency", string = "Symbole Monétaire")
     montant_a_payer = fields.Monetary("Échéance", currency_field = "currency_id")
@@ -35,12 +36,7 @@ class paiement_ligne(models.Model):
 
     @api.model
     def create(self, vals):
-        if vals.get("prime_id") and vals["prime_id"]:
-            print("prime id")
-            return super(paiement_ligne, self).create(vals)
-        elif self.prime_id:
-            return super(paiement_ligne, self).create(vals)
-
+        return super(paiement_ligne, self).create(vals)
 
     def write(self, vals):
         if vals.get("state"):

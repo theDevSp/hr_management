@@ -35,10 +35,10 @@ class prime(models.Model):
     type_addition = fields.Char("Type d'addition")
     
     addition_deduction = fields.Selection([
-        ("addition","Addition"),
-        ("deduction","Déduction"),
+        ("prime","Prime"),
+        ("prelevement","Prélèvement"),
         ],"Addition/Déduction", 
-        default="addition",
+        default="prime",
     )
 
     @api.depends('montant_total_prime', 'montant_paye')
@@ -50,7 +50,75 @@ class prime(models.Model):
     def onchange_type_prime(self):
         self.montant_total_prime = self.type_prime.montant
         self.type_addition = self.type_prime.type_addition
+
+    @api.constrains('echeance')
+    def _check_echeance(self):
+        if self.echeance <= 0 or self.echeance > self.montant_total_prime :
+            raise ValidationError("L'échéance doit être inférieur du montant et strictement supérieur à 0.")
     
+
+    @api.model
+    def create(self, vals):
+        return super(prime, self).create(vals)
+
+
+    def write(self, vals):
+        print("prime")
+
+        if vals.get("echeance") or vals.get("montant_total_prime"):
+            for ligne in self.paiement_prime_ids:
+                if ligne.state == "paye":
+                    raise ValidationError("Erreur, vous ne pouvez pas faire ce traitement.")
+        if vals.get("montant_paye") and vals["montant_paye"] > self.montant_total_prime:
+            raise ValidationError("Le montant payé doit être inférieur du montant et strictement supérieur à 0.")
+        if vals.get("state") and vals["state"] == "draft" and self.state == "annulee":
+            for ligne in self.paiement_prime_ids:
+                ligne.unlink()
+        if vals.get("state") and vals["state"] == "validee":
+            if vals.get("echeance") or vals.get("montant_total_prime"):
+                for ligne in self.paiement_prime_ids:
+                    ligne.unlink()
+            self._compute_prime()
+        return super(prime, self).write(vals)
+
+
+    def _compute_prime(self):
+        if self.echeance > 0 and self.echeance <= self.montant_total_prime:
+            res = self.montant_total_prime / self.echeance
+            nbr_periodes = ceil(res)
+            self._compute_alimenter_paiement(nbr_periodes)
+
+
+    def _compute_alimenter_paiement(self,nbr_periodes):
+        for rec in self:
+            query = """
+                    SELECT id from account_month_period
+                    WHERE id >= '%s'
+                    LIMIT %s;
+                """  % (rec.first_period_id.id, nbr_periodes)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            paiement_lines=[]
+            reste = 0
+            for id in res:
+                var = rec.montant_total_prime - reste
+                paiement_lines.append(
+                    {
+                        "period_id" : id[0],
+                        "prime_id" : rec.id,
+                        "montant_a_payer" : rec.echeance if (var >= rec.echeance) else var,
+                    }
+                )
+                reste += rec.echeance
+            self.create_paiement(paiement_lines)
+
+
+    def create_paiement(self,paiement_lines):
+        if self.addition_deduction == "prime":
+            for rec in paiement_lines:
+                self.env["hr.paiement.ligne"].create(rec)
+       
+       
     def to_draft(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
             if self.state not in {'draft','validee'} :
@@ -113,82 +181,3 @@ class prime(models.Model):
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
-
-
-    @api.constrains('echeance')
-    def _check_echeance(self):
-        if self.echeance <= 0 or self.echeance > self.montant_total_prime :
-            raise ValidationError("L'échéance doit être inférieur du montant et strictement supérieur à 0.")
-    
-
-    @api.model
-    def create(self, vals):
-        return super(prime, self).create(vals)
-
-
-    def write(self, vals):
-        if vals.get("echeance") or vals.get("montant_total_prime"):
-            for ligne in self.paiement_prime_ids:
-                if ligne.state == "paye":
-                    raise ValidationError("Erreur, vous ne pouvez pas faire ce traitement.")
-        if vals.get("montant_paye") and vals["montant_paye"] > self.montant_total_prime:
-            raise ValidationError("Le montant payé doit être inférieur du montant et strictement supérieur à 0.")
-        if vals.get("state") and vals["state"] == "draft" and self.state == "annulee":
-            for ligne in self.paiement_prime_ids:
-                ligne.unlink()
-        if vals.get("state") and vals["state"] == "validee":
-            if vals.get("echeance") or vals.get("montant_total_prime"):
-                for ligne in self.paiement_prime_ids:
-                    ligne.unlink()
-            self._compute_prime()
-        return super(prime, self).write(vals)
-
-
-    def _compute_prime(self):
-        if self.echeance > 0 and self.echeance <= self.montant_total_prime:
-            res = self.montant_total_prime / self.echeance
-            nbr_periodes = ceil(res)
-            self._compute_alimenter_paiement(nbr_periodes)
-
-
-    def _compute_alimenter_paiement(self,nbr_periodes):
-        for rec in self:
-            query = """
-                    SELECT id from account_month_period
-                    WHERE id >= '%s'
-                    LIMIT %s;
-                """  % (rec.first_period_id.id, nbr_periodes)
-            rec.env.cr.execute(query)
-            res = rec.env.cr.fetchall()
-            paiement_lines=[]
-            reste = 0
-            for id in res:
-                var = rec.montant_total_prime - reste
-                paiement_lines.append(
-                    {
-                        "period_id" : id[0],
-                        "prime_id" : rec.id,
-                        "montant_a_payer" : rec.echeance if (var >= rec.echeance) else var,
-                    }
-                )
-                reste += rec.echeance
-            self.create_paiement(paiement_lines)
-
-
-    def create_paiement(self,paiement_lines):
-        print("paiement_prime")
-        for rec in paiement_lines:
-            print(rec)
-            self.env["hr.paiement.ligne"].create(rec)
-            
-        # if self.paiement_prime_ids:
-        #     for rec in paiement_lines:
-        #         self.env["hr.paiement.ligne"].create(rec)
-
-
-        # if self.addition_deduction == "addition":
-        #     for rec in paiement_lines:
-        #         self.env["hr.paiement.ligne"].create(rec)
-        # elif self.addition_deduction == "deduction":
-        #     for rec in paiement_lines:
-        #         self.env["hr.paiement.prelevement"].create(rec)

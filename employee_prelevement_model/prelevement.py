@@ -13,18 +13,16 @@ class prelevement(models.Model):
 
     type_prime = fields.Many2one("hr.prime.type", string = "Type de Prime", required=False)
     addition_deduction = fields.Selection([
-        ("addition","Addition"),
-        ("deduction","Déduction"),
+        ("prime","Prime"),
+        ("prelevement","Prélèvement"),
         ],"Addition/Déduction", 
-        default="deduction",
+        default="prelevement",
     )
-
 
     @api.model
     def create(self, vals):
         return super(prelevement, self).create(vals)
          
-
     def write(self, vals):
         if vals.get("echeance") or vals.get("montant_total_prime"):
             for ligne in self.paiement_prelevement_ids:
@@ -79,22 +77,9 @@ class prelevement(models.Model):
 
 
     def create_paiement_prelevement(self,paiement_lines):
-        print("paiement_prelevement")
         for rec in paiement_lines:
-            print(rec)
             self.env["hr.paiement.prelevement"].create(rec)
         
-        # if self.paiement_prelevement_ids:
-        #     for rec in paiement_lines:
-        #         self.env["hr.paiement.prelevement"].create(rec)
-
-        # if self.addition_deduction == "addition":
-        #     for rec in paiement_lines:
-        #         self.env["hr.paiement.ligne"].create(rec)
-        # elif self.addition_deduction == "deduction":
-        #     for rec in paiement_lines:
-        #         self.env["hr.paiement.prelevement"].create(rec)
-
 
     def to_draft(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :

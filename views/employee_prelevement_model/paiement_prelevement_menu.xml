@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Lignes de Paiement Prélèvement" id="paiement_prelevement_menu" parent="config_hr_menu" action="paiement_prelevement_action" sequence="8"/>
+</odoo>

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Lignes de Paiement" id="paiement_ligne_menu" parent="config_hr_menu" action="paiement_ligne_action" sequence="7"/>
+    <menuitem name="Lignes de Paiement Prime" id="paiement_ligne_menu" parent="config_hr_menu" action="paiement_ligne_action" sequence="7"/>
 </odoo>
