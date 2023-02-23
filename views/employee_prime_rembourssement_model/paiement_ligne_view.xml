@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id='paiement_prime_action' model='ir.actions.act_window'>
-        <field name="name">Les Paiements des Primes</field>
-        <field name="res_model">hr.paiement.prime</field>
+    <record id='paiement_ligne_action' model='ir.actions.act_window'>
+        <field name="name">Lignes de Paiement</field>
+        <field name="res_model">hr.paiement.ligne</field>
         <field name="view_mode">tree,form,search</field>
     </record>
 
-    <record id="paiement_prime_tree_view" model="ir.ui.view">
-        <field name="name">Les Paiements des Primes</field>
-        <field name="model">hr.paiement.prime</field>
+    <record id="paiement_ligne_tree_view" model="ir.ui.view">
+        <field name="name">Lignes de Paiement</field>
+        <field name="model">hr.paiement.ligne</field>
         <field name="arch" type="xml">
-            <tree string="Les paiements des primes" multi_edit="1" sample="1" class="table">
+            <tree string="Les Lignes de paiement" multi_edit="1" sample="1" class="table">
                 <field name="period_id"/>
                 <field name="prime_id"/>
                 <field name="montant_a_payer"/>
@@ -19,15 +19,15 @@
         </field>
     </record>
 
-    <record id="paiement_prime_view_form" model="ir.ui.view">
-        <field name="name">Form Paiements des Primes</field>
-        <field name="model">hr.paiement.prime</field>
+    <record id="paiement_ligne_view_form" model="ir.ui.view">
+        <field name="name">Paiement Form</field>
+        <field name="model">hr.paiement.ligne</field>
         <field name="arch" type="xml">
             <form>
                 <header class="bar-box-shadow mb-4">
-                    <button name="changer_status" string="Changer l'état" type="object" class="oe_highlight"/>
+                    <!-- <button name="changer_status" string="Changer l'état" type="object" class="oe_highlight"/> -->
                     <button name="to_annuler" string="Annuler" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ('annule'))]}"/>
-                    <field name="state" widget="statusbar" nolabel="1"/>
+                    <field name="state" widget="statusbar" nolabel="1" clickable="1"/>
                 </header>
                 <sheet>
                     <center>
@@ -79,9 +79,9 @@
         </field>
     </record>
 
-    <record id="paiement_prime_search" model="ir.ui.view">
-        <field name="name">Recherche des Paiements Primes</field>
-        <field name="model">hr.paiement.prime</field>
+    <record id="paiement_ligne_search" model="ir.ui.view">
+        <field name="name">Recherche des Paiements</field>
+        <field name="model">hr.paiement.ligne</field>
         <field name="arch" type="xml">
             <search>
                 <field name="period_id"/>

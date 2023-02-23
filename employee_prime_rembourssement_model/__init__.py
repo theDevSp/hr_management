@@ -2,4 +2,4 @@
 
 from . import prime
 from . import prime_type
-from . import paiement_prime
+from . import paiement_ligne

@@ -14,7 +14,7 @@
                 <field name="type_emp" optional="show"/>
                 <field name="chantier_id" optional="show"/>
                 <field name="emplacement_chantier_id" optional="show"/>
-                <field name="state_employee_wtf" widget="badge" decoration-success="state_employee_wtf == 'new'" decoration-danger="state_employee_wtf == 'stc'" class="table"/>
+                <field name="state_employee_wtf" widget="badge" decoration-success="state_employee_wtf == 'new'" decoration-danger="state_employee_wtf == 'stc'"/>
                 <field name="diplome" optional="hide"/>				
 				<field name="bank_account" optional="hide"/>
                 

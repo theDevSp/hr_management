@@ -12,7 +12,8 @@ class prime(models.Model):
     name = fields.Char(related="type_prime.name", default="########")
     employee_id = fields.Many2one("hr.employee", string = "Employee")
     first_period_id = fields.Many2one("account.month.period", string = "Première Période", required=True)
-    paiement_prime_ids = fields.One2many("hr.paiement.prime","prime_id", string = "Paiement prime")
+    paiement_prime_ids = fields.One2many("hr.paiement.ligne","prime_id", string = "Paiement Ligne")
+    #paiement_prelevement_ids = fields.One2many("hr.paiement.prelevement","prelevement_id", string = "Paiement prélèvement")
     date_fait = fields.Date("Date de fait", required=True, default=fields.Date.today, tracking=True, index=True)
     donneur_order = fields.Many2one("hr.directeur", string = "Directeur")
     responsable_id = fields.Many2one("hr.responsable.chantier", string = "Responsable")
@@ -175,6 +176,19 @@ class prime(models.Model):
 
 
     def create_paiement(self,paiement_lines):
+        print("paiement_prime")
         for rec in paiement_lines:
-            self.env["hr.paiement.prime"].create(rec)
+            print(rec)
+            self.env["hr.paiement.ligne"].create(rec)
+            
+        # if self.paiement_prime_ids:
+        #     for rec in paiement_lines:
+        #         self.env["hr.paiement.ligne"].create(rec)
 
+
+        # if self.addition_deduction == "addition":
+        #     for rec in paiement_lines:
+        #         self.env["hr.paiement.ligne"].create(rec)
+        # elif self.addition_deduction == "deduction":
+        #     for rec in paiement_lines:
+        #         self.env["hr.paiement.prelevement"].create(rec)
