@@ -169,9 +169,13 @@
                                             </div> 
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="card border-dark mb-3 mt-3">
+                                <div class="card-header">Détails des paiements</div>
+                                <div class="card-body text-dark">
                                     <div class="row" groups="hr_management.group_admin_paie">
                                         <div class="col-md-12">
-                                            <label for="paiement_prime_ids" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <tree>
@@ -183,7 +187,6 @@
                                     </div>
                                     <div class="row" groups="hr_management.group_agent_paie">
                                         <div class="col-md-12">
-                                            <label for="paiement_prime_ids" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <tree>
@@ -194,7 +197,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                   
                             </div>
                         </div>
                     </div>

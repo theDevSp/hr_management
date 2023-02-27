@@ -13,7 +13,6 @@ class prime(models.Model):
     employee_id = fields.Many2one("hr.employee", string = "Employee")
     first_period_id = fields.Many2one("account.month.period", string = "Première Période", required=True)
     paiement_prime_ids = fields.One2many("hr.paiement.ligne","prime_id", string = "Paiement Ligne")
-    #paiement_prelevement_ids = fields.One2many("hr.paiement.prelevement","prelevement_id", string = "Paiement prélèvement")
     date_fait = fields.Date("Date de fait", required=True, default=fields.Date.today, tracking=True, index=True)
     donneur_order = fields.Many2one("hr.directeur", string = "Directeur")
     responsable_id = fields.Many2one("hr.responsable.chantier", string = "Responsable")
@@ -63,8 +62,6 @@ class prime(models.Model):
 
 
     def write(self, vals):
-        print("prime")
-
         if vals.get("echeance") or vals.get("montant_total_prime"):
             for ligne in self.paiement_prime_ids:
                 if ligne.state == "paye":
@@ -73,23 +70,31 @@ class prime(models.Model):
             raise ValidationError("Le montant payé doit être inférieur du montant et strictement supérieur à 0.")
         if vals.get("state") and vals["state"] == "draft" and self.state == "annulee":
             for ligne in self.paiement_prime_ids:
+                if ligne.state == "paye":
+                    raise ValidationError("Erreur, Vous avez au moins une période payée, vous devez régler la situation.")
                 ligne.unlink()
         if vals.get("state") and vals["state"] == "validee":
-            if vals.get("echeance") or vals.get("montant_total_prime"):
-                for ligne in self.paiement_prime_ids:
-                    ligne.unlink()
-            self._compute_prime()
+            #if vals.get("echeance") or vals.get("montant_total_prime"):
+            for ligne in self.paiement_prime_ids:
+                if ligne.state == "paye":
+                    raise ValidationError("Erreur, Vous avez au moins une période payée, vous devez régler la situation.")
+                ligne.unlink()
+            self.compute_prime()
+        if vals.get("state") and vals["state"] == "annulee":
+            for ligne in self.paiement_prime_ids:
+                if ligne.state == "paye":
+                    raise ValidationError("Erreur, Vous avez au moins une période payée, vous devez régler la situation.")
         return super(prime, self).write(vals)
 
 
-    def _compute_prime(self):
+    def compute_prime(self):
         if self.echeance > 0 and self.echeance <= self.montant_total_prime:
             res = self.montant_total_prime / self.echeance
             nbr_periodes = ceil(res)
-            self._compute_alimenter_paiement(nbr_periodes)
+            self.compute_alimenter_paiement(nbr_periodes)
 
 
-    def _compute_alimenter_paiement(self,nbr_periodes):
+    def compute_alimenter_paiement(self,nbr_periodes):
         for rec in self:
             query = """
                     SELECT id from account_month_period

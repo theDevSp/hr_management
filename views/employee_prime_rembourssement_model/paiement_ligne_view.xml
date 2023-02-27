@@ -10,11 +10,15 @@
         <field name="name">Lignes de Paiement</field>
         <field name="model">hr.paiement.ligne</field>
         <field name="arch" type="xml">
-            <tree string="Les Lignes de paiement" multi_edit="1" sample="1" class="table">
+            <tree string="Les Lignes de paiement" class="table">
                 <field name="period_id"/>
                 <field name="prime_id"/>
                 <field name="montant_a_payer"/>
                 <field name="state" widget="badge" decoration-danger="state == 'non_paye'" decoration-success="state == 'paye'"/>
+                <button name="open_wizard_reporte_dates" type="object" class="oe_highlight" icon="fa-clock" attrs="{'invisible': [('state', '!=', ('non_paye'))]}"/>
+                <button name="annuler_reporter_date" type="object" class="oe_highlight" icon="fa-times" attrs="{'invisible': [('state', '!=', ('reportee'))]}"/>
+                <field name="observations"/>
+                <button name="open_wizard_details" type="object" class="oe_highlight" icon="fa-eye" groups="hr_management.group_admin_paie"/>
             </tree>
         </field>
     </record>

@@ -16,6 +16,7 @@
         'security/groups.xml',
         'security/ir.model.access.csv',
         'wizard/wizard_blacklist_view.xml',
+        'wizard/wizard_reporter_dates_view.xml',
 
         'views/employee_model/employee_view.xml',
         'views/config/config_view.xml',

@@ -30,7 +30,7 @@ class recruit(models.Model):
     chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier", states = READONLY_STATES, required=True)
     responsable_id = fields.Many2one("hr.responsable.chantier","Responsable", states = READONLY_STATES)
     title_poste = fields.Many2one("hr.job","Titre du poste", states = READONLY_STATES)
-    observation = fields.Html("Observation", states = READONLY_STATES)
+    observation = fields.Text("Observation", states = READONLY_STATES)
     nbr_effectif_demande = fields.Integer("Nombre d'effectif demandé", states = READONLY_STATES)
    
     nbr_effectif_accepte = fields.Integer("Nombre d'effectif accepté", states = READONLY_STATES_NBR_EFF_ACCEPTE)

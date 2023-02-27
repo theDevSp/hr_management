@@ -43,7 +43,7 @@ class augmentation(models.Model):
 
     motif_autres = fields.Char("Motif Autres")
 
-    observation = fields.Html('Observation')
+    observation = fields.Text('Observation')
 
     @api.constrains('montant_propose')
     def _check_montant_propose(self):

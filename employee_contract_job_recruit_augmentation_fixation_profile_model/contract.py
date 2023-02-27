@@ -37,7 +37,7 @@ class contrats(models.Model):
 		('name_contract_uniq', 'UNIQUE(name)', 'Cette référence est déjà utilisée.'),
 	]
 
-    def _compute_augmentation_montants_valides(self):
+    def compute_augmentation_montants_valides(self):
         query = """
                 SELECT case when SUM(montant_valide) is null then 0 else SUM(montant_valide) end as sum
                 FROM hr_augmentation aug,hr_contract ctr, account_month_period mnth

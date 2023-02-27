@@ -11,12 +11,16 @@ class prelevement(models.Model):
 
     paiement_prelevement_ids = fields.One2many("hr.paiement.prelevement","prelevement_id", string = "Paiement prélèvement" )
 
-    type_prime = fields.Many2one("hr.prime.type", string = "Type de Prime", required=False)
     addition_deduction = fields.Selection([
         ("prime","Prime"),
         ("prelevement","Prélèvement"),
         ],"Addition/Déduction", 
         default="prelevement",
+    )
+    type_prelevement = fields.Selection([
+        ("en_montant","Prélèvement En Montant"),
+        ("en_jour","Prélèvement En Jour"),
+        ],"Type de prélèvement",
     )
 
     @api.model
@@ -45,8 +49,6 @@ class prelevement(models.Model):
         if self.echeance > 0 and self.echeance <= self.montant_total_prime:
             res = self.montant_total_prime / self.echeance
             nbr_periodes = ceil(res)            
-            print("Nbr des periodes")
-            print(nbr_periodes)
             self._compute_alimenter_paiement_prelevement(nbr_periodes)
 
 
