@@ -17,6 +17,7 @@
         'security/ir.model.access.csv',
         'wizard/wizard_blacklist_view.xml',
         'wizard/wizard_reporter_dates_view.xml',
+        'wizard/wizard_confirmer_annuler_reporter_date.xml',
 
         'views/employee_model/employee_view.xml',
         'views/config/config_view.xml',
@@ -35,6 +36,7 @@
         'views/employee_prelevement_model/prelevement_view.xml',
         'views/employee_prelevement_model/paiement_prelevement_view.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/profile_paie_view.xml',
+        'views/employee_credit_model/credit_view.xml',
 
         'reports/report_demande_recrutement.xml',
         
@@ -55,6 +57,7 @@
         'views/employee_prelevement_model/prelevement_menu.xml',
         'views/employee_prelevement_model/paiement_prelevement_menu.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/profile_paie_menu.xml',
+        'views/employee_credit_model/credit_menu.xml',
     ],
 
     'demo': [

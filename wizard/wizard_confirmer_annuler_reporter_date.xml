@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="wizard_annuler_reporter_date_form">
+            <field name="name">Annuler Reporter Date Form</field>
+            <field name="model">wizard_confirmer_annuler_reporter_date</field>
+            <field name="arch" type="xml">
+                <form string="Annuler Reporter Date">
+                    <group>
+                        <field name="message" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_confirm_annuler_reporter_date" string="Confirm" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_highlight" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
+

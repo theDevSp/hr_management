@@ -13,7 +13,7 @@ class contrats(models.Model):
     profile_paie_id = fields.Many2one('hr.profile.paie', string = "Profile de paie")
         
     currency_id = fields.Many2one('res.currency', string = 'Symbole Monétaire')
-    tt_montant_a_ajouter = fields.Monetary(string="Montans d'Augmentation", required=True, readonly=True, tracking=True, currency_field = "currency_id", compute = "_compute_augmentation_montants_valides")
+    tt_montant_a_ajouter = fields.Monetary(string="Montans d'Augmentation", required=True, readonly=True, tracking=True, currency_field = "currency_id", compute = "compute_augmentation_montants_valides")
     salaire_actuel = fields.Monetary('Salaire Actuel', readonly=True, currency_field = 'currency_id')
 
     profile_paie_personnel_id = fields.One2many('hr.profile.paie.personnel','contract_id', string = "Profile de paie")

@@ -8,7 +8,6 @@ class paiement_prelevement(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     period_id = fields.Many2one("account.month.period", string = "Période")
-    #prelevement_id = fields.Many2one("hr.prelevement", string = "Prélèvement")
     prelevement_id = fields.Many2one("hr.prelevement", string = "Prélèvement", ondelete="cascade")
     currency_id = fields.Many2one("res.currency", string = "Symbole Monétaire")
     montant_a_payer = fields.Monetary("Échéance", currency_field = "currency_id")

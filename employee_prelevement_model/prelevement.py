@@ -3,6 +3,7 @@
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
 from math import *
+from calendar import monthrange
 
 class prelevement(models.Model):
     _name = "hr.prelevement"
@@ -10,7 +11,6 @@ class prelevement(models.Model):
     _inherit = ["hr.prime",'mail.thread', 'mail.activity.mixin']
 
     paiement_prelevement_ids = fields.One2many("hr.paiement.prelevement","prelevement_id", string = "Paiement prélèvement" )
-
     addition_deduction = fields.Selection([
         ("prime","Prime"),
         ("prelevement","Prélèvement"),
@@ -22,7 +22,11 @@ class prelevement(models.Model):
         ("en_jour","Prélèvement En Jour"),
         ],"Type de prélèvement",
     )
-
+    type_prelevemenet_en_jour_nbrjour = fields.Float("Jours travaillés par mois")
+    type_prelevemenet_en_jour_salairejour = fields.Float("Salaire du jour")
+    
+    is_credit = fields.Boolean("Crédit?", default = False)
+    
     @api.model
     def create(self, vals):
         return super(prelevement, self).create(vals)
@@ -41,19 +45,19 @@ class prelevement(models.Model):
             if vals.get("echeance") or vals.get("montant_total_prime"):
                 for ligne in self.paiement_prelevement_ids:
                     ligne.unlink()
-            self._compute_prelevement()
+            self.compute_prelevement()
         return super(prelevement, self).write(vals)
     
 
-    def _compute_prelevement(self):
+    def compute_prelevement(self):
         if self.echeance > 0 and self.echeance <= self.montant_total_prime:
             res = self.montant_total_prime / self.echeance
             nbr_periodes = ceil(res)            
-            self._compute_alimenter_paiement_prelevement(nbr_periodes)
+            self.compute_alimenter_paiement_prelevement(nbr_periodes)
 
 
 
-    def _compute_alimenter_paiement_prelevement(self,nbr_periodes):
+    def compute_alimenter_paiement_prelevement(self,nbr_periodes):
         for rec in self:
             query = """
                     SELECT id from account_month_period
@@ -147,3 +151,22 @@ class prelevement(models.Model):
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+        
+
+    @api.onchange("date_fait")
+    def onchange_date_fait_calcule(self):
+        year_val = self.date_fait.year
+        month_val = self.date_fait.month
+        nbr_days = monthrange(year_val, month_val)[1]
+        self.type_prelevemenet_en_jour_nbrjour = nbr_days
+
+
+    @api.onchange("employee_id")
+    def onchange_employee_nbr_jour(self):
+        profile_paie_employee = self.env['hr.employee'].browse(self.employee_id.id).pp_personnel_id_many2one
+        definition_nbr_jour = profile_paie_employee.definition_nbre_jour_worked_par_mois
+        print(definition_nbr_jour)
+        if definition_nbr_jour == "nbr_saisie":
+            self.type_prelevemenet_en_jour_salairejour = profile_paie_employee.salaire_jour
+        elif definition_nbr_jour == "jr_mois":
+            self.type_prelevemenet_en_jour_salairejour = self.employee_id.id.salaire_actuel 

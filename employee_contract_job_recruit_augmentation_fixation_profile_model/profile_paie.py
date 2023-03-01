@@ -2,8 +2,10 @@
 
 from odoo import models, fields, api
 from datetime import datetime
+from datetime import date
+from math import *
 from odoo.exceptions import ValidationError
-
+from calendar import monthrange
 
 class profilepaie(models.Model):
     _name = "hr.profile.paie"
@@ -53,7 +55,9 @@ class profilepaie(models.Model):
             
     @api.onchange('definition_nbre_jour_worked_par_mois')
     def _onchange_definition_nbre_jour_worked_par_mois(self):
-        self.nbre_jour_worked_par_mois = 0.0 if self.definition_nbre_jour_worked_par_mois == 'jr_mois' else 26
+        today = date.today()
+        nbr_days = monthrange(today.year, today.month)[1]
+        self.nbre_jour_worked_par_mois = nbr_days if self.definition_nbre_jour_worked_par_mois == 'jr_mois' else 26
 
     @api.model
     def create(self, vals):

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Crédit" id="credit_menu" parent="ajout_deduction_main_menu" action="credit_action" sequence="4"/>
+</odoo>
