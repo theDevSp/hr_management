@@ -39,23 +39,6 @@ class paiement_ligne(models.Model):
                 self.prime_id.montant_paye = self.prime_id.montant_paye - self.montant_a_payer
                 self.prime_id.reste_a_paye = self.prime_id.montant_total_prime + self.prime_id.montant_paye
         return super(paiement_ligne, self).write(vals)
-    
-
-    def recompute_prime(self,observations):
-        self.reporter_date()
-        somme,reste,echeance = 0,0,self.prime_id.echeance
-        self.state = "reportee"
-        self.observations = observations
-        for ligne in self.prime_id.paiement_prime_ids:
-            if ligne.id >= self.id and ligne.state == 'non_paye':
-                somme += ligne.montant_a_payer
-        for ligne in self.prime_id.paiement_prime_ids:
-            if ligne.id >= self.id and ligne.state == 'non_paye':
-                var = somme - reste
-                ligne.write({
-                    'montant_a_payer':echeance if var >= echeance else var
-                })
-                reste += echeance
 
 
     def open_wizard_reporte_dates(self):
@@ -71,6 +54,7 @@ class paiement_ligne(models.Model):
             'target': 'new',
             'context' : {
                 'line_id' : self.id,
+                'current_model' : "prime"
             },
         }
 
@@ -88,6 +72,23 @@ class paiement_ligne(models.Model):
             'target': 'target',
             'res_id' : self.id,
         }
+    
+
+    def recompute_prime(self,observations):
+        self.reporter_date()
+        somme,reste,echeance = 0,0,self.prime_id.echeance
+        self.state = "reportee"
+        self.observations = observations
+        for ligne in self.prime_id.paiement_prime_ids:
+            if ligne.id >= self.id and ligne.state == 'non_paye':
+                somme += ligne.montant_a_payer
+        for ligne in self.prime_id.paiement_prime_ids:
+            if ligne.id >= self.id and ligne.state == 'non_paye':
+                var = somme - reste
+                ligne.write({
+                    'montant_a_payer':echeance if var >= echeance else var
+                })
+                reste += echeance
 
 
     def reporter_date(self):
@@ -155,6 +156,7 @@ class paiement_ligne(models.Model):
                 "default_message" : message,
                 "current_line": self.id,
                 "last_line_non_paye": last_line_non_paye.id,
+                'current_model' : "prime",
             },
         }
 

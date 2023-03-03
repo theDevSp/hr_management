@@ -64,13 +64,11 @@
                             <div class="col-4"></div>
                         </div>
                     </div>
-                <t t-call="reports_templates.common_footer">
-                    <t t-call="reports_templates.bc_achat_nb"/>
-                    <t t-call="reports_templates.bc_achat_signature"/>
+                    <t t-call="reports_templates.common_footer">
+                        <t t-call="reports_templates.bc_rh_signature"/>
+                    </t>
                 </t>
-                </t>
-               
-                
+
             </t>
         </t>
     </template>

@@ -74,7 +74,6 @@ class prime(models.Model):
                     raise ValidationError("Erreur, Vous avez au moins une période payée, vous devez régler la situation.")
                 ligne.unlink()
         if vals.get("state") and vals["state"] == "validee":
-            #if vals.get("echeance") or vals.get("montant_total_prime"):
             for ligne in self.paiement_prime_ids:
                 if ligne.state == "paye":
                     raise ValidationError("Erreur, Vous avez au moins une période payée, vous devez régler la situation.")

@@ -10,7 +10,7 @@
         <field name="name">Lignes de Paiement</field>
         <field name="model">hr.paiement.ligne</field>
         <field name="arch" type="xml">
-            <tree string="Les Lignes de paiement" class="table">
+            <tree string="Les paiements des primes" class="table">
                 <field name="period_id"/>
                 <field name="prime_id"/>
                 <field name="montant_a_payer"/>

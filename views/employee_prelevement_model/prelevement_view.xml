@@ -48,31 +48,14 @@
                                         </div>
                                     </center>
                                     <div class="card-body">
-                                        <div class="md-form mb-n3">
+                                        <div class="md-form mb-n3" attrs="{'invisible': [('is_credit', '=', 'True')]}">
                                             <label for="type_prelevement" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fa fa-sliders form-control-icon"></span>
-                                                    <field name="type_prelevement" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="is_credit" class="card-img-top mt-3 mb-2" invisible="1"/>
+                                                    <field name="type_prelevement" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('is_credit', '=', 'True')]}"/>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="md-form mb-n3" attrs="{'invisible': [('type_prelevement', '!=', 'en_jour')]}">
-                                            <label for="type_prelevemenet_en_jour_nbrjour" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="type_prelevemenet_en_jour_nbrjour" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="md-form mb-n3" attrs="{'invisible': [('type_prelevement', '!=', 'en_jour')]}">
-                                            <label for="type_prelevemenet_en_jour_salairejour" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="type_prelevemenet_en_jour_salairejour" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
                                             </div>
                                         </div>
                                         <div class="md-form mb-n3">
@@ -100,7 +83,36 @@
                         <div class="col-md-8">
                             <div class="card border-dark mb-3 bg-light">
                                 <div class="card-body text-dark">
-                                    <div class="row">
+                                    <div class="row" attrs="{'invisible': [('type_prelevement', '!=', 'en_jour')]}">
+                                        <div class="col-md-4">
+                                            <label for="type_prelevemenet_en_jour_nbrjour" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-calendar form-control-icon"></span>
+                                                    <field name="type_prelevemenet_en_jour_nbrjour" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="type_prelevemenet_en_jour_salairejour" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-calendar form-control-icon"></span>
+                                                    <field name="type_prelevemenet_en_jour_salairejour" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="montant_total_prime" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
+                                                    <field name="montant_total_prime" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" attrs="{'invisible': [('type_prelevement', '!=', 'en_montant')]}">
                                         <div class="col-md-6">
                                             <label for="montant_total_prime" class=""/>
                                             <div class="main">
@@ -149,7 +161,7 @@
                             <div class="card border-dark mb-3 mt-3">
                                 <div class="card-header">Période et échéance</div>
                                 <div class="card-body text-dark">
-                                    <div class="row">
+                                    <div class="row" attrs="{'invisible': [('type_prelevement', '!=', 'en_montant')]}">
                                         <div class="col-md-6">
                                             <label for="first_period_id" class=""/>
                                             <div class="main">
@@ -169,16 +181,32 @@
                                             </div> 
                                         </div>
                                     </div>
+                                     <div class="row" attrs="{'invisible': [('type_prelevement', '!=', 'en_jour')]}">
+                                        <div class="col-md-12">
+                                            <label for="date_fait" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-calendar form-control-icon"></span>
+                                                    <field name="date_fait" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>    
+                                        </div>
+                                    </div>
                                     <div class="row" groups="hr_management.group_admin_paie">
                                         <div class="col-md-12">
                                             <label for="paiement_prelevement_ids" class="" string="Paiement prélèvement"/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <field name="paiement_prelevement_ids" options="{'no_create': True, 'no_open': True}">
-                                                        <tree string="Les Lignes de paiement" multi_edit="1" sample="1" class="table">
+                                                        <tree string="Les paiements des prélèvements" multi_edit="1" sample="1" class="table">
                                                             <field name="period_id"/>
+                                                            <field name="prelevement_id"/>
                                                             <field name="montant_a_payer"/>
                                                             <field name="state" widget="badge" decoration-danger="state == 'non_paye'" decoration-success="state == 'paye'"/>
+                                                            <button name="open_wizard_reporte_dates_prelevement" type="object" class="oe_highlight" icon="fa-clock" attrs="{'invisible': [('state', '!=', ('non_paye'))]}"/>
+                                                            <button name="annuler_reporter_date_prelevement" type="object" class="oe_highlight" icon="fa-times" attrs="{'invisible': [('state', '!=', ('reportee'))]}"/>
+                                                            <field name="observations"/>
+                                                            <button name="open_wizard_details_prelevement" type="object" class="oe_highlight" icon="fa-eye" groups="hr_management.group_admin_paie"/>
                                                         </tree>
                                                     </field>
                                                 </div>  
@@ -191,10 +219,15 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <field name="paiement_prelevement_ids" options="{'no_create': True, 'no_open': True}" readonly="1">
-                                                        <tree string="Les Lignes de paiement" multi_edit="1" sample="1" class="table">
+                                                        <tree string="Les paiements des prélèvements" multi_edit="1" sample="1" class="table">
                                                             <field name="period_id"/>
+                                                            <field name="prelevement_id"/>
                                                             <field name="montant_a_payer"/>
                                                             <field name="state" widget="badge" decoration-danger="state == 'non_paye'" decoration-success="state == 'paye'"/>
+                                                            <button name="open_wizard_reporte_dates_prelevement" type="object" class="oe_highlight" icon="fa-clock" attrs="{'invisible': [('state', '!=', ('non_paye'))]}"/>
+                                                            <button name="annuler_reporter_date_prelevement" type="object" class="oe_highlight" icon="fa-times" attrs="{'invisible': [('state', '!=', ('reportee'))]}"/>
+                                                            <field name="observations"/>
+                                                            <button name="open_wizard_details_prelevement" type="object" class="oe_highlight" icon="fa-eye" groups="hr_management.group_admin_paie"/>
                                                         </tree>
                                                     </field>
                                                 </div>  
@@ -229,7 +262,8 @@
         <field name="name">Les Prélèvements</field>
         <field name="res_model">hr.prelevement</field>
         <field name="view_mode">tree,form,search</field>
+        <field name="view_id" ref="hr_management.prelevement_tree_view"/>
         <field name="domain">[('is_credit', '!=', True)]</field>
-        <field name="context">{'default_is_credit': 0}</field>
+        <field name="context">{'default_is_credit': 0,'form_view_ref': 'hr_management.prelevement_view_form'}</field> 
     </record>
 </odoo>
