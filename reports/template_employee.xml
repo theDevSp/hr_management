@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="template_employee">
+            <div class="page">
+                <div class="oe_structure"/>
+                <div class="row emp_cadre">
+                    <div class="col-4 text-center icon_name">
+                        <img t-attf-src="#{web_base_url}/hr_management/static/src/img/person_icon.png" />
+                        <h4 t-field="doc.name" class="emp_name"/>
+                    </div>
+                    <div class="col-8 text-left">
+                        <table>
+                            <tr>
+                                <td class="text-left"><strong>N° C.I.N </strong></td>
+                                <td width="8%" class="text-center"> : </td>
+                                <td class="text-left"><span t-field="doc.cin"/></td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Type d'employé </strong></td>
+                                <td width="8%" class="text-center"> : </td>
+                                <td class="text-left"><span t-field="doc.type_emp"/></td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Fonction </strong></td>
+                                <td width="8%" class="text-center"> : </td>
+                                <td class="text-left"><span t-field="doc.job_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Chantier </strong></td>
+                                <td width="8%" class="text-center"> : </td>
+                                <td class="text-left"><span t-field="doc.chantier_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Date d'embauche </strong></td>
+                                <td width="8%" class="text-center"> : </td>
+                                <td class="text-left"><span t-field="doc.date_start"/></td>
+                            </tr>
+                            <tr>
+                                <td class="text-left"><strong>Ancienneté </strong></td>
+                                <td width="8%" class="text-center"> : </td>
+                                <td class="text-left"><span t-field="doc.working_years"/></td>
+                            </tr>
+                            <t t-if="afficher_salaire == 'True'">
+                                <tr>
+                                    <td class="text-left"><strong>Salaire </strong></td>
+                                    <td width="8%" class="text-center"> : </td>
+                                    <td class="text-left"><span t-out="doc.wage or 'Not Available'"/>  DH</td>
+                                    <!-- <td class="text-left"  ><span t-out="doc.currency_f or 'Not Available'"/></td>  -->
+                                </tr>
+                            </t> 
+                            <tr>
+                                <td class="text-left"><strong>Code Engin </strong></td>
+                                <td width="8%" class="text-center"> : </td>
+                                <td class="text-left">.....................................</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </data>
+</odoo>

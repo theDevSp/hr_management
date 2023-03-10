@@ -200,7 +200,6 @@
                                                     <field name="paiement_prelevement_ids" options="{'no_create': True, 'no_open': True}">
                                                         <tree string="Les paiements des prélèvements" multi_edit="1" sample="1" class="table">
                                                             <field name="period_id"/>
-                                                            <field name="prelevement_id"/>
                                                             <field name="montant_a_payer"/>
                                                             <field name="state" widget="badge" decoration-danger="state == 'non_paye'" decoration-success="state == 'paye'"/>
                                                             <button name="open_wizard_reporte_dates_prelevement" type="object" class="oe_highlight" icon="fa-clock" attrs="{'invisible': [('state', '!=', ('non_paye'))]}"/>
@@ -221,7 +220,6 @@
                                                     <field name="paiement_prelevement_ids" options="{'no_create': True, 'no_open': True}" readonly="1">
                                                         <tree string="Les paiements des prélèvements" multi_edit="1" sample="1" class="table">
                                                             <field name="period_id"/>
-                                                            <field name="prelevement_id"/>
                                                             <field name="montant_a_payer"/>
                                                             <field name="state" widget="badge" decoration-danger="state == 'non_paye'" decoration-success="state == 'paye'"/>
                                                             <button name="open_wizard_reporte_dates_prelevement" type="object" class="oe_highlight" icon="fa-clock" attrs="{'invisible': [('state', '!=', ('non_paye'))]}"/>

@@ -8,7 +8,7 @@
     'license': 'LGPL-3',
 
     'depends': [
-        'base', 'mail', 'hr', 'stock', 'hr_contract', 'construction_site_management', 'muk_web_theme', 'account_fiscal_year_period', 'base_fontawesome'
+        'base', 'mail', 'hr', 'stock', 'hr_contract', 'construction_site_management', 'muk_web_theme', 'account_fiscal_year_period', 'base_fontawesome', 'reports_templates'
         ],
 
     'data': [         
@@ -39,7 +39,9 @@
         'views/employee_credit_model/credit_view.xml',
 
         'reports/report_demande_recrutement.xml',
-        
+        'reports/report_fiche_employee.xml',
+        'reports/template_employee.xml',
+
         'views/employee_model/employee_menu.xml',
         'views/config/config_menu.xml',
         'views/config/responsable_menu.xml',
@@ -68,8 +70,14 @@
             
         ],
         'web.assets_backend': [
-
-            
+    
+        ],
+        'web.report_assets_pdf': [
+            'hr_management/static/src/**/*.scss',  
+  
+        ],
+        'web.assets_common': [
+            'hr_management/static/src/**/*.scss',  
 
         ],
         

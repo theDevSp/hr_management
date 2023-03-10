@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_fiche_employee">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.internal_layout">
+                    <t t-set="documents_title" t-value="'FICHE D\'EMBAUCHE'"/>
+                    <div class="page">
+                        <div class="">
+                            <t t-set="afficher_salaire" t-value="'True'"/>
+                            <t t-call="hr_management.template_employee"/>
+                        </div>
+                        <div class="row cards_p">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <div class="card border-dark mb-3 bg-success job-card-fixed cadres" style="border-radius: 10px;">
+                                    <div class="card-header text-center">
+                                        <h5>Informations Personnelles</h5>
+                                    </div>
+                                    <div class="card-body text-dark">
+                                        <center>
+                                            <table>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Date de naissance</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.date_naissance"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Lieu de naissance</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.lieu_naissance"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Situation familiale</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.marital"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Adresse actuelle</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.adress_personnel"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Téléphone N°</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.mobile_phone"/></td>
+                                                </tr>
+                                            </table>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+                        <div class="row cards_p">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <div class="card border-dark mb-3 bg-success job-card-fixed cadres" style="border-radius: 10px;">
+                                    <div class="card-header text-center">
+                                        <h5>Qualifications</h5>
+                                    </div>
+                                    <div class="card-body text-dark">
+                                        <center>
+                                            <table>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>C.N.S.S. N°</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.cnss"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Compte numéro</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.bank_account"/></td>
+                                                </tr> 
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Embauché par</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.embaucher_par.name"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Recommandé par</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.recommander_par.name"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Motif d'embauche</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.motif_enbauche"/></td>
+                                                </tr>
+                                            </table>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+                    </div>
+                    <t t-call="reports_templates.common_footer">
+                        <t t-call="reports_templates.bc_rh_signature"/>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
