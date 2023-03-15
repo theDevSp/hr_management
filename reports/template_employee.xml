@@ -46,7 +46,6 @@
                                     <td class="text-left"><strong>Salaire </strong></td>
                                     <td width="8%" class="text-center"> : </td>
                                     <td class="text-left"><span t-out="doc.wage or 'Not Available'"/>  DH</td>
-                                    <!-- <td class="text-left"  ><span t-out="doc.currency_f or 'Not Available'"/></td>  -->
                                 </tr>
                             </t> 
                             <tr>

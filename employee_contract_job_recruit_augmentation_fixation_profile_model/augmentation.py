@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
+from num2words import num2words
 
 class augmentation(models.Model):
     _name = "hr.augmentation"
@@ -129,3 +130,29 @@ class augmentation(models.Model):
             raise ValidationError(
                     "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status."
                 )
+        
+    def salaire_en_lettres(self):
+        montant = self.montant_valide + self.employee_id.salaire_actuel
+        lettre = num2words(montant, lang='fr').title()
+        return lettre
+
+
+    def derniere_augmentation(self):
+        for rec in self:
+            query = """
+                    SELECT period_id,montant_propose,date_fait
+                    FROM hr_augmentation
+                    WHERE employee_id=%s AND id<%s
+                    ORDER BY id DESC
+                    LIMIT 1
+                """ % (rec.employee_id.id, rec.id)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            if len(res) > 0 :
+                periode = res[0][0]
+                montant = res[0][1]
+                date_fait = res[0][2]
+                msg = str(montant) + " DH , le " + str(date_fait)    
+                return msg
+        msg = "NEANT"    
+        return msg

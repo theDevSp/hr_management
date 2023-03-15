@@ -48,6 +48,15 @@
                                     </center>
                                     <div class="card-body">
                                         <div class="md-form mb-n3">
+                                            <label for="objet_emprunt" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-sliders form-control-icon"></span>
+                                                    <field name="objet_emprunt" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="md-form mb-n3">
                                             <label for="responsable_id" class=""/>
                                             <div class="main">
                                                 <div class="form-group">

@@ -7,7 +7,7 @@
     max-width: 97%;
     padding:1.2%;
     border-radius: 30px;
-    box-shadow: 13px 13px 15px gray;
+    // box-shadow: 13px 13px 15px gray;
 }
 .icon_name{
     border-right:1px solid black;
@@ -24,9 +24,26 @@
     //margin-left: 3%;
     // padding:1.2%; 
     margin-top: 5%;
-    box-shadow: 13px 13px 15px gray;
+    // box-shadow: 13px 13px 15px gray;
 }
 
 .cards_p{
+    margin-top: 5%;
+}
+
+.cards_page_recrut{
+    margin-top: 5%;
+    border-radius: 30px;
+}
+// .cards_recrut{
+//     box-shadow: 13px 13px 15px gray;
+// }
+.pg_recrut{
+    margin-right: 3%;
+}
+.text-nb{
+    margin-top: 10%;
+}
+.cards_aug{
     margin-top: 5%;
 }

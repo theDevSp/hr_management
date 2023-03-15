@@ -30,6 +30,7 @@ class prelevement(models.Model):
     
     first_period_id = fields.Many2one("account.month.period", string = "Première Période", required=False)
     echeance = fields.Monetary("Échéance", currency_field = "currency_id", required=False)
+    objet_emprunt = fields.Text("Objet de l'Emprunt")
 
     @api.model
     def create(self, vals):
@@ -200,5 +201,16 @@ class prelevement(models.Model):
             """  % (date_fait)
         self.env.cr.execute(query)
         res = self.env.cr.fetchall()
-        print(res[0][0])
         return res[0][0]
+    
+    def report_derniere_periode_emprunt(self):
+        query = """
+            SELECT period_id FROM hr_paiement_prelevement 
+            WHERE prelevement_id = %s
+            ORDER BY id DESC
+            LIMIT 1
+        """ % (self.id)
+        self.env.cr.execute(query)
+        res = self.env.cr.fetchall()
+        periode = self.env['account.month.period'].browse(res[0][0]).code
+        return periode

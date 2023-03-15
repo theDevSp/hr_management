@@ -13,7 +13,7 @@
                         <div class="row cards_p">
                             <div class="col-2"></div>
                             <div class="col-8">
-                                <div class="card border-dark mb-3 bg-success job-card-fixed cadres" style="border-radius: 10px;">
+                                <div class="card border-dark mb-3 bg-light job-card-fixed cadres" style="border-radius: 10px;">
                                     <div class="card-header text-center">
                                         <h5>Informations Personnelles</h5>
                                     </div>
@@ -55,7 +55,7 @@
                         <div class="row cards_p">
                             <div class="col-2"></div>
                             <div class="col-8">
-                                <div class="card border-dark mb-3 bg-success job-card-fixed cadres" style="border-radius: 10px;">
+                                <div class="card border-dark mb-3 bg-light job-card-fixed cadres" style="border-radius: 10px;">
                                     <div class="card-header text-center">
                                         <h5>Qualifications</h5>
                                     </div>

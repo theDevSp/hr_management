@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_prime">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.internal_layout">
+                    <t t-set="documents_title" t-value="'FICHE DE PRIME'"/>
+                    <div class="page pg_recrut">
+                        <div class="row cards_aug">
+                            <div class="col-1"></div>
+                            <div class="col-10">
+                                <div class="card border-dark mb-3 bg-light job-card-fixed cadres" style="border-radius: 10px;">
+                                    <div class="card-header text-center">
+                                        <h5>Informations sur Salarié</h5>
+                                    </div>
+                                    <div class="card-body text-dark">
+                                        <center>
+                                            <table>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Nom et Prénom</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.employee_id.name"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>C.I.N N°</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.employee_id.cin"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Fonction</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.employee_id.job_id.name"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Date d'embauche</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.employee_id.date_start"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Chantier Actuel</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.employee_id.chantier_id.name"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Salaire</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-out="doc.employee_id.salaire_actuel"/> DH</td>
+                                                </tr>
+                                            </table>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                        <div class="row cards_aug">
+                            <div class="col-1"></div>
+                            <div class="col-10">
+                                <div class="card border-dark mb-3 bg-light job-card-fixed cadres" style="border-radius: 10px;">
+                                    <div class="card-header text-center">
+                                        <h5>Informations sur la Prime</h5>
+                                    </div>
+                                    <div class="card-body text-dark">
+                                        <center>
+                                            <table>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Donneur d'ordre</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-out="doc.donneur_order.name"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Montant de Prime</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-out="doc.montant_total_prime"/> DH</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Type de Prime</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-out="doc.type_prime.name"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Échéance</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-out="doc.echeance"/> DH</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Durée de la prime</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-out="doc.report_duree_nbr_periode()"/> Mois</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Première Échéance le</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-field="doc.first_period_id.code"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="40%"><strong>Dernière Échéance le</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="52%"><span t-out="doc.report_derniere_periode_prime()"/></td>
+                                                </tr>
+                                            </table>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                    </div>
+                    <t t-call="reports_templates.common_footer">
+                        <t t-call="reports_templates.bc_rh_signature"/>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

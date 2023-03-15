@@ -48,6 +48,22 @@ class recruit(models.Model):
         default="draft",
     )
 
+    motif_recrut = fields.Selection([
+        ("remplacement","Remplacement d'un salarié sortant"),
+        ("raison_chantier","Pour des besoins de chantier"),
+        ("autre_raison","Autres motifs"),
+        ],"Motif de recrutement",
+        states = READONLY_STATES,
+    )
+    motif_raison_nom_prenom = fields.Char("Nom et prénom",states = READONLY_STATES)
+    motif_raison_fonction = fields.Char("Fonction",states = READONLY_STATES)
+    motif_raison_code_machine = fields.Char("Code Machine",states = READONLY_STATES)
+
+    motif_raison = fields.Text("Plus de détails",states = READONLY_STATES)
+    
+    equipe_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Équipe")
+    # calculer_nbr_existant = fields.Integer("Nombre existant",compute='compute_calculer_nbr_existant')    
+    
     _sql_constraints = [
 		('name_uniq', 'UNIQUE(name)', 'Cette référence est déjà utilisée.'),
 	]
@@ -106,6 +122,19 @@ class recruit(models.Model):
         else:
             reference_demande = 1
         return reference_demande
+
+    def calculer_nbr_existant(self):
+        for rec in self:
+            query = """
+                    SELECT COUNT(*)
+                    FROM hr_employee
+                    WHERE chantier_id = %s AND job_id = %s
+                """ % (rec.chantier_id.id, rec.title_poste.id)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            if len(res) > 0 :
+                return res[0][0]
+        return 0
 
 
     def to_draft(self):
@@ -238,4 +267,11 @@ class recruit(models.Model):
             'domain':[('id','in',res)],
             'context':context
         }
+    
+    @api.onchange("motif_recrut")
+    def onchange_nbr_effectif_demande(self):
+        self.motif_raison_nom_prenom = ""
+        self.motif_raison_fonction = ""
+        self.motif_raison_code_machine = ""
+        self.motif_raison = ""
 

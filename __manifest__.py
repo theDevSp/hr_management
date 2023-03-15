@@ -41,6 +41,9 @@
         'reports/report_demande_recrutement.xml',
         'reports/report_fiche_employee.xml',
         'reports/template_employee.xml',
+        'reports/report_augmentation.xml',
+        'reports/report_emprunt.xml',
+        'reports/report_prime.xml',
 
         'views/employee_model/employee_menu.xml',
         'views/config/config_menu.xml',

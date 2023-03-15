@@ -25,6 +25,7 @@
                 <field name="nbr_effectif_demande"/>
                 <field name="nbr_effectif_accepte"/>
                 <field name="state"/>
+                <field name="motif_recrut"/>
                 <field name="observation"/>
             </tree>
         </field>
@@ -114,11 +115,71 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
+                                            <label for="equipe_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-users form-control-icon"></span>
+                                                    <field name="equipe_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="motif_recrut" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-align-justify form-control-icon"></span>
+                                                    <field name="motif_recrut" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
                                             <label for="observation" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-comment form-control-icon"></span>
                                                     <field name="observation" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" attrs="{'invisible':[('motif_recrut','!=','remplacement')]}">
+                                        <div class="col-md-4">
+                                            <label for="motif_raison_nom_prenom" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="motif_raison_nom_prenom" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="motif_raison_fonction" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-briefcase form-control-icon"></span>
+                                                    <field name="motif_raison_fonction" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="motif_raison_code_machine" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-barcode form-control-icon"></span>
+                                                    <field name="motif_raison_code_machine" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" attrs="{'invisible':[('motif_recrut','not in',('raison_chantier','autre_raison'))]}">
+                                        <div class="col-md-6">
+                                            <label for="motif_raison" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-sliders form-control-icon"></span>
+                                                    <field name="motif_raison" class="form-control"/>
                                                 </div>  
                                             </div>
                                         </div>

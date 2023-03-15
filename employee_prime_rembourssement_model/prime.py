@@ -185,3 +185,21 @@ class prime(models.Model):
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+
+    def report_duree_nbr_periode(self):
+        if self.echeance > 0 and self.echeance <= self.montant_total_prime:
+            resultat = self.montant_total_prime / self.echeance
+            nbr_periodes = ceil(resultat)
+            return nbr_periodes
+        
+    def report_derniere_periode_prime(self):
+        query = """
+            SELECT period_id FROM hr_paiement_ligne 
+            WHERE prime_id = %s
+            ORDER BY id DESC
+            LIMIT 1
+        """ % (self.id)
+        self.env.cr.execute(query)
+        res = self.env.cr.fetchall()
+        periode = self.env['account.month.period'].browse(res[0][0]).code
+        return periode
