@@ -58,11 +58,8 @@ class recruit(models.Model):
     motif_raison_nom_prenom = fields.Char("Nom et prénom",states = READONLY_STATES)
     motif_raison_fonction = fields.Char("Fonction",states = READONLY_STATES)
     motif_raison_code_machine = fields.Char("Code Machine",states = READONLY_STATES)
-
     motif_raison = fields.Text("Plus de détails",states = READONLY_STATES)
-    
     equipe_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Équipe")
-    # calculer_nbr_existant = fields.Integer("Nombre existant",compute='compute_calculer_nbr_existant')    
     
     _sql_constraints = [
 		('name_uniq', 'UNIQUE(name)', 'Cette référence est déjà utilisée.'),
@@ -85,8 +82,8 @@ class recruit(models.Model):
 
     @api.constrains('nbr_effectif_accepte')
     def _check_nbr_effectif_accepte(self):
-        if self.nbr_effectif_accepte <= 0:
-            raise ValidationError("Le nombre d'effectif doit être supérieur de la valeur 0.")
+        if self.nbr_effectif_accepte < 0:
+            raise ValidationError("Le nombre d'effectif doit être supérieur ou égal à la valeur 0.")
 
     @api.model
     def create(self, vals):
@@ -269,7 +266,7 @@ class recruit(models.Model):
         }
     
     @api.onchange("motif_recrut")
-    def onchange_nbr_effectif_demande(self):
+    def onchange_motif_recrut_vider_champs(self):
         self.motif_raison_nom_prenom = ""
         self.motif_raison_fonction = ""
         self.motif_raison_code_machine = ""

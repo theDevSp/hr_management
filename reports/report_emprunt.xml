@@ -7,8 +7,8 @@
                     <t t-set="documents_title" t-value="'FICHE INDIVIDUELLE D\'EMPRUNT'"/>
                     <div class="page pg_recrut">
                         <div class="row cards_aug">
-                            <div class="col-1"></div>
-                            <div class="col-10">
+                            <div class="col-2"></div>
+                            <div class="col-8">
                                 <div class="card border-dark mb-3 bg-light job-card-fixed cadres" style="border-radius: 10px;">
                                     <div class="card-header text-center">
                                         <h5>Informations sur Salarié</h5>
@@ -51,11 +51,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-1"></div>
+                            <div class="col-2"></div>
                         </div>
                         <div class="row cards_aug">
-                            <div class="col-1"></div>
-                            <div class="col-10">
+                            <div class="col-2"></div>
+                            <div class="col-8">
                                 <div class="card border-dark mb-3 bg-light job-card-fixed cadres" style="border-radius: 10px;">
                                     <div class="card-header text-center">
                                         <h5>Informations sur l'Emprunt</h5>
@@ -103,7 +103,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-1"></div>
+                            <div class="col-2"></div>
                         </div>
                     </div>
                     <t t-call="reports_templates.common_footer">

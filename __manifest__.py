@@ -37,6 +37,8 @@
         'views/employee_prelevement_model/paiement_prelevement_view.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/profile_paie_view.xml',
         'views/employee_credit_model/credit_view.xml',
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/fixation_view.xml',
+
 
         'reports/report_demande_recrutement.xml',
         'reports/report_fiche_employee.xml',
@@ -44,6 +46,7 @@
         'reports/report_augmentation.xml',
         'reports/report_emprunt.xml',
         'reports/report_prime.xml',
+        'reports/report_fixation.xml',
 
         'views/employee_model/employee_menu.xml',
         'views/config/config_menu.xml',
@@ -63,6 +66,7 @@
         'views/employee_prelevement_model/paiement_prelevement_menu.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/profile_paie_menu.xml',
         'views/employee_credit_model/credit_menu.xml',
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/fixation_menu.xml',
     ],
 
     'demo': [

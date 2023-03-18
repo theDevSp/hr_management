@@ -54,7 +54,7 @@ class augmentation(models.Model):
     
     @api.constrains('montant_valide')
     def _check_montant_valide(self):
-        if self.montant_valide <= 0:
+        if self.montant_valide < 0:
             raise ValidationError("Les montants doivent être supérieurs de la valeur 0.")
 
 
@@ -130,8 +130,13 @@ class augmentation(models.Model):
             raise ValidationError(
                     "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status."
                 )
-        
-    def salaire_en_lettres(self):
+
+    def salaire_propose_en_lettres(self):
+        montant = self.montant_propose + self.employee_id.salaire_actuel
+        lettre = num2words(montant, lang='fr').title()
+        return lettre
+
+    def salaire_valide_en_lettres(self):
         montant = self.montant_valide + self.employee_id.salaire_actuel
         lettre = num2words(montant, lang='fr').title()
         return lettre

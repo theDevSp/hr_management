@@ -228,7 +228,7 @@
                                                 <label for="job_id" class=""/>
                                                 <div class="main">
                                                     <div class="form-group">
-                                                        <span class="fas fa-500px form-control-icon"></span>
+                                                        <span class="fa fa-briefcase form-control-icon"></span>
                                                         <field name="job_id" options="{'no_create': True, 'no_open': True}" class="form-control" />
                                                     </div>  
                                                 </div>
@@ -237,7 +237,7 @@
                                                 <label for="job" class=""/>
                                                 <div class="main">
                                                     <div class="form-group">
-                                                        <span class="fas fa-500px form-control-icon"></span>
+                                                        <span class="fa fa-briefcase form-control-icon"></span>
                                                         <field name="job" class="form-control" />
                                                     </div>  
                                                 </div>      

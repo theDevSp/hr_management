@@ -151,7 +151,7 @@
                 <field name="definition_nbre_jour_worked_par_mois"/>
                 <field name="period_id"/>
                 <searchpanel>
-                    <field name="type_profile" icon="fa-city" enable_counters="1"/>
+                    <field name="type_profile" icon="fa-sliders" enable_counters="1"/>
                     <field name="period_id" icon="fa-clock" enable_counters="1"/>
                 </searchpanel>
             </search>
