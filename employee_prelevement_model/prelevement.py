@@ -116,7 +116,7 @@ class prelevement(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
 
 
     def to_validee(self):
@@ -126,7 +126,7 @@ class prelevement(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
 
 
     def to_annulee(self):
@@ -136,7 +136,7 @@ class prelevement(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
 
 
     def to_cloturer_payer(self):
@@ -150,7 +150,7 @@ class prelevement(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
     
 
     def to_cloturer(self):
@@ -164,7 +164,7 @@ class prelevement(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
         
 
     def nbr_days_of_current_month(self):

@@ -107,7 +107,7 @@ class fixation_salaire(models.Model):
                     )
         else:
             raise ValidationError(
-                    "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status."
+                    "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
                 )
 
     def to_validee(self):
@@ -120,7 +120,7 @@ class fixation_salaire(models.Model):
                     )
         else:
             raise ValidationError(
-                    "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status."
+                    "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
                 )
     
     def to_annulee(self):
@@ -133,5 +133,5 @@ class fixation_salaire(models.Model):
                     )
         else:
             raise ValidationError(
-                    "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status."
+                    "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
                 )

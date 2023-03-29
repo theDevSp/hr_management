@@ -10,11 +10,11 @@
                         <div class="row cards_aug" style="padding: -80%;">
                             <div class="col-1"></div>
                             <div class="col-10">
-                                <div class="card border-dark mb-3 bg-light job-card-fixed cadres" style="border-radius: 10px;">
-                                    <div class="card-header text-center">
+                                <div class="card mb-3 bg-light job-card-fixed cadres">
+                                    <div class="card-header border-top border-left border-right border-dark text-center">
                                         <h5>Informations sur Salarié</h5>
                                     </div>
-                                    <div class="card-body text-dark">
+                                    <div class="card-body border border-dark text-dark">
                                         <center>
                                             <table>
                                                 <tr>
@@ -72,11 +72,11 @@
                         <div class="row cards_aug">
                             <div class="col-1"></div>
                             <div class="col-5">
-                                <div class="card border-dark mb-3 bg-light job-card-fixed cadres" style="border-radius: 10px;">
-                                    <div class="card-header text-center">
+                                <div class="card mb-3 bg-light job-card-fixed cadres" style="border-radius: 10px;">
+                                    <div class="card-header border-top border-left border-right border-dark text-center">
                                         <h5>SALAIRE PROPOSÉ</h5>
                                     </div>
-                                    <div class="card-body text-dark">
+                                    <div class="card-body border border-dark text-dark">
                                         <center>
                                             <table>
                                                 <tr>
@@ -91,11 +91,11 @@
                                 </div>
                             </div>
                             <div class="col-5">
-                                <div class="card border-dark mb-3 bg-light job-card-fixed cadres" style="border-radius: 10px;">
-                                    <div class="card-header text-center">
+                                <div class="card mb-3 bg-light job-card-fixed cadres" style="border-radius: 10px;">
+                                    <div class="card-header border-top border-left border-right border-dark text-center">
                                         <h5>SALAIRE VALIDÉ</h5>
                                     </div>
-                                    <div class="card-body text-dark">
+                                    <div class="card-body border border-dark text-dark">
                                         <center>
                                             <table>
                                                 <tr>

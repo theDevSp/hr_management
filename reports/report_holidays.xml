@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_holidays">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.internal_layout">
+                    <t t-set="documents_title" t-value="'DEMANDE DE CONGÉ - طلب الحصول على عطلة'"/>
+                    <div class="page pg_recrut">
+                        <div class="row cards_aug">
+                            <div class="col-12">
+                                <div class="card mb-3 bg-light job-card-fixed" >
+                                    <div class="card-header text-center border-top border-left border-right border-dark">
+                                        <table width="100%">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-left" width="50%">
+                                                        <strong>INTÉRESSÉ :</strong>
+                                                    </td>
+                                                    <td class="text-right" width="50%">
+                                                        <strong> : المعني بالأمر </strong>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="card-body border-bottom border-left border-right border-dark text-dark">
+                                        <table width="100%" style="border-collapse:separate; border-spacing:0.5em;">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-left" width="30%">NOM ET PRÉNOM :</td>
+                                                    <td class="text-center" width="40%">
+                                                        <span t-field="doc.employee_id.name"/>
+                                                    </td>
+                                                    <td class="text-right" width="30%"> : الإسم و النسب </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="30%">CIN :</td>
+                                                    <td class="text-center" width="40%">
+                                                        <span t-field="doc.employee_id.cin"/>
+                                                    </td>
+                                                    <td class="text-right" width="30%"> : رقم البطاقة الوطنية</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="30%">CHANTIER :</td>
+                                                    <td class="text-center" width="40%">
+                                                        <span t-field="doc.chantier_id.name"/>
+                                                    </td>
+                                                    <td class="text-right" width="30%">: ورش الأشغال</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="30%">FONCTION:</td>
+                                                    <td class="text-center" width="40%">
+                                                        <span t-field="doc.employee_id.job_id.name"/>
+                                                    </td>
+                                                    <td class="text-right" width="30%"> : المهنة</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row cards_aug">
+                            <div class="col-12">
+                                <div class="card mb-3 bg-light job-card-fixed">
+                                    <div class="card-header text-center border-top border-left border-right border-dark">
+                                        <table width="100%">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-left" width="50%">
+                                                        <strong>DÉTAILS DE CONGÉ :</strong>
+                                                    </td>
+                                                    <td class="text-right" width="50%">
+                                                        <strong>: تفاصيل طلب العطلة </strong>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="card-body border-bottom border-left border-right border-dark text-dark">
+                                        <table width="100%" style="border-spacing:0.5em;">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-left" width="20%">MOTIF :</td>
+                                                    <td class="text-center" width="60%">
+                                                        <span t-esc="dict(doc.fields_get(allfields=['motif'])['motif']['selection'])[doc.motif]"/>
+                                                    </td>
+                                                    <td class="text-right" width="20%">: سبب العطلة</td>
+                                                </tr>
+                                                <tr t-if="doc.remplacant_employee_id">
+                                                    <td class="text-left" width="20%">REMPLAÇANT :</td>
+                                                    <td class="text-center" width="60%">
+                                                        <p>
+                                                            <span t-esc="doc.remplacant_employee_id.name"/>
+                                                            -
+                                                            <span t-esc="doc.remplacant_employee_id.cin"/>
+                                                        </p>
+                                                    </td>
+                                                    <td class="text-right" width="20%">: المعوض</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row cards_aug">
+                            <div class="col-4">
+                                <div class="card mb-3 bg-light job-card-fixed">
+                                    <div class="card-header text-center border-top border-left border-right border-dark">
+                                        <div class="panel-heading text-center">
+                                            <center>
+                                                <table width="100%">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center" width="50%">
+                                                                <strong>DATE DE DÉBUT</strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center" width="50%">
+                                                                <strong>تاريخ بداية العطلة</strong>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </center>
+                                        </div>
+                                    </div>
+                                    <div class="card-body border-bottom border-left border-right border-dark text-dark">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body text-center">
+                                                <div style="height:70px;vertical-align:middle;padding-top:8%;">
+                                                    <h4>
+                                                        <span t-field="doc.date_start"/>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="card mb-3 bg-light job-card-fixed">
+                                    <div class="card-header text-center border-top border-left border-right border-dark">
+                                        <div class="panel-heading text-center">
+                                            <center>
+                                                <table width="100%">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center" width="50%">
+                                                                <strong>DATE DE FIN</strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center" width="50%">
+                                                                <strong>تاريخ إنتهاء العطلة</strong>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </center>
+                                        </div>
+                                    </div>
+                                    <div class="card-body border-bottom border-left border-right border-dark text-dark">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body text-center">
+                                                <div style="height:70px;vertical-align:middle;padding-top:8%;">
+                                                    <h4>
+                                                        <span t-field="doc.date_end"/>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="card mb-3 bg-light job-card-fixed">
+                                    <div class="card-header text-center border-top border-left border-right border-dark">
+                                        <div class="panel-heading text-center">
+                                            <center>
+                                                <table width="100%">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center" width="50%">
+                                                                <strong>NOMBRE DE JOURS</strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center" width="50%">
+                                                                <strong>عدد الأيام</strong>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </center>
+                                        </div>
+                                    </div>
+                                    <div class="card-body border-bottom border-left border-right border-dark text-dark">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body text-center">
+                                                <div style="height:70px;vertical-align:middle;padding-top:8%;">
+                                                    <h4>
+                                                        <span t-field="doc.duree_jours"/>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <t t-call="reports_templates.common_footer">
+                        <t t-call="reports_templates.bc_rh_signature"/>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

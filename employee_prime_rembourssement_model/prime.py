@@ -138,7 +138,7 @@ class prime(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
 
     def to_validee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
@@ -147,7 +147,7 @@ class prime(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
 
     def to_annulee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
@@ -156,7 +156,7 @@ class prime(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
 
 
     def to_cloturer_payer(self):
@@ -170,7 +170,7 @@ class prime(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
     
 
     def to_cloturer(self):
@@ -184,7 +184,7 @@ class prime(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
 
     def report_duree_nbr_periode(self):
         if self.echeance > 0 and self.echeance <= self.montant_total_prime:

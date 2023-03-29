@@ -91,7 +91,7 @@
 #             else:
 #                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
 #         else:
-#             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+#             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
 
 
 #     def to_validee(self):
@@ -101,7 +101,7 @@
 #             else:
 #                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
 #         else:
-#             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+#             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
 
 
 #     def to_annulee(self):
@@ -111,7 +111,7 @@
 #             else:
 #                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
 #         else:
-#             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+#             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
 
 
 #     def to_cloturer_payer(self):
@@ -125,7 +125,7 @@
 #             else:
 #                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
 #         else:
-#             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+#             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
     
 
 #     def to_cloturer(self):
@@ -139,4 +139,4 @@
 #             else:
 #                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
 #         else:
-#             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le status.")
+#             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")

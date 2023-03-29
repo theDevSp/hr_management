@@ -10,11 +10,11 @@
                         <div class="row">
                             <div class="col-1"></div>
                             <div class="col-10">
-                                <div class="card border-dark mb-3 bg-light job-card-fixed" style="border-radius: 10px;">
-                                    <div class="card-header text-center">
+                                <div class="card mb-3 bg-light job-card-fixed">
+                                    <div class="card-header border-top border-left border-right border-dark text-center">
                                         <h5>Demandeur</h5>
                                     </div>
-                                    <div class="card-body text-dark">
+                                    <div class="card-body border border-dark text-dark">
                                         <center>
                                             <table>
                                                 <tr>
@@ -42,11 +42,11 @@
                         <div class="row cards_page_recrut">
                             <div class="col-1"></div>
                             <div class="col-10">
-                                <div class="card border-dark mb-3 bg-light job-card-fixed" style="border-radius: 10px;">
-                                    <div class="card-header text-center">
+                                <div class="card mb-3 bg-light job-card-fixed">
+                                    <div class="card-header border-top border-left border-right border-dark text-center">
                                         <h5>Profil demandé</h5>
                                     </div>
-                                    <div class="card-body text-dark">
+                                    <div class="card-body border-right border-bottom border-left border-dark text-dark">
                                         <center>
                                             <table>
                                                 <tr>
@@ -99,11 +99,11 @@
                             <div class="row cards_page_recrut">
                                 <div class="col-1"></div>
                                 <div class="col-10">
-                                    <div class="card border-dark mb-3 bg-light job-card-fixed" style="border-radius: 10px;">
-                                        <div class="card-header text-center">
+                                    <div class="card mb-3 bg-light job-card-fixed">
+                                        <div class="card-header border-top border-left border-right border-dark text-center">
                                             <h5>Plus d'informations sur le salarié sortant</h5>
                                         </div>
-                                        <div class="card-body text-dark">
+                                        <div class="card-body border-left border-right border-bottom border-dark text-dark">
                                             <center>
                                                 <table>
                                                     <tr>

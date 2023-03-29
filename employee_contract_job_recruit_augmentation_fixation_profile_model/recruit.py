@@ -146,7 +146,7 @@ class recruit(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs, les agents de paie et les pointeurs qui peuvent changer le status.")
+            raise ValidationError("Erreur, Seulement les administrateurs, les agents de paie et les pointeurs qui peuvent changer le statut.")
 
 
     def to_validee(self):
@@ -161,7 +161,7 @@ class recruit(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs, les agents de paie et les pointeurs qui peuvent changer le status.")
+            raise ValidationError("Erreur, Seulement les administrateurs, les agents de paie et les pointeurs qui peuvent changer le statut.")
 
 
     def to_encours(self):
