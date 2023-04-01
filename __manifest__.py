@@ -39,6 +39,7 @@
         'views/employee_credit_model/credit_view.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/fixation_view.xml',
         'views/employee_holidays_model/holidays_view.xml',
+        'views/employee_holidays_model/jour_ferie_view.xml',
 
 
         'reports/report_demande_recrutement.xml',
@@ -70,6 +71,7 @@
         'views/employee_credit_model/credit_menu.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/fixation_menu.xml',
         'views/employee_holidays_model/holidays_menu.xml',
+        'views/employee_holidays_model/jour_ferie_menu.xml',
     ],
 
     'demo': [

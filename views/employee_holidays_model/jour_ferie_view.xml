@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='jours_feries_action' model='ir.actions.act_window'>
+        <field name="name">Jours Fériés</field>
+        <field name="res_model">hr.jours.feries</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <record id="jours_feries_tree" model="ir.ui.view">
+        <field name="name">Les jours fériés</field>
+        <field name="model">hr.jours.feries</field>
+        <field name="arch" type="xml">
+            <tree string="Jours Fériés" multi_edit="1" sample="1" class="table">
+                <field name="name"/>
+                <field name="period_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="nbr_jour"/>
+            </tree>
+        </field>
+    </record>
+    <record id="jours_feries_formulaire" model="ir.ui.view">
+        <field name="name">Formulaire des Jours Fériés</field>
+        <field name="model">hr.jours.feries</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="row mt-3">
+                        <div class="col-md-4 col-lg-4">
+                            <div class="card-deck">
+                                <div class="card">
+                                    <center>
+                                        <div class="card border-dark mb-3 bg-info mt-4">
+                                            <div class="card-header text-center">
+                                                <h5>Libellé</h5>
+                                            </div>
+                                            <div class="card-body text-dark text-center">
+                                                <h3>
+                                                    <field name="name" class="card-img-top mt-3 mb-2"/>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card border-dark mb-3 bg-light">
+                                <div class="card-body text-dark mt-3">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="period_id"/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-calendar form-control-icon"></span>
+                                                    <field name="period_id" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="nbr_jour"/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-calendar form-control-icon"></span>
+                                                    <field name="nbr_jour" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="date_start" string="Du"/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-calendar form-control-icon"></span>
+                                                    <field name="date_start" class="form-control" nolabel="1" widget="daterange" options="{'related_end_date': 'date_end'}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="date_end" string="Au"/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-calendar form-control-icon"></span>
+                                                    <field name="date_end" class="form-control" nolabel="1" widget="daterange" options="{'related_start_date': 'date_start'}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="jours_feries_search" model="ir.ui.view">
+        <field name="name">Recherche - Jours Fériés</field>
+        <field name="model">hr.jours.feries</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="period_id"/>
+            </search>
+        </field>
+    </record>
+</odoo>

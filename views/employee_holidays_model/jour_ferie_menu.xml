@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Jours Fériés" id="hr_jours_feries_menu" parent="config_hr_menu" action="jours_feries_action" sequence="9"/>
+</odoo>

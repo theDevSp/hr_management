@@ -103,11 +103,11 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="date_start" string="Au"/>
+                                            <label for="date_end" string="Au"/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="date_end" class="form-control" widget="daterange" options="{'related_start_date': 'date_start'}" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    <field name="date_end" class="form-control" nolabel="1" widget="daterange" options="{'related_start_date': 'date_start'}" attrs="{'readonly':[('state','!=','draft')]}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -230,7 +230,7 @@
                 <field name="employee_id"/>
                 <field name="chantier_id"/>
                 <searchpanel>
-                    <field name="motif" icon="fa-city" enable_counters="1"/>
+                    <field name="motif" icon="fa-comment" enable_counters="1"/>
                     <field name="state" icon="fa-align-center" enable_counters="1"/>
                 </searchpanel>
             </search>
