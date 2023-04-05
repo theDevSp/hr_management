@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Allocations" id="allocations_hr_menu" parent="holidays_allocations_hr_menu" action="allocations_action" sequence="2"/>
+</odoo>

@@ -10,7 +10,6 @@
         <field name="name">Les congés</field>
         <field name="model">hr.holidays</field>
         <field name="arch" type="xml">
-            <!-- <tree string="Congés" multi_edit="1" sample="1" default_order='date_fait ASC' class="table"> -->
             <tree string="Congés" multi_edit="1" sample="1" class="table">
                 <field name="employee_id" readonly="1" widget="many2one_avatar_employee"/>
                 <field name="chantier_id"/>

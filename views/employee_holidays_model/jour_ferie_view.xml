@@ -53,7 +53,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="period_id" class="form-control" />
+                                                    <field name="period_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
                                                 </div>
                                             </div>
                                         </div>
