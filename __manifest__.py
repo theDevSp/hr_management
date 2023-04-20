@@ -41,7 +41,9 @@
         'views/employee_holidays_model/holidays_view.xml',
         'views/employee_holidays_model/jour_ferie_view.xml',
         'views/employee_holidays_model/allocations_view.xml',
-
+        'views/employee_stc_model/stc_view.xml',
+        'views/employee_payroll_model/fiche_paie_view.xml',
+        'views/employee_payroll_model/jr_travaille_par_chantier_view.xml',
 
         'reports/report_demande_recrutement.xml',
         'reports/report_fiche_employee.xml',
@@ -51,6 +53,7 @@
         'reports/report_prime.xml',
         'reports/report_fixation.xml',
         'reports/report_holidays.xml',
+        'reports/report_commande.xml',
 
         'views/employee_model/employee_menu.xml',
         'views/config/config_menu.xml',
@@ -74,6 +77,9 @@
         'views/employee_holidays_model/holidays_menu.xml',
         'views/employee_holidays_model/jour_ferie_menu.xml',
         'views/employee_holidays_model/allocations_menu.xml',
+        'views/employee_stc_model/stc_menu.xml',
+        'views/employee_payroll_model/fiche_paie_menu.xml',
+        'views/employee_payroll_model/jr_travaille_par_chantier_menu.xml',
     ],
 
     'demo': [

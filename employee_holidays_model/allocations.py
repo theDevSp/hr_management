@@ -30,6 +30,8 @@ class allocations(models.Model):
         default='draft',
         readonly=True
     )
+    stc_id = fields.Many2one("hr.stc", string = "STC", required=False)
+
 
     @api.model
     def create(self, vals):

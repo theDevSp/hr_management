@@ -86,6 +86,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="stc_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-handshake-o form-control-icon"></span>
+                                                    <field name="stc_id" class="form-control" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -22,6 +22,7 @@ class paiement_prelevement(models.Model):
         default="non_paye",
     )       
     observations = fields.Text("Observations")
+    stc_id = fields.Many2one("hr.stc", string = "STC", required=False)
 
     def to_annuler(self):
         self.state = "annule"

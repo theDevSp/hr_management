@@ -17,6 +17,7 @@
                 <button name="open_wizard_reporte_dates_prelevement" type="object" class="oe_highlight" icon="fa-clock" attrs="{'invisible': [('state', '!=', ('non_paye'))]}"/>
                 <button name="annuler_reporter_date_prelevement" type="object" class="oe_highlight" icon="fa-times" attrs="{'invisible': [('state', '!=', ('reportee'))]}"/>
                 <field name="observations"/>
+                <field name="stc_id"/>
                 <button name="open_wizard_details_prelevement" type="object" class="oe_highlight" icon="fa-eye" groups="hr_management.group_admin_paie"/>
             </tree>
         </field>
@@ -54,6 +55,17 @@
                                             <div class="form-group">
                                                 <span class="fas fa-money-bill-wave form-control-icon"></span>
                                                 <field name="montant_a_payer" class="form-control"/>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label for="stc_id" class=""/>
+                                        <div class="main">
+                                            <div class="form-group">
+                                                <span class="fa fa-handshake-o form-control-icon"></span>
+                                                <field name="stc_id" class="form-control"/>
                                             </div>  
                                         </div>
                                     </div>
