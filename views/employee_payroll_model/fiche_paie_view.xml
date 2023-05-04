@@ -23,6 +23,25 @@
             </tree>
         </field>
     </record>
+
+    <record id="fiche_paie_par_employee_tree" model="ir.ui.view">
+        <field name="name">Fiche de paie</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <tree string="Fiche de paie" multi_edit="1" sample="1" class="table">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="chantier_id"/>
+                <field name="period_id"/>
+                <field name="net_pay"/>
+                <field name="nbr_jour_travaille"/>
+                <field name="jr_travaille_par_chantier"/>
+                <field name="type_fiche"/>
+                <field name="stc_id"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="fiche_paie_formulaire" model="ir.ui.view">
         <field name="name">Fiche de paie</field>
         <field name="model">hr.payslip</field>

@@ -29,7 +29,7 @@ class prelevement(models.Model):
     is_credit = fields.Boolean("Crédit?", default = False)
     
     first_period_id = fields.Many2one("account.month.period", string = "Première Période", required=False)
-    echeance = fields.Monetary("Échéance", currency_field = "currency_id", required=False)
+    echeance = fields.Float("Échéance", required=False)
     objet_emprunt = fields.Text("Objet de l'Emprunt")
     stc_id = fields.Many2one("hr.stc", string = "STC", required=False)
 

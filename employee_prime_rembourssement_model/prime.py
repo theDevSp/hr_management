@@ -17,11 +17,11 @@ class prime(models.Model):
     donneur_order = fields.Many2one("hr.directeur", string = "Directeur")
     responsable_id = fields.Many2one("hr.responsable.chantier", string = "Responsable")
     type_prime = fields.Many2one("hr.prime.type", string = "Type de Prime", required=True)
-    currency_id = fields.Many2one("res.currency", string = "Symbole Monétaire")
-    montant_total_prime = fields.Monetary("Montant", currency_field = "currency_id", required=True)
-    echeance = fields.Monetary("Échéance", currency_field = "currency_id", required=True)
-    montant_paye = fields.Monetary("Montant payé", currency_field = "currency_id", readonly=True)
-    reste_a_paye = fields.Monetary("Montant reste à payer", currency_field = "currency_id", readonly=True, compute="_compute_reste_a_payer")
+
+    montant_total_prime = fields.Float("Montant",required=True)
+    echeance = fields.Float("Échéance",required=True)
+    montant_paye = fields.Float("Montant payé",readonly=True)
+    reste_a_paye = fields.Float("Montant reste à payer",readonly=True, compute="_compute_reste_a_payer")
     state  = fields.Selection([
         ("draft","Brouillon"),
         ("validee","Validée"),

@@ -10,11 +10,17 @@ class contrats(models.Model):
 
     name = fields.Char('Contract Name', readonly=True, copy=False, default='New')
     chantier_id = fields.Many2one('fleet.vehicle.chantier', string = "Chantier")
-    profile_paie_id = fields.Many2one('hr.profile.paie', string = "Profile de paie")
-        
-    currency_id = fields.Many2one('res.currency', string = 'Symbole Monétaire')
-    tt_montant_a_ajouter = fields.Monetary(string="Montants d'Augmentation", required=True, readonly=True, tracking=True, currency_field = "currency_id", compute = "compute_augmentation_montants_valides")
-    salaire_actuel = fields.Monetary('Salaire Actuel', readonly=True, currency_field = 'currency_id')
+    profile_paie_id = fields.Many2one('hr.profile.paie', string = "Profile de paie")   
+    tt_montant_a_ajouter = fields.Float(string="Montants d'Augmentation", required=True, readonly=True, tracking=True, compute = "compute_augmentation_montants_valides")
+    salaire_actuel = fields.Float('Salaire Actuel', readonly=True)
+
+
+    type_emp = fields.Selection([("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé",default="s")
+    embaucher_par  = fields.Many2one("hr.responsable.chantier",u"Embauché Par")
+    recommander_par  = fields.Many2one("hr.responsable.chantier",u"Recommandé Par")
+    motif_enbauche  = fields.Selection([("1","Satisfaire un besoin"),("2","Remplacement"),("3","Autre")],u"Motif d'embauche")
+
+
 
     profile_paie_personnel_id = fields.One2many('hr.profile.paie.personnel','contract_id', string = "Profile de paie")
     pp_personnel_id_many2one = fields.Many2one('hr.profile.paie.personnel',string = "Profile de paie")

@@ -54,6 +54,7 @@
         'reports/report_fixation.xml',
         'reports/report_holidays.xml',
         'reports/report_commande.xml',
+        'reports/report_stc.xml',
 
         'views/employee_model/employee_menu.xml',
         'views/config/config_menu.xml',

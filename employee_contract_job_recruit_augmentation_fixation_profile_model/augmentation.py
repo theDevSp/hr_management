@@ -15,9 +15,8 @@ class augmentation(models.Model):
     date_fait = fields.Date("Date de fait", required=True, default=fields.Date.today, tracking=True,
         help="Date d'augmentation de salaire pour l'employé.", index=True)
 
-    currency_id = fields.Many2one('res.currency', string = 'Symbole Monétaire')
-    montant_propose = fields.Monetary('Montant Proposé', currency_field = 'currency_id')
-    montant_valide = fields.Monetary('Montant Validé', currency_field = 'currency_id')
+    montant_propose = fields.Float('Montant Proposé')
+    montant_valide = fields.Float('Montant Validé')
 
     state = fields.Selection([
         ('draft', 'Brouillon'),

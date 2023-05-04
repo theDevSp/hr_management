@@ -25,6 +25,25 @@
         </field>
     </record>
 
+    <record id="prime_par_employee_tree_view" model="ir.ui.view">
+        <field name="name">Les Primes</field>
+        <field name="model">hr.prime</field>
+        <field name="arch" type="xml">
+            <tree string="Les primes" multi_edit="1" sample="1" class="table">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="date_fait"/>
+                <field name="type_prime"/>
+                <field name="montant_total_prime"/>
+                <field name="echeance"/>
+                <field name="montant_paye"/>
+                <field name="reste_a_paye"/>
+                <field name="first_period_id"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-danger="state == 'annulee'" decoration-success="state == 'validee'"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="prime_view_form" model="ir.ui.view">
         <field name="name">Formulaire des Primes</field>
         <field name="model">hr.prime</field>

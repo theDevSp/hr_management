@@ -8,6 +8,7 @@
             <tree string="Contrats" multi_edit="1" sample="1" default_order='date_start ASC' class="table">
                 <field name="employee_id" readonly="1" widget="many2one_avatar_employee"/>
                 <field name="name" readonly="1"/>
+                <field name="type_emp"/>
                 <field name="job_id"/>
                 <field name="date_start" readonly="1"/>
                 <field name="date_end" readonly="1"/>
@@ -68,11 +69,11 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="chantier_id" class=""/>
+                                            <label for="type_emp" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <span class="fas fa-city form-control-icon"></span>
-                                                    <field name="chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="type_emp" class="form-control" required="1" options="{'no_create': True, 'no_open': False}" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -119,13 +120,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label for="wage" class=""/>
+                                            <label for="chantier_id" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="wage" class="form-control" required="1" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <span class="fas fa-city form-control-icon"></span>
+                                                    <field name="chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
                                                 </div>  
-                                            </div>      
+                                            </div>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="company_id" class=""/>
@@ -135,6 +136,46 @@
                                                     <field name="company_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
                                                 </div>  
                                             </div>    
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="embaucher_par" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="embaucher_par" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="recommander_par" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="recommander_par" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                </div>  
+                                            </div>    
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="wage" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
+                                                    <field name="wage" class="form-control" required="1" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                </div>  
+                                            </div>      
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="motif_enbauche" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-envelope form-control-icon"></span>
+                                                    <field name="motif_enbauche" class="form-control" required="1" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                </div>  
+                                            </div>      
                                         </div>
                                     </div>
                                     <div class="row">

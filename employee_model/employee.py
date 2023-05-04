@@ -12,7 +12,6 @@ class hr_employee(models.Model):
 
     cin = fields.Char('CIN', required=True)
     cnss = fields.Char('CNSS')
-    type_emp = fields.Selection([("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé",default="s")
     title_id = fields.Many2one("res.partner.title","Titre")
     #bank = fields.Many2one("bank","Banque")
     ville_bank = fields.Char(u"Ville")
@@ -22,9 +21,6 @@ class hr_employee(models.Model):
     job = fields.Char("Fonction")
     cotisation = fields.Boolean("Activer Cotisation-CIMR")
     diplome = fields.Char(u"Diplôme")
-    embaucher_par  = fields.Many2one("hr.responsable.chantier",u"Embauché Par")
-    recommander_par  = fields.Many2one("hr.responsable.chantier",u"Recommandé Par")
-    motif_enbauche  = fields.Selection([("1","Satisfaire un besoin"),("2","Remplacement"),("3","Autre")],u"Motif d'embauche")
     obs_embauche  = fields.Char(u"Observation")
     employee_age = fields.Integer(u"Âge",compute="_compute_age")
     date_naissance = fields.Date(u"Date Naissance")
@@ -67,14 +63,20 @@ class hr_employee(models.Model):
                     node.set('create', '0')
                 res['arch'] = etree.tostring(doc)
         return res
-   
+
+    type_emp = fields.Selection(related="contract_id.type_emp",string=u"Type d'employé", required=False, store=True)
+    job_id = fields.Many2one(related="contract_id.job_id", string='Job Position', store=True)
+    embaucher_par  = fields.Many2one(related="contract_id.embaucher_par", string = "Embauché Par", store=True)
+    recommander_par  = fields.Many2one(related="contract_id.recommander_par", string="Recommandé Par", store=True)
+    motif_enbauche  = fields.Selection(related="contract_id.motif_enbauche", string="Motif d'embauche", store=True)
+
     ref_contrat = fields.Char(related="contract_id.name",string='Référence', required=False)
     date_start = fields.Date(related="contract_id.date_start",string='Date de début', required=False)
     date_end = fields.Date(related="contract_id.date_end",string='Date de fin', required=False)
     chantier_related = fields.Many2one(related="contract_id.chantier_id",string='Chantier', required=False)
     type_contrat = fields.Many2one(related="contract_id.contract_type_id",string='Type du contrat', required=False)
     wage = fields.Monetary(related="contract_id.wage",string='Salaire de base', required=False, tracking=True, currency_field = "currency_f")
-    salaire_actuel = fields.Monetary(related="contract_id.salaire_actuel",string='Salaire Actuel', required=False, tracking=True, currency_field = "currency_f")
+    salaire_actuel = fields.Float(related="contract_id.salaire_actuel",string='Salaire Actuel', required=False, tracking=True)
     pp_personnel_id_many2one = fields.Many2one(related="contract_id.pp_personnel_id_many2one",string='Profile de paie')
 
     name_profile_related = fields.Char(related="pp_personnel_id_many2one.name", readonly=True)
@@ -462,6 +464,73 @@ class hr_employee(models.Model):
             'view_type': 'list',
             'view_mode': 'list',
             'view_id': self.env.ref('hr_management.augmentation_par_employee_tree_view').id,
+            'type':'ir.actions.act_window',
+            'domain': [('employee_id', '=', self.id)],
+            }
+    
+    def all_primes(self):
+        return {
+            'name': 'Les primes de ' + self.name,
+            'res_model':'hr.prime',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'view_id': self.env.ref('hr_management.prime_par_employee_tree_view').id,
+            'type':'ir.actions.act_window',
+            'domain': [('employee_id', '=', self.id)],
+            }
+    
+    def all_prelevements(self):
+        return {
+            'name': 'Les prélèvements de ' + self.name,
+            'res_model':'hr.prelevement',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'view_id': self.env.ref('hr_management.prelevement_par_employee_tree_view').id,
+            'type':'ir.actions.act_window',
+            'domain': [('employee_id', '=', self.id),('is_credit', "!=", 'True')],
+            }
+
+    def all_credits(self):
+        return {
+            'name': 'Les crédits de ' + self.name,
+            'res_model':'hr.prelevement',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'view_id': self.env.ref('hr_management.credit_par_employee_tree_view').id,
+            'type':'ir.actions.act_window',
+            'domain': [('employee_id', '=', self.id),('is_credit', "=", 'True')],
+            }
+
+    def all_conges(self):
+        return {
+            'name': 'Les congés de ' + self.name,
+            'res_model':'hr.holidays',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'view_id': self.env.ref('hr_management.holidays_par_employee_tree').id,
+            'type':'ir.actions.act_window',
+            'domain': [('employee_id', '=', self.id)],
+            }
+    
+
+    def all_fiche_paie(self):
+        return {
+            'name': 'Les fiches de paie de ' + self.name,
+            'res_model':'hr.payslip',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'view_id': self.env.ref('hr_management.fiche_paie_par_employee_tree').id,
+            'type':'ir.actions.act_window',
+            'domain': [('employee_id', '=', self.id)],
+            }
+
+    def all_stc(self):
+        return {
+            'name': 'Les STC de ' + self.name,
+            'res_model':'hr.stc',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'view_id': self.env.ref('hr_management.stc_par_employee_tree_view').id,
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id)],
             }

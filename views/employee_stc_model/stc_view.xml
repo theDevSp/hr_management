@@ -27,13 +27,34 @@
         </field>
     </record>
 
+    <record id="stc_par_employee_tree_view" model="ir.ui.view">
+        <field name="name">STC</field>
+        <field name="model">hr.stc</field>
+        <field name="arch" type="xml">
+            <tree string="STC" multi_edit="1" sample="1" class="table">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="cin"/>
+                <field name="job"/>
+                <field name="job_id"/>
+                <field name="chantier"/>
+                <field name="date_debut"/>
+                <field name="date_fin"/>
+                <field name="montant_total"/>
+                <field name="motif"/>
+                <field name="note"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="view_stc_form" model="ir.ui.view">
         <field name="name">STC Form</field>
         <field name="model">hr.stc</field>
         <field name="arch" type="xml">
             <form string="stc">
                 <header>
-                    <button name="action_done" states="valide" string="Términer" type="object" class="oe_highlight" />
+                    <button name="action_done" states="valide" string="Terminer" type="object" class="oe_highlight" />
                     <!-- <button name="compute_stc" states="valide" string="Lancer le calcul" type="object"/> -->
                     <button name="action_valide" states="draft" string="Valider" type="object" class="oe_highlight" />
                     <button name="action_cancel" states="done,valide" string="Annuler" type="object" class="oe_highlight" />
@@ -106,7 +127,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fa fa-id-card form-control-icon"></span>
-                                                    <field name="cin" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="cin" class="form-control"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -115,7 +136,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fa fa-user form-control-icon"></span>
-                                                    <field name="employee_type" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="employee_type" class="form-control"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -155,7 +176,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-barcode form-control-icon"></span>
-                                                    <field name="profile_paie" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}" options="{'no_create': True, 'no_open': True}"/>
+                                                    <field name="profile_paie" class="form-control" options="{'no_create': True, 'no_open': True}"/>
                                                 </div>  
                                             </div>
                                         </div> 
@@ -164,7 +185,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="date_debut" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="date_debut" class="form-control"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -173,7 +194,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="date_fin" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="date_fin" class="form-control"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -193,7 +214,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="bank" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="bank" class="form-control"/>
                                                 </div>  
                                             </div>
                                         </div> 
@@ -237,7 +258,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="salaire" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="salaire" class="form-control"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -461,11 +482,11 @@
                                                     <field name="emprunt_lines" nolabel="1">
                                                         <tree>
                                                             <field name="emprunt_id" />
-                                                            <!-- <field name="emprunt_montant" /> -->
-                                                            <!-- <field name="emprunt_balance" /> -->
+                                                            <field name="emprunt_montant" />
+                                                            <field name="emprunt_balance" />
                                                             <field name="add" />
                                                             <field name="montant_payer" />
-                                                            <!-- <field name="note" /> -->
+                                                            <field name="note" />
                                                         </tree>
                                                     </field>
                                                 </div>    
@@ -497,8 +518,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </sheet>
@@ -519,10 +538,6 @@
                 <field name="employee_id"/>
                 <field name="cin"/>
                 <field name="chantier"/>
-                <!-- <searchpanel>
-                    <field name="motif" icon="fa-comment" enable_counters="1"/>
-                    <field name="state" icon="fa-align-center" enable_counters="1"/>
-                </searchpanel> -->
             </search>
         </field>
     </record>

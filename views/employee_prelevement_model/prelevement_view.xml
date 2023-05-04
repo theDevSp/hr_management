@@ -17,6 +17,23 @@
             </tree>
         </field>
     </record>
+    <record id="prelevement_par_employee_tree_view" model="ir.ui.view">
+        <field name="name">Les Prélèvements</field>
+        <field name="model">hr.prelevement</field>
+        <field name="arch" type="xml">
+            <tree string="Les prélèvements" multi_edit="1" sample="1" class="table">
+                <field name="employee_id"/>
+                <field name="date_fait"/>
+                <field name="montant_total_prime"/>
+                <field name="echeance"/>
+                <field name="montant_paye"/>
+                <field name="reste_a_paye"/>
+                <field name="first_period_id"/>
+                <field name="type_prelevement"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-danger="state == 'annulee'" decoration-success="state == 'validee'"/>
+            </tree>
+        </field>
+    </record>
     <record id="prelevement_view_form" model="ir.ui.view">
         <field name="name">Formulaire des Prélèvements</field>
         <field name="model">hr.prelevement</field>

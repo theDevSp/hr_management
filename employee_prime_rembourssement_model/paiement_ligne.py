@@ -11,8 +11,7 @@ class paiement_ligne(models.Model):
     
     period_id = fields.Many2one("account.month.period", string = "Période")
     prime_id = fields.Many2one("hr.prime", string = "Prime", ondelete="cascade")
-    currency_id = fields.Many2one("res.currency", string = "Symbole Monétaire")
-    montant_a_payer = fields.Monetary("Échéance", currency_field = "currency_id")
+    montant_a_payer = fields.Float("Échéance")
     state  = fields.Selection([
         ("paye","Payé"),
         ("non_paye","Non Payé"),
