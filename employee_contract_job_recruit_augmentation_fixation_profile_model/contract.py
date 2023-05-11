@@ -8,7 +8,7 @@ class contrats(models.Model):
     _description = "Contrats"
     _inherit = ['hr.contract']
 
-    name = fields.Char('Contract Name', readonly=True, copy=False, default='New')
+    name = fields.Char('Référence', readonly=True, copy=False, default='New')
     chantier_id = fields.Many2one('fleet.vehicle.chantier', string = "Chantier")
     profile_paie_id = fields.Many2one('hr.profile.paie', string = "Profile de paie")   
     tt_montant_a_ajouter = fields.Float(string="Montants d'Augmentation", required=True, readonly=True, tracking=True, compute = "compute_augmentation_montants_valides")
@@ -19,8 +19,6 @@ class contrats(models.Model):
     embaucher_par  = fields.Many2one("hr.responsable.chantier",u"Embauché Par")
     recommander_par  = fields.Many2one("hr.responsable.chantier",u"Recommandé Par")
     motif_enbauche  = fields.Selection([("1","Satisfaire un besoin"),("2","Remplacement"),("3","Autre")],u"Motif d'embauche")
-
-
 
     profile_paie_personnel_id = fields.One2many('hr.profile.paie.personnel','contract_id', string = "Profile de paie")
     pp_personnel_id_many2one = fields.Many2one('hr.profile.paie.personnel',string = "Profile de paie")
@@ -37,6 +35,7 @@ class contrats(models.Model):
     salaire_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_jour", readonly=True)
     salaire_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_demi_jour", readonly=True)
     salaire_heure_related = fields.Float(related="pp_personnel_id_many2one.salaire_heure", readonly=True)
+    periodicity_related = fields.Selection(related="profile_paie_id.periodicity", readonly=True)
 
 
     _sql_constraints = [
@@ -123,7 +122,8 @@ class contrats(models.Model):
                 "avoir_conge": self.profile_paie_id.avoir_conge,    
                 "period_id": self.profile_paie_id.period_id.id,    
                 "salaire_mois": self.salaire_actuel,
-                "contract_id": self.id,    
+                "contract_id": self.id,
+                "periodicity": self.periodicity_related   
                 }
             obj = self.env['hr.profile.paie.personnel'].create(champs)
             self.pp_personnel_id_many2one = obj

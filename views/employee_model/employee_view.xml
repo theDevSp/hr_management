@@ -537,7 +537,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="definition_nbre_jour_worked_par_mois_related" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
@@ -546,12 +546,21 @@
                                                 </div>  
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="period_id_related" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-clock form-control-icon"></span>
                                                     <field name="period_id_related" widget="many2one_tags" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="periodicity_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-clock form-control-icon"></span>
+                                                    <field name="periodicity_related" widget="many2one_tags" class="form-control" options="{'no_create': True, 'no_open': True}"/>
                                                 </div>  
                                             </div>
                                         </div>

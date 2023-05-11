@@ -35,6 +35,11 @@ class profilepaie(models.Model):
     plafonner_bonus = fields.Boolean("Plafonner le bonus", default=True)
     avoir_conge = fields.Boolean("Peut avoir un congé", default=True)
     period_id = fields.Many2one("account.month.period", string = "Période")
+    periodicity = fields.Selection(
+        [("q", "Quinzainier"),
+         ("m", "mensuel")],
+         string="Périodicité"
+    )
 
     @api.constrains('nbre_heure_worked_par_jour')
     def _check_nbre_heure_worked_par_jour(self):

@@ -65,7 +65,7 @@ class hr_employee(models.Model):
         return res
 
     type_emp = fields.Selection(related="contract_id.type_emp",string=u"Type d'employé", required=False, store=True)
-    job_id = fields.Many2one(related="contract_id.job_id", string='Job Position', store=True)
+    job_id = fields.Many2one(related="contract_id.job_id", string='Poste', store=True)
     embaucher_par  = fields.Many2one(related="contract_id.embaucher_par", string = "Embauché Par", store=True)
     recommander_par  = fields.Many2one(related="contract_id.recommander_par", string="Recommandé Par", store=True)
     motif_enbauche  = fields.Selection(related="contract_id.motif_enbauche", string="Motif d'embauche", store=True)
@@ -78,6 +78,7 @@ class hr_employee(models.Model):
     wage = fields.Monetary(related="contract_id.wage",string='Salaire de base', required=False, tracking=True, currency_field = "currency_f")
     salaire_actuel = fields.Float(related="contract_id.salaire_actuel",string='Salaire Actuel', required=False, tracking=True)
     pp_personnel_id_many2one = fields.Many2one(related="contract_id.pp_personnel_id_many2one",string='Profile de paie')
+    periodicity_related = fields.Selection(related="contract_id.periodicity_related",string='Périodicité')
 
     name_profile_related = fields.Char(related="pp_personnel_id_many2one.name", readonly=True)
     code_profile_related = fields.Char(related="pp_personnel_id_many2one.code", readonly=True)

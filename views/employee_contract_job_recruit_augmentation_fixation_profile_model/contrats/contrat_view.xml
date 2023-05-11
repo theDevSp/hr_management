@@ -268,7 +268,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="type_profile_related" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
@@ -277,12 +277,21 @@
                                                 </div>  
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="definition_nbre_jour_worked_par_mois_related" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
                                                     <field name="definition_nbre_jour_worked_par_mois_related" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="periodicity_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-clock form-control-icon"></span>
+                                                    <field name="periodicity_related" class="form-control" readonly="1"/>
                                                 </div>  
                                             </div>
                                         </div> 
@@ -306,7 +315,6 @@
                                                 </div>  
                                             </div>
                                         </div>
-                                        
                                         <div class="col-md-4" attrs="{'invisible': [('definition_nbre_jour_worked_par_mois_related', '!=', 'nbr_saisie')], 'readonly': [('state', '!=', 'draft')]}">
                                             <label for="nbre_jour_worked_par_mois_related" class=""/>
                                             <div class="main">

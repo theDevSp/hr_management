@@ -40,9 +40,7 @@ class hr_stc(models.Model):
     bank = fields.Char(related='employee_id.bank_account',string='N° RIB' ,readonly=True)
     date_start = fields.Date(u"Date du STC", default=datetime.today(), states=READONLY_STATES)
     modePay = fields.Selection([('mode1',u'Mise à disposition'),('mode2',u"Virement Postal"),('mode3',u"Virement Bancaire"),('mode4',u"Espèce")],u"Mode de paiement", states=READONLY_STATES)
-    contract = fields.Many2one('hr.contract',string="Contrat" ,readonly=True 
-                # ,domain="('employee_id','=','employee_id')"
-            )
+    contract = fields.Many2one('hr.contract',string="Contrat" ,readonly=True)
     employee_type = fields.Selection(related='employee_id.type_emp',string="Type d'employé")
 
     motif = fields.Text(u"Motif", states=READONLY_STATES)
