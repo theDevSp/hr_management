@@ -29,7 +29,6 @@
         <field name="arch" type="xml">
             <form>
                 <header class="bar-box-shadow mb-4">
-                    <!-- <button name="changer_status" string="Changer l'état" type="object" class="oe_highlight"/> -->
                     <button name="to_annuler" string="Annuler" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ('annule'))]}"/>
                     <field name="state" widget="statusbar" nolabel="1" clickable="1"/>
                 </header>

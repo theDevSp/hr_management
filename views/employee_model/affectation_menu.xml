@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Affectation" id="affectation_menu" parent="config_hr_menu" action="affectation_action" sequence="13"/>
+</odoo>

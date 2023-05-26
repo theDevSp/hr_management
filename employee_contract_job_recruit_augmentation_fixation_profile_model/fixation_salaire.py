@@ -20,9 +20,9 @@ class fixation_salaire(models.Model):
     chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Chantier d'affectation")
     embaucher_par  = fields.Many2one(related='employee_id.embaucher_par',string="Embauché Par",readonly=True)
     recommander_par  = fields.Many2one(related='employee_id.recommander_par',string="Recommandé Par",readonly=True)
-    offered_wage = fields.Float("Salaire Proposé",track_visibility='onchange')
+    offered_wage = fields.Float("Salaire Proposé",tracking=True)
     offered_wage_letters = fields.Char("Salaire Proposé en Lettre", readonly=True)
-    officiel_wage = fields.Float("Salaire Validé",track_visibility='onchange')
+    officiel_wage = fields.Float("Salaire Validé",tracking=True)
     officiel_wage_letters = fields.Char("Salaire Validé en Lettre", readonly=True)
     period_id = fields.Many2one("account.month.period",u'Période',required=True)
     date = fields.Date('Date Fixation', default=datetime.today())
@@ -41,7 +41,7 @@ class fixation_salaire(models.Model):
     def create(self,vals):
         count = len(self.env['hr.fixation.salaire'].search([('period_id','=',vals['period_id'])])) +1
         period_id = self.env['account.month.period'].browse(vals['period_id'])
-        vals['name'] = "F.S./%s/%s"%(str(count).zfill(3),period_id.name)
+        vals['name'] = "F.S./%s/%s"%(str(count).zfill(3),period_id.code)
         if vals.get('offered_wage'):
             vals['offered_wage_letters'] = num2words(vals.get('offered_wage'), lang='fr').title()
         if vals.get('officiel_wage'):
@@ -62,8 +62,6 @@ class fixation_salaire(models.Model):
         if vals.get('propose'):
             if (vals['propose'] or self.propose) and vals['officiel_wage'] == 0:
                 vals['officiel_wage'] = vals['offered_wage']
-        # if vals.get('offered_wage'):
-        #     vals.pop('offered_wage')
         if 'state' in vals:
             if vals['state'] == 'valide' :
                 self.employee_id.contract_id.write({'wage':self.officiel_wage})

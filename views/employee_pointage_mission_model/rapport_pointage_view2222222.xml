@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+
+    
+    
+    <record id="view_mmodification_history_wizard" model="ir.ui.view">
+        <field name="name">modification.wizard</field>
+        <field name="model">hr.rapport.pointage.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <group string="">
+                    <div class="oe_chatter">
+                        <field name="modification_data_html" colspan="4" nolabel="1"/>
+                    </div> 
+                </group>
+                <div class="oe_chatter" groups="nxtm_employee_mngt.group_pointage_controller,nxtm_employee_mngt.group_pointage_admin">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>     
+                <footer>
+                    <button string="Fermer" class="oe_highlight oe_right" special="cancel" />
+                </footer>
+            </form>
+
+        </field>
+    </record>
+
+    
+
+
+
+    <record id="menu_view_pointage_salarie_tree" model="ir.actions.act_window">
+        <field name="name">Rapport Pointage</field>
+        <field name="res_model">hr.rapport.pointage</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{
+                "search_default_group_by_public_market_id":1,
+                "search_default_group_by_period_id":1,
+                "search_default_group_by_emplacement_chantier_id":1,
+                }
+        </field>
+        <field name="domain">[('employee_id.employee_type','=','employee1')]</field>
+    </record>
+    <record id="menu_view_pointage_ouvrier_tree" model="ir.actions.act_window">
+        <field name="name">Rapport Pointage</field>
+        <field name="res_model">hr.rapport.pointage</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{
+                "search_default_group_by_public_market_id":1,
+                "search_default_group_by_period_id":1,
+                "search_default_group_by_emplacement_chantier_id":1,
+                "search_default_group_by_quinzaine":1
+            }</field>
+        <field name="domain">[('employee_id.employee_type','=','employee2')]</field>
+    </record>
+
+    <record id="menu_view_employee_transfert_tree" model="ir.actions.act_window">
+        <field name="name">Transfert</field>
+        <field name="res_model">hr.employee.transfert</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+   
+
+ 
+
+    <record id="view_bce_filter" model="ir.ui.view">
+        <field name="name">hr.rapport.pointage.select</field>
+        <field name="model">hr.rapport.pointage</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="employee_id" />
+                <field name="chantier_id" />
+                <!-- <field name="vehicle_id" /> -->
+                <field name="emplacement_chantier_id" />
+                <field name="rapport_lines" string="Code Engin" filter_domain="[('rapport_lines.vehicle_ids.name','ilike',self)]" />
+                <group expand="0" string="Group By">
+                    <filter name="group_by_public_market_id" string="Chantier" context="{'group_by':'chantier_id'}" />
+                    <filter name="group_by_period_id" string="Période" context="{'group_by':'period_id'}" />
+                    <filter name="group_by_public_market_name" string="Employée" context="{'group_by':'employee_id'}" />
+                    <filter name="group_by_emplacement_chantier_id" string="Equipe" context="{'group_by':'emplacement_chantier_id'}" />
+                    <filter name="group_by_quinzaine" string="Quinzaine" context="{'group_by':'quinzaine'}" />
+                    <filter name="group_by_state" string="Statut" context="{'group_by':'state'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    
+
+    
+
+    <record id="view_transfert_filter" model="ir.ui.view">
+        <field name="name">hr.employee.transfert.select</field>
+        <field name="model">hr.employee.transfert</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="employee_id" />
+                <field name="chantier_id_source" />
+                <field name="chantier_id_destiation" />
+                <group expand="0" string="Group By">
+                    <filter name="group_by_chantiert_id_source" string="Chantier Source" context="{'group_by':'chantier_id_source'}" />
+                    <filter name="group_by_emplacement_chantier_id_source" string="Chantier Destination" context="{'group_by':'chantier_id_destiation'}" />
+                    <filter name="group_by_public_market_name" string="Employée" context="{'group_by':'employee_id'}" />
+                    <filter name="group_by_period_id" string="Date Transfert" context="{'group_by':'date_transfert'}" />
+                    <filter name="group_by_period_id" string="Date Arrivé" context="{'group_by':'date_arriver'}" />
+                    <filter name="group_by_state" string="Statut" context="{'group_by':'state'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="seq_transfert_code" model="ir.sequence.type">
+        <field name="name">TR sequence</field>
+        <field name="code">hr.employee.transfert</field>
+    </record>
+
+    <record id="sequence_transfert" model="ir.sequence">
+        <field name="name">TR</field>
+        <field name="code">hr.employee.transfert</field>
+        <field name="active">TRUE</field>
+        <field name="prefix">TR</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <record id="view_employee_filter_state" model="ir.ui.view">
+        <field name="name">Employees search</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <filter string="Nouveau Embauche" icon="terp-personal" domain="[('state_employee_wtf','=','new')]]" name="new_employee"/>
+            </field>
+            </field>
+    </record>
+
+    <record id="hr_form_vieww_pointage_inherit" model="ir.ui.view">
+        <field name="name">pointage</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="nxtm_employee_mngt.view_employee_form"/>
+        <field name="arch" type="xml">
+            <button name="view_employee_payslips" position="after">
+                    <button name="view_employee_rapport_pointage" class="oe_stat_button" icon="fa-book" type="object" groups="base.group_hr_manager">
+                        <field name="rapport_pointage_count" widget="statinfo" string="Pointage"/>
+                    </button>
+            </button>
+        </field>
+    </record>
+
+    
+    <record id="creation_mass_wizard" model="ir.ui.view">
+        <field name="name">hr.create.mass.wizard</field>
+        <field name="model">hr.filtre.pointage.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <group>
+                    <group>                          
+                        <field name="period_id" options="{'no_create': True,'no_open': True}" />                            
+                        <field name="chantier_id" options="{'no_create': True,'no_open': True}"/>
+                    </group>
+                    <group>
+                    </group>    
+                </group>
+                <footer>                      
+                    <button string="Annuler" class="oe_link oe_right" special="cancel"/>
+                    <button string="Create" name="create_rapports_pointage_mass" class="oe_highlight oe_right" type="object"/> 
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="creation_individuel_wizard" model="ir.ui.view">
+        <field name="name">hr.create.individuel.wizard</field>
+        <field name="model">hr.filtre.pointage.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <group>
+                    <group>                          
+                        <field name="period_id" options="{'no_create': True,'no_open': True}" />                            
+                        <field name="employee_id" options="{'no_create': True,'no_open': True}"/>
+                        <field name="chantier_id" options="{'no_create': True,'no_open': True}"/>
+                    </group>
+                    <group>
+                    </group>    
+                </group>
+                <footer>                      
+                    <button string="Annuler" class="oe_link oe_right" special="cancel"/>
+                    <button string="Create" name="create_rapports_pointage_individuel" class="oe_highlight oe_right" type="object"/> 
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="creation_payslip_wizard" model="ir.ui.view">
+        <field name="name">hr.create.payslip.wizard</field>
+        <field name="model">hr.filtre.pointage.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <group>
+                    <group>                          
+                        <field name="quinzaine"/> 
+                        <field name="period_id" invisible="1"/>                            
+                        <field name="employee_id" invisible="1"/>
+                        <field name="chantier_id" invisible="1"/>
+                        <field name="sous_chantier" invisible="1"/>
+                        <field name="rapport_id" invisible="1"/>
+                    </group>
+                    <group>
+                    </group>    
+                </group>
+                <footer>                      
+                    <button string="Annuler" class="oe_link oe_right" special="cancel"/>
+                    <button string="Create" name="create_payslip" class="oe_highlight oe_right" type="object"/> 
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="creation_rapport_on_transfert" model="ir.ui.view">
+        <field name="name">hr.create.payslip.wizard</field>
+        <field name="model">hr.filtre.pointage.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <group>
+                    <group>                          
+                        <field name="period_id" reandonly="1"/>                            
+                        <field name="employee_id" reandonly="1"/>
+                        <field name="chantier_id" reandonly="1"/>
+                    </group>
+                    <group>
+                    </group>    
+                </group>
+                <footer>                      
+                    <button string="Non" name="cancel_rapport_creation" class="oe_highlight oe_right" type="object"/>
+                    <button string="Oui" name="create_rapports_pointage_individuel" class="oe_right" type="object"/> 
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="create_mass_wizard_action" model="ir.actions.act_window">
+        <field name="name">Création Par Masse</field>
+        <field name="res_model">hr.filtre.pointage.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="creation_mass_wizard" />
+        <field name="target">new</field>
+    </record>
+    
+    
+    <menuitem action="create_mass_wizard_action" id="menu_create_mass_wizard" parent="hr_pointage_main_menu" sequence="3" groups="nxtm_employee_mngt.group_pointage_admin"/>
+    <menuitem id="hr_pointage_main_menu" name="Rapport Pointage"  parent="hr.menu_hr_root" sequence = "-1" groups="nxtm_employee_mngt.group_pointage_manager,nxtm_employee_mngt.group_pointage_controller"/>
+    <menuitem id="hr_pointage_salarie_global" name="Pointage Salariés"  parent="hr_pointage_main_menu" action="menu_view_pointage_salarie_tree" sequence = "-2" />
+    <menuitem id="hr_pointage_ouvrier_global" name="Pointage Ouvriers"  parent="hr_pointage_main_menu" action="menu_view_pointage_ouvrier_tree" sequence = "-2" />
+
+    <menuitem id="action_server_pointeur_transfert" name="Transferts" parent="hr_pointage_main_menu" sequence="3" action="menu_view_employee_transfert_tree"/>
+    <menuitem action="filtre_pointage_wizard_action" id="menu_filtre_pointage_wizard_print" parent="hr_pointage_main_menu" sequence="4"/>
+
+
+</odoo>

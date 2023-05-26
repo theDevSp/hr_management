@@ -41,5 +41,16 @@
             <field name="padding">5</field>
             <field name="implementation">standard</field>
         </record>
+        <record id="sequence_rapport_pointage" model="ir.sequence">
+            <field name="name">Rapport Pointage</field>
+            <field name="code">hr.rapport.pointage.sequence</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">RP</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+            <field name="padding">5</field>
+            <field name="implementation">standard</field>
+        </record>
+
     </data>
 </odoo>

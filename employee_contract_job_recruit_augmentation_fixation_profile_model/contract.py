@@ -20,7 +20,6 @@ class contrats(models.Model):
     recommander_par  = fields.Many2one("hr.responsable.chantier",u"Recommandé Par")
     motif_enbauche  = fields.Selection([("1","Satisfaire un besoin"),("2","Remplacement"),("3","Autre")],u"Motif d'embauche")
 
-    profile_paie_personnel_id = fields.One2many('hr.profile.paie.personnel','contract_id', string = "Profile de paie")
     pp_personnel_id_many2one = fields.Many2one('hr.profile.paie.personnel',string = "Profile de paie")
 
     type_profile_related = fields.Selection(related="pp_personnel_id_many2one.type_profile", readonly=False)
@@ -36,7 +35,8 @@ class contrats(models.Model):
     salaire_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_demi_jour", readonly=True)
     salaire_heure_related = fields.Float(related="pp_personnel_id_many2one.salaire_heure", readonly=True)
     periodicity_related = fields.Selection(related="profile_paie_id.periodicity", readonly=True)
-
+    contract_type = fields.Many2one('hr.contract.type',string = "Types de contrats")
+    current_month = fields.Char("Le mois en cours",compute="_compute_current_month")
 
     _sql_constraints = [
 		('name_contract_uniq', 'UNIQUE(name)', 'Cette référence est déjà utilisée.'),
@@ -132,3 +132,12 @@ class contrats(models.Model):
                     "Erreur, Vous devez séléctionner un profil de paie pour le générer."
                 )
         return True
+    
+    def _compute_current_month(self):
+        today = datetime.now()
+        year = today.year
+        month = '{:02d}'.format(today.month)
+        self.current_month = str(month) + "/" + str(year)
+
+    
+    # def calcule_salaire(self):

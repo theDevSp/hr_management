@@ -92,7 +92,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fa fa-handshake-o form-control-icon"></span>
-                                                    <field name="stc_id" class="form-control" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    <field name="stc_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly':[('state','!=','draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -118,7 +118,8 @@
             <search>
                 <field name="name"/>
                 <searchpanel>
-                    <field name="categorie" icon="fa-comment" enable_counters="1"/>
+                    <field name="categorie" icon="fa-comment" enable_counters="1" select="multi"/>
+                    <field name="state" icon="fa-align-center" enable_counters="1" select="multi"/>
                 </searchpanel>
             </search>
         </field>

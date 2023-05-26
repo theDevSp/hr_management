@@ -32,9 +32,10 @@
                 <field name="cin"/>		
                 <field name="chantier_id"/>		
                 <searchpanel>
-                    <field name="chantier_id" icon="fa-city" enable_counters="1"/>
-                    <field name="emplacement_chantier_id" icon="fa-users" enable_counters="1"/>
-                    <field name="type_emp" icon="fa-money" enable_counters="1"/>
+                    <field name="chantier_id" icon="fa-city" enable_counters="1" select="multi"/>
+                    <field name="emplacement_chantier_id" icon="fa-users" enable_counters="1" select="multi"/>
+                    <field name="type_emp" icon="fa-money" enable_counters="1" select="multi"/>
+                    <field name="state_employee_wtf" icon="fa-align-center" enable_counters="1" select="multi"/>
                 </searchpanel>
             </search>
         </field>

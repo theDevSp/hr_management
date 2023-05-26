@@ -55,11 +55,9 @@
             <form string="stc">
                 <header>
                     <button name="action_done" states="valide" string="Terminer" type="object" class="oe_highlight" />
-                    <!-- <button name="compute_stc" states="valide" string="Lancer le calcul" type="object"/> -->
                     <button name="action_valide" states="draft" string="Valider" type="object" class="oe_highlight" />
                     <button name="action_cancel" states="done,valide" string="Annuler" type="object" class="oe_highlight" />
                     <button name="action_draft" states="cancel" string="Mettre en brouillon" type="object" class="oe_highlight" />
-                    <!-- <button name="print_stc" states="valide,done" string="Imprimer" type="object" class="oe_highlight"/> -->
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -118,7 +116,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fa fa-user form-control-icon"></span>
-                                                    <field name="employee_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                    <field name="employee_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -379,7 +377,6 @@
                                             <label for="preavis_retenu" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <!-- <span class="fas fa-money-bill-wave form-control-icon"></span> -->
                                                     <field name="preavis_retenu" class="form-control" style="max-width:30%;"/>
                                                     =
                                                     <field name="preavis_retenu_m" class="form-control" style="max-width:30%;"/>
@@ -391,7 +388,6 @@
                                             <label for="preavis_ajouter" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <!-- <span class="fas fa-money-bill-wave form-control-icon"></span> -->
                                                     <field name="preavis_ajouter" class="form-control" style="max-width:30%;"/>
                                                     =
                                                     <field name="preavis_ajouter_m" class="form-control" style="max-width:30%;"/>
@@ -538,6 +534,10 @@
                 <field name="employee_id"/>
                 <field name="cin"/>
                 <field name="chantier"/>
+                <searchpanel>
+                    <field name="chantier" icon="fa-city" enable_counters="1" select="multi"/>
+                    <field name="employee_type" icon="fa-money" enable_counters="1" select="multi"/>
+                </searchpanel>
             </search>
         </field>
     </record>

@@ -102,6 +102,7 @@ class holidays(models.Model):
     duree_jours = fields.Float("Durée jour", readonly=True)
     duree_heures = fields.Float("Durée heure")
     description = fields.Text("Description")
+    rapport_id = fields.Many2one("hr.rapport.pointage", string = "Rapport de pointage")
     
     @api.onchange("demi_jour")
     def onchange_demi_jour(self):

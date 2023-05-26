@@ -41,7 +41,6 @@ class hr_stc(models.Model):
     date_start = fields.Date(u"Date du STC", default=datetime.today(), states=READONLY_STATES)
     modePay = fields.Selection([('mode1',u'Mise à disposition'),('mode2',u"Virement Postal"),('mode3',u"Virement Bancaire"),('mode4',u"Espèce")],u"Mode de paiement", states=READONLY_STATES)
     contract = fields.Many2one('hr.contract',string="Contrat" ,readonly=True)
-    employee_type = fields.Selection(related='employee_id.type_emp',string="Type d'employé")
 
     motif = fields.Text(u"Motif", states=READONLY_STATES)
     note = fields.Text(u"Observation", states=READONLY_STATES)
@@ -54,40 +53,40 @@ class hr_stc(models.Model):
             ('1',u'Tous les jours'),
             ('2',u"50 %"),
             ('3',u"25 %")
-        ],u"Nbrs dimanches à calculer",default=1, states=READONLY_STATES,track_visibility='onchange')
+        ],u"Nbrs dimanches à calculer",default=1, states=READONLY_STATES,tracking=True)
     
     montant_dim = fields.Float(u"Montant des dimanches",readonly=True)
-    jr_dim = fields.Float(u"Nombre des dimanches", states=READONLY_STATES,track_visibility='onchange')
+    jr_dim = fields.Float(u"Nombre des dimanches", states=READONLY_STATES,tracking=True)
 
-    prime = fields.Float(u"Prime (DH)", states=READONLY_STATES,track_visibility='onchange')
-    licenciement = fields.Float(u"Licenciement (DH)", states=READONLY_STATES,track_visibility='onchange')
-    dgi = fields.Float(u"Dommage et intérêts (DH)", states=READONLY_STATES,track_visibility='onchange')
-    amande = fields.Float(u"Amende (DH)", states=READONLY_STATES,track_visibility='onchange')
-    retenu = fields.Float(u"Prélèvement (DH)", states=READONLY_STATES,track_visibility='onchange')
+    prime = fields.Float(u"Prime (DH)", states=READONLY_STATES,tracking=True)
+    licenciement = fields.Float(u"Licenciement (DH)", states=READONLY_STATES,tracking=True)
+    dgi = fields.Float(u"Dommage et intérêts (DH)", states=READONLY_STATES,tracking=True)
+    amande = fields.Float(u"Amende (DH)", states=READONLY_STATES,tracking=True)
+    retenu = fields.Float(u"Prélèvement (DH)", states=READONLY_STATES,tracking=True)
 
     emprunt = fields.Float(u"Reste Emprunts (DH)",readonly=True)
     emprunt_lines = fields.One2many("loan.list", 'stc_id',string='Liste des emprunts', states=READONLY_STATES)
 
     reste_salaire = fields.Float(u"Reste du salaire (DH)",readonly=True)
-    valide_salaire = fields.Float(u"Montant Validé (DH)", states=READONLY_STATES,track_visibility='onchange')
+    valide_salaire = fields.Float(u"Montant Validé (DH)", states=READONLY_STATES,tracking=True)
     payslip_lines = fields.One2many("hr.payslip.stc", 'stc_id',string='Fiche Paie', states=READONLY_STATES)
 
-    jr_conge = fields.Float(u"Panier Congés", states=READONLY_STATES,track_visibility='onchange')
+    jr_conge = fields.Float(u"Panier Congés", states=READONLY_STATES,tracking=True)
     jr_conge_m = fields.Float(u"Montant Congés",readonly=True)
 
-    jr_block = fields.Float(u"Jours Restants", states=READONLY_STATES,track_visibility='onchange')
+    jr_block = fields.Float(u"Jours Restants", states=READONLY_STATES,tracking=True)
     jr_block_m = fields.Float(u"Montant Restants",readonly=True)
 
     last_period_days = fields.Float(u"La dernière période (nbr Jours)" ,readonly=True)
-    preavis_retenu = fields.Float(u"Préavis à retenir (Jours)", states=READONLY_STATES,track_visibility='onchange')
-    preavis_ajouter = fields.Float(u"Préavis à ajouter (Jours)", states=READONLY_STATES,track_visibility='onchange')
+    preavis_retenu = fields.Float(u"Préavis à retenir (Jours)", states=READONLY_STATES,tracking=True)
+    preavis_ajouter = fields.Float(u"Préavis à ajouter (Jours)", states=READONLY_STATES,tracking=True)
     preavis_retenu_m = fields.Float(u"Montant (DH)",readonly=True)
     preavis_ajouter_m = fields.Float(u"Montant (DH)",readonly=True)
-    frais_depense = fields.Float(u"Frais de dépense (DH)", states=READONLY_STATES,track_visibility='onchange')
-    frais_route = fields.Float(u"Frais de route (DH)", states=READONLY_STATES,track_visibility='onchange')
-    cimr = fields.Float(u"Cotisation CIMR (DH)", states=READONLY_STATES,track_visibility='onchange')
-    #profile_paie = fields.Many2one(related='contract.function.function_id',string="Profile Paie",readonly=True)
+    frais_depense = fields.Float(u"Frais de dépense (DH)", states=READONLY_STATES,tracking=True)
+    frais_route = fields.Float(u"Frais de route (DH)", states=READONLY_STATES,tracking=True)
+    cimr = fields.Float(u"Cotisation CIMR (DH)", states=READONLY_STATES,tracking=True)
     profile_paie  = fields.Many2one(related="employee_id.contract_id.pp_personnel_id_many2one",string='Profile de paie',readonly=True)
+    employee_type = fields.Selection([("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé",default="s", compute="_compute_type_employee", store=True)
     
     count_by_year = fields.Char(compute="_count_by_year")
 
@@ -125,19 +124,19 @@ class hr_stc(models.Model):
             salaire_jour = contract.wage / contract.pp_personnel_id_many2one.nbre_jour_worked_par_mois
         return salaire_jour
 
-    @api.onchange('jr_conge')
-    def _compute_jr_conge(self):
-        self.jr_conge_m = self.jr_conge * self._salaire_journalier(self.contract)
-
-    @api.onchange('jr_block')
+    @api.depends('contract_id','jr_block')
     def _compute_jr_conge(self):
         self.jr_block_m = self.jr_block * self._salaire_journalier(self.contract)
 
-    @api.onchange('preavis_retenu')
+    @api.depends('contract_id','jr_conge')
+    def _compute_jr_conge(self):
+        self.jr_conge_m = self.jr_conge * self._salaire_journalier(self.contract)
+
+    @api.depends('contract_id','preavis_retenu')
     def _compute_preavis_retenu(self):
         self.preavis_retenu_m = self.preavis_retenu * self._salaire_journalier(self.contract)
 
-    @api.onchange('preavis_ajouter')
+    @api.depends('contract_id','preavis_ajouter')
     def _compute_preavis_ajouter(self):
         self.preavis_ajouter_m = self.preavis_ajouter * self._salaire_journalier(self.contract)
     
@@ -164,7 +163,13 @@ class hr_stc(models.Model):
     @api.model
     def create(self,vals):
         contract = self.env['hr.contract'].browse(vals['contract'])
-        code_type = 'S' if vals['employee_type'] == 's' else 'O'
+        code_type = 'S' if contract.type_emp == 's' else 'O'
+        
+        if not contract.pp_personnel_id_many2one:
+            raise ValidationError(
+                    "Erreur, Cet employé doit avoir un profil de paie."
+                )
+        
         query = """
                 select count(*) from hr_stc where extract(year from date_start) = %s 
                 """% (datetime.today().year)
@@ -173,15 +178,6 @@ class hr_stc(models.Model):
 
         vals['name'] = 'STC'+str(result[0][0]+1).zfill(5)+'-'+code_type+'/'+str(datetime.today().month)+'/'+str(datetime.today().year)
         
-        if vals.get('jr_block'):
-            vals['jr_block_m'] = vals['jr_block'] * self._salaire_journalier(contract)
-        if vals.get('jr_conge'):
-            vals['jr_conge_m'] = vals['jr_conge'] * self._salaire_journalier(contract)
-        if vals.get('preavis_retenu'):
-            vals['preavis_retenu_m'] = vals['preavis_retenu'] * self._salaire_journalier(contract)
-        if vals.get('preavis_ajouter'):
-            vals['preavis_ajouter_m'] = vals['preavis_ajouter'] * self._salaire_journalier(contract)
-
         if vals.get('nombre_dimanche_a_payer'):
             if vals['nombre_dimanche_a_payer'] == '1':
                 vals['montant_dim'] = self._salaire_journalier(contract) * vals['jr_dim']
@@ -200,30 +196,21 @@ class hr_stc(models.Model):
         self.env.cr.execute(query)
         return self.env.cr.fetchall()[0][0]
 
+
     def write(self,vals):
         date = fields.Date.from_string(vals['date_start']) if vals.get('date_start') else fields.Date.from_string(self.date_start)
-        if vals.get('employee_type') or vals.get('date_start'):
-            code_type = 'S' if vals['employee_type'] == 's' else 'O'
+        if vals.get('employee_type') or vals.get('date_start') or vals.get('employee_id'):
+            employee = self.env['hr.employee'].browse(vals['employee_id'])
+            code_type = 'S' if employee.type_emp == 's' else 'O'
             
             query = """
                 select count(*) from hr_stc where extract(year from date_start) = %s and id <= %s
                 """% (date.year,self.id)
             self.env.cr.execute(query)
             result = self.env.cr.fetchall()
-
-            self.name = 'STC'+str(result[0][0]).zfill(5)+'-'+code_type+'/'+str(date.month)+'/'+str(date.year)
-
-        if vals.get('jr_conge'):
-            vals['jr_conge_m'] = vals['jr_conge'] * self._salaire_journalier(self.contract)
-        
-        if vals.get('jr_block'):
-            vals['jr_block_m'] = vals['jr_block'] * self._salaire_journalier(self.contract)
-
-        if vals.get('preavis_retenu'):    
-            vals['preavis_retenu_m'] = vals['preavis_retenu'] * self._salaire_journalier(self.contract)
-
-        if vals.get('preavis_ajouter'):    
-            vals['preavis_ajouter_m'] = vals['preavis_ajouter'] * self._salaire_journalier(self.contract)
+            
+            new_code = 'STC'+str(result[0][0]).zfill(5)+'-'+code_type+'/'+str(date.month)+'/'+str(date.year)
+            self.name = new_code
 
         if vals.get('nombre_dimanche_a_payer'):
             if vals['nombre_dimanche_a_payer'] == '1':
@@ -243,7 +230,6 @@ class hr_stc(models.Model):
 
         if 'state' in vals and vals.get('state') == 'done':
             last_day = str(calendar.monthrange(date.today().year, date.today().month)[1]) 
-            # status = self.env.ref("hr_payroll_ma.holidays_status_conge0")
             date_stop = fields.Date.from_string(str(date.today().year)+'-'+str(date.today().month)+'-'+last_day)
             date_start = fields.Date.from_string(str(date.today().year)+'-'+str(date.today().month)+'-01')
             period_id = self.env["account.month.period"].search([('date_stop','<=',date_stop),('date_start','>=',date_start)],limit=1)   
@@ -272,7 +258,6 @@ class hr_stc(models.Model):
 
             if self.jr_conge != 0:
                 data_bonus = {
-                    # 'holiday_status_id' :status.id ,
                     'employee_id' : self.employee_id.id,
                     'name' : u'Solde de tous compte',
                     'nbr_jour' : -conge,
@@ -336,7 +321,6 @@ class hr_stc(models.Model):
                  "add": True,
                  "montant_payer": line.reste_a_paye
                 })
-        print (res)
         return self.env["loan.list"].sudo().create(res)
     
     
@@ -389,3 +373,18 @@ class hr_stc(models.Model):
                 'contract': [('id','in',contract_ids)]
             }}
        
+    
+    @api.depends('contract','employee_id')
+    def _compute_type_employee(self):
+        self.employee_type = self.contract.type_emp
+
+
+    @api.onchange("employee_id")
+    def _verification_profil(self):
+        profile = self.employee_id.pp_personnel_id_many2one
+        if not profile and self.employee_id:
+            raise ValidationError(
+                    "Erreur, Cet employé doit avoir un profil de paie."
+                )
+        self.contract=False
+

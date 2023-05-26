@@ -49,7 +49,8 @@ class fiche_paie(models.Model):
     quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine")
     emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Équipe")
     type_profile_related = fields.Selection(related="contract_id.type_profile_related",string=u"Type du profile", required=False, store=True, readonly=True)
-
+    rapport_id = fields.Many2one("hr.rapport.pointage", string = "Rapport de pointage")
+    # vehicle_id = ...................
 
     @api.model
     def create(self, vals):
@@ -107,18 +108,13 @@ class fiche_paie(models.Model):
             self.salaire_jour = ""
             self.salaire_demi_jour = ""
             self.salaire_heure = ""
+            self.contract_id = self.employee_id.contract_id
 
-            contract_ids = self.env['hr.contract'].search( ([ ('employee_id','=',self.employee_id.id) , ('state','=','open') ]) ).ids
-            return {'domain': {
-                'contract_id': [('id','in',contract_ids)]
-            }}
-        
         
     def compute_affich_jour_conge(self):
         self.affich_jour_conge = self.employee_id.panier_conge + self.employee_id.panier_jr_ferie
        
-
-
+       
     def compute_affich_bonus_jour(self):
         worked_time = 0
         base_time = 0

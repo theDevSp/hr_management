@@ -21,8 +21,10 @@
                 <field name="jr_travaille_par_chantier"/>
                 <field name="type_fiche"/>
                 <field name="contract_id"/>
+                <field name="rapport_id"/>
                 <field name="date_validation"/>
                 <field name="stc_id"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
             </tree>
         </field>
     </record>
@@ -141,11 +143,20 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
+                                            <label for="rapport_id"/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-file-contract form-control-icon"></span>
+                                                    <field name="rapport_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
                                             <label for="contract_id"/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-file-contract form-control-icon"></span>
-                                                    <field name="contract_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="contract_id" domain="[('employee_id', '=', employee_id)]" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,7 +167,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-user form-control-icon"></span>
-                                                    <field name="type_emp" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="type_emp" class="form-control" options="{'no_create': True, 'no_open': True}" readonly="1"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -165,7 +176,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-briefcase form-control-icon"></span>
-                                                    <field name="job_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="job_id" class="form-control" options="{'no_create': True, 'no_open': True}" readonly="1"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -278,7 +289,7 @@
                                                     <div class="main">
                                                         <div class="form-group">
                                                             <span class="fas fa-clock form-control-icon"></span>
-                                                            <field name="nbr_jour_travaille" class="form-control" />
+                                                            <field name="nbr_jour_travaille" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -395,9 +406,9 @@
                 <field name="employee_id"/>
                 <field name="period_id"/>
                 <searchpanel>
-                    <field name="chantier_id" icon="fa-city" enable_counters="1"/>
-                    <field name="period_id" icon="fa-clock" enable_counters="1"/>
-                    <field name="emplacement_chantier_id" icon="fa-users" enable_counters="1"/>
+                    <field name="chantier_id" icon="fa-city" enable_counters="1" select="multi"/>
+                    <field name="period_id" icon="fa-clock" enable_counters="1" select="multi"/>
+                    <field name="emplacement_chantier_id" icon="fa-users" enable_counters="1" select="multi"/>
                 </searchpanel>
             </search>
         </field>

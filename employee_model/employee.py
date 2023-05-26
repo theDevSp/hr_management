@@ -3,6 +3,8 @@ from odoo.osv import expression
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from lxml import etree
+from odoo.exceptions import ValidationError
+import re
 
 class hr_employee(models.Model):
     _description = "Employee"
@@ -13,11 +15,11 @@ class hr_employee(models.Model):
     cin = fields.Char('CIN', required=True)
     cnss = fields.Char('CNSS')
     title_id = fields.Many2one("res.partner.title","Titre")
-    #bank = fields.Many2one("bank","Banque")
-    ville_bank = fields.Char(u"Ville")
+    bank = fields.Many2one("bank","Banque")
+    ville_bank = fields.Many2one("city",u"Ville")
     bank_agence = fields.Char(u"Agence")
     adress_personnel = fields.Char(u'Adresse personnel')
-    bank_account = fields.Char(u'N° RIB')
+    bank_account = fields.Char(u'N° RIB', size=24)
     job = fields.Char("Fonction")
     cotisation = fields.Boolean("Activer Cotisation-CIMR")
     diplome = fields.Char(u"Diplôme")
@@ -26,20 +28,20 @@ class hr_employee(models.Model):
     date_naissance = fields.Date(u"Date Naissance")
     lieu_naissance = fields.Char(u"Lieu Naissance")
     montant_cimr = fields.Float(u"Montant Cotisation CIMR")
+    
+    # vehicle_id = fields.Many2one("fleet.vehicle",u"Code engin",tracking=True)
 
     remaining_days = fields.Char(compute="_compute_remaining_days",string='Jours Restants')
     date_cin = fields.Date(u'Date validité CIN')
     phone1 = fields.Char(u"Tél. Portable 1")
     phone2 = fields.Char(u"Tél. Portable 2")
     phone3 = fields.Char(u"Tél. Portable 3")
-    #payslip_count = fields.Integer(compute='_compute_payslip')    
-    #nbr_jour_ferie = fields.Float(u"Nombre de Jours Fériés",compute="_compute_jf")
     working_years = fields.Char(compute='_compute_working_years',string="Ancienneté")
     currency_f = fields.Many2one('res.currency', string='Currency')
     chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier")
     
     wage_jour = fields.Float(string='Salaire Journalier')
-    state_employee_wtf = fields.Selection([("new","Nouveau Embauche"),("transfert","Transfert"),("active","Active"),("stc","STC")],u"Situation Employée",index=True, copy=False, default='new', tracking=True)
+    state_employee_wtf = fields.Selection([("new","Nouveau Embauche"),("transfert","Transfert"),("active","Active"),("stc","STC")],u"Situation Employé",index=True, copy=False, default='new', tracking=True)
     active = fields.Boolean('Active', related='resource_id.active', default=True, store=True, readonly=False)
     chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier")
     emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Équipe")
@@ -49,6 +51,15 @@ class hr_employee(models.Model):
     black_list = fields.Boolean("Liste Noire", readonly=True, default=False)
     blacklist_histo = fields.One2many('hr.blacklist', 'employee_id',readonly=True)
     motif_blacklist = fields.Char("Motif Blacklist", compute = "_compute_motif_blacklist")
+
+    @api.constrains('bank_account')
+    def _check_RIB(self):
+        if self.bank_account:
+            if self.bank_account.isdigit() == False:
+                raise ValidationError("Erreur, Le numéro de RIB doit être de type entier.")
+            else:
+                if len(self.bank_account) < 24 or  len(self.bank_account)>24:
+                    raise ValidationError("Erreur, Le numéro de RIB doit avoir 24 caractères.")
 
     @api.model
     def fields_view_get(self,view_id=None, view_type='tree',toolbar=False, submenu=False):
@@ -70,14 +81,13 @@ class hr_employee(models.Model):
     recommander_par  = fields.Many2one(related="contract_id.recommander_par", string="Recommandé Par", store=True)
     motif_enbauche  = fields.Selection(related="contract_id.motif_enbauche", string="Motif d'embauche", store=True)
 
-    ref_contrat = fields.Char(related="contract_id.name",string='Référence', required=False)
     date_start = fields.Date(related="contract_id.date_start",string='Date de début', required=False)
     date_end = fields.Date(related="contract_id.date_end",string='Date de fin', required=False)
     chantier_related = fields.Many2one(related="contract_id.chantier_id",string='Chantier', required=False)
     type_contrat = fields.Many2one(related="contract_id.contract_type_id",string='Type du contrat', required=False)
     wage = fields.Monetary(related="contract_id.wage",string='Salaire de base', required=False, tracking=True, currency_field = "currency_f")
     salaire_actuel = fields.Float(related="contract_id.salaire_actuel",string='Salaire Actuel', required=False, tracking=True)
-    pp_personnel_id_many2one = fields.Many2one(related="contract_id.pp_personnel_id_many2one",string='Profile de paie')
+    pp_personnel_id_many2one = fields.Many2one(related="contract_id.pp_personnel_id_many2one",string='Profile de paie', store=True)
     periodicity_related = fields.Selection(related="contract_id.periodicity_related",string='Périodicité')
 
     name_profile_related = fields.Char(related="pp_personnel_id_many2one.name", readonly=True)
@@ -98,6 +108,18 @@ class hr_employee(models.Model):
     panier_conge = fields.Float("Panier de congé",compute='_compute_panier_conge')
     panier_jr_ferie = fields.Float("Panier des jours fériés", compute='_compute_panier_jr_ferie')
     panier_dimanches = fields.Float("Panier des dimanches", compute='_compute_panier_dimanches')
+
+    nbr_contrats = fields.Integer("Les contrats",compute="count_smart_button")
+    nbr_augmentations = fields.Integer("Les augmentations",compute="count_smart_button")
+    nbr_primes = fields.Integer("Les primes",compute="count_smart_button")
+    nbr_prelevements = fields.Integer("Les prélévements",compute="count_smart_button")
+    nbr_credits = fields.Integer("Les crédits",compute="count_smart_button")
+    nbr_holidays = fields.Integer("Les congés",compute="count_smart_button")
+    nbr_fiches_de_paie = fields.Integer("Les fiches de paie",compute="count_smart_button")
+    nbr_stc = fields.Integer("Les stc",compute="count_smart_button")
+    nbr_rapports_pointage = fields.Integer("Les rapports de pointage",compute="count_smart_button")
+
+    having_contrat = fields.Integer("Having contrat?",compute='compute_having_contrat')
 
     def _compute_age(self):
         for employee in self:
@@ -152,58 +174,9 @@ class hr_employee(models.Model):
             else :
                 employee.wage_jour = 0
 
-
-    @api.model
-    def _contracts_salary(self):  
-        parent_id = self.env.context.get('parent_id') 
-        parent_model = self.env.context.get('parent_model')       
-        if parent_id and parent_model:
-            parent_obj = self.env[parent_model].browse(parent_id)
-            Contract = self.env['hr.contract'].search([('employee_id', '=', parent_obj.employee_id)])
-            return Contract.wage
-
-
-    def view_employee_payslips(self):
-        res = []
-        view = self.env.ref('hr_payroll.view_hr_payslip_tree')
-        form = self.env.ref('hr_payroll.view_hr_payslip_form')
- 
-        payslips = self.env['hr.payslip'].search([('employee_id', '=', self.id)])
-        for data in payslips:
-            res.append(data.id)
-            
-        return {    
-            'type': 'ir.actions.act_window',
-            'name': 'Listes des Employées',
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'res_model': 'hr.payslip',
-            'views': [(view.id, 'tree'),(form.id,'form')],
-            'target': 'current',
-            'domain':[('id','in',res)]
-            }
-
-
-    @api.onchange("identification_id")
-    def _verify_new_recruit(self):
-        if self.identification_id:
-            employee = self.env['hr.employee'].search([('identification_id', '=', self.identification_id)])
-            if employee:
-                if employee.black_list:
-                    return {'warning': {
-                    'title': 'Avertissement',
-                    'message': u"Un employé avec le numéro CIN que vous avez saisi existe déjà et il est fiché dans la liste noire",
-                        }
-                    }
-                else:
-                    return {'warning': {
-                    'title': 'Avertissement',
-                    'message': u"Un employé avec le numéro CIN que vous avez saisi existe déjà ",
-                        }
-                    }
     
     def _get_active_employee(self,employee_type):
-        pointeur = self.env['res.users'].has_group("nxtm_employee_mngt.group_pointage_user")
+        pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
         res =  []
         query = ""
         if pointeur:
@@ -218,139 +191,33 @@ class hr_employee(models.Model):
         self.env.cr.execute(query)
         for employee_id in self.env.cr.fetchall():
             res.append(employee_id[0])
-
         return res
-    
-    def _get_new_employee(self):
-        pointeur = self.env['res.users'].has_group("nxtm_employee_mngt.group_pointage_user")
-        res =  []
-        query = ""
-
-        if pointeur:
-            query = """
-                    select distinct(id) from hr_employee where chantier_id in (select chantier_id from chantier_responsable_relation where user_id = %s) and state_employee_wtf = 'new';
-                """   % (self.env.user.id)
-        else:
-            query = """
-                    select distinct(id) from hr_employee where chantier_id in (select id from fleet_vehicle_chantier where lower(name) not like '%gasoil%' and lower(name) not ilike '%citern%') and state_employee_wtf = 'new';
-                """ 
-
-        self.env.cr.execute(query)
-        for employee_id in self.env.cr.fetchall():
-            res.append(employee_id[0])
-
-        return res
-
-
-    def action_active_salarie(self):
-        pointeur = self.env['res.users'].has_group("nxtm_employee_mngt.group_pointage_user")
-        view = self.env.ref('nxtm_employee_mngt.hr_tree') if not pointeur else self.env.ref('nxtm_employee_mngt.hr_pointeur_tree')
-        form = self.env.ref('nxtm_employee_mngt.hr_form') if not pointeur else self.env.ref('nxtm_employee_mngt.hr_pointeur_form')
-        
-        return {
-            'name':'Liste des Salariés',
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'res_model': 'hr.employee',
-            'views': [(view.id, 'tree'),(form.id,'form')],
-            'target': 'current',
-            'domain':[('id', 'in',self._get_active_employee('s'))]
-        }
-    
-        
-    def action_active_ouvrier(self):
-        pointeur = self.env['res.users'].has_group("nxtm_employee_mngt.group_pointage_user")
-        view = self.env.ref('nxtm_employee_mngt.hr_tree') if not pointeur else self.env.ref('nxtm_employee_mngt.hr_pointeur_tree')
-        form = self.env.ref('nxtm_employee_mngt.hr_form') if not pointeur else self.env.ref('nxtm_employee_mngt.hr_pointeur_form')
-        
-        return {
-            'name':'Liste des Ouvriers',
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'res_model': 'hr.employee',
-            'views': [(view.id, 'tree'),(form.id,'form')],
-            'target': 'current',
-            'domain':[('id', 'in',self._get_active_employee('o'))]
-        }
-
-
-    def nouveau_embauche(self):
-        pointeur = self.env['res.users'].has_group("nxtm_employee_mngt.group_pointage_user")
-        view = self.env.ref('nxtm_employee_mngt.hr_tree') if not pointeur else self.env.ref('nxtm_employee_mngt.hr_pointeur_tree')
-        form = self.env.ref('nxtm_employee_mngt.hr_form') if not pointeur else self.env.ref('nxtm_employee_mngt.hr_pointeur_form')
-        
-        return {
-            'name':'Liste des Nouveaux Embauches',
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'res_model': 'hr.employee',
-            'views': [(view.id, 'tree'),(form.id,'form')],
-            'target': 'current',
-            'domain':[('id', 'in',self._get_new_employee())]
-        }
-        
-    def _get_fin_contrat(self,contract_type,periode):
-
-        query = """
-                    select distinct(employee_id) from hr_contract where
-                    date_part('day',date_end::timestamp - CURRENT_DATE::timestamp) >= 0 
-					and date_part('day',date_end::timestamp - CURRENT_DATE::timestamp) <= %s
-					and contract_type = %s;
-                """   % (periode,contract_type)
-
-        self.env.cr.execute(query)
-        res = []
-        for employee in self.env.cr.fetchall():
-            res.append(employee[0])
-        return res
-
-
-    def action_fin_contrat(self):
-        
-        view = self.env.ref('nxtm_employee_mngt.hr_fin_contrat_tree')
-        form = self.env.ref('nxtm_employee_mngt.hr_form')
-        
-        return {
-            'name':'Fin de Contrat',
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'res_model': 'hr.employee',
-            'views': [(view.id, 'tree'),(form.id,'form')],
-            'target': 'current',
-            'domain':[('id','in',self._get_fin_contrat(2,90))]
-        }
-    
-    def action_fin_contrat_6(self):
-        
-        view = self.env.ref('nxtm_employee_mngt.hr_fin_contrat_tree')
-        form = self.env.ref('nxtm_employee_mngt.hr_form')
-        
-        return {
-            'name':'Fin de Contrat 6 mois',
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'res_model': 'hr.employee',
-            'views': [(view.id, 'tree'),(form.id,'form')],
-            'target': 'current',
-            'domain':[('id','in',self._get_fin_contrat(4,30))]
-        }
-
-    @api.model
-    def name_search(self, name, args=None, operator='ilike', limit=100):
-        args = args or []
-        args2 = ['|',['name',operator,name],['identification_id',operator,name], ['cin',operator,name], ['cnss',operator,name]]
-        
-        args = args2+args
-        recs = self.search(args, limit=limit)
-        return recs.name_get()
 
     @api.model
     def create(self,vals):
+        res_char = []
+        for char in re.split("[^a-zA-Z]*", vals['cin']):
+            if char:
+                for num in re.split("[^0-9]*", vals['cin']):
+                    if num:
+                        res_char.append("position('%s' in lower(cin))>0 and position('%s' in lower(cin))>0 or " % (char.lower(),num))
+
+        if vals['cin']:
+            query = """
+                    select id from hr_employee where 
+                """ 
+            for res in res_char:
+                query += res
+            query = query[:len(query) - 3]
+            print(res_char)
+          
+            self.env.cr.execute(query)
+            if len(self.env.cr.fetchall()) > 0:
+                raise ValidationError(
+                    "Erreur, Un Employée avec le N° CIN %s existe déjà"%(vals['cin'].upper())
+                )        
+            vals['cin'] = vals['cin'].upper()
+
         vals['state_employee_wtf'] ='new'
         return super(hr_employee,self).create(vals)
 
@@ -535,3 +402,111 @@ class hr_employee(models.Model):
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id)],
             }
+
+    def all_rapports_pointage(self):
+        return {
+            'name': 'Les rapports de pointage de ' + self.name,
+            'res_model':'hr.rapport.pointage',
+            'view_type': 'list',
+            'view_mode': 'list',
+            'view_id': self.env.ref('hr_management.holidays_par_employee_tree').id,
+            'type':'ir.actions.act_window',
+            'domain': [('employee_id', '=', self.id)],
+            }
+
+    def to_new(self):
+        if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
+            self.state_employee_wtf = 'new'
+        else:
+            raise ValidationError(
+                    "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
+                )
+
+    def to_active(self):
+        if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
+            self.state_employee_wtf = 'active'
+        else:
+            raise ValidationError(
+                    "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
+                )
+
+    def to_stc(self):
+        if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
+            self.state_employee_wtf = 'stc'
+        else:
+            raise ValidationError(
+                    "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
+                )
+        
+    
+    def count_smart_button(self):
+        for rec in self :
+            query = """SELECT count(*) FROM hr_contract WHERE employee_id = %s""" % (rec.id)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            rec.nbr_contrats = res[0][0] if len(res) > 0 else "0"
+
+            query = """SELECT count(*) FROM hr_augmentation WHERE employee_id = %s""" % (rec.id)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            rec.nbr_augmentations = res[0][0] if len(res) > 0 else "0"
+
+            query = """SELECT count(*) FROM hr_prime WHERE employee_id = %s""" % (rec.id)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            rec.nbr_primes = res[0][0] if len(res) > 0 else "0"
+
+            query = """SELECT count(*) FROM hr_prelevement WHERE employee_id = %s AND is_credit='false'""" % (rec.id)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            rec.nbr_prelevements = res[0][0] if len(res) > 0 else "0"
+
+            query = """SELECT count(*) FROM hr_prelevement WHERE employee_id = %s AND is_credit='true'""" % (rec.id)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            rec.nbr_credits = res[0][0] if len(res) > 0 else "0"
+           
+            query = """SELECT count(*) FROM hr_holidays WHERE employee_id = %s""" % (rec.id)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            rec.nbr_holidays = res[0][0] if len(res) > 0 else "0"
+            
+            query = """SELECT count(*) FROM hr_payslip WHERE employee_id = %s""" % (rec.id)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            rec.nbr_fiches_de_paie = res[0][0] if len(res) > 0 else "0"
+           
+            query = """SELECT count(*) FROM hr_stc WHERE employee_id = %s""" % (rec.id)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            rec.nbr_stc = res[0][0] if len(res) > 0 else "0"
+
+            query = """SELECT count(*) FROM hr_rapport_pointage WHERE employee_id = %s""" % (rec.id)
+            rec.env.cr.execute(query)
+            res = rec.env.cr.fetchall()
+            rec.nbr_rapports_pointage = res[0][0] if len(res) > 0 else "0"
+
+    
+    def compute_having_contrat(self):
+        if self.contract_id:
+            self.having_contrat = 1
+        else:
+            self.having_contrat = 0
+        print(self.having_contrat)
+
+   
+    def ajouter_contrat(self):
+        view = self.env.ref('hr_management.contrats_nouveaux_view_form')
+        return {
+            'name': ("Ajouter un contrat à : \"" + str(self.name) + "\""),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'hr.contract',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'context' : {
+                    'default_employee_id': self.id,
+                    'default_chantier_id': self.chantier_id.id,
+                },
+        }

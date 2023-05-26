@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <record id="hr_recrutement_rule_admin_paie" model="ir.rule">
+        <field name="name">Recrutement Rules Administrateur de Paie</field>
+        <field name="model_id" ref="model_hr_recrutement"/>
+        <field name="domain_force">[]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_admin_paie'))]"/>
+    </record>
+
+    <record id="hr_recrutement_rule_agent_paie" model="ir.rule">
+        <field name="name">Recrutement Rules Agent de Paie</field>
+        <field name="model_id" ref="model_hr_recrutement"/>
+        <field name="domain_force">[('state','!=','draft')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie'))]"/>
+    </record>
+
+    <record id="hr_recrutement_rule_pointeur" model="ir.rule">
+        <field name="name">Recrutement Rules Pointeur</field>
+        <field name="model_id" ref="model_hr_recrutement"/>
+        <field name="domain_force">[('chantier_id','in',user.chantier_responsable_ids.ids)]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_pointeur'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    
+    <record id="fleet_vehicle_chantier_rule_pointeur" model="ir.rule">
+        <field name="name">Chantier Rules Pointeur</field>
+        <field name="model_id" ref="construction_site_management.model_fleet_vehicle_chantier"/>
+        <field name="domain_force">[('id','in',user.chantier_responsable_ids.ids)]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_pointeur'))]"/>
+    </record>
+
+    <record id="employee_chantier_rule_pointeur" model="ir.rule">
+        <field name="name">Employee Chantier Rules Pointeur</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="domain_force">[('chantier_id','in',user.chantier_responsable_ids.ids)]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_pointeur'))]"/>
+    </record>
+
+    <record id="holidays_chantier_rule_pointeur" model="ir.rule">
+        <field name="name">Holidays Chantier Rules Pointeur</field>
+        <field name="model_id" ref="model_hr_holidays"/>
+        <field name="domain_force">[('chantier_id','in',user.chantier_responsable_ids.ids)]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_pointeur'))]"/>
+    </record>
+</odoo>

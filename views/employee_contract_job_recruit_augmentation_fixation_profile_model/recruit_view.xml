@@ -69,7 +69,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-city form-control-icon"></span>
-                                                    <field name="chantier_id" options="{'no_create': True, 'no_open': False}" class="form-control"/>
+                                                    <field name="chantier_id" options="{'no_create': True, 'no_open': True}" class="form-control"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -211,10 +211,10 @@
                 <filter name="group_by_chantier" string="Chantier" icon="terp-partner" context="{'group_by':'chantier_id'}"/>   
                 <filter name="group_by_poste" string="Poste" icon="terp-partner" context="{'group_by':'title_poste'}"/>   
                 <searchpanel>
-                    <field name="chantier_id" icon="fa-city" enable_counters="1"/>
-                    <field name="responsable_id" icon="fa-user" enable_counters="1"/>
-                    <field name="title_poste" icon="fa-briefcase" enable_counters="1"/>
-                    <field name="state" icon="fa-align-center" enable_counters="1"/>
+                    <field name="chantier_id" icon="fa-city" enable_counters="1" select="multi"/>
+                    <field name="responsable_id" icon="fa-user" enable_counters="1" select="multi"/>
+                    <field name="title_poste" icon="fa-briefcase" enable_counters="1" select="multi"/>
+                    <field name="state" icon="fa-align-center" enable_counters="1" select="multi"/>
                 </searchpanel>
             </search>
         </field>

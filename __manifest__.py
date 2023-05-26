@@ -8,12 +8,12 @@
     'license': 'LGPL-3',
 
     'depends': [
-        'base', 'mail', 'hr', 'stock', 'hr_contract', 'construction_site_management', 'muk_web_theme', 'account_fiscal_year_period', 'base_fontawesome', 'reports_templates'
+        'base', 'mail', 'hr', 'stock', 'hr_contract', 'construction_site_management', 'muk_web_theme', 'account_fiscal_year_period', 'base_fontawesome', 'reports_templates', 'fleet'
         ],
 
     'data': [         
-        
         'security/groups.xml',
+        'security/rules.xml',
         'security/ir.model.access.csv',
         'wizard/wizard_blacklist_view.xml',
         'wizard/wizard_reporter_dates_view.xml',
@@ -44,6 +44,12 @@
         'views/employee_stc_model/stc_view.xml',
         'views/employee_payroll_model/fiche_paie_view.xml',
         'views/employee_payroll_model/jr_travaille_par_chantier_view.xml',
+        'views/employee_model/bank_city_view.xml',
+        'views/employee_model/affectation_view.xml',
+        'views/employee_pointage_mission_model/pointage_view.xml',
+        # 'views/employee_pointage_mission_model/rapport_pointage_view.xml',
+        # 'views/employee_pointage_mission_model/rapport_pointage_admin_view.xml',
+        # 'views/employee_pointage_mission_model/rapport_pointage_pointeur_view.xml',
 
         'reports/report_demande_recrutement.xml',
         'reports/report_fiche_employee.xml',
@@ -81,6 +87,9 @@
         'views/employee_stc_model/stc_menu.xml',
         'views/employee_payroll_model/fiche_paie_menu.xml',
         'views/employee_payroll_model/jr_travaille_par_chantier_menu.xml',
+        'views/employee_pointage_mission_model/pointage_menu.xml',
+        'views/employee_model/bank_city_menu.xml',
+        'views/employee_model/affectation_menu.xml',
     ],
 
     'demo': [
