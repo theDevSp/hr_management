@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id='postes_action' model='ir.actions.act_window'>
-        <field name="name"> HR Management - Postes </field>
-        <field name="res_model">hr.job</field>
-        <field name="view_mode">tree,form,search</field>
-    </record>
-
     <record id="postes_tree" model="ir.ui.view">
         <field name="name"> List of Postes</field>
         <field name="model">hr.job</field>

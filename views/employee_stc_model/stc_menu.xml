@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <menuitem name="STC" id="stc_menu" parent="hr_management_base_menu" action="stc_action" sequence="6" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+
+    <record id='stc_action' model='ir.actions.act_window'>
+        <field name="name">STC</field>
+        <field name="res_model">hr.stc</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 </odoo>

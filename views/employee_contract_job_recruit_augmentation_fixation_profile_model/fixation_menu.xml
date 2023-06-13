@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <menuitem name="Fixation de salaire" id="fixation_menu" parent="contrats_main_menu" action="fixation_salaire_action" sequence="3"/>
+
+    <record id='fixation_salaire_action' model='ir.actions.act_window'>
+        <field name="name">Fixation de salaire</field>
+        <field name="res_model">hr.fixation.salaire</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
 </odoo>

@@ -404,10 +404,4 @@
             </search>
         </field>
     </record>
-    <record id='all_contrats_list_action' model='ir.actions.act_window'>
-        <field name="name">Liste des Contrats </field>
-        <field name="res_model">hr.contract</field>
-        <field name="view_id" ref="contrats_nouveaux_tree"/> 
-        <field name="view_mode">tree,form,search</field>
-    </record>
 </odoo>

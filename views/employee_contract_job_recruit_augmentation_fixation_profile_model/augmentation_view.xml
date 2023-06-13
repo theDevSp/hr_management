@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id='augmentation_action' model='ir.actions.act_window'>
-        <field name="name">Augmentation de Salaire </field>
-        <field name="res_model">hr.augmentation</field>
-        <field name="view_mode">tree,form,search</field>
-    </record>
-
     <record id="augmentation_tree" model="ir.ui.view">
         <field name="name">Liste des augmentations</field>
         <field name="model">hr.augmentation</field>

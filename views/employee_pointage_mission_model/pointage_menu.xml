@@ -6,4 +6,10 @@
     <menuitem name="Création par mass" id="create_mass_menu" parent="pointage_menu" action="pointage_action" sequence="3" groups="hr_management.group_admin_paie"/>
     <menuitem name="Impréssion par mass" id="print_mass_menu" parent="pointage_menu" action="pointage_action" sequence="4"/>
     <menuitem action="new_employee_wizard_action" id="menu_new_embauche_wizard" parent="pointage_menu" sequence="5" groups="hr_management.group_admin_paie,hr_management.group_pointeur"/>
+
+    <record id='pointage_action' model='ir.actions.act_window'>
+        <field name="name"> Rapport de pointage </field>
+        <field name="res_model">hr.rapport.pointage</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
 </odoo>

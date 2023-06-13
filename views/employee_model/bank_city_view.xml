@@ -17,15 +17,5 @@
                 <field name="name"/>
             </tree>
         </field>
-    </record>
-    <record id="bank_action" model="ir.actions.act_window" >
-        <field name="name">Banks</field>
-        <field name="res_model">bank</field>
-        <field name="view_mode">tree</field>
-    </record>
-    <record id="city_action" model="ir.actions.act_window">
-        <field name="name">Cities</field>
-        <field name="res_model">city</field>
-        <field name="view_mode">tree</field>
-    </record>        
+    </record>     
 </odoo>
