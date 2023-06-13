@@ -8,23 +8,25 @@ class contrats(models.Model):
     _description = "Contrats"
     _inherit = ['hr.contract']
 
-    name = fields.Char('Contract Name', readonly=True, copy=False, default='New')
+    name = fields.Char('Référence', readonly=True, copy=False, default='New')
     chantier_id = fields.Many2one('fleet.vehicle.chantier', string = "Chantier")
-    profile_paie_id = fields.Many2one('hr.profile.paie', string = "Profile de paie")
-        
-    currency_id = fields.Many2one('res.currency', string = 'Symbole Monétaire')
-    tt_montant_a_ajouter = fields.Monetary(string="Montans d'Augmentation", required=True, readonly=True, tracking=True, currency_field = "currency_id", compute = "_compute_augmentation_montants_valides")
-    salaire_actuel = fields.Monetary('Salaire Actuel', readonly=True, currency_field = 'currency_id')
+    profile_paie_id = fields.Many2one('hr.profile.paie', string = "Profile de paie")   
+    tt_montant_a_ajouter = fields.Float(string="Montants d'Augmentation", required=True, readonly=True, tracking=True, compute = "compute_augmentation_montants_valides")
+    salaire_actuel = fields.Float('Salaire Actuel', readonly=True)
 
-    profile_paie_personnel_id = fields.One2many('hr.profile.paie.personnel','contract_id', string = "Profile de paie")
-    pp_personnel_id_many2one = fields.Many2one('hr.profile.paie.personnel',string = "Profile de paie m2o")
+
+    type_emp = fields.Selection([("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé",default="s")
+    embaucher_par  = fields.Many2one("hr.responsable.chantier",u"Embauché Par")
+    recommander_par  = fields.Many2one("hr.responsable.chantier",u"Recommandé Par")
+    motif_enbauche  = fields.Selection([("1","Satisfaire un besoin"),("2","Remplacement"),("3","Autre")],u"Motif d'embauche")
+
+    pp_personnel_id_many2one = fields.Many2one('hr.profile.paie.personnel',string = "Profile de paie")
 
     type_profile_related = fields.Selection(related="pp_personnel_id_many2one.type_profile", readonly=False)
     nbre_heure_worked_par_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.nbre_heure_worked_par_demi_jour", readonly=False)
     nbre_heure_worked_par_jour_related = fields.Float(related="pp_personnel_id_many2one.nbre_heure_worked_par_jour", readonly=False)
     nbre_jour_worked_par_mois_related = fields.Float(related="pp_personnel_id_many2one.nbre_jour_worked_par_mois", readonly=False)
     definition_nbre_jour_worked_par_mois_related = fields.Selection(related="pp_personnel_id_many2one.definition_nbre_jour_worked_par_mois", readonly=False)
-
     completer_salaire_related = fields.Boolean(related="pp_personnel_id_many2one.completer_salaire", readonly=False)
     plafonner_bonus_related = fields.Boolean(related="pp_personnel_id_many2one.plafonner_bonus", readonly=False)
     avoir_conge_related = fields.Boolean(related="pp_personnel_id_many2one.avoir_conge", readonly=False)
@@ -32,13 +34,15 @@ class contrats(models.Model):
     salaire_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_jour", readonly=True)
     salaire_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_demi_jour", readonly=True)
     salaire_heure_related = fields.Float(related="pp_personnel_id_many2one.salaire_heure", readonly=True)
-
+    periodicity_related = fields.Selection(related="profile_paie_id.periodicity", readonly=True)
+    contract_type = fields.Many2one('hr.contract.type',string = "Types de contrats")
+    current_month = fields.Char("Le mois en cours",compute="_compute_current_month")
 
     _sql_constraints = [
 		('name_contract_uniq', 'UNIQUE(name)', 'Cette référence est déjà utilisée.'),
 	]
 
-    def _compute_augmentation_montants_valides(self):
+    def compute_augmentation_montants_valides(self):
         query = """
                 SELECT case when SUM(montant_valide) is null then 0 else SUM(montant_valide) end as sum
                 FROM hr_augmentation aug,hr_contract ctr, account_month_period mnth
@@ -85,21 +89,18 @@ class contrats(models.Model):
         """ % (vals['employee_id'])
         self.env.cr.execute(query)
         res = self.env.cr.dictfetchall()[0]
-
         if(res['count']==0):
-            type_emp = self.env['hr.employee'].browse(vals["employee_id"]).type_emp
+            
             today = datetime.now()
             year = today.year
             month = '{:02d}'.format(today.month)
             contract_sequence = self.env['ir.sequence'].next_by_code('hr.contract.sequence')
-            vals['name'] = type_emp + '-' + str(month) + '/' + str(year) + '/' + str(contract_sequence)
+            vals['name'] = vals['type_emp'] + '-' + str(month) + '/' + str(year) + '/' + str(contract_sequence)
         else:
             raise ValidationError(
                     "Erreur, Cet employé a déjà un contrat 'New' ou 'Running'."
                 )
-
         return super(contrats, self).create(vals)
-
 
 
     def write(self, vals):
@@ -107,9 +108,7 @@ class contrats(models.Model):
 
 
     def generer_profile(self):
-        
         if self.profile_paie_id :
-        
             champs = {
                 "name": self.profile_paie_id.name,
                 "code": self.profile_paie_id.code,
@@ -123,14 +122,22 @@ class contrats(models.Model):
                 "avoir_conge": self.profile_paie_id.avoir_conge,    
                 "period_id": self.profile_paie_id.period_id.id,    
                 "salaire_mois": self.salaire_actuel,
-                "contract_id": self.id,    
+                "contract_id": self.id,
+                "periodicity": self.periodicity_related   
                 }
-
             obj = self.env['hr.profile.paie.personnel'].create(champs)
             self.pp_personnel_id_many2one = obj
-
         else:
            raise ValidationError(
-                    "Erreur, Vous devez séléctionner un profile de paie pour le générer."
+                    "Erreur, Vous devez séléctionner un profil de paie pour le générer."
                 )
         return True
+    
+    def _compute_current_month(self):
+        today = datetime.now()
+        year = today.year
+        month = '{:02d}'.format(today.month)
+        self.current_month = str(month) + "/" + str(year)
+
+    
+    # def calcule_salaire(self):

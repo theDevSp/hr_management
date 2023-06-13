@@ -10,7 +10,7 @@
         <field name="name">Les types des Primes</field>
         <field name="model">hr.prime.type</field>
         <field name="arch" type="xml">
-            <tree string="Types des contrats" multi_edit="1" sample="1" class="table">
+            <tree string="Types des primes" multi_edit="1" sample="1" class="table">
                 <field name="name"/>
                 <field name="type_addition"/>
                 <field name="montant"/>
@@ -74,7 +74,7 @@
     </record>
 
     <record id="prime_type_search" model="ir.ui.view">
-        <field name="name">Recherche des Types Contrats</field>
+        <field name="name">Recherche des Types Primes</field>
         <field name="model">hr.prime.type</field>
         <field name="arch" type="xml">
             <search>

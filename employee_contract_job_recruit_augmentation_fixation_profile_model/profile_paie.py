@@ -2,8 +2,10 @@
 
 from odoo import models, fields, api
 from datetime import datetime
+from datetime import date
+from math import *
 from odoo.exceptions import ValidationError
-
+from calendar import monthrange
 
 class profilepaie(models.Model):
     _name = "hr.profile.paie"
@@ -18,8 +20,8 @@ class profilepaie(models.Model):
         string=u"Type du Profile",
         default="h",
         required=True)
-    nbre_heure_worked_par_demi_jour = fields.Float("Heures travaillés par demi jour", required=True)
-    nbre_heure_worked_par_jour = fields.Float("Heures travaillés par jour", required=True)
+    nbre_heure_worked_par_demi_jour = fields.Float("Heures travaillées par demi jour", required=True)
+    nbre_heure_worked_par_jour = fields.Float("Heures travaillées par jour", required=True)
     nbre_jour_worked_par_mois = fields.Float("Jours travaillés par mois", required=True, default=26)
 
     definition_nbre_jour_worked_par_mois = fields.Selection(
@@ -33,11 +35,11 @@ class profilepaie(models.Model):
     plafonner_bonus = fields.Boolean("Plafonner le bonus", default=True)
     avoir_conge = fields.Boolean("Peut avoir un congé", default=True)
     period_id = fields.Many2one("account.month.period", string = "Période")
-
-
-    _sql_constraints = [
-		('name_contract_uniq', 'UNIQUE(name)', 'Cette référence est déjà utilisée.'),
-	]
+    periodicity = fields.Selection(
+        [("q", "Quinzainier"),
+         ("m", "mensuel")],
+         string="Périodicité"
+    )
 
     @api.constrains('nbre_heure_worked_par_jour')
     def _check_nbre_heure_worked_par_jour(self):
@@ -58,7 +60,9 @@ class profilepaie(models.Model):
             
     @api.onchange('definition_nbre_jour_worked_par_mois')
     def _onchange_definition_nbre_jour_worked_par_mois(self):
-        self.nbre_jour_worked_par_mois = 0.0 if self.definition_nbre_jour_worked_par_mois == 'jr_mois' else 26
+        today = date.today()
+        nbr_days = monthrange(today.year, today.month)[1]
+        self.nbre_jour_worked_par_mois = nbr_days if self.definition_nbre_jour_worked_par_mois == 'jr_mois' else 26
 
     @api.model
     def create(self, vals):

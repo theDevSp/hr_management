@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="creation_individuel_wizard" model="ir.ui.view">
+        <field name="name">hr.create.individuel.wizard</field>
+        <field name="model">hr.filtre.pointage.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <group>
+                    <group>                          
+                        <field name="period_id" options="{'no_create': True,'no_open': True}" />                            
+                        <field name="employee_id" options="{'no_create': True,'no_open': True}"/>
+                        <field name="chantier_id" options="{'no_create': True,'no_open': True}"/>
+                    </group>
+                    <group>
+                    </group>    
+                </group>
+                <footer>                      
+                    <button string="Annuler" class="oe_link oe_right" special="cancel"/>
+                    <button string="Create" name="create_rapports_pointage_individuel" class="oe_highlight oe_right" type="object"/> 
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_stc">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.internal_layout">
+                    <t t-set="documents_title" t-value="'STC'"/>
+					<div class="page pg_stc">
+						<div class="row cards_stc mb-3">
+                            <div class="col-8">
+								<div class="card mb-2 bg-light job-card-fixed cadres">
+                                    <div class="card-header border-top border-left border-right border-dark text-center">
+                                        <h5><strong><span t-field="doc.chantier.name"/></strong></h5>
+                                    </div>
+                                    <div class="card-body border border-dark text-dark">
+                                        <center>
+                                            <table>
+                                                <tr>
+                                                    <td class="text-left" width="36%"><strong>NOM ET PRÉNOM</strong></td>
+                                                    <td width="6%" class="text-center"> : </td>
+                                                    <td class="text-left" width="58%"><span t-field="doc.employee_id.name"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="36%"><strong>N° CIN</strong></td>
+                                                    <td width="6%" class="text-center"> : </td>
+                                                    <td class="text-left" width="58%"><span t-field="doc.cin"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="36%"><strong>FONCTION</strong></td>
+                                                    <td width="6%" class="text-center"> : </td>
+                                                    <td class="text-left" width="58%"><span t-field="doc.employee_id.job_id.name"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="36%"><strong>SALAIRE</strong></td>
+                                                    <td width="6%" class="text-center"> : </td>
+                                                    <td class="text-left" width="58%"><span t-out="doc.salaire"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="36%"><strong>CHANTIER</strong></td>
+                                                    <td width="6%" class="text-center"> : </td>
+                                                    <td class="text-left" width="58%"><span t-field="doc.chantier.name"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="36%"><strong>N° COMPTE</strong></td>
+                                                    <td width="6%" class="text-center"> : </td>
+                                                    <td class="text-left" width="58%"><span t-field="doc.bank"/></td>
+                                                </tr>
+												<tr>
+                                                    <td class="text-left" width="36%"><strong>PAIEMENT</strong></td>
+                                                    <td width="6%" class="text-center"> : </td>
+                                                    <td class="text-left" width="58%"><span t-field="doc.modePay"/></td>
+                                                </tr>
+												<tr>
+                                                    <td class="text-left" width="36%"><strong>PÉRIODE TRAVAILLÉE</strong></td>
+                                                    <td width="6%" class="text-center"> : </td>
+                                                    <td class="text-left" width="58%">DU <span t-field="doc.date_debut"/> AU <span t-field="doc.date_fin" /></td>
+                                                </tr>
+												<tr>
+                                                    <td class="text-left" width="36%"><strong>PAR ORDRE DE</strong></td>
+                                                    <td width="6%" class="text-center"> : </td>
+                                                    <td class="text-left" width="58%"><span t-field="doc.ordre"/></td>
+                                                </tr>
+                                            </table>
+                                        </center>
+                                    </div>
+                                </div>
+							</div>
+
+                            <div class="col-4">
+								<div class="card mb-2 bg-light job-card-fixed cadres">
+                                    <div class="card-header border-top border-left border-right border-dark text-center">
+                                        <h5><strong><span t-field="doc.name"/></strong></h5>
+                                    </div>
+                                    <div class="card-body border border-dark text-dark">
+                                        <h6 class="text-center">
+											DATE : <strong><span t-field="doc.date_start"/></strong>
+										</h6>
+                                    </div>
+                                </div>
+
+								<div class="card mb-2 bg-light job-card-fixed cadres">
+                                    <div class="card-header border-top border-left border-right border-dark text-center">
+                                        <h5><strong><span t-field="doc.job_id.name"/></strong></h5>
+                                    </div>
+                                    <div class="card-body border border-dark text-dark">
+                                        <h6 class="text-center">
+											<strong>Salarié N° : <span t-field="doc.count_by_year"/></strong>
+										</h6>
+                                    </div>
+                                </div>
+							</div>
+						</div>
+
+						<div class="row mb-3">
+							<div class="col-6" t-if="doc.reste_salaire != 0 or doc.dgi != 0 or doc.licenciement != 0 or doc.prime != 0 or doc.frais_depense != 0 or doc.frais_route != 0">
+								<div class="card mb-4 bg-light job-card-fixed cadres" style="border-radius: 10px;">
+                                    <div class="card-header border-top border-left border-right border-dark text-center">
+                                        <h5>Remboursement</h5>
+                                    </div>
+                                    <div class="card-body border-right border-bottom border-left border-dark text-dark">
+                                        <center>
+                                            <table>
+                                                <tr>
+                                                    <td class="text-left" width="62%"><strong>RESTE SALAIRE</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="30%"><span t-esc="'%.2f'% (doc.reste_salaire)"/> (DH)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="62%"><strong>DOMMAGES ET INTÉRÊTS</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="30%"><span t-esc="'%.2f'% (doc.dgi)"/> (DH)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="62%"><strong>LICENCIEMENT</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="30%"><span t-esc="'%.2f'% (doc.licenciement)"/> (DH)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="62%"><strong>PRIME</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="30%"><span t-esc="'%.2f'% (doc.prime)"/> (DH)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="62%"><strong>FRAIS DÉPENSE</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="30%"><span t-esc="'%.2f'% (doc.frais_depense)"/> (DH)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" width="62%"><strong>FRAIS ROUTE</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="30%"><span t-esc="'%.2f'% (doc.frais_route)"/> (DH)</td>
+                                                </tr>
+                                            </table>
+                                        </center>
+                                    </div>
+                                </div>
+							</div>
+
+							<div class="col-6" t-if="doc.jr_conge != 0 or doc.jr_dim > 0 or doc.jr_block != 0">
+								<div class="card mt-3 mb-2 bg-light job-card-fixed cadres" style="border-radius: 10px;">
+                                    <div class="card-header border-top border-left border-right border-dark text-center">
+                                        <h5>Congés, Dimanches et Indeminités</h5>
+                                    </div>
+                                    <div class="card-body border-right border-bottom border-left border-dark text-dark">
+                                        <center>
+                                            <table style="width:100%" class="stc_table" t-if="doc.jr_conge != 0">
+												<tr>
+													<td class="text-left" width="46%"><strong>Total Congés</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="46%"><span t-field="doc.jr_conge"/> (Jour)</td>
+												</tr>
+												<tr t-if="doc.jr_conge != 0">
+													<td class="text-left" width="46%">MONTANT</td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="46%"><span t-esc="'%.2f'% (doc.jr_conge_m)" /> (DH)</td>
+												</tr>
+											</table> 
+											
+											<table style="width:100%" class="stc_table" t-if="doc.jr_dim > 0 and doc.jr_conge != 0">
+												<tr>
+													<td class="text-left" width="46%"><strong>Total Dimanches</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+													<td class="text-left" width="46%"><span t-esc="doc.jr_dim" /> (Jour)</td>
+												</tr>
+												<tr t-if="doc.jr_dim > 0">
+													<td class="text-left" style="width:46%">MONTANT</td>
+                                                    <td width="8%" class="text-center"> : </td>
+													<td class="text-left" style="width:46%"><span t-esc="'%.2f'% (doc.montant_dim)" /> (DH)</td>
+												</tr>
+											</table>
+											
+											<table style="width:100%" class="stc_table" t-if="doc.jr_block > 0 and (doc.jr_dim > 0 or doc.jr_conge != 0)">
+												<tr>
+													<td class="text-left" style="width:46%">Total Indeminités</td>
+                                                    <td width="8%" class="text-center"> : </td>
+													<td class="text-left" style="width:46%"><span t-esc="doc.jr_block" /> (Jour)</td>
+												</tr>
+												<tr t-if="doc.jr_block > 0">
+													<td class="text-left" style="width:46%">MONTANT</td>
+                                                    <td width="8%" class="text-center"> : </td>
+													<td class="text-left" style="width:46%"><span t-esc="'%.2f'% (doc.jr_block_m)" /> (DH)</td>
+												</tr>
+											</table>
+                                        </center>
+                                    </div>
+                                </div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-6" t-if="doc.preavis_ajouter != 0 or doc.preavis_retenu > 0 or doc.amande != 0 or doc.retenu != 0 or doc.cimr != 0 or doc.emprunt != 0">
+								<div class="card mb-4 bg-light job-card-fixed cadres" style="border-radius: 10px;">
+                                    <div class="card-header border-top border-left border-right border-dark text-center">
+                                        <h5>Préavis</h5>
+                                    </div>
+                                    <div class="card-body border-right border-bottom border-left border-dark text-dark">
+										<center>
+											<table width="100%" class="stc_table">
+												<tr>
+													<td class="text-left" width="50%"><strong>PRÉAVIS À AJOUTER</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+                                                    <td class="text-left" width="42%"><span t-esc="doc.preavis_ajouter"/></td>
+												</tr>
+												<tr>
+													<td class="text-left" width="50%"><strong>MONTANT</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+													<td class="text-left" width="42%"><span t-esc="'%.2f'% (doc.preavis_ajouter_m)" /> (DH)</td>
+												</tr>
+												<tr>
+													<td class="text-left" width="50%"><strong>PRÉAVIS À RETENIR</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+													<td class="text-left" width="42%"><span t-esc="doc.preavis_retenu" /></td>
+												</tr>
+												<tr>
+													<td class="text-left" width="50%"><strong>MONTANT</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+													<td class="text-left" width="42%"><span t-esc="'%.2f'% (doc.preavis_retenu_m)" /> (DH)</td>
+												</tr>
+												<tr>
+													<td class="text-left" width="50%"><strong>AMENDE</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+													<td class="text-left" width="42%"><span t-field="doc.amande" /> (DH)</td>
+												</tr>
+												<tr>
+													<td class="text-left" width="50%"><strong>PRÉLÈVEMENT</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+													<td class="text-left" width="42%"><span t-field="doc.retenu" /> (DH)</td>
+												</tr>
+												<tr>
+													<td class="text-left" width="50%"><strong>CIMR</strong></td>
+                                                    <td width="8%" class="text-center"> : </td>
+													<td class="text-left" width="42%"><span t-field="doc.cimr" /> (DH)</td>
+												</tr>
+												<tr>
+													<td class="text-left" width="50%" t-if="doc.emprunt > 0"><strong>RESTE DE L'EMPRUNT</strong></td>
+                                                    <td width="8%" class="text-center" t-if="doc.emprunt > 0"> : </td>
+													<td class="text-left" width="42%" t-if="doc.emprunt > 0"><span t-field="doc.emprunt" /> (DH)</td>
+												</tr>
+											</table>
+										</center>
+									</div>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="row mb-2">
+									<div class="col-12">
+										<div class="card mb-4 bg-light job-card-fixed cadres" style="border-radius: 10px;">
+											<div class="card-header border-top border-left border-right border-dark text-center">
+												<h5>Observation / Motif</h5>
+											</div>
+											<div class="card-body border-right border-bottom border-left border-dark text-dark">
+												<p t-if="doc.motif">- <span t-field="doc.motif" /></p>
+												<p t-if="doc.note">- <span t-field="doc.note" /></p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6">
+										<div class="card mb-4 bg-light job-card-fixed cadres" style="border-radius: 10px;">
+											<div class="card-header border-top border-left border-right border-dark text-center">
+												<h5>Montant à payé</h5>
+											</div>
+											<div class="card-body border-right border-bottom border-left border-dark text-dark">
+												<h4 class="text-center"><strong><span  t-esc="'%.0f'% doc.montant_total" /> (DH)</strong></h4>
+											</div>
+										</div>
+									</div>
+									<div class="col-6">
+										<div class="card mb-4 bg-light job-card-fixed cadres" style="border-radius: 10px;">
+											<div class="card-header border-top border-left border-right border-dark text-center">
+												<h5>Montant Validé</h5>
+											</div>
+											<div class="card-body border-right border-bottom border-left border-dark text-dark">
+												<h4 class="text-center" t-if="doc.valide_salaire != 0"><strong><span  t-esc="'%.0f'% doc.valide_salaire" /> (DH)</strong></h4>
+												<h4 class="text-center" t-if="doc.valide_salaire == 0"><strong style="color:transparent">(DH)</strong></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>					
+					</div>
+                    <t t-call="reports_templates.common_footer">
+                        <t t-call="reports_templates.bc_rh_signature"/>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

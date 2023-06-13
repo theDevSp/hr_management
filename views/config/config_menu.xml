@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Configuration" id="config_hr_menu" parent="hr_management.hr_management_base_menu" sequence="10000" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+    <menuitem name="Configuration" id="config_hr_menu" 
+        parent="hr_management.hr_management_base_menu" sequence="10000" 
+        groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+
+        <menuitem
+            id="contract_submenu"
+            name="Configuration Contrat"
+            parent="config_hr_menu"
+            sequence="1"/>
+        <menuitem
+            id="holidays_submenu"
+            name="Configuration Congés"
+            parent="config_hr_menu"
+            sequence="2"/>
+        <menuitem
+            id="general_config_submenu"
+            name="Configuration Général"
+            parent="config_hr_menu"
+            sequence="500"/>
 </odoo>

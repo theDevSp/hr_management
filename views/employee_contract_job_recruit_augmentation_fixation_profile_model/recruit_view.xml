@@ -25,6 +25,7 @@
                 <field name="nbr_effectif_demande"/>
                 <field name="nbr_effectif_accepte"/>
                 <field name="state"/>
+                <field name="motif_recrut"/>
                 <field name="observation"/>
             </tree>
         </field>
@@ -41,7 +42,7 @@
                     <button name="to_encours" string="En cours" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'encours', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
                     <button name="to_acceptee" string="Accepter" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
                     <button name="to_refusee" string="Refuser" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'acceptee', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                    <button name="to_annulee" string="Annuler" type="object" attrs="{'invisible': [('state', 'in', ('annulee'))]}" groups ="hr_management.group_pointeur,hr_management.group_agent_paie,hr_management.group_admin_paie,hr_management.group_pointeur"/>
+                    <button name="to_annulee" string="Annuler" type="object" attrs="{'invisible': [('state', 'in', ('annulee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie,hr_management.group_pointeur"/>
                     <button name="to_terminee" string="Terminer" class="oe_highlight" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'validee', 'encours', 'refusee', 'annulee', 'terminee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
                     <field name="state" widget="statusbar" nolabel="1"/>
                 </header>
@@ -68,7 +69,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-city form-control-icon"></span>
-                                                    <field name="chantier_id" options="{'no_create': True, 'no_open': False}" class="form-control"/>
+                                                    <field name="chantier_id" options="{'no_create': True, 'no_open': True}" class="form-control"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -114,11 +115,71 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
+                                            <label for="equipe_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-users form-control-icon"></span>
+                                                    <field name="equipe_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="motif_recrut" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-align-justify form-control-icon"></span>
+                                                    <field name="motif_recrut" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
                                             <label for="observation" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-comment form-control-icon"></span>
                                                     <field name="observation" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" attrs="{'invisible':[('motif_recrut','!=','remplacement')]}">
+                                        <div class="col-md-4">
+                                            <label for="motif_raison_nom_prenom" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="motif_raison_nom_prenom" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="motif_raison_fonction" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-briefcase form-control-icon"></span>
+                                                    <field name="motif_raison_fonction" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="motif_raison_code_machine" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-barcode form-control-icon"></span>
+                                                    <field name="motif_raison_code_machine" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" attrs="{'invisible':[('motif_recrut','not in',('raison_chantier','autre_raison'))]}">
+                                        <div class="col-md-6">
+                                            <label for="motif_raison" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fa fa-sliders form-control-icon"></span>
+                                                    <field name="motif_raison" class="form-control"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -150,10 +211,10 @@
                 <filter name="group_by_chantier" string="Chantier" icon="terp-partner" context="{'group_by':'chantier_id'}"/>   
                 <filter name="group_by_poste" string="Poste" icon="terp-partner" context="{'group_by':'title_poste'}"/>   
                 <searchpanel>
-                    <field name="chantier_id" icon="fa-city" enable_counters="1"/>
-                    <field name="responsable_id" icon="fa-user" enable_counters="1"/>
-                    <field name="title_poste" icon="fa-briefcase" enable_counters="1"/>
-                    <field name="state" icon="fa-align-center" enable_counters="1"/>
+                    <field name="chantier_id" icon="fa-city" enable_counters="1" select="multi"/>
+                    <field name="responsable_id" icon="fa-user" enable_counters="1" select="multi"/>
+                    <field name="title_poste" icon="fa-briefcase" enable_counters="1" select="multi"/>
+                    <field name="state" icon="fa-align-center" enable_counters="1" select="multi"/>
                 </searchpanel>
             </search>
         </field>

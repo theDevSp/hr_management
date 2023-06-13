@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem name="Congés" id="holidays_allocations_hr_menu" parent="hr_management_base_menu" sequence="5"/>
+    <menuitem name="Congés" id="holidays_hr_menu" parent="holidays_allocations_hr_menu" action="holidays_action" sequence="1"/>
+</odoo>

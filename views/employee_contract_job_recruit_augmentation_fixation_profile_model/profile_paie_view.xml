@@ -16,6 +16,7 @@
                 <field name="type_profile"/>
                 <field name="definition_nbre_jour_worked_par_mois"/>
                 <field name="period_id"/>
+                <field name="periodicity"/>
             </tree>
         </field>
     </record>
@@ -108,6 +109,15 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
+                                            <label for="periodicity" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-clock form-control-icon"></span>
+                                                    <field name="periodicity" class="form-control"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
                                             <label for="definition_nbre_jour_worked_par_mois" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
@@ -151,8 +161,8 @@
                 <field name="definition_nbre_jour_worked_par_mois"/>
                 <field name="period_id"/>
                 <searchpanel>
-                    <field name="type_profile" icon="fa-city" enable_counters="1"/>
-                    <field name="period_id" icon="fa-clock" enable_counters="1"/>
+                    <field name="type_profile" icon="fa-sliders" enable_counters="1" select="multi"/>
+                    <field name="period_id" icon="fa-clock" enable_counters="1" select="multi"/>
                 </searchpanel>
             </search>
         </field>

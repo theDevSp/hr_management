@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Postes" id="postes_hr_menu" parent="config_hr_menu" action="hr_management.postes_action" sequence="3"/>
+    <menuitem name="Postes" id="postes_hr_menu" parent="contract_submenu" action="hr_management.postes_action" sequence="3"/>
 </odoo>

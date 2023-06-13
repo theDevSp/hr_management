@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="bank_tree_view" model="ir.ui.view">
+        <field name="name">bank.tree</field>
+        <field name="model">bank</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="city_tree_view" model="ir.ui.view">
+        <field name="name">city.tree</field>
+        <field name="model">city</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="bank_action" model="ir.actions.act_window" >
+        <field name="name">Banks</field>
+        <field name="res_model">bank</field>
+        <field name="view_mode">tree</field>
+    </record>
+    <record id="city_action" model="ir.actions.act_window">
+        <field name="name">Cities</field>
+        <field name="res_model">city</field>
+        <field name="view_mode">tree</field>
+    </record>        
+</odoo>

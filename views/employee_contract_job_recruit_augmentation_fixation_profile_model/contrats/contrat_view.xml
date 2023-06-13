@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id='all_contrats_list_action' model='ir.actions.act_window'>
-        <field name="name">Listes des Contrats </field>
-        <field name="res_model">hr.contract</field>
-        <field name="view_id" ref="contrats_nouveaux_tree"/> 
-        <field name="view_mode">tree,form,search</field>
-    </record>
-
     <record id="contrats_nouveaux_tree" model="ir.ui.view">
         <field name="name">Liste des Contrats</field>
         <field name="model">hr.contract</field>
@@ -15,7 +8,9 @@
             <tree string="Contrats" multi_edit="1" sample="1" default_order='date_start ASC' class="table">
                 <field name="employee_id" readonly="1" widget="many2one_avatar_employee"/>
                 <field name="name" readonly="1"/>
+                <field name="type_emp"/>
                 <field name="job_id"/>
+                <field name="contract_type"/>
                 <field name="date_start" readonly="1"/>
                 <field name="date_end" readonly="1"/>
                 <field name="chantier_id"/>
@@ -48,16 +43,18 @@
                                 </div>
                                 <div class="card-body text-dark text-center">
                                     <h2>
-                                        <field name="name" required="1" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                        <field name="name" required="1"/>
                                     </h2>
                                 </div>
                             </div>
                             <div class="card border-dark mb-3 bg-success">
                                 <div class="card-header text-center">
-                                    <h5>Status</h5>
+                                    <h5>Type de contrat</h5>
                                 </div>
                                 <div class="card-body text-dark text-center">
-                                    <h1><field name="kanban_state" widget="state_selection" attrs="{'readonly': [('state', '=', 'cancel')]}"/></h1>
+                                    <h2>
+                                        <field name="contract_type" required="1" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                    </h2>
                                 </div>
                             </div>
                         </div>
@@ -70,16 +67,16 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-user form-control-icon"></span>
-                                                    <field name="employee_id" class="form-control" required="1" options="{'no_create': True, 'no_open': False}" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="employee_id" class="form-control" required="1" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="chantier_id" class=""/>
+                                            <label for="type_emp" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <span class="fas fa-city form-control-icon"></span>
-                                                    <field name="chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="type_emp" class="form-control" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -90,7 +87,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="date_start" class="form-control" string="Date début du contrat" required="1" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="date_start" class="form-control" string="Date début du contrat" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -99,7 +96,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fa fa-briefcase form-control-icon"></span>
-                                                    <field name="job_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="job_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -110,16 +107,47 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="date_end" class="form-control" string="Date fin du contrat" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="date_end" class="form-control" string="Date fin du contrat" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>      
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-6">
-                                            <label for="contract_type_id" class=""/>
+                                            <label for="chantier_id" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <span class="fas fa-file-contract form-control-icon"></span>
-                                                    <field name="contract_type_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <span class="fas fa-city form-control-icon"></span>
+                                                    <field name="chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="company_id" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-building form-control-icon"></span>
+                                                    <field name="company_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>    
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="embaucher_par" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="embaucher_par" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="recommander_par" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-user form-control-icon"></span>
+                                                    <field name="recommander_par" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>    
                                         </div>
@@ -130,18 +158,18 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="wage" class="form-control" required="1" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="wage" class="form-control" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>      
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="company_id" class=""/>
+                                            <label for="motif_enbauche" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <span class="fas fa-building form-control-icon"></span>
-                                                    <field name="company_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <span class="fas fa-envelope form-control-icon"></span>
+                                                    <field name="motif_enbauche" class="form-control" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
-                                            </div>    
+                                            </div>      
                                         </div>
                                     </div>
                                     <div class="row">
@@ -177,13 +205,16 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-comment form-control-icon"></span>
-                                                    <field name="notes" class="form-control"  style="height:4.6em;" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="notes" class="form-control"  style="height:4.6em;" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>      
                                         </div>
                                     </div>
- 
-                                    <hr/>
+                                </div>
+                            </div>
+                            <div class="card border-dark mb-3">
+                                <div class="card-header">Informations sur Profile</div>
+                                <div class="card-body text-dark">
                                     <div class="row mt-3">
                                         <div class="col-md-8">
                                             <div class=""/>
@@ -197,8 +228,8 @@
                                         <div class="col-md-4">
                                             <div class="main">
                                                 <div class="form-group">
-                                                    <field name="pp_personnel_id_many2one" invisible="1" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
-                                                    <button name="generer_profile" type="object" class="btn btn-success" icon="fa-upload" string="Générer Profile" max-width="200" states="draft" attrs="{'invisible': [('pp_personnel_id_many2one', '!=', False )]}"/>
+                                                    <field name="pp_personnel_id_many2one" invisible="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <button name="generer_profile" type="object" class="btn btn-success" icon="fa-upload" string="Générer Profile" max-width="200" states="draft" attrs="{'invisible': [('pp_personnel_id_many2one', '!=', False ), ('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div> 
                                         </div>
@@ -231,7 +262,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="type_profile_related" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
@@ -240,12 +271,21 @@
                                                 </div>  
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="definition_nbre_jour_worked_par_mois_related" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="definition_nbre_jour_worked_par_mois_related" class="form-control"/>
+                                                    <field name="definition_nbre_jour_worked_par_mois_related" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="periodicity_related" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <span class="fas fa-clock form-control-icon"></span>
+                                                    <field name="periodicity_related" class="form-control" readonly="1"/>
                                                 </div>  
                                             </div>
                                         </div> 
@@ -256,7 +296,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="nbre_heure_worked_par_demi_jour_related" class="form-control" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="nbre_heure_worked_par_demi_jour_related" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
@@ -265,33 +305,42 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="nbre_heure_worked_par_jour_related" class="form-control" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="nbre_heure_worked_par_jour_related" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
-                                        
-                                        <div class="col-md-4" attrs="{'invisible': [('definition_nbre_jour_worked_par_mois_related', '!=', 'nbr_saisie')], 'readonly': [('state', '=', 'cancel')]}">
+                                        <div class="col-md-4" attrs="{'invisible': [('definition_nbre_jour_worked_par_mois_related', '!=', 'nbr_saisie')], 'readonly': [('state', '!=', 'draft')]}">
                                             <label for="nbre_jour_worked_par_mois_related" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="nbre_jour_worked_par_mois_related" class="form-control" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                    <field name="nbre_jour_worked_par_mois_related" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="salaire_heure_related" class=""/>
+                                        <div class="col-md-3">
+                                            <label for="current_month" class=""/>
                                             <div class="card text-white bg-dark mb-3">
                                                 <div class="card-body">
                                                     <h4 class="card-title text-center align-middle">
-                                                        <field name="salaire_heure_related"  style="height:0.3em;" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                        <field name="current_month"  style="height:0.3em;"/>
                                                     </h4>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
+                                            <label for="salaire_heure_related" class=""/>
+                                            <div class="card text-white bg-dark mb-3">
+                                                <div class="card-body">
+                                                    <h4 class="card-title text-center align-middle">
+                                                        <field name="salaire_heure_related"  style="height:0.3em;"/>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
                                             <label for="salaire_demi_jour_related" class=""/>
                                             <div class="card text-white bg-dark mb-3">
                                                 <div class="card-body">
@@ -301,12 +350,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label for="salaire_jour_related" class=""/>
                                             <div class="card text-white bg-dark mb-3">
                                                 <div class="card-body">
                                                     <h4 class="card-title text-center align-middle">
-                                                        <field name="salaire_jour_related"  style="height:0.3em;" attrs="{'readonly': [('state', '=', 'cancel')]}"/>
+                                                        <field name="salaire_jour_related"  style="height:0.3em;"/>
                                                     </h4>
                                                 </div>
                                             </div>
@@ -320,7 +369,6 @@
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title pr-0" name="title">
                         <h2>
-                            <field name="company_id" groups="base.group_multi_company" invisible="1"/>
                             <field name="active" invisible="1"/>
                         </h2>
                     </div>
@@ -348,12 +396,18 @@
                 <field name="chantier_id"/>
                 <field name="resource_calendar_id"/>
                 <searchpanel>
-                    <field name="chantier_id" icon="fa-city" enable_counters="1"/>
-                    <field name="company_id" icon="fa-building" enable_counters="1"/>
-                    <field name="state" icon="fa-file-contract" enable_counters="1"/>
-                    <field name="contract_type_id" icon="fa-file-contract" enable_counters="1"/>
+                    <field name="chantier_id" icon="fa-city" enable_counters="1" select="multi"/>
+                    <field name="company_id" icon="fa-building" enable_counters="1" select="multi"/>
+                    <field name="state" icon="fa-file-contract" enable_counters="1" select="multi"/>
+                    <field name="contract_type_id" icon="fa-file-contract" enable_counters="1" select="multi"/>
                 </searchpanel>
             </search>
         </field>
+    </record>
+    <record id='all_contrats_list_action' model='ir.actions.act_window'>
+        <field name="name">Liste des Contrats </field>
+        <field name="res_model">hr.contract</field>
+        <field name="view_id" ref="contrats_nouveaux_tree"/> 
+        <field name="view_mode">tree,form,search</field>
     </record>
 </odoo>

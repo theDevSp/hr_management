@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id='prelevement_action' model='ir.actions.act_window'>
+        <field name="name">Les Prélèvements</field>
+        <field name="res_model">hr.prelevement</field>
+        <field name="view_mode">tree,form,search</field>
+        <field name="view_id" ref="hr_management.prelevement_tree_view"/>
+        <field name="domain">[('is_credit', '!=', True)]</field>
+        <field name="context">{'default_is_credit': 0,'form_view_ref': 'hr_management.prelevement_view_form'}</field> 
+    </record>
     <menuitem name="Prélèvement" id="prelevement_menu" parent="ajout_deduction_main_menu" action="prelevement_action" sequence="3"/>
 </odoo>

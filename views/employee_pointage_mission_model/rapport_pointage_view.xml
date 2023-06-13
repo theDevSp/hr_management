@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rapport_pointage_form" model="ir.ui.view">
+        <field name="name">rapport.pointage.form</field>
+        <field name="model">hr.rapport.pointage</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <form>
+                <header attrs="{'invisible': [('employee_type','=','employee2'),('periodicite','=',1)]}">
+                    
+                    <button name="action_draft" states="cancel,valide,compute,working" string="Mettre en brouillon" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin"/>
+                    <button name="action_working" states="draft" string="Traiter" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
+                    <button name="action_working" states="compute" string="Retourner" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_manager"/>
+                    <button name="action_working" states="valide,done" string="Retourner" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_controller"/>
+                    <button name="action_done" states="valide" string="Clôturer" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_controller,nxtm_employee_mngt.group_pointage_admin"/>
+                    <button name="action_cancel" states="draft,valide,done" string="Annuler" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin"/>
+                    <button name="create_q12_payslip" string="Payé Mois" states="working" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,working,compute,valide,done"/>
+
+                </header>
+                <header  attrs="{'invisible': ['|','|',('employee_type','=','employee1'),('quinzaine','!=','quinzaine1'),('periodicite','=',2)]}">
+                    
+                    <button name="action_q1_draft" attrs="{'invisible': [('q1_state','in',('q1_draft'))]}" string="Mettre en brouillon" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin"/>
+                    <button name="action_q1_working" attrs="{'invisible': [('q1_state','!=','q1_draft')]}" string="Traiter" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
+                    <button name="action_q1_working" attrs="{'invisible': [('q1_state','!=','q1_compute')]}" string="Retourner" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
+                    <button name="action_q1_working" attrs="{'invisible': [('q1_state','not in',('q1_valide','q1_compute'))]}" string="Retourner" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_controller"/>
+                    <button name="action_q1_done"  attrs="{'invisible': [('q1_state','!=','q1_valide')]}" string="Clôturer" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_controller,nxtm_employee_mngt.group_pointage_admin"/>
+                    <button name="create_q1_payslip" attrs="{'invisible': [('q1_state','!=','q1_working')]}" string="Payé Q1" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
+                    <field name="q1_state" widget="statusbar"/>
+
+                </header>
+                <header  attrs="{'invisible': ['|','|',('employee_type','=','employee1'),('quinzaine','!=','quinzaine2'),('periodicite','=',2)]}">
+                    
+                    <button name="action_q2_draft" attrs="{'invisible': [('q2_state','in',('q2_draft'))]}" string="Mettre en brouillon" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin"/>
+                    <button name="action_q2_working" attrs="{'invisible': [('q2_state','!=','q2_draft')]}" string="Traiter" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
+                    <button name="action_q2_working" attrs="{'invisible': [('q2_state','!=','q2_compute')]}" string="Retourner" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
+                    <button name="action_q2_working" attrs="{'invisible': [('q2_state','not in',('q2_valide','q2_compute'))]}" string="Retourner" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_controller"/>
+                    <button name="action_q2_done"  attrs="{'invisible': [('q2_state','!=','q2_valide')]}" string="Clôturer" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_controller,nxtm_employee_mngt.group_pointage_admin"/>
+                    <button name="create_q2_payslip" attrs="{'invisible': [('q2_state','!=','q2_working')]}" string="Payé Q2" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
+                    <field name="q2_state" widget="statusbar"/>
+
+                </header>
+                <sheet>
+                    <notebook>
+                        <page string="Infos Rapport">
+                            <group>
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h1>Information Historique</h1>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <field name="data_html"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </group>
+                            <group>
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Rapport N°
+                                            <h1>
+                                                <field name="name" class="oe_inline" attrs="{'invisible': [('name','=','/')]}" readonly="1" />
+                                            </h1>
+                                        </div>
+                                        <div class="panel-body">
+                                                <div class="col-md-12 ">
+                                                    <group>    
+                                                        <group>
+                                                            <field name="employee_id"  options="{'no_create': True,'no_open':True}"/>
+                                                            <field name="employee_type"/>
+                                                            <field name="cin"/>
+                                                            <field name="job_id"/>
+                                                            <field name="period_id" />
+                                                            <field name="quinzaine" />
+                                                            <field name="chantier_id" options="{'no_create': True}"/>
+                                                            <field name="periodicite" invisible="1"/>
+                                                            <!-- <field name="vehicle_id" options="{'no_create': True}" /> -->
+                                                            <field name="emplacement_chantier_id" options="{'no_create': True}" /> 
+                                                        </group>
+                                                    </group>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-3 col-sm-2 panel-group">
+                                                            <div class="panel panel-primary">
+                                                                <div class="panel-heading">
+                                                                    <h3 class="text-center">
+                                                                        <label for="total_h"/>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <h1 class="text-center">
+                                                                        <field name="total_h" />
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-sm-2">
+                                                            <div class="panel panel-success">
+                                                                <div class="panel-heading">
+                                                                    <h3 class="text-center">
+                                                                        <label for="total_h_v"/>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <h1 class="text-center">
+                                                                        <field name="total_h_v" />
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-sm-2">
+                                                            <div class="panel panel-warning">
+                                                                <div class="panel-heading">
+                                                                    <h3 class="text-center">
+                                                                        <label for="total_h_sup"/>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <h1 class="text-center">
+                                                                        <field name="total_h_sup" />
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3"> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3 col-sm-2 panel-group">
+                                                            <div class="panel panel-primary">
+                                                                <div class="panel-heading">
+                                                                    <h3 class="text-center">
+                                                                        <label for="total_j"/>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <h1 class="text-center">
+                                                                        <field name="total_j" />
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-sm-2">
+                                                            <div class="panel panel-success">
+                                                                <div class="panel-heading">
+                                                                    <h3 class="text-center">
+                                                                        <label for="total_j_v"/>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <h1 class="text-center">
+                                                                        <field name="total_j_v" />
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                        </div>                                
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3 col-sm-2 panel-group">
+                                                            <div class="panel panel-info">
+                                                                <div class="panel-heading">
+                                                                    <h3 class="text-center">
+                                                                        <label for="count_nbr_holiday_days"/>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <h1 class="text-center">
+                                                                        <field name="count_nbr_holiday_days" />
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-sm-2 panel-group">
+                                                            <div class="panel panel-info">
+                                                                <div class="panel-heading">
+                                                                    <h3 class="text-center">
+                                                                        <label for="count_nbr_ferier_days"/>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <h1 class="text-center">
+                                                                        <field name="count_nbr_ferier_days" />
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-sm-2 panel-group">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading">
+                                                                    <h3 class="text-center">
+                                                                        <label for="count_nbr_dim_days"/>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <h1 class="text-center">
+                                                                        <field name="count_nbr_dim_days" />
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 col-sm-2 panel-group">
+                                                            <div class="panel panel-danger">
+                                                                <div class="panel-heading">
+                                                                    <h3 class="text-center">
+                                                                        <label for="count_nbr_absense_days"/>
+                                                                    </h3>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <h1 class="text-center">
+                                                                        <field name="count_nbr_absense_days" />
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </group>
+                        </page>
+                        <page string="Infos Fiche Paie">
+                            <group>
+                                <field name="payslip_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="name" />
+                                        <field name="period_id" />
+                                        <field name="net_pay" />
+                                        <field name="chantier_id"/>
+                                        <field name="emplacement_chantier_id" />
+                                        <!-- <field name="vehicle_id" /> -->
+                                        <!-- <button name="open_payslip" type="object" class="oe_highlight oe_edit_only" string="Consulter" /> -->
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Infos Congés">
+                            <field name="holiday_ids" nolabel="1">
+                                <tree>
+                                    <field name="chantier_id" options="{'no_create': True,'no_open': True}" string="Chantier"/>
+                                    <field name="motif"/>
+                                    <field name="date_start" string="Date Début"/>
+                                    <field name="date_end" string="Date Fin"/>
+                                    <!-- <field name="number_of_days_temp" string="Nbr Jours"/> -->
+                                    <field name="state"/>
+                                    <!-- <button name="open_holiday" type="object" class="oe_highlight oe_edit_only" string="Consulter" /> -->
+                                </tree>
+                            </field>   
+                        </page>   
+                        <page string="Infos Transfert">
+                            <field name="transfert_ids" nolabel="1">
+                                <tree>
+                                    <field name="name" options="{'no_create': True,'no_open': True}" string="Chantier"/>
+                                    <field name="chantier_id_source"/>
+                                    <field name="chantier_id_destiation"/>
+                                    <field name="date_transfert" string="Date Transfert"/>
+                                    <field name="date_arriver" string="Date Arrivé"/>
+                                    <field name="state"/>
+                                    <button name="open_transfert" type="object" class="oe_highlight oe_edit_only" string="Consulter" />
+                                </tree>
+                            </field>
+                        </page> 
+                    </notebook>
+                    
+                </sheet>
+                <sheet class="custom_sheet">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-2 panel-group">
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    <h3 class="text-center">
+                                        <label for="etat"/>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <h3 class="text-center">
+                                        <field name="etat" readonly="1"/>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-2 panel-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    LEGENDE
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-6">
+                                        <div class="row" style="color:black;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:black;"></span>Jours Ouvrable</div>
+                                        <div class="row" style="color:skyblue;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:skyblue;"></span>Jours Férié</div>
+                                        <div class="row" style="color:blue;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:blue;"></span>Congé</div>
+                                        <div class="row" style="color:grey;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:grey;"></span>Dimanche</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row" style="color:tomato;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:tomato;"></span>Absense non Autorié</div>
+                                        <div class="row" style="color:crimson;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:crimson;"></span>Abondement de Poste</div>
+                                        <div class="row" style="color:crimson;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:crimson;"></span>Accident Travail</div>
+                                        <div class="row" style="color:slategrey;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:slategrey;"></span>STC</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <group string="">
+                            <field name="rapport_lines" nolabel="1">
+                            <tree editable="bottom" colors="black:day_type==1; grey:day_type==2; skyblue:day_type==3; blue:day_type==4; tomato:day_type==5; crimson:day_type==6; slategrey:day_type==7;">
+                                <field name="name"/>
+                                <field name="h_travailler" string="TH"/>
+                                <field name="h_travailler_v" string="THV"/>
+                                <field name="h_sup" string="Supp >> 9"/>
+                                <field name="h_bonus" string="Bonus"/>
+                                <field name="j_travaille_v" string="TJV"/>
+                                <field name="chantier_id" options="{'no_create': True,'no_open': True}"/>
+                                <!-- <field name="vehicle_id"  options="{'no_create': True,'no_open': True}" readonly="1" invisible="1"/> -->
+                                <field name="vehicle_ids_resume"/>
+                                <button name="update_engin_list" type="object" class="oe_highlight oe_edit_only" string="OPEN" icon="gtk-open" />
+                                <field name="emplacement_chantier_id"  options="{'no_create': True,'no_open': True}" string="Equipe"/>
+                                <field name="details" />                                           
+                                <field name="note" />
+                                <field name="day_type"/>    
+                                <field name="state" invisible="1"/>
+                                <field name="day" invisible="1"/>
+                                <button name="update_wizard_ref_view" type="object" class="oe_highlight oe_edit_only" string="OPEN" icon="gtk-edit" />
+                            </tree>
+                        </field>
+                    </group>
+                </sheet> 
+                <sheet>
+                    <group string="">
+                            <field name="note"/>
+                    </group>
+                </sheet> 
+                    
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>     
+
+            </form>
+        </field>
+    </record>
+
+    <record id="view_engins_list_view" model="ir.ui.view">
+        <field name="name">engin.list</field>
+        <field name="model">hr.rapport.pointage.line.engin</field>
+        <field name="arch" type="xml">
+            <form>
+                <group string="">
+                    <group string="">
+                        <field name="name"  options="{'no_create': True,'no_open': True}"/>
+                        <field name="time_start"/>
+                        <field name="time_end"/>
+                    </group>
+                    <group string="">
+                    </group>
+                </group>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>     
+            </form>
+
+        </field>
+    </record>
+    <record id="view_engin_list_view" model="ir.ui.view">
+        <field name="name">engins.list</field>
+        <field name="model">hr.rapport.pointage.line</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <group string="">   
+                    <field name="vehicle_ids" colspan="4" nolabel="1" >
+                        <tree editable="bottom">
+                            <field name="name"  options="{'no_create': True,'no_open': True}"/>
+                            <field name="time_start"/>
+                            <field name="time_end"/>
+                        </tree>
+                    </field>
+                </group>
+
+                <footer>
+                    <button name="save_engin_list" type="object" class="oe_highlight oe_edit_only" string="Enregistrer" />
+                </footer>
+            </form>
+
+        </field>
+    </record>
+    <record id="view_engin_list_view_manager" model="ir.ui.view">
+        <field name="name">engins.list</field>
+        <field name="model">hr.rapport.pointage.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <group string="">   
+                    <field name="vehicle_ids" colspan="4" nolabel="1" readonly="1">
+                        <tree>
+                            <field name="name"  options="{'no_create': True,'no_open': True}"/>
+                            <field name="time_start"/>
+                            <field name="time_end"/>
+                        </tree>
+                    </field>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="view_mmodification_history_wizard" model="ir.ui.view">
+        <field name="name">modification.wizard</field>
+        <field name="model">hr.rapport.pointage.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <group string="">
+                    <div class="oe_chatter">
+                        <field name="modification_data_html" colspan="4" nolabel="1"/>
+                    </div> 
+                </group>
+                <div class="oe_chatter" groups="nxtm_employee_mngt.group_pointage_controller,nxtm_employee_mngt.group_pointage_admin">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>     
+                <footer>
+                    <button string="Fermer" class="oe_highlight oe_right" special="cancel" />
+                </footer>
+            </form>
+
+        </field>
+    </record>
+
+    <record id="rapport_pointage_tree" model="ir.ui.view">
+        <field name="name">rapport.pointage.tree</field>
+        <field name="model">hr.rapport.pointage</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="period_id" /> 
+                <field name="chantier_id"/>
+                <!-- <field name="vehicle_id"/> -->
+                <field name="emplacement_chantier_id"/>
+                <field name="total_h" />
+                <field name="total_j" />
+                <field name="total_h_v" />
+                <field name="total_j_v" />
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="menu_view_pointage_salarie_tree" model="ir.actions.act_window">
+        <field name="name">Rapport Pointage</field>
+        <field name="res_model">hr.rapport.pointage</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{
+                "search_default_group_by_public_market_id":1,
+                "search_default_group_by_period_id":1,
+                "search_default_group_by_emplacement_chantier_id":1,
+                }
+        </field>
+        <field name="domain">[('employee_id.employee_type','=','employee1')]</field>
+    </record>
+    <record id="menu_view_pointage_ouvrier_tree" model="ir.actions.act_window">
+        <field name="name">Rapport Pointage</field>
+        <field name="res_model">hr.rapport.pointage</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{
+                "search_default_group_by_public_market_id":1,
+                "search_default_group_by_period_id":1,
+                "search_default_group_by_emplacement_chantier_id":1,
+                "search_default_group_by_quinzaine":1
+            }</field>
+        <field name="domain">[('employee_id.employee_type','=','employee2')]</field>
+    </record>
+
+    <record id="menu_view_employee_transfert_tree" model="ir.actions.act_window">
+        <field name="name">Transfert</field>
+        <field name="res_model">hr.employee.transfert</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="hr_pointage_main_menu" name="Rapport Pointage"  parent="hr.menu_hr_root" sequence = "-1" groups="nxtm_employee_mngt.group_pointage_manager,nxtm_employee_mngt.group_pointage_controller"/>
+    <menuitem id="hr_pointage_salarie_global" name="Pointage Salariés"  parent="hr_pointage_main_menu" action="menu_view_pointage_salarie_tree" sequence = "-2" />
+    <menuitem id="hr_pointage_ouvrier_global" name="Pointage Ouvriers"  parent="hr_pointage_main_menu" action="menu_view_pointage_ouvrier_tree" sequence = "-2" />
+    <!-- **************************************************** 
+    <menuitem id="hr_pointage_menu" name="Pointage Salariés"  parent="hr_pointage_main_menu" sequence = "1"/>
+
+    <menuitem id="hr_pointage_menu_1" name="Pointage mensuelle"  parent="hr_pointage_menu" action="pointage_user_salarie" sequence = "1"/>
+    <menuitem id="hr_pointage_stc_menu" name="Salarié STC"  parent="hr_pointage_menu" action="pointage_user_salarie_stc" sequence = "2"/>
+    <menuitem id="hr_pointage_abondement_menu" name="Salarié Abondement"  parent="hr_pointage_menu" action="pointage_user_salarie_abondement" sequence = "3"/>
+    <menuitem id="hr_pointage_absence_menu" name="Salarié Absence"  parent="hr_pointage_menu" action="pointage_user_salarie_absence" sequence = "4"/>--> 
+    <!-- **************************************************** -->
+    <!-- **************************************************** 
+    <menuitem id="hr_pointage_menu_2" name="Pointage Ouvriers"  parent="hr_pointage_main_menu" sequence = "2"/>
+    <menuitem id="hr_pointage_menu_ou" name="Pointage mensuelle"  parent="hr_pointage_menu_2" action="pointage_user_ouvrier" sequence = "1"/>
+    <menuitem id="hr_pointage_stc_menu_ou" name="Ouvriers STC"  parent="hr_pointage_menu_2" action="pointage_user_ouvrier_stc" sequence = "2"/>
+    <menuitem id="hr_pointage_abondement_menu_ou" name="Ouvriers Abondement"  parent="hr_pointage_menu_2" action="pointage_user_ouvrier_abondement" sequence = "3"/>
+    <menuitem id="hr_pointage_absence_menu_ou" name="Ouvriers Absence"  parent="hr_pointage_menu_2" action="pointage_user_ouvrier_absence" sequence = "4"/>-->
+    <!-- **************************************************** -->
+
+    <menuitem id="action_server_pointeur_transfert" name="Transferts" parent="hr_pointage_main_menu" sequence="3" action="menu_view_employee_transfert_tree"/>
+    <menuitem action="filtre_pointage_wizard_action" id="menu_filtre_pointage_wizard_print" parent="hr_pointage_main_menu" sequence="4"/>
+
+
+
+    <record id="seq_rapport_pointage_code" model="ir.sequence.type">
+        <field name="name">Rapport Pointage sequence</field>
+        <field name="code">hr.rapport.pointage</field>
+    </record>
+
+    <record id="sequence_rapport_pointage" model="ir.sequence">
+        <field name="name">Rapport Pointage</field>
+        <field name="code">hr.rapport.pointage</field>
+        <field name="active">TRUE</field>
+        <field name="prefix">RP</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <!-- <record id="view_chnatier_form" model="ir.ui.view">
+        <field name="name">chantier.form</field>
+        <field name="model">fleet.vehicle.chantier</field>
+        <field name="inherit_id" ref="engine_gmao.fleet_vehicle_chantier_form" />
+        <field eval="1" name="priority"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="simplified_name" /> 
+                <field name="cofabri" />
+                <field name="grant_modification"/>
+                <field name="periodicite"/>
+                <field name="heure_normal"/>
+            </field>
+            <xpath expr="//notebook" position="after">
+
+                <group string="Historique heure normal">
+                    <field name="historique_heure_normal_chantier" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="heure_normal" />
+                            <field name="day"/>
+                        </tree>
+                    </field>
+                </group>
+
+            </xpath>
+            
+        </field>
+    </record> -->
+
+    <record id="view_bce_filter" model="ir.ui.view">
+        <field name="name">hr.rapport.pointage.select</field>
+        <field name="model">hr.rapport.pointage</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="employee_id" />
+                <field name="chantier_id" />
+                <!-- <field name="vehicle_id" /> -->
+                <field name="emplacement_chantier_id" />
+                <field name="rapport_lines" string="Code Engin" filter_domain="[('rapport_lines.vehicle_ids.name','ilike',self)]" />
+                <group expand="0" string="Group By">
+                    <filter name="group_by_public_market_id" string="Chantier" context="{'group_by':'chantier_id'}" />
+                    <filter name="group_by_period_id" string="Période" context="{'group_by':'period_id'}" />
+                    <filter name="group_by_public_market_name" string="Employée" context="{'group_by':'employee_id'}" />
+                    <filter name="group_by_emplacement_chantier_id" string="Equipe" context="{'group_by':'emplacement_chantier_id'}" />
+                    <filter name="group_by_quinzaine" string="Quinzaine" context="{'group_by':'quinzaine'}" />
+                    <filter name="group_by_state" string="Statut" context="{'group_by':'state'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    
+
+    
+
+    <record id="view_transfert_filter" model="ir.ui.view">
+        <field name="name">hr.employee.transfert.select</field>
+        <field name="model">hr.employee.transfert</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="employee_id" />
+                <field name="chantier_id_source" />
+                <field name="chantier_id_destiation" />
+                <group expand="0" string="Group By">
+                    <filter name="group_by_chantiert_id_source" string="Chantier Source" context="{'group_by':'chantier_id_source'}" />
+                    <filter name="group_by_emplacement_chantier_id_source" string="Chantier Destination" context="{'group_by':'chantier_id_destiation'}" />
+                    <filter name="group_by_public_market_name" string="Employée" context="{'group_by':'employee_id'}" />
+                    <filter name="group_by_period_id" string="Date Transfert" context="{'group_by':'date_transfert'}" />
+                    <filter name="group_by_period_id" string="Date Arrivé" context="{'group_by':'date_arriver'}" />
+                    <filter name="group_by_state" string="Statut" context="{'group_by':'state'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="seq_transfert_code" model="ir.sequence.type">
+        <field name="name">TR sequence</field>
+        <field name="code">hr.employee.transfert</field>
+    </record>
+
+    <record id="sequence_transfert" model="ir.sequence">
+        <field name="name">TR</field>
+        <field name="code">hr.employee.transfert</field>
+        <field name="active">TRUE</field>
+        <field name="prefix">TR</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <record id="view_employee_filter_state" model="ir.ui.view">
+        <field name="name">Employees search</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <filter string="Nouveau Embauche" icon="terp-personal" domain="[('state_employee_wtf','=','new')]]" name="new_employee"/>
+            </field>
+            </field>
+    </record>
+
+    <record id="hr_form_vieww_pointage_inherit" model="ir.ui.view">
+        <field name="name">pointage</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="nxtm_employee_mngt.view_employee_form"/>
+        <field name="arch" type="xml">
+            <button name="view_employee_payslips" position="after">
+                    <button name="view_employee_rapport_pointage" class="oe_stat_button" icon="fa-book" type="object" groups="base.group_hr_manager">
+                        <field name="rapport_pointage_count" widget="statinfo" string="Pointage"/>
+                    </button>
+            </button>
+        </field>
+    </record>
+
+    
+    <record id="creation_mass_wizard" model="ir.ui.view">
+        <field name="name">hr.create.mass.wizard</field>
+        <field name="model">hr.filtre.pointage.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <group>
+                    <group>                          
+                        <field name="period_id" options="{'no_create': True,'no_open': True}" />                            
+                        <field name="chantier_id" options="{'no_create': True,'no_open': True}"/>
+                    </group>
+                    <group>
+                    </group>    
+                </group>
+                <footer>                      
+                    <button string="Annuler" class="oe_link oe_right" special="cancel"/>
+                    <button string="Create" name="create_rapports_pointage_mass" class="oe_highlight oe_right" type="object"/> 
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="creation_individuel_wizard" model="ir.ui.view">
+        <field name="name">hr.create.individuel.wizard</field>
+        <field name="model">hr.filtre.pointage.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <group>
+                    <group>                          
+                        <field name="period_id" options="{'no_create': True,'no_open': True}" />                            
+                        <field name="employee_id" options="{'no_create': True,'no_open': True}"/>
+                        <field name="chantier_id" options="{'no_create': True,'no_open': True}"/>
+                    </group>
+                    <group>
+                    </group>    
+                </group>
+                <footer>                      
+                    <button string="Annuler" class="oe_link oe_right" special="cancel"/>
+                    <button string="Create" name="create_rapports_pointage_individuel" class="oe_highlight oe_right" type="object"/> 
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="creation_payslip_wizard" model="ir.ui.view">
+        <field name="name">hr.create.payslip.wizard</field>
+        <field name="model">hr.filtre.pointage.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <group>
+                    <group>                          
+                        <field name="quinzaine"/> 
+                        <field name="period_id" invisible="1"/>                            
+                        <field name="employee_id" invisible="1"/>
+                        <field name="chantier_id" invisible="1"/>
+                        <field name="sous_chantier" invisible="1"/>
+                        <field name="rapport_id" invisible="1"/>
+                    </group>
+                    <group>
+                    </group>    
+                </group>
+                <footer>                      
+                    <button string="Annuler" class="oe_link oe_right" special="cancel"/>
+                    <button string="Create" name="create_payslip" class="oe_highlight oe_right" type="object"/> 
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="creation_rapport_on_transfert" model="ir.ui.view">
+        <field name="name">hr.create.payslip.wizard</field>
+        <field name="model">hr.filtre.pointage.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <group>
+                    <group>                          
+                        <field name="period_id" reandonly="1"/>                            
+                        <field name="employee_id" reandonly="1"/>
+                        <field name="chantier_id" reandonly="1"/>
+                    </group>
+                    <group>
+                    </group>    
+                </group>
+                <footer>                      
+                    <button string="Non" name="cancel_rapport_creation" class="oe_highlight oe_right" type="object"/>
+                    <button string="Oui" name="create_rapports_pointage_individuel" class="oe_right" type="object"/> 
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="create_mass_wizard_action" model="ir.actions.act_window">
+        <field name="name">Création Par Masse</field>
+        <field name="res_model">hr.filtre.pointage.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="creation_mass_wizard" />
+        <field name="target">new</field>
+    </record>
+    <menuitem action="create_mass_wizard_action" id="menu_create_mass_wizard" parent="hr_pointage_main_menu" sequence="3" groups="nxtm_employee_mngt.group_pointage_admin"/>
+</odoo>

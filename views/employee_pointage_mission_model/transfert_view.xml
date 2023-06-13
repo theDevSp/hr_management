@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='transfert_action' model='ir.actions.act_window'>
+        <field name="name"> Transferts Employés entre Chantier </field>
+        <field name="res_model">hr.employee.transfert</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_employee_transfert_tree">
+        <field name="name">hr.employee.transfert.new.tree</field>
+        <field name="model">hr.employee.transfert</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="employee_id" />
+                <field name="date_transfert" />
+                <field name="date_arriver" />
+                <field name="chantier_id_source" />
+                <field name="vehicle_id_source" />
+                <field name="emplacement_chantier_id_source" />
+                <field name="chantier_id_destiation"/>
+                <field name="vehicle_id_destiation" />
+                <field name="emplacement_chantier_id_destiation" />
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_employee_transfert_form">
+        <field name="name">hr.employee.transfert.new.form</field>
+        <field name="model">hr.employee.transfert</field>
+        <field name="priority" eval="25"/>
+        <field name="arch" type="xml">
+          <form>
+            <header>    
+                <button name="action_draft" states="cancel" string="Mettre en brouillon" type="object" class="oe_highlight" />
+                <button name="action_validation" states="draft" string="Validé" type="object" class="oe_highlight" />
+                <button name="action_done" states="valide" string="Arrivé" type="object" class="oe_highlight" />
+                <button name="action_cancel" states="draft,valide,done" string="Annuler" type="object" class="oe_highlight" />
+				<field name="state" widget="statusbar"/>
+			</header>
+            <sheet>
+                <div class="oe_title">
+					<label for="name" class="oe_edit_only"/>
+					<h1>
+						<field name="name"/>
+					</h1>
+                    <label for="employee_id" class="oe_edit_only"/>
+					<h1>
+						<field name="employee_id" options="{'no_create': True,'no_open': True}"/>
+					</h1>
+				</div>
+
+                <group>
+                    <field name="date_transfert"/>
+                    <field name="date_arriver"/>
+                </group>
+                
+                <group string="Affectation" col="6">
+                    <field name="chantier_id_source" options="{'no_create': True,'no_open': True}" placeholder="Chantier Source" nolabel="1"/>
+                    <field name="vehicle_id_source" options="{'no_create': True,'no_open': True}" placeholder="Code Engin Source" nolabel="1"/>
+                    <field name="emplacement_chantier_id_source" options="{'no_create': True,'no_open': True}" placeholder="Equipe Source" nolabel="1"/> 
+                </group>
+                <group string="Destination" col="6">
+                    <field name="chantier_id_destiation" options="{'no_create': True,'no_open': True}" domain ="[('type_chantier','in',('Chantier','Depot','Poste'))]" placeholder="Chantier Destination" nolabel="1"/>
+                    <field name="vehicle_id_destiation" options="{'no_create': True,'no_open': True}" placeholder="Code Engin Destination" nolabel="1"/>
+                    <field name="emplacement_chantier_id_destiation" options="{'no_create': True,'no_open': True}" placeholder="Equipe Destination" nolabel="1"/> 
+                </group>
+				
+            </sheet>
+			<div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+          </form>
+        </field>
+    </record>
+
+    <record id="view_transfert_filter" model="ir.ui.view">
+        <field name="name">hr.employee.transfert.select</field>
+        <field name="model">hr.employee.transfert</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="employee_id" />
+                <field name="chantier_id_source" />
+                <field name="chantier_id_destiation" />
+                <group expand="0" string="Group By">
+                    <filter name="group_by_chantiert_id_source" string="Chantier Source" context="{'group_by':'chantier_id_source'}" />
+                    <filter name="group_by_emplacement_chantier_id_source" string="Chantier Destination" context="{'group_by':'chantier_id_destiation'}" />
+                    <filter name="group_by_public_market_name" string="Employée" context="{'group_by':'employee_id'}" />
+                    <filter name="group_by_period_id" string="Date Transfert" context="{'group_by':'date_transfert'}" />
+                    <filter name="group_by_period_id" string="Date Arrivé" context="{'group_by':'date_arriver'}" />
+                    <filter name="group_by_state" string="Statut" context="{'group_by':'state'}" />
+                </group>
+                <searchpanel>
+                    <field name="chantier_id_source" string="Entrants" icon="fa-city" enable_counters="1" select="multi"/>
+                    <field name="chantier_id_destiation" string="Sortants" icon="fa-city" enable_counters="1" select="multi"/>
+                    <field name="type_emp" icon="fa-user" enable_counters="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+</odoo>

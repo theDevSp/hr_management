@@ -8,14 +8,26 @@
     'license': 'LGPL-3',
 
     'depends': [
-        'base', 'mail', 'hr', 'stock', 'hr_contract', 'construction_site_management', 'muk_web_theme', 'account_fiscal_year_period', 'base_fontawesome'
+        'base', 
+        'mail', 
+        'hr', 
+        'stock', 
+        'hr_contract', 
+        'construction_site_management', 
+        'muk_web_theme', 
+        'account_fiscal_year_period', 
+        'base_fontawesome', 
+        'reports_templates', 
+        'fleet_gmao_management'
         ],
 
     'data': [         
-        
         'security/groups.xml',
+        'security/rules.xml',
         'security/ir.model.access.csv',
         'wizard/wizard_blacklist_view.xml',
+        'wizard/wizard_reporter_dates_view.xml',
+        'wizard/wizard_confirmer_annuler_reporter_date.xml',
 
         'views/employee_model/employee_view.xml',
         'views/config/config_view.xml',
@@ -29,12 +41,39 @@
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/type_contrat_view.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/augmentation_view.xml',
         'views/employee_prime_rembourssement_model/prime_type_view.xml',
-        #'views/employee_prime_rembourssement_model/prime_view.xml',
-        #'views/employee_prelevement_model/prelevement_view.xml',
+        'views/employee_prime_rembourssement_model/prime_view.xml',
+        'views/employee_prime_rembourssement_model/paiement_ligne_view.xml',
+        'views/employee_prelevement_model/prelevement_view.xml',
+        'views/employee_prelevement_model/paiement_prelevement_view.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/profile_paie_view.xml',
+        'views/employee_credit_model/credit_view.xml',
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/fixation_view.xml',
+        'views/employee_holidays_model/holidays_view.xml',
+        'views/employee_holidays_model/jour_ferie_view.xml',
+        'views/employee_holidays_model/allocations_view.xml',
+        'views/employee_stc_model/stc_view.xml',
+        'views/employee_payroll_model/fiche_paie_view.xml',
+        'views/employee_payroll_model/jr_travaille_par_chantier_view.xml',
+        'views/employee_model/bank_city_view.xml',
+        'views/employee_model/affectation_view.xml',
+        'views/employee_pointage_mission_model/pointage_view.xml',
+        # 'views/employee_pointage_mission_model/rapport_pointage_view.xml',
+        'views/employee_pointage_mission_model/rapport_pointage_admin_view.xml',
+        'views/employee_pointage_mission_model/transfert_view.xml',
+        'views/employee_pointage_mission_model/wizards/add_new_employee_wizard.xml',
+        'views/employee_pointage_mission_model/wizards/create_single_emplyee_reppoart.xml',
 
         'reports/report_demande_recrutement.xml',
-        
+        'reports/report_fiche_employee.xml',
+        'reports/template_employee.xml',
+        'reports/report_augmentation.xml',
+        'reports/report_emprunt.xml',
+        'reports/report_prime.xml',
+        'reports/report_fixation.xml',
+        'reports/report_holidays.xml',
+        'reports/report_commande.xml',
+        'reports/report_stc.xml',
+
         'views/employee_model/employee_menu.xml',
         'views/config/config_menu.xml',
         'views/config/responsable_menu.xml',
@@ -47,9 +86,22 @@
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/contrats/type_contrat_menu.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/augmentation_menu.xml',
         'views/employee_prime_rembourssement_model/prime_type_menu.xml',
-        #'views/employee_prime_rembourssement_model/prime_menu.xml',
-        #'views/employee_prelevement_model/prelevement_menu.xml',
+        'views/employee_prime_rembourssement_model/prime_menu.xml',
+        'views/employee_prime_rembourssement_model/paiement_ligne_menu.xml',
+        'views/employee_prelevement_model/prelevement_menu.xml',
+        'views/employee_prelevement_model/paiement_prelevement_menu.xml',
         'views/employee_contract_job_recruit_augmentation_fixation_profile_model/profile_paie_menu.xml',
+        'views/employee_credit_model/credit_menu.xml',
+        'views/employee_contract_job_recruit_augmentation_fixation_profile_model/fixation_menu.xml',
+        'views/employee_holidays_model/holidays_menu.xml',
+        'views/employee_holidays_model/jour_ferie_menu.xml',
+        'views/employee_holidays_model/allocations_menu.xml',
+        'views/employee_stc_model/stc_menu.xml',
+        'views/employee_payroll_model/fiche_paie_menu.xml',
+        'views/employee_payroll_model/jr_travaille_par_chantier_menu.xml',
+        'views/employee_pointage_mission_model/pointage_menu.xml',
+        'views/employee_model/bank_city_menu.xml',
+        'views/employee_model/affectation_menu.xml',
     ],
 
     'demo': [
@@ -60,8 +112,14 @@
             
         ],
         'web.assets_backend': [
-
-            
+    
+        ],
+        'web.report_assets_pdf': [
+            'hr_management/static/src/**/*.scss',  
+  
+        ],
+        'web.assets_common': [
+            'hr_management/static/src/**/*.scss',  
 
         ],
         
