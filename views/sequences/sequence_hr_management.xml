@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record id="sequence_code_increment" model="ir.sequence">
             <field name="name">Code Number Sequence</field>
             <field name="code">hr.recrutement.sequence</field>
@@ -16,6 +16,26 @@
             <field name="code">hr.contract.sequence</field>
             <field name="active">TRUE</field>
             <field name="prefix"></field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+            <field name="padding">5</field>
+            <field name="implementation">standard</field>
+        </record>
+        <record id="sequence_credit_increment" model="ir.sequence">
+            <field name="name">Crédit Sequence</field>
+            <field name="code">hr.credit.sequence</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">EMP</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+            <field name="padding">5</field>
+            <field name="implementation">standard</field>
+        </record>
+        <record id="sequence_prelevemnt_increment" model="ir.sequence">
+            <field name="name">Senction Sequence</field>
+            <field name="code">hr.prelevement.sequence</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">PRE</field>
             <field name="number_increment">1</field>
             <field name="number_next">1</field>
             <field name="padding">5</field>
@@ -49,6 +69,16 @@
             <field name="number_increment">1</field>
             <field name="number_next">1</field>
             <field name="padding">5</field>
+            <field name="implementation">standard</field>
+        </record>
+
+        <record id="sequence_transfert" model="ir.sequence">
+            <field name="name">TR sequence</field>
+            <field name="code">hr.employee.transfert</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">TR</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
             <field name="implementation">standard</field>
         </record>
 

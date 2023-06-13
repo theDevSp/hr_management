@@ -75,15 +75,13 @@
                     <button name="to_new" string="Nouveau Embauche" type="object"/>
                     <button name="to_active" string="Active" type="object"/>
                     <button name="to_stc" string="STC" type="object"/>
-                </header>
-                <header class="bar-box-shadow mb-4">
+
                     <button name="open_wizard" string="Add to black list" class="oe_highlight" attrs="{'invisible': [('black_list', '=', True)]}" type="object" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                     <button name="open_wizard" string="Remove from black list" class="oe_highlight" attrs="{'invisible': [('black_list', '=', False)]}" type="object" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+                    <button name="creatiion_individuel_rapport_pointage" string="Générer un rapport" type="object" groups="hr_management.group_admin_paie"/>
                     <field name="state_employee_wtf" widget="statusbar" nolabel="1"/>
                 </header>
-                <header>
 
-                </header>
                 <field name="black_list" invisible="1"/>
                 <field name="having_contrat" invisible="1"/>
                 <div class="container" attrs="{'invisible': [('black_list', '=', False)]}">
@@ -91,19 +89,18 @@
                             Attention ! Cet Employé figure dans la liste noire
                     </div>
                 </div>
-
-                <sheet>
-                    <div class="oe_button_box bar-box-shadow" name="button_box">
-                        <button name="all_contracts" type="object" class="oe_stat_button" icon="fa-paste" string="Contracts" width="130" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">(<field name="nbr_contrats"/>)</button> 
-                        <button name="all_augmentations" type="object" class="oe_stat_button" icon="fa-chart-line" string="Augmentations" width="150" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">(<field name="nbr_augmentations"/>)</button>
-                        <button name="all_primes" type="object" class="oe_stat_button" icon="fa-money-bill-wave" string="Primes" width="130" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">(<field name="nbr_primes"/>)</button>
-                        <button name="all_prelevements" type="object" class="oe_stat_button" icon="fa-money-bill-wave" string="Prélèvements" width="150" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">(<field name="nbr_prelevements"/>)</button>
-                        <button name="all_credits" type="object" class="oe_stat_button" icon="fa-money-bill-wave" string="Crédits" width="130" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">(<field name="nbr_credits"/>)</button>
-                        <button name="all_conges" type="object" class="oe_stat_button" icon="fa-sliders" string="Congés" width="130">(<field name="nbr_holidays"/>)</button>
-                        <button name="all_fiche_paie" type="object" class="oe_stat_button" icon="fa-barcode" string="Fiches de paie" width="150" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">(<field name="nbr_fiches_de_paie"/>)</button>
-                        <button name="all_stc" type="object" class="oe_stat_button" icon="fa-handshake-o" string="STC" width="130" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">(<field name="nbr_stc"/>)</button>
-                        <button name="all_rapports_pointage" type="object" class="oe_stat_button" icon="fa-file-contract" string="Rapports de pointage" width="150">(<field name="nbr_rapports_pointage"/>)</button>
-                    </div>
+                <div class="oe_button_box bar-box-shadow bg-white mt-4" name="button_box">
+                    <button name="all_contracts" type="object" class="oe_stat_button col-12" icon="fa-paste" string="Contracts" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_contrats"/></button> 
+                    <button name="all_augmentations" type="object" class="oe_stat_button col-12" icon="fa-chart-line" string="Augmentations" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_augmentations"/></button>
+                    <button name="all_primes" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Primes" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_primes"/></button>
+                    <button name="all_prelevements" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Prélèvements" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_prelevements"/></button>
+                    <button name="all_credits" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Crédits" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_credits"/></button>
+                    <button name="all_conges" type="object" class="oe_stat_button col-12" icon="fa-sliders" string="Congés" ><field name="nbr_holidays"/></button>
+                    <button name="all_fiche_paie" type="object" class="oe_stat_button col-12" icon="fa-barcode" string="Fiches de paie" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_fiches_de_paie"/></button>
+                    <button name="all_stc" type="object" class="oe_stat_button col-12" icon="fa-handshake-o" string="STC" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_stc"/></button>
+                    <button name="all_rapports_pointage" type="object" class="oe_stat_button col-12" icon="fa-file-contract" string="Rapports de pointage" ><field name="nbr_rapports_pointage"/></button>
+                </div>
+                <div class="container-fliud p-3 my-3">
                     <div class="row mt-3">
                         <div class="col-md-4 col-lg-4">
                             <div class="card-deck">
@@ -746,18 +743,14 @@
                             </group>
                         </div>
                     </div>
-
-                </sheet>
-                <div class="container">
-                    <div class="alert alert-danger text-center" role="alert" attrs="{'invisible':[('black_list', '!=', True)]}">
-                        Attention ! Cet Employé figure dans la liste noire
-                    </div>
                 </div>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
+
+                
             </form>
         </field>
     </record>

@@ -29,7 +29,7 @@ class hr_employee(models.Model):
     lieu_naissance = fields.Char(u"Lieu Naissance")
     montant_cimr = fields.Float(u"Montant Cotisation CIMR")
     
-    # vehicle_id = fields.Many2one("fleet.vehicle",u"Code engin",tracking=True)
+    vehicle_id = fields.Many2one("fleet.vehicle",u"Code engin",tracking=True)
 
     remaining_days = fields.Char(compute="_compute_remaining_days",string='Jours Restants')
     date_cin = fields.Date(u'Date validité CIN')
@@ -84,7 +84,7 @@ class hr_employee(models.Model):
     date_start = fields.Date(related="contract_id.date_start",string='Date de début', required=False)
     date_end = fields.Date(related="contract_id.date_end",string='Date de fin', required=False)
     chantier_related = fields.Many2one(related="contract_id.chantier_id",string='Chantier', required=False)
-    type_contrat = fields.Many2one(related="contract_id.contract_type_id",string='Type du contrat', required=False)
+    type_contrat = fields.Many2one(related="contract_id.contract_type",string='Type du contrat', required=False)
     wage = fields.Monetary(related="contract_id.wage",string='Salaire de base', required=False, tracking=True, currency_field = "currency_f")
     salaire_actuel = fields.Float(related="contract_id.salaire_actuel",string='Salaire Actuel', required=False, tracking=True)
     pp_personnel_id_many2one = fields.Many2one(related="contract_id.pp_personnel_id_many2one",string='Profile de paie', store=True)
@@ -174,25 +174,6 @@ class hr_employee(models.Model):
             else :
                 employee.wage_jour = 0
 
-    
-    def _get_active_employee(self,employee_type):
-        pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
-        res =  []
-        query = ""
-        if pointeur:
-            query = """
-                    select distinct(id) from hr_employee where chantier_id in (select chantier_id from chantier_responsable_relation where user_id = %s) and state_employee_wtf = 'active' and employee_type = '%s';
-                """   % (self.env.user.id,str(employee_type))
-        else:
-            query = """
-                    select distinct(id) from hr_employee where chantier_id in (select id from fleet_vehicle_chantier where employee_type = '%s' and lower(name) not like '%s' and lower(name) not ilike '%s') and state_employee_wtf = 'active' ;
-                """  % (str(employee_type),str('%gasoil%'),str('%citern%'))
-
-        self.env.cr.execute(query)
-        for employee_id in self.env.cr.fetchall():
-            res.append(employee_id[0])
-        return res
-
     @api.model
     def create(self,vals):
         res_char = []
@@ -202,6 +183,10 @@ class hr_employee(models.Model):
                     if num:
                         res_char.append("position('%s' in lower(cin))>0 and position('%s' in lower(cin))>0 or " % (char.lower(),num))
 
+        print(re.split("[^a-zA-Z]*", vals['cin']))
+        print(re.split("[^0-9]*", vals['cin']))
+        
+
         if vals['cin']:
             query = """
                     select id from hr_employee where 
@@ -209,8 +194,7 @@ class hr_employee(models.Model):
             for res in res_char:
                 query += res
             query = query[:len(query) - 3]
-            print(res_char)
-          
+            
             self.env.cr.execute(query)
             if len(self.env.cr.fetchall()) > 0:
                 raise ValidationError(
@@ -318,7 +302,7 @@ class hr_employee(models.Model):
         return {
             'name': 'Les contrats de ' + self.name,
             'res_model':'hr.contract',
-            'view_type': 'list',
+            
             'view_mode': 'list',
             'views': [[False, 'list'], [False, 'form']],
             'type':'ir.actions.act_window',
@@ -329,7 +313,7 @@ class hr_employee(models.Model):
         return {
             'name': 'Les augmentations de ' + self.name,
             'res_model':'hr.augmentation',
-            'view_type': 'list',
+            
             'view_mode': 'list',
             'view_id': self.env.ref('hr_management.augmentation_par_employee_tree_view').id,
             'type':'ir.actions.act_window',
@@ -340,7 +324,7 @@ class hr_employee(models.Model):
         return {
             'name': 'Les primes de ' + self.name,
             'res_model':'hr.prime',
-            'view_type': 'list',
+            
             'view_mode': 'list',
             'view_id': self.env.ref('hr_management.prime_par_employee_tree_view').id,
             'type':'ir.actions.act_window',
@@ -351,7 +335,7 @@ class hr_employee(models.Model):
         return {
             'name': 'Les prélèvements de ' + self.name,
             'res_model':'hr.prelevement',
-            'view_type': 'list',
+            
             'view_mode': 'list',
             'view_id': self.env.ref('hr_management.prelevement_par_employee_tree_view').id,
             'type':'ir.actions.act_window',
@@ -362,7 +346,7 @@ class hr_employee(models.Model):
         return {
             'name': 'Les crédits de ' + self.name,
             'res_model':'hr.prelevement',
-            'view_type': 'list',
+            
             'view_mode': 'list',
             'view_id': self.env.ref('hr_management.credit_par_employee_tree_view').id,
             'type':'ir.actions.act_window',
@@ -373,7 +357,7 @@ class hr_employee(models.Model):
         return {
             'name': 'Les congés de ' + self.name,
             'res_model':'hr.holidays',
-            'view_type': 'list',
+            
             'view_mode': 'list',
             'view_id': self.env.ref('hr_management.holidays_par_employee_tree').id,
             'type':'ir.actions.act_window',
@@ -385,7 +369,7 @@ class hr_employee(models.Model):
         return {
             'name': 'Les fiches de paie de ' + self.name,
             'res_model':'hr.payslip',
-            'view_type': 'list',
+            
             'view_mode': 'list',
             'view_id': self.env.ref('hr_management.fiche_paie_par_employee_tree').id,
             'type':'ir.actions.act_window',
@@ -396,7 +380,6 @@ class hr_employee(models.Model):
         return {
             'name': 'Les STC de ' + self.name,
             'res_model':'hr.stc',
-            'view_type': 'list',
             'view_mode': 'list',
             'view_id': self.env.ref('hr_management.stc_par_employee_tree_view').id,
             'type':'ir.actions.act_window',
@@ -404,12 +387,15 @@ class hr_employee(models.Model):
             }
 
     def all_rapports_pointage(self):
+        tree_id = self.env.ref('hr_management.rapport_pointage_tree').id
+        form_id = self.env.ref('hr_management.rapport_pointage_form').id
+
         return {
             'name': 'Les rapports de pointage de ' + self.name,
             'res_model':'hr.rapport.pointage',
-            'view_type': 'list',
-            'view_mode': 'list',
-            'view_id': self.env.ref('hr_management.holidays_par_employee_tree').id,
+            
+            'view_mode': 'list,form',
+            'views': [(tree_id, 'tree'),(form_id,'form')],
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id)],
             }
@@ -487,12 +473,29 @@ class hr_employee(models.Model):
             rec.nbr_rapports_pointage = res[0][0] if len(res) > 0 else "0"
 
     
+    def creatiion_individuel_rapport_pointage(self):
+        
+        view = self.env.ref(
+            'hr_management.creation_individuel_wizard')
+        
+        return {
+            'name': ('Création pointage pour %s' % str(self.name)),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'hr.filtre.pointage.wizard',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'context':{
+                'default_employee_id':self.id
+            }
+        }
+    
     def compute_having_contrat(self):
         if self.contract_id:
             self.having_contrat = 1
         else:
             self.having_contrat = 0
-        print(self.having_contrat)
 
    
     def ajouter_contrat(self):

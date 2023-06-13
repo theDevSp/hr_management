@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="new_employee_wizard" model="ir.ui.view">
+        <field name="name">hr.new.employee.wizard</field>
+        <field name="model">hr.employee.add.transit</field>
+        <field name="arch" type="xml">
+            <form>
+                <group string="Information Employée">
+                    <group>
+                        <field name="employee_type" placeholder="Type Employée" nolabel="1"/>
+                        <field name="employee_id" placeholder="Nom Employée" nolabel="1"/>
+                        <field name="cin" placeholder="N° CIN" nolabel="1"/>
+                    </group>
+                    <group>
+                    </group>
+                        
+                    <group> 
+                        
+                        <field name="job_id" placeholder="Titre du Poste" nolabel="1" options="{'no_create': True,'no_open': True}" />
+                        <field name="job" placeholder="Fonction (Description)" nolabel="1"/>
+                    </group>
+                </group>   
+                <group string="Affectation" col="6">
+                    <field name="chantier" options="{'no_create': True,'no_open': True}" placeholder="Chantier" nolabel="1"/>
+                    <field name="vehicle" options="{'no_create': True,'no_open': True}" placeholder="Code Engin" nolabel="1"/>
+                    <field name="emplacement" options="{'no_create': True,'no_open': True}" placeholder="Equipe" nolabel="1"/> 
+                </group>
+                <group >
+                    <group string="Premier Mois" >
+                        <field name="period_id" options="{'no_create': True,'no_open': True}" placeholder="Premier Mois de Travail" nolabel="1"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+                
+
+                <footer>
+                    <button string="Annuler" class="oe_right" special="cancel"/>
+                    <button string="Créer" name="create_new_employee" class="oe_highlight oe_right" type="object"/> 
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="new_employee_wizard_action" model="ir.actions.act_window">
+        <field name="name">Créer Employée</field>
+        <field name="res_model">hr.employee.add.transit</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="new_employee_wizard" />
+        <field name="target">new</field>
+    </record>
+
+</odoo>

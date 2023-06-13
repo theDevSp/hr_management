@@ -1,8 +1,9 @@
 from odoo import models, fields, api, SUPERUSER_ID
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError,UserError
 from datetime import datetime,date
 from dateutil.relativedelta import relativedelta
 import calendar
+import locale
 
 class hr_rapport_pointage(models.Model):
     
@@ -31,50 +32,57 @@ class hr_rapport_pointage(models.Model):
 
 
     def _compute_hours(self):
-        query = """
+
+        for rapport in self:
+            query = """
                     select sum(h_travailler::real) as tht,sum(h_bonus::real) as thb,sum(h_sup::real) as ths,sum(h_travailler_v::real) as thtv  from hr_rapport_pointage_line where rapport_id = %s;
-                """   % (self.id)
-        if len(self.rapport_lines) > 0:
+                """   % (rapport.id)
             self.env.cr.execute(query)
             res = self.env.cr.dictfetchall()[0]
-            self.total_h = res['tht']
-            self.total_h_bonus = res['thb']
-            self.total_h_sup = res['ths']
-            self.total_h_v = res['thtv']
+
+            rapport.total_h = res['tht'] if res else 0
+            rapport.total_h_bonus = res['thb'] if res else 0
+            rapport.total_h_sup = res['ths'] if res else 0
+            rapport.total_h_v = res['thtv'] if res else 0
+        
 
 
     def _compute_days(self):
-        query = """
-                    select sum(j_travaille::real) as tj,sum(j_travaille_v::real) as tjv from hr_rapport_pointage_line where rapport_id = %s and day_type != '2';
-                """   % (self.id)
-        if len(self.rapport_lines) > 0:
+        for rapport in self:
+            query = """
+                        select sum(j_travaille::real) as tj,sum(j_travaille_v::real) as tjv from hr_rapport_pointage_line where rapport_id = %s and day_type != '2';
+                    """   % (rapport.id)
+        
             self.env.cr.execute(query)
             res = self.env.cr.dictfetchall()[0]
-            self.total_j = res['tj']
-            self.total_j_v = res['tjv']
+
+            self.total_j = res['tj'] if res else 0
+            self.total_j_v = res['tjv'] if res else 0
     
 
     def _compute_days_conge_absence_abondon(self):
-        query = """
+        for rapport in self:
+            query = """
                     select 
                     count(1) filter (where day_type='2' and h_travailler::real > 0) as tdim,
                     count(1) filter (where day_type='3' and h_travailler::real > 0) as tferie,
                     count(1) filter (where day_type='4') as tconge,
                     count(1) filter (where day_type='5') as tabsense
                     from hr_rapport_pointage_line where rapport_id = %s;
-                """ % (self.id)
-        if len(self.rapport_lines) > 0:
+                """ % (rapport.id)
+        
             self.env.cr.execute(query)
             res = self.env.cr.dictfetchall()[0]
-            self.count_nbr_dim_days = res['tdim']
-            self.count_nbr_ferier_days = res['tferie']
-            self.count_nbr_holiday_days = res['tconge']
-            self.count_nbr_absense_days = res['tabsense']
+            self.count_nbr_dim_days = res['tdim'] if res else 0
+            self.count_nbr_ferier_days = res['tferie'] if res else 0
+            self.count_nbr_holiday_days = res['tconge'] if res else 0
+            self.count_nbr_absense_days = res['tabsense'] if res else 0
 
 
     def _compute_holidays_liste(self):
+
         query_result = self.env['hr.holidays']
-        if self.employee_id:
+        if self.employee_id and self.rapport_lines:
             query = """
                     select id from hr_holidays where
                     employee_id = %s and
@@ -90,127 +98,40 @@ class hr_rapport_pointage(models.Model):
         self.transfert_ids = self.env['hr.employee.transfert'].search([('employee_id','=',self.employee_id.id),('date_transfert','<=',self.period_id.date_stop),('date_transfert','>=',self.period_id.date_start)])
 
 
-    def display_msg(self,msg,state):
-        if state == 'danger':
-            return  """
-                        <div class="alert alert-danger">
-                            <strong>Attention !!!</strong> %s.
-                        </div>
-                    """ %(msg)
-        elif state == 'warning':
-            return """
-                        <div class="alert alert-warning">
-                            <strong>Information !!!</strong> %s.
-                        </div>
-                    """ %(msg)
-        elif state == 'infos':
-            return """
-                        <div class="alert alert-info">
-                            <strong>Message !!!</strong> %s.
-                        </div>
-                    """ %(msg)
-
-
-    def _render_html(self):
-        self.data_html = ""
-        last_period = self.env['hr.payslip'].search([('employee_id',"=",self.employee_id.id),('period_id','!=',self.period_id.id)],limit = 1,order="id desc")
-
-        alerts = ''
-        warnings = ''
-        infos = ''
-
-        errors = {}
-
-        if self.employee_id.contract_id.contract_type.depends_duration == True:
-            end_date = datetime.now()
-            start_date = self.employee_id.contract_id.date_end
-            num_months = 0
-            num_jours = 0
-            if start_date:
-                num_months = (fields.Date.from_string(start_date).year - end_date.year) * 12 + (fields.Date.from_string(start_date).month - end_date.month) 
-                num_jours = (fields.Date.from_string(start_date).day - end_date.day)
-            if num_months > 0.0 and num_months <= 3.0 or num_jours > 0:
-                errors['contrat_error'] = 1
-                
-        elif self.employee_id.contract_id.contract_type.depends_emplacement == True:
-            for rapport_line in self.rapport_lines:
-                if rapport_line.chantier_id.id != self.employee_id.contract_id.chantier_id.id and rapport_line.chantier_id:
-                    errors['chantier_error'] = 1
-        
-        elif self.period_id and self.quinzaine == 'quinzaine12':
-            date_stop = fields.Date.from_string(self.period_id.date_stop) - relativedelta(months=+1)
-            date_start = fields.Date.from_string(self.period_id.date_start) - relativedelta(months=+1)
-            period_id = self.env["account.month.period"].search([('date_stop','>=',date_stop),('date_start','<=',date_start)],limit=1)   
-            prev_paied = self.env['hr.payslip'].search([('employee_id',"=",self.employee_id.id),('period_id',"=",period_id.id)])
-            if not prev_paied:
-                errors['period_error'] = 1
-        
-        elif self.period_id and self.quinzaine == 'quinzaine1':
-            date_stop = fields.Date.from_string(self.period_id.date_stop) - relativedelta(months=+1)
-            date_start = fields.Date.from_string(self.period_id.date_start) - relativedelta(months=+1)
-            period_id = self.env["account.month.period"].search([('date_stop','>=',date_stop),('date_start','<=',date_start)],limit=1)   
-            prev_paied = self.env['hr.payslip'].search([('employee_id',"=",self.employee_id.id),('period_id',"=",period_id.id),('quinzaine','=','quinzaine2')])  
-            if not prev_paied:
-                errors['period_error'] = 1
-
-        elif self.period_id and self.quinzaine == 'quinzaine2':
-            prev_paied = self.env['hr.payslip'].search([('employee_id',"=",self.employee_id.id),('period_id',"=",self.period_id.id),('quinzaine','=','quinzaine1')])  
-            if not prev_paied:
-                errors['period_error'] = 1      
-            else:
-                last_period = prev_paied
-        
-        if last_period:
-            infos += self.display_msg("Dernière période payée %s"%(last_period.period_id.name),'infos')
-        else:
-            warnings += self.display_msg("C'est la première période travaillée",'warning')
-
-        if errors.get('contrat_error'):
-            alerts += self.display_msg("Contrat de %s sera terminé dans %s mois et %s jours. Date de fin de contrat est %s" %(self.employee_id.name,str(num_months),str(num_jours),start_date),'danger') 
-        if errors.get('chantier_error'):
-            alerts += self.display_msg("Cet employé possède un contrat de chantier et il y a un changement de chantier détécté durant cette période.",'danger')
-        if errors.get('period_error'):
-            alerts += self.display_msg("Un décalage de paiement est détecté",'danger')
-
-        if alerts:
-            self.data_html +=    """
-                                <div class="col-md-4 panel-group">%s</div>
-                            """%(alerts)
-        if warnings:
-            self.data_html +=    """
-                                <div class="col-md-4 panel-group">%s</div>
-                            """%(warnings)
-        if infos:
-            self.data_html +=    """
-                                <div class="col-md-4 panel-group">%s</div>
-                            """%(infos)
-
-    name = fields.Char("Référence")
-    employee_id = fields.Many2one("hr.employee",u"Employée",readonly=False, ondelete='cascade')
-    cin = fields.Char(related='employee_id.cin',string="N° CIN",readonly=False)
-    fonction = fields.Char(related='employee_id.job',string="Fonction",readonly=False)
+    name = fields.Char("Référence",readonly=True)
+    employee_id = fields.Many2one("hr.employee",u"Employée",readonly=True, ondelete='cascade')
+    cin = fields.Char(related='employee_id.cin',string="N° CIN",readonly=True)
+    fonction = fields.Char(related='employee_id.job',string="Fonction",readonly=True)
     job_id = fields.Many2one(related='employee_id.job_id',string="Poste occupé",readonly=True)
-    chantier_id = fields.Many2one("fleet.vehicle.chantier",u"Dernier Chantier",readonly=False)
-    grant_modification = fields.Boolean(related='chantier_id.grant_modification')
+
+    chantier_id = fields.Many2one("fleet.vehicle.chantier",u"Dernier Chantier",readonly=True)
+    periodicite = fields.Selection(related='chantier_id.periodicite',readonly=True)
+    grant_modification = fields.Boolean(related='chantier_id.grant_modification',readonly=True)
+
     vehicle_id = fields.Many2one("fleet.vehicle",u"Dérnier Code engin",readonly=True)
     emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement","Dernière Équipe",readonly=True)
+
     period_id = fields.Many2one("account.month.period",u'Période',required=True,readonly=False,domain = _get_ab_default)
+
     total_h = fields.Float("Heures Travaillées",compute="_compute_hours",readonly=True)
     total_h_bonus = fields.Float("Heures Bonus",compute="_compute_hours",readonly=True)
     total_h_sup = fields.Float("Heures Supp",compute="_compute_hours",readonly=True)
     total_j = fields.Float("Jours Travaillés",readonly=True,compute="_compute_days")
     total_h_v = fields.Float("Heures Validées",compute="_compute_hours",readonly=True)
     total_j_v = fields.Float("Jours Validés",readonly=True,compute="_compute_days")
+
     note = fields.Text("Observation", states=READONLY_STATES)
+
     payslip_ids = fields.One2many("hr.payslip",'rapport_id',u'Fiche Paie',readonly=True)
     holiday_ids = fields.One2many("hr.holidays",'rapport_id',u'Congés',readonly=True,compute="_compute_holidays_liste")
+    rapport_lines = fields.One2many("hr.rapport.pointage.line", 'rapport_id',string="Lignes Rapport Pointage")
     # ####holiday_ids = fields.Many2many('hr.holydays', 'rapport_holidays_relation', 'holiday_ids', 'rapport_id', string="Congés")
     # transfert_ids = fields.One2many("hr.employee.transfert",'rapport_id',u'Transfert',readonly=True,compute="_compute_transferts_liste")
+
     etat = fields.Selection([('5',u"Absence Non Autorisé"),('6',u"Abondement de Poste"),('7',u"STC"),('8',u'Accident du Travail'),('9',u'Transfert')],u"État Salarié")
     quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine")
 
     state = fields.Selection([('draft',u'Brouillon'),('working',u'Traitement En Cours'),('compute',u"Mois Calculé"),('valide',u"Validé"),('done',u"Clôturé"),('cancel','Annulé')],u"Etat Pointage",default='draft',tracking=True)
-    rapport_lines = fields.One2many("hr.rapport.pointage.line", 'rapport_id',string="Lignes Rapport Pointage")
 
     count_nbr_holiday_days = fields.Integer("Jours Congés",readonly=True,compute="_compute_days_conge_absence_abondon")
     count_nbr_ferier_days = fields.Integer("Jours Fériés",readonly=True,compute="_compute_days_conge_absence_abondon")
@@ -220,43 +141,93 @@ class hr_rapport_pointage(models.Model):
     q1_state = fields.Selection([('q1_draft',u'En Attente'),('q1_working',u'Q1 Traitement En Cours'),('q1_compute',u"Q1 Calculé"),('q1_valide',u"Q1 Validé"),('q1_done',u"Q1 Clôturé")],u"Première Quinzaine",default="q1_draft")
     q2_state = fields.Selection([('q2_draft',u'En Attente'),('q2_working',u'Q2 Traitement En Cours'),('q2_compute',u"Q2 Calculé"),('q2_valide',u"Q2 Validé"),('q2_done',u"Q2 Clôturé")],u"Deuxième Quinzaine",default="q2_draft")
 
-    data_html = fields.Html('HTML Data', readonly=True, compute='_render_html')
-  
-    employee_type = fields.Selection([("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé",default="s", compute="_compute_type_employee", store=True)
-    # type_emp = fields.Selection(related="contract_id.type_emp",string=u"Type d'employé", required=False, store=True)
-    # employee_type = fields.Selection(related='employee_id.type_emp',string="Type Employee",readonly=False)
-    # periodicite = fields.Selection(related='chantier_id.periodicite')
-    periodicite = fields.Selection([("1","Quinzaine"),("2","Mensuelle")],default="1",string="Périodicité",compute="_compute_periodicite", store=True)
+    type_emp = fields.Selection(related="employee_id.contract_id.type_emp",string=u"Type d'employé", required=False)
 
-    # @api.model
-    # def create(self,vals):
-    #     employee_id = self.env['hr.employee'].browse(vals['employee_id'])
-    #     vals['name'] = self.env['ir.sequence'].next_by_code('hr.rapport.pointage')
-    #     if not vals.get('chantier_id'):
-    #         vals['chantier_id'] = employee_id.chantier_id.id 
-    #     vals['emplacement_chantier_id'] = employee_id.emplacement_chantier_id.id
-    #     # vals['vehicle_id'] = employee_id.vehicle_id.id
+    def _compute_message_change_chantier(self):
+        self.message_change_chantier = False
+        if self.employee_id.contract_id.contract_type.depends_emplacement == True:
+            for rapport_line in self.rapport_lines:
+                if rapport_line.chantier_id.id != self.employee_id.contract_id.chantier_id.id and rapport_line.chantier_id:
+                    self.message_change_chantier = "Attention !!! Cet employée posséde une contrat de chantier et il y a un changement de chantier détécté durant cette période."
+                
+
+    def _compute_message_end_existence_contract(self):
+        if self.employee_id.contract_id:
+            if self.employee_id.contract_id.contract_type.depends_duration == True:
+                end_date = datetime.now()
+                start_date = self.employee_id.contract_id.date_end
+                num_months = 0
+                num_jours = 0
+                if start_date:
+                    num_months = (start_date.year - end_date.year) * 12 + (start_date.month - end_date.month) 
+                    num_jours = (start_date.day - end_date.day)
+
+                if num_months > 0.0 and num_months <= 3.0 or num_jours > 0:
+                    self.message_end_existence_contract = "Attention !!! Contrat de %s sera terminé dans %s mois et %s jours. Date de fin de contrat est %s"%(self.employee_id.name,str(num_months),str(num_jours),start_date) 
+                else:
+                    self.message_end_existence_contract = False
+        else:
+            self.message_end_existence_contract = "Attention !!! Cet employé n'a pas encore de contrat"   
+
+    def _compute_message_last_periode(self):
+        obj = self.env['hr.payslip']
+        self.message_last_periode = False
+        self.message_gap_payement = False
         
-    #     if_exist = self.env['hr.rapport.pointage'].search_count([('period_id', '=', vals['period_id']),('employee_id', '=', vals['employee_id']),('quinzaine','=',vals['quinzaine'])])
+        if self.period_id:
+            date_stop = self.period_id.date_stop - relativedelta(months=+1)
+            date_start = self.period_id.date_start - relativedelta(months=+1)
+            period_id = self.env["account.month.period"].search([('date_stop','>=',date_stop),('date_start','<=',date_start)],limit=1) 
+            
+            prev_paied_period = obj.search([('employee_id',"=",self.employee_id.id),('period_id',"=",period_id.id),('quinzaine','=',self.quinzaine)])
+            last_period = obj.search([('employee_id',"=",self.employee_id.id),('period_id','!=',self.period_id.id)],limit = 1,order="id desc") if not prev_paied_period else prev_paied_period
+            if not prev_paied_period:
+                self.message_gap_payement = "Un décalage de paiement est détecté"
+            if last_period:
+                self.message_last_periode = "Dernière période payée %s"%(last_period.period_id.name)
+            else:
+                self.message_last_periode = "C'est la première période travaillée"
 
-    #     if not if_exist:
-    #         res = super(hr_rapport_pointage,self).create(vals)
-    #         if res.chantier_id.periodicite == '1' and res.employee_id.type_emp == 'o':
-    #             if res.quinzaine == 'quinzaine1':
-    #                 for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,employee_id=vals['employee_id']):
-    #                     if line['day'].date() <= self.get_half_month_day(res.period_id):
-    #                         self.env['hr.rapport.pointage.line'].create(line)
-    #             elif res.quinzaine == 'quinzaine2':
-    #                 for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,employee_id=vals['employee_id']):
-    #                     if line['day'].date() > self.get_half_month_day(res.period_id):
-    #                         self.env['hr.rapport.pointage.line'].create(line)
-    #         else:
-    #             for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,employee_id=vals['employee_id']):
-    #                 self.env['hr.rapport.pointage.line'].create(line)
 
-    #     return True
+    message_change_chantier = fields.Char('message_change_chantier',compute="_compute_message_change_chantier")
+    message_end_existence_contract = fields.Char('message_end_existence_contract',compute="_compute_message_end_existence_contract")
+    message_last_periode = fields.Char('message_last_periode',compute="_compute_message_last_periode")
+    message_gap_payement = fields.Char('message_gap_payement',compute="_compute_message_last_periode")
+
+    @api.model
+    def create(self,vals):
+
+        employee_id = self.env['hr.employee'].browse(vals['employee_id'])
+        vals['name'] = self.env['ir.sequence'].next_by_code('hr.rapport.pointage.sequence')
+        if not vals.get('chantier_id'):
+            vals['chantier_id'] = employee_id.chantier_id.id  if employee_id.chantier_id else False
+        vals['emplacement_chantier_id'] = employee_id.emplacement_chantier_id.id if employee_id.emplacement_chantier_id else False
+        vals['vehicle_id'] = employee_id.vehicle_id.id if employee_id.vehicle_id else False
+        
+        if_exist = self.env['hr.rapport.pointage'].search_count([('period_id', '=', vals['period_id']),('employee_id', '=', vals['employee_id']),('quinzaine','=',vals['quinzaine'])])
+        
+        
+        res = super(hr_rapport_pointage,self).create(vals)
+        if not if_exist:
+            
+            if res.chantier_id.periodicite == '1' and res.employee_id.type_emp == 'o':
+                if res.quinzaine == 'quinzaine1':
+                    for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,employee_id=vals['employee_id']):
+                        if line['day'].date() <= self.get_half_month_day(res.period_id):
+                            self.env['hr.rapport.pointage.line'].create(line)
+                elif res.quinzaine == 'quinzaine2':
+                    for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,employee_id=vals['employee_id']):
+                        if line['day'].date() > self.get_half_month_day(res.period_id):
+                            self.env['hr.rapport.pointage.line'].create(line)
+            else:
+                for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,employee_id=vals['employee_id']):
+                    self.env['hr.rapport.pointage.line'].create(line)
+        else:
+            raise UserError('Rapport déja existe')
+
+        return res
     
-
+    """
     def write(self,vals):
         pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
         res = super(hr_rapport_pointage,self).write(vals)
@@ -276,9 +247,11 @@ class hr_rapport_pointage(models.Model):
                 if fields.Date.from_string(line.day) > self.get_half_month_day(self.period_id) and fields.Date.from_string(line.day) <= self.get_last_month_day():
                     line.write({'state':vals['q2_state'][3:]})
         return res
+    """
     
 
-    def _prepare_rapport_pointage_lines(self,period_id,rapport_id,employee_id):                 
+    def _prepare_rapport_pointage_lines(self,period_id,rapport_id,employee_id):   
+                    
         nbr_days_months = self.get_range_month(period_id)
         repport_lines = []
         for number in range(nbr_days_months):
@@ -290,7 +263,7 @@ class hr_rapport_pointage(models.Model):
             
             repport_lines.append({
                 'name':name,
-                'day':datetime(fields.Date.from_string(period_id.date_start).year, fields.Date.from_string(period_id.date_start).month, day),
+                'day':datetime(period_id.date_start.year,period_id.date_start.month, day),
                 'day_type':str(day_type),
                 'rapport_id':rapport_id,
                 'employee_id':employee_id
@@ -299,11 +272,11 @@ class hr_rapport_pointage(models.Model):
     
     
     def get_range_month(self,period_id):
-        return calendar.monthrange(fields.Date.from_string(period_id.date_start).year, fields.Date.from_string(period_id.date_start).month)[1] 
+        return calendar.monthrange(period_id.date_start.year, period_id.date_start.month)[1] 
 
     def _get_day(self,period_id,day):
-        return str('%02d' % day)+' '+datetime(fields.Date.from_string(period_id.date_start).year, fields.Date.from_string(period_id.date_start).month, day).strftime("%a").lower().capitalize().replace('.','')
-
+        locale.setlocale(locale.LC_TIME, 'fr_FR')
+        return str('%02d' % day)+' '+datetime(period_id.date_start.year, period_id.date_start.month, day).strftime("%a").lower().capitalize().replace('.','')
 
     def action_pointage_user(self,employee_type,etat):
         pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
@@ -352,7 +325,6 @@ class hr_rapport_pointage(models.Model):
             'context':context
         }
     
-
     def remove_first_word(self,word):
         if word:
             res = []
@@ -583,7 +555,5 @@ class hr_rapport_pointage(models.Model):
     @api.depends('employee_id')
     def _compute_type_employee(self):
         self.employee_type = self.employee_id.type_emp
-
-    @api.depends('chantier_id')
-    def _compute_periodicite(self):
-        self.periodicite = self.chantier_id.periodicite
+ 
+    

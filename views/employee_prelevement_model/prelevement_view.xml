@@ -72,6 +72,7 @@
                                                     <span class="fa fa-sliders form-control-icon"></span>
                                                     <field name="is_credit" class="card-img-top mt-3 mb-2" invisible="1"/>
                                                     <field name="type_prelevement" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('is_credit', '=', 'True')]}"/>
+                                                    <field name="addition_deduction" invisible="1"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -193,7 +194,9 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="echeance" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="echeance" class="form-control" 
+                                                            attrs="{'readonly': [('state', '!=', 'draft')],
+                                                                    'required':[('addition_deduction','=','prelevement'),('type_prelevement','=','en_montant')]}"/>
                                                 </div>  
                                             </div> 
                                         </div>
@@ -273,12 +276,5 @@
             </search>
         </field>
     </record>
-    <record id='prelevement_action' model='ir.actions.act_window'>
-        <field name="name">Les Prélèvements</field>
-        <field name="res_model">hr.prelevement</field>
-        <field name="view_mode">tree,form,search</field>
-        <field name="view_id" ref="hr_management.prelevement_tree_view"/>
-        <field name="domain">[('is_credit', '!=', True)]</field>
-        <field name="context">{'default_is_credit': 0,'form_view_ref': 'hr_management.prelevement_view_form'}</field> 
-    </record>
+    
 </odoo>

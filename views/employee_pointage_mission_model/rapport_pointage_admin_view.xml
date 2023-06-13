@@ -33,7 +33,6 @@
                                     <field name="j_travaille_v"/>
                                     <field name="chantier_id" options="{'no_create': True,'no_open': True}"/>
                                     <field name="vehicle_id"  options="{'no_create': True,'no_open': True}" readonly="1" invisible="1"/>
-                                    <field name="vehicle_ids_resume"/>
                                     <field name="emplacement_chantier_id"  options="{'no_create': True,'no_open': True}"/>
                                     <field name="details" />                                           
                                     <field name="note" /> 
@@ -42,7 +41,7 @@
                             </group>
                         </group>
                         <group string="">
-                             <field name="vehicle_ids" nolabel="1">
+                             <field name="vehicle_ids" widget="many2many_tags" nolabel="1">
                                 <tree editable="bottom">
                                     <field name="name"/>
                                     <field name="time_start"/>
@@ -56,11 +55,6 @@
                         </group>
                     </sheet> 
                     <sheet>  
-                        <group string="">
-                            <div class="oe_chatter">
-                                <field name="modification_data_html" colspan="4" nolabel="1"/>
-                            </div> 
-                        </group>
                         <div class="oe_chatter" groups="nxtm_employee_mngt.group_pointage_controller,nxtm_employee_mngt.group_pointage_admin">
                             <field name="message_follower_ids" widget="mail_followers"/>
                             <field name="message_ids" widget="mail_thread"/>

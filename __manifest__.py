@@ -8,7 +8,17 @@
     'license': 'LGPL-3',
 
     'depends': [
-        'base', 'mail', 'hr', 'stock', 'hr_contract', 'construction_site_management', 'muk_web_theme', 'account_fiscal_year_period', 'base_fontawesome', 'reports_templates', 'fleet'
+        'base', 
+        'mail', 
+        'hr', 
+        'stock', 
+        'hr_contract', 
+        'construction_site_management', 
+        'muk_web_theme', 
+        'account_fiscal_year_period', 
+        'base_fontawesome', 
+        'reports_templates', 
+        'fleet_gmao_management'
         ],
 
     'data': [         
@@ -48,8 +58,10 @@
         'views/employee_model/affectation_view.xml',
         'views/employee_pointage_mission_model/pointage_view.xml',
         # 'views/employee_pointage_mission_model/rapport_pointage_view.xml',
-        # 'views/employee_pointage_mission_model/rapport_pointage_admin_view.xml',
-        # 'views/employee_pointage_mission_model/rapport_pointage_pointeur_view.xml',
+        'views/employee_pointage_mission_model/rapport_pointage_admin_view.xml',
+        'views/employee_pointage_mission_model/transfert_view.xml',
+        'views/employee_pointage_mission_model/wizards/add_new_employee_wizard.xml',
+        'views/employee_pointage_mission_model/wizards/create_single_emplyee_reppoart.xml',
 
         'reports/report_demande_recrutement.xml',
         'reports/report_fiche_employee.xml',

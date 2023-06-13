@@ -25,6 +25,12 @@ class paiement_prelevement(models.Model):
 
     def to_annuler(self):
         self.state = "annule"
+    
+    def payer(self):
+        self.state = "paye"
+        
+    def unpayer(self):
+        self.state = "non_paye"
 
     @api.model
     def create(self, vals):
@@ -35,7 +41,7 @@ class paiement_prelevement(models.Model):
             if self.prelevement_id and vals["state"] == "paye":
                 self.prelevement_id.montant_paye = self.prelevement_id.montant_paye + self.montant_a_payer
                 self.prelevement_id.reste_a_paye = self.prelevement_id.montant_total_prime - self.prelevement_id.montant_paye
-            elif self.prelevement_id and vals["state"] == "non_paye": 
+            elif self.prelevement_id and vals["state"] == "non_paye" and self.state == "paye": 
                 self.prelevement_id.montant_paye = self.prelevement_id.montant_paye - self.montant_a_payer
                 self.prelevement_id.reste_a_paye = self.prelevement_id.montant_total_prime + self.prelevement_id.montant_paye
         return super(paiement_prelevement, self).write(vals)

@@ -11,7 +11,7 @@ class prelevement(models.Model):
     _description = "Prelevement"
     _inherit = ["hr.prime",'mail.thread', 'mail.activity.mixin']
 
-    paiement_prelevement_ids = fields.One2many("hr.paiement.prelevement","prelevement_id", string = "Paiement prélèvement" )
+    paiement_prelevement_ids = fields.One2many("hr.paiement.prelevement","prelevement_id", string = "Détails Paiement" )
     addition_deduction = fields.Selection([
         ("prime","Prime"),
         ("prelevement","Prélèvement"),
@@ -35,33 +35,44 @@ class prelevement(models.Model):
 
     @api.model
     def create(self, vals):
+        credit_seq = self.env['ir.sequence'].next_by_code('hr.credit.sequence')
+        prelv_seq = self.env['ir.sequence'].next_by_code('hr.prelevement.sequence')
         if vals.get("type_prelevement") and vals["type_prelevement"] == "en_jour":
             periode_retournee = self.recuperer_id_periode(vals["date_fait"])
             vals["first_period_id"] = periode_retournee
+        print(self.env.context)
+        vals['name'] = credit_seq if vals['is_credit'] else prelv_seq
         return super(prelevement, self).create(vals)
          
     def write(self, vals):
+        
         if vals.get("echeance") or vals.get("montant_total_prime"):
             for ligne in self.paiement_prelevement_ids:
                 if ligne.state == "paye":
                     raise ValidationError("Erreur, vous ne pouvez pas faire ce traitement.")
+                
         if vals.get("montant_paye") and vals["montant_paye"] > self.montant_total_prime:
             raise ValidationError("Le montant payé doit être inférieur du montant et strictement supérieur à 0.")
+        
         if vals.get("state") and vals["state"] == "draft" and self.state == "annulee":
             for ligne in self.paiement_prelevement_ids:
                 if ligne.state == "paye":
                     raise ValidationError("Erreur, Vous avez au moins une période payée, vous devez régler la situation.")
                 ligne.unlink()
+
         if vals.get("state") and vals["state"] == "validee":
             for ligne in self.paiement_prelevement_ids:
                 if ligne.state == "paye":
                     raise ValidationError("Erreur, Vous avez au moins une période payée, vous devez régler la situation.")
                 ligne.unlink()
+
             self.compute_prelevement()
+
         if vals.get("state") and vals["state"] == "annulee":
             for ligne in self.paiement_prelevement_ids:
                 if ligne.state == "paye":
                     raise ValidationError("Erreur, Vous avez au moins une période payée, vous devez régler la situation.")
+                
         return super(prelevement, self).write(vals)
     
 
@@ -70,6 +81,8 @@ class prelevement(models.Model):
             res = self.montant_total_prime / self.echeance
             nbr_periodes = ceil(res)            
             self.compute_alimenter_paiement_prelevement(nbr_periodes)
+        else:
+            raise ValidationError("Probléme d'échéance, Le systéme ne peut pas lancer le calcule à cause d'une erreur au niveau de l'échéance.")
             
 
     def compute_alimenter_paiement_prelevement(self,nbr_periodes):
@@ -105,19 +118,14 @@ class prelevement(models.Model):
     def to_draft(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
             if self.state not in {'draft','validee'} :
-                if self.state == "cloture":
-                    for ligne in self.paiement_prelevement_ids:
-                        if ligne.state == "annule":
-                            ligne.state = "non_paye"
-                elif self.state == "cloture_paye":
-                    for ligne in self.paiement_prelevement_ids:
-                        if ligne.state == "paye":
-                            ligne.state = "non_paye"
+                for ligne in self.paiement_prelevement_ids:
+                    if ligne.state in ("paye","annule"):
+                        ligne.state = "non_paye"
                 self.state = 'draft'
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
+            raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
 
 
     def to_validee(self):
@@ -127,7 +135,7 @@ class prelevement(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
+            raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
 
 
     def to_annulee(self):
@@ -137,7 +145,7 @@ class prelevement(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
+            raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
 
 
     def to_cloturer_payer(self):
@@ -151,7 +159,7 @@ class prelevement(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
+            raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
     
 
     def to_cloturer(self):
@@ -165,7 +173,7 @@ class prelevement(models.Model):
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
-            raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
+            raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
         
 
     def nbr_days_of_current_month(self):

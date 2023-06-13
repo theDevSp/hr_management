@@ -9,14 +9,14 @@ class prime(models.Model):
     _description = "Prime"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     
-    name = fields.Char(related="type_prime.name", default="########")
+    name = fields.Char("ref")
     employee_id = fields.Many2one("hr.employee", string = "Employee")
     first_period_id = fields.Many2one("account.month.period", string = "Première Période", required=True)
     paiement_prime_ids = fields.One2many("hr.paiement.ligne","prime_id", string = "Paiement Ligne")
     date_fait = fields.Date("Date de fait", required=True, default=fields.Date.today, tracking=True, index=True)
     donneur_order = fields.Many2one("hr.directeur", string = "Directeur")
     responsable_id = fields.Many2one("hr.responsable.chantier", string = "Responsable")
-    type_prime = fields.Many2one("hr.prime.type", string = "Type de Prime", required=True)
+    type_prime = fields.Many2one("hr.prime.type", string = "Type de Prime")
 
     montant_total_prime = fields.Float("Montant",required=True)
     echeance = fields.Float("Échéance",required=True)

@@ -156,7 +156,7 @@
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-file-contract form-control-icon"></span>
-                                                    <field name="contract_id" domain="[('employee_id', '=', employee_id)]" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="contract_id" domain="[('employee_id', '=', employee_id)]" class="form-control" force_save="1" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>
                                             </div>
                                         </div>

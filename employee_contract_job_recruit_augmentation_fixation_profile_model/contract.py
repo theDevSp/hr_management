@@ -90,12 +90,12 @@ class contrats(models.Model):
         self.env.cr.execute(query)
         res = self.env.cr.dictfetchall()[0]
         if(res['count']==0):
-            type_emp = self.env['hr.employee'].browse(vals["employee_id"]).type_emp
+            
             today = datetime.now()
             year = today.year
             month = '{:02d}'.format(today.month)
             contract_sequence = self.env['ir.sequence'].next_by_code('hr.contract.sequence')
-            vals['name'] = type_emp + '-' + str(month) + '/' + str(year) + '/' + str(contract_sequence)
+            vals['name'] = vals['type_emp'] + '-' + str(month) + '/' + str(year) + '/' + str(contract_sequence)
         else:
             raise ValidationError(
                     "Erreur, Cet employé a déjà un contrat 'New' ou 'Running'."

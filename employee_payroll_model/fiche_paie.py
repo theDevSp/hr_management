@@ -101,13 +101,6 @@ class fiche_paie(models.Model):
     @api.onchange('employee_id')
     def get_contract_actif(self):
         if self.employee_id:
-            self.contract_id = ""
-            self.type_emp = ""
-            self.job_id = ""
-            self.salaire_actuel = ""
-            self.salaire_jour = ""
-            self.salaire_demi_jour = ""
-            self.salaire_heure = ""
             self.contract_id = self.employee_id.contract_id
 
         
@@ -121,16 +114,15 @@ class fiche_paie(models.Model):
         res = 0
 
         profile_paie_p = self.contract_id.pp_personnel_id_many2one
-        type_profile = self.type_profile_related
-        definition_nbre_jour_worked_par_mois = profile_paie_p.definition_nbre_jour_worked_par_mois
+        type_profile = profile_paie_p.type_profile
+        code_profile = profile_paie_p.definition_nbre_jour_worked_par_mois
         
         if type_profile == 'j':
             worked_time = self.nbr_jour_travaille
-            base_time = profile_paie_p.nbre_jour_worked_par_mois
+            base_time = profile_paie_p.nbre_jour_worked_par_mois if code_profile == 'nbr_saisie' else 30
         elif type_profile == 'h':
             worked_time = self.nbr_heure_travaille
             base_time = profile_paie_p.nbre_heure_worked_par_jour * profile_paie_p.nbre_jour_worked_par_mois
-
         res = worked_time / base_time * 1.5
 
         if profile_paie_p.periodicity == "m":

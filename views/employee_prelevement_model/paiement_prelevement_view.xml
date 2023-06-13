@@ -29,7 +29,11 @@
         <field name="arch" type="xml">
             <form>
                 <header class="bar-box-shadow mb-4">
-                    <button name="to_annuler" string="Annuler" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ('annule'))]}"/>
+                    <button name="to_annuler" string="Annuler" type="object" class="oe_highlight" states="non_paye"/>
+                    <button name="payer" string="Payé" type="object" class="oe_highlight" states="non_paye"/>
+                    <button name="unpayer" string="Annuler payement" type="object" class="oe_highlight" states="paye"/>
+                    <button name="reporter_date_prelevement" string="Reporté" type="object" class="oe_highlight" states="non_paye"/>
+                    <button name="annuler_reporter_date_prelevement" string="Réactivé" type="object" class="oe_highlight" states="reportee"/>
                     <field name="state" widget="statusbar" nolabel="1" clickable="1"/>
                 </header>
                 <sheet>
