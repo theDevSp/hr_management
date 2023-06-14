@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Contrats" id="contrats_main_menu" parent="hr_management_base_menu" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
-    <menuitem name="Historique des contrats" id="historique_contrat_menu" parent="contrats_main_menu" action="contrats_histo_action" sequence="1"/>
 
     <record id='contrats_histo_action' model='ir.actions.act_window'>
         <field name="name">Historique des Contrats</field>
         <field name="res_model">hr.contract.history</field>
         <field name="view_mode">tree,form,search</field>
     </record>
+
+    <menuitem name="Contrats" id="contrats_main_menu" parent="hr_management_base_menu" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+    <menuitem name="Historique des contrats" id="historique_contrat_menu" parent="contrats_main_menu" action="contrats_histo_action" sequence="1"/>
+
 </odoo>

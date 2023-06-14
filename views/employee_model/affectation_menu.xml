@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Affectation" id="affectation_menu" parent="config_hr_menu" action="affectation_action" sequence="13"/>
 
     <record id='affectation_action' model='ir.actions.act_window'>
         <field name="name">Affectation</field>
         <field name="res_model">fleet.vehicle.chantier.affectation</field>
         <field name="view_mode">tree,form,search</field>
     </record>
+
+    <menuitem name="Affectation" id="affectation_menu" parent="config_hr_menu" action="affectation_action" sequence="13"/>
+
 </odoo>

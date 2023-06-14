@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Jours Fériés" id="hr_jours_feries_menu" parent="holidays_submenu" action="jours_feries_action" sequence="9"/>
 
     <record id='jours_feries_action' model='ir.actions.act_window'>
         <field name="name">Jours Fériés</field>
         <field name="res_model">hr.jours.feries</field>
         <field name="view_mode">tree,form,search</field>
     </record>
+
+    <menuitem name="Jours Fériés" id="hr_jours_feries_menu" parent="holidays_submenu" action="jours_feries_action" sequence="9"/>
+
 </odoo>

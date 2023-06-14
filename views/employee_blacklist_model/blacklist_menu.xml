@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <menuitem name="Black List" id="blacklist_menu" parent="employees_main_menu" 
-                action="blacklist_action" sequence="1" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
-
     <record id='blacklist_action' model='ir.actions.act_window'> 
         <field name="name"> HR Management - Black List </field>
         <field name="res_model">hr.employee</field>
@@ -11,4 +8,8 @@
         <field name="view_mode">tree,form,search</field>
         <field name="domain">[('black_list', '=', True)]</field>
     </record>
+
+    <menuitem name="Black List" id="blacklist_menu" parent="employees_main_menu" 
+                action="blacklist_action" sequence="1" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+
 </odoo>

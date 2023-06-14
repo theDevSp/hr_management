@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Types des contrats" id="type_contrat_menu" parent="contract_submenu" action="typecontrat_action"  sequence="1"/>
 
     <record id='typecontrat_action' model='ir.actions.act_window'>
         <field name="name">Type des contrats</field>
         <field name="res_model">hr.contract.type</field>
         <field name="view_mode">tree,form,search</field>
     </record>
+
+    <menuitem name="Types des contrats" id="type_contrat_menu" parent="contract_submenu" action="typecontrat_action"  sequence="1"/>
+
 </odoo>

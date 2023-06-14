@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="HR Management" web_icon="hr_management,static/description/icon.png" id="hr_management_base_menu" />
-
-    <menuitem name="Employés" id="employees_main_menu" parent="hr_management_base_menu" sequence="1"/>
-    
-    <menuitem name="Employés Actifs" id="employees_menu" parent="employees_main_menu" action="employee_action" sequence="1"/>
 
     <record id='employee_action' model='ir.actions.act_window'>
         <field name="name"> HR Management - Employees </field>
@@ -13,4 +8,11 @@
         <field name="view_mode">tree,form,search</field>
         <field name="domain">[('black_list', '=', False)]</field>
     </record>
+
+    <menuitem name="HR Management" web_icon="hr_management,static/description/icon.png" id="hr_management_base_menu" />
+
+    <menuitem name="Employés" id="employees_main_menu" parent="hr_management_base_menu" sequence="1"/>
+    
+    <menuitem name="Employés Actifs" id="employees_menu" parent="employees_main_menu" action="employee_action" sequence="1"/>
+
 </odoo>

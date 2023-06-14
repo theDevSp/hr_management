@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Profile de paie" id="profile_paie_menu" parent="contract_submenu" action="profile_paie_action" sequence="2"/>
 
     <record id='profile_paie_action' model='ir.actions.act_window'>
         <field name="name">Profile de paie</field>
         <field name="res_model">hr.profile.paie</field>
         <field name="view_mode">tree,form,search</field>
     </record>
+
+    <menuitem name="Profile de paie" id="profile_paie_menu" parent="contract_submenu" action="profile_paie_action" sequence="2"/>
+
 </odoo>
