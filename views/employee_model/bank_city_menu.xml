@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id="bank_action" model="ir.actions.act_window" >
+        <field name="name">Banks</field>
+        <field name="res_model">bank</field>
+        <field name="view_mode">tree</field>
+    </record>
+    <record id="city_action" model="ir.actions.act_window">
+        <field name="name">Cities</field>
+        <field name="res_model">city</field>
+        <field name="view_mode">tree</field>
+    </record>  
+
     <menuitem name="Banques" id="bank_menu_action" parent="config_hr_menu" action="bank_action" sequence="11"/>
     <menuitem name="Villes" id="city_menu_action" parent="config_hr_menu" action="city_action" sequence="12"/>
+
 </odoo>

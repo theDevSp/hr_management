@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id='paiement_prelevement_action' model='ir.actions.act_window'>
+        <field name="name">Paiement Prelevement</field>
+        <field name="res_model">hr.paiement.prelevement</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
     <menuitem name="Lignes de Paiement Prélèvement" id="paiement_prelevement_menu" 
-    parent="general_config_submenu" action="paiement_prelevement_action" sequence="8"/>
+        parent="general_config_submenu" action="paiement_prelevement_action" sequence="8"/>
+        
 </odoo>

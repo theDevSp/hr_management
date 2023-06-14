@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id='fixation_salaire_action' model='ir.actions.act_window'>
-        <field name="name">Fixation de salaire</field>
-        <field name="res_model">hr.fixation.salaire</field>
-        <field name="view_mode">tree,form,search</field>
-    </record>
-
     <record id="fixation_salaire_tree" model="ir.ui.view">
         <field name="name">Fixation de salaire - Tree</field>
         <field name="model">hr.fixation.salaire</field>

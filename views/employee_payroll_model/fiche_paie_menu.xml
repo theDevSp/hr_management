@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id='fiche_paie_action' model='ir.actions.act_window'>
+        <field name="name">Fiche de paie</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
     <menuitem name="Fiche de paie" id="fiche_paie_menu" parent="hr_management_base_menu" action="fiche_paie_action" sequence="7" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+
 </odoo>

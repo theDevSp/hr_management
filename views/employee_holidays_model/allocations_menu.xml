@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id='allocations_action' model='ir.actions.act_window'>
+        <field name="name">Allocations</field>
+        <field name="res_model">hr.allocations</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
     <menuitem name="Allocations" id="allocations_hr_menu" parent="holidays_submenu" action="allocations_action" sequence="1" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+
 </odoo>

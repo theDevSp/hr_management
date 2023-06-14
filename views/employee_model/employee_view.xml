@@ -776,12 +776,4 @@
             </search>
         </field>
     </record>
-
-    <record id='employee_action' model='ir.actions.act_window'>
-        <field name="name"> HR Management - Employees </field>
-        <field name="res_model">hr.employee</field>
-        <field name="view_id" ref="employee_tree"/>
-        <field name="view_mode">tree,form,search</field>
-        <field name="domain">[('black_list', '=', False)]</field>
-    </record>
 </odoo>

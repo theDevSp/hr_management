@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id='paiement_ligne_action' model='ir.actions.act_window'>
+        <field name="name">Lignes de Paiement</field>
+        <field name="res_model">hr.paiement.ligne</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
     <menuitem name="Lignes de Paiement Prime" id="paiement_ligne_menu" parent="general_config_submenu" action="paiement_ligne_action" sequence="7"/>
+
 </odoo>

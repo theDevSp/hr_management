@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id='jr_travaille_par_chantier_action' model='ir.actions.act_window'>
+        <field name="name">Jours travaillés par chantier</field>
+        <field name="res_model">jr.travaille.par.chantier</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
     <menuitem name="Jours travaillés par chantier" id="jr_travaille_par_chantier_menu" 
-    parent="general_config_submenu" action="jr_travaille_par_chantier_action" sequence="10" 
-    groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+        parent="general_config_submenu" action="jr_travaille_par_chantier_action" sequence="10" 
+        groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+        
 </odoo>

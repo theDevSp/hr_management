@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id='augmentation_action' model='ir.actions.act_window'>
+        <field name="name">Augmentation de Salaire </field>
+        <field name="res_model">hr.augmentation</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
     <menuitem name="Ajout et Déduction" id="ajout_deduction_main_menu" parent="hr_management_base_menu" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique" sequence="4"/>
     <menuitem name="Augmentation" id="augmentation_menu" parent="ajout_deduction_main_menu" action="augmentation_action" sequence="1"/>
+    
 </odoo>

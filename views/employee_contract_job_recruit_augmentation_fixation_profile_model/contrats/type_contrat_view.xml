@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id='typecontrat_action' model='ir.actions.act_window'>
-        <field name="name">Type des contrats</field>
-        <field name="res_model">hr.contract.type</field>
-        <field name="view_mode">tree,form,search</field>
-    </record>
-
     <record id="type_of_contrat_tree" model="ir.ui.view">
         <field name="name">Liste des Types Contrats</field>
         <field name="model">hr.contract.type</field>
