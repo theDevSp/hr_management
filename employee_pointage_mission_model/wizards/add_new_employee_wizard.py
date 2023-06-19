@@ -18,7 +18,7 @@ class hr_employee_add_transit(models.TransientModel):
         else:
             for chantier in self.env['fleet.vehicle.chantier'].search([('type_chantier','in',('Chantier','Depot','Poste'))]):
                 res.append(chantier.id)
-        
+        print(res)
         return [('id', 'in',res)] 
     
     def _get_engin_domain(self):
@@ -31,6 +31,7 @@ class hr_employee_add_transit(models.TransientModel):
         else:
             for chantier in self.env['fleet.vehicle.chantier'].search([('type_chantier','in',('Chantier','Depot','Poste'))]):
                 chantiers.append(chantier.id)
+        
 
         query = """
                     select distinct(id) from fleet_vehicle where chantier_id in (""" + ','.join(map(str, chantiers)) + """);
@@ -61,7 +62,13 @@ class hr_employee_add_transit(models.TransientModel):
     emplacement = fields.Many2one("fleet.vehicle.chantier.emplacement",string="Equipe")
     employee_type = fields.Selection([("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé",required=True)
     period_id = fields.Many2one("account.month.period",u'Période',required=True,domain = _get_ab_default)
+    date_start = fields.Date('Date Début',required=True)
+    contract_type = fields.Many2one('hr.contract.type', string='Type Contrat')
     
+    @api.onchange('date_start')
+    def _onchange_date_start(self):
+        if self.date_start:
+            self.period_id = self.env['account.month.period'].get_period_from_date(str(self.date_start))
     
     def create_new_employee(self):
 
@@ -70,9 +77,7 @@ class hr_employee_add_transit(models.TransientModel):
             'state_employee_wtf':'new',
             'vehicle_id':self.vehicle.id,
             'chantier_id':self.chantier.id,
-            'identification_id':self.cin.upper(),
             'name':self.employee_id.upper(),
-            'job_id':self.job_id.id,
             'cin':self.cin
         }
         if self.job:
@@ -80,7 +85,21 @@ class hr_employee_add_transit(models.TransientModel):
 
         res = self.env['hr.employee'].sudo().create(data)
 
-        if res.chantier_id.periodicite == 1 and res.employee_type == 'employee2':
+        contract_data={
+            'employee_id': res.id,
+            'job_id':self.job_id.id,
+            'date_start':self.date_start,
+            'contract_type':self.contract_type.id,
+            'wage':1,
+            'type_emp':self.employee_type
+        }
+
+        contract_res = self.env['hr.contract'].sudo().create(contract_data)
+        contract_res.write({
+            'state':'open'
+        })
+
+        if self.chantier.periodicite == 1 and self.employee_type == 'o':
             self.env['hr.rapport.pointage'].sudo().create({
                 'employee_id':res.id,
                 'period_id':self.period_id.id,

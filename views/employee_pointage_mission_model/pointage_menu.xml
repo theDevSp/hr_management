@@ -7,6 +7,12 @@
         <field name="view_mode">tree,form,search</field>
     </record>
 
+    <record id='transfert_action' model='ir.actions.act_window'>
+        <field name="name"> Transfert Employés Entre Chantiers </field>
+        <field name="res_model">hr.employee.transfert</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
     <menuitem name="Pointage" id="pointage_menu" parent="hr_management_base_menu" action="" sequence="10"/>
     <menuitem name="Rapport Pointage" id="rapport_pointage_menu" parent="pointage_menu" action="pointage_action" sequence="1"/>
     <menuitem name="Transfert" id="transfert_menu" parent="pointage_menu" action="transfert_action" sequence="2"/>

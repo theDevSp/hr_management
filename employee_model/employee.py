@@ -177,16 +177,11 @@ class hr_employee(models.Model):
     @api.model
     def create(self,vals):
         res_char = []
-        for char in re.split("[^a-zA-Z]*", vals['cin']):
-            if char:
-                for num in re.split("[^0-9]*", vals['cin']):
-                    if num:
-                        res_char.append("position('%s' in lower(cin))>0 and position('%s' in lower(cin))>0 or " % (char.lower(),num))
+        char = "".join(re.split("[^a-zA-Z]*", vals['cin']))
+        num = "".join(re.split("[^0-9]*", vals['cin']))
+        res_char.append("position('%s' in lower(cin))>0 and position('%s' in lower(cin))>0 or " % (char.lower(),num))
 
-        print(re.split("[^a-zA-Z]*", vals['cin']))
-        print(re.split("[^0-9]*", vals['cin']))
         
-
         if vals['cin']:
             query = """
                     select id from hr_employee where 

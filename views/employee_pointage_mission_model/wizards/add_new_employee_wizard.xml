@@ -6,34 +6,94 @@
         <field name="model">hr.employee.add.transit</field>
         <field name="arch" type="xml">
             <form>
-                <group string="Information Employée">
-                    <group>
-                        <field name="employee_type" placeholder="Type Employée" nolabel="1"/>
-                        <field name="employee_id" placeholder="Nom Employée" nolabel="1"/>
-                        <field name="cin" placeholder="N° CIN" nolabel="1"/>
-                    </group>
-                    <group>
-                    </group>
-                        
-                    <group> 
-                        
-                        <field name="job_id" placeholder="Titre du Poste" nolabel="1" options="{'no_create': True,'no_open': True}" />
-                        <field name="job" placeholder="Fonction (Description)" nolabel="1"/>
-                    </group>
-                </group>   
-                <group string="Affectation" col="6">
-                    <field name="chantier" options="{'no_create': True,'no_open': True}" placeholder="Chantier" nolabel="1"/>
-                    <field name="vehicle" options="{'no_create': True,'no_open': True}" placeholder="Code Engin" nolabel="1"/>
-                    <field name="emplacement" options="{'no_create': True,'no_open': True}" placeholder="Equipe" nolabel="1"/> 
-                </group>
-                <group >
-                    <group string="Premier Mois" >
-                        <field name="period_id" options="{'no_create': True,'no_open': True}" placeholder="Premier Mois de Travail" nolabel="1"/>
-                    </group>
-                    <group>
-                    </group>
-                </group>
-                
+                <span class="input-group-text col-2 mb-2"><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> Champs Obligatoire </span>
+                <div class="col-md-12 bg-white shadow p-3 mb-2">
+                    <div class="card bg-dark my-3">
+                        <div class="card-body text-center">
+                            <h2 class="card-text">Information Employée</h2>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" ><label for="employee_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                        </div>
+                        <field name="employee_id" class="form-control"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" ><label for="employee_type" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                        </div>
+                        <field name="employee_type" class="form-control"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" ><label for="cin" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                        </div>
+                        <field name="cin" class="form-control"/>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" ><label for="job_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                </div>
+                                <field name="job_id" class="form-control" options="{'no_create': True,'no_open': True}"/>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" ><label for="job" class=""/></span>
+                                </div>
+                                <field name="job" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 bg-white shadow p-3 mb-2">
+                    <div class="card bg-dark my-3">
+                        <div class="card-body text-center">
+                            <h2 class="card-text">Périodicité</h2>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" ><label for="date_start" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                        </div>
+                        <field name="date_start" class="form-control"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" ><label for="period_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                        </div>
+                        <field name="period_id" class="form-control"/>
+                    </div>
+                </div>
+                <div class="col-md-12 bg-white shadow p-3">
+                    <div class="card bg-dark my-3">
+                        <div class="card-body text-center">
+                            <h2 class="card-text">Affectation</h2>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" ><label for="chantier" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                        </div>
+                        <field name="chantier" class="form-control" options="{'no_create': True,'no_open': True}"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" ><label for="vehicle" class=""/></span>
+                        </div>
+                        <field name="vehicle" class="form-control" options="{'no_create': True,'no_open': True}"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" ><label for="emplacement" class=""/></span>
+                        </div>
+                        <field name="emplacement" class="form-control" options="{'no_create': True,'no_open': True}"/>
+                    </div>
+                </div>
 
                 <footer>
                     <button string="Annuler" class="oe_right" special="cancel"/>

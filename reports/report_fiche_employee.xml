@@ -18,6 +18,11 @@
                                         <h5>Informations Personnelles</h5>
                                     </div>
                                     <div class="card-body border-right border-bottom border-left border-dark text-dark">
+                                        <div class="card border">
+                                            <div class="card-body text-center">
+                                                <h2 class="card-text">Messages</h2>
+                                            </div>
+                                        </div>
                                         <center>
                                             <table>
                                                 <tr>
