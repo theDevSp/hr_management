@@ -10,9 +10,9 @@
     </record>
 
     <menuitem name="HR Management" web_icon="hr_management,static/description/icon.png" id="hr_management_base_menu" />
-
     <menuitem name="Employés" id="employees_main_menu" parent="hr_management_base_menu" sequence="1"/>
-    
     <menuitem name="Employés Actifs" id="employees_menu" parent="employees_main_menu" action="employee_action" sequence="1"/>
+    <menuitem action="new_employee_wizard_action" id="menu_new_embauche_wizard" parent="employees_main_menu" sequence="5" groups="hr_management.group_admin_paie,hr_management.group_pointeur"/>
+
 
 </odoo>

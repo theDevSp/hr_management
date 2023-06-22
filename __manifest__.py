@@ -18,7 +18,8 @@
         'account_fiscal_year_period', 
         'base_fontawesome', 
         'reports_templates', 
-        'fleet_gmao_management'
+        'fleet_gmao_management',
+        'configuration_module'
         ],
 
     'data': [         
@@ -54,8 +55,6 @@
         'views/employee_stc_model/stc_view.xml',
         'views/employee_payroll_model/fiche_paie_view.xml',
         'views/employee_payroll_model/jr_travaille_par_chantier_view.xml',
-        'views/employee_model/bank_city_view.xml',
-        'views/employee_model/affectation_view.xml',
         'views/employee_pointage_mission_model/pointage_view.xml',
         # 'views/employee_pointage_mission_model/rapport_pointage_view.xml',
         'views/employee_pointage_mission_model/rapport_pointage_admin_view.xml',
@@ -100,8 +99,6 @@
         'views/employee_payroll_model/fiche_paie_menu.xml',
         'views/employee_payroll_model/jr_travaille_par_chantier_menu.xml',
         'views/employee_pointage_mission_model/pointage_menu.xml',
-        'views/employee_model/bank_city_menu.xml',
-        'views/employee_model/affectation_menu.xml',
     ],
 
     'demo': [

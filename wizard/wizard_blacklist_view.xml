@@ -6,18 +6,55 @@
       <field name="model">wizard_blacklist</field>
       <field name="arch" type="xml">
         <form string="Liste Noire">
-            <group>
-                <field name="employee_id"/>
-                <field name="responsable_id" options="{'no_create': True, 'no_open': True}"/>
-                <field name="directeur_id" options="{'no_create': True, 'no_open': True}"/>
-                <field name="chantier_id" options="{'no_create': True, 'no_open': True}"/>
-                <field name="motif"/>
-                <field name="date_effet" default="now()"/>
-            </group>
-            <footer>
-                <button name="action_confirm_blacklist" string="Confirm" type="object" class="oe_highlight"/>
-                or
-                <button string="Cancel" class="oe_highlight" special="cancel"/>
+            <div class="bg-white shadow p-3">
+                <div class="card bg-light my-3">
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" ><label for="employee_id" class=""/></span>
+                        </div>
+                        <field name="employee_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" ><label for="responsable_id" class=""/></span>
+                        </div>
+                        <field name="responsable_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                              <span class="input-group-text" ><label for="directeur_id" class=""/></span>
+                          </div>
+                          <field name="directeur_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                      </div>
+                      <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                              <span class="input-group-text" ><label for="chantier_id" class=""/></span>
+                          </div>
+                          <field name="chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                      </div>
+                      <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                              <span class="input-group-text" ><label for="motif" class=""/></span>
+                          </div>
+                          <field name="motif" class="form-control"/>
+                      </div>
+                      <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                              <span class="input-group-text" ><label for="date_effet" class=""/></span>
+                          </div>
+                          <field name="date_effet" class="form-control"/>
+                      </div>
+                  </div> 
+                </div> 
+            </div>
+            <footer class="justify-content-center">
+              <div class="row justify-content-center w-50">
+                <div class="btn-group" role="group">
+                    <button name="action_confirm_blacklist" string="Confirm" type="object" class="btn btn-success"/>
+                    <button string="Cancel" class="btn btn-danger" special="cancel"/>
+                </div>
+              </div>
             </footer>
         </form>
       </field>

@@ -6,13 +6,27 @@
             <field name="model">wizard_reporter_dates</field>
             <field name="arch" type="xml">
                 <form string="Reporter Date">
-                    <group>
-                        <field name="notes"/>
-                    </group>
-                    <footer>
-                        <button name="action_confirm_reporter_dates" string="Confirm" type="object" class="oe_highlight"/>
-                        or
-                        <button string="Cancel" class="oe_highlight" special="cancel"/>
+                    <div class="bg-white shadow p-3">
+                        <div class="card bg-light my-3">
+                            <div class="card-body">
+                                <div class="card my-3">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-text"><label for="notes" class=""/></h4>
+                                    </div>
+                                    <div class="card-body text-dark text-center">
+                                        <field name="notes"/>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div> 
+                    </div>
+                    <footer class="justify-content-center">
+                        <div class="row justify-content-center w-50">
+                            <div class="btn-group" role="group">
+                                <button name="action_confirm_reporter_dates" string="Confirm" type="object" class="btn btn-success"/>
+                                <button string="Cancel" class="btn btn-danger" special="cancel"/>
+                            </div>
+                        </div>
                     </footer>
                 </form>
             </field>

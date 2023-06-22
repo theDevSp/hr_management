@@ -247,7 +247,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
     
     def create_rapports_pointage_individuel(self):
 
-        if self.chantier_id.periodicite == 1 and self.employee_id.employee_type == 'o':
+        if self.chantier_id.periodicite == '1' and self.employee_id.type_emp == 'o':
             self.env['hr.rapport.pointage'].create({
                 'employee_id':self.employee_id.id,
                 'period_id':self.period_id.id,

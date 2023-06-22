@@ -422,50 +422,32 @@ class hr_employee(models.Model):
     
     def count_smart_button(self):
         for rec in self :
-            query = """SELECT count(*) FROM hr_contract WHERE employee_id = %s""" % (rec.id)
+            query = """
+                    SELECT
+                        (SELECT COUNT(*) FROM hr_contract WHERE employee_id = %s) AS contract_count,
+                        (SELECT COUNT(*) FROM hr_augmentation WHERE employee_id = %s) AS augmentation_count,
+                        (SELECT COUNT(*) FROM hr_prime WHERE employee_id = %s) AS prime_count,
+                        (SELECT COUNT(*) FROM hr_prelevement WHERE employee_id = %s AND is_credit = false) AS prelevement_count,
+                        (SELECT COUNT(*) FROM hr_prelevement WHERE employee_id = %s AND is_credit = true) AS credit_count,
+                        (SELECT COUNT(*) FROM hr_holidays WHERE employee_id = %s) AS holiday_count,
+                        (SELECT COUNT(*) FROM hr_payslip WHERE employee_id = %s) AS payslip_count,
+                        (SELECT COUNT(*) FROM hr_stc WHERE employee_id = %s) AS stc_count,
+                        (SELECT COUNT(*) FROM hr_rapport_pointage WHERE employee_id = %s) AS pointage_count;
+                    
+                    """%(rec.id,rec.id,rec.id,rec.id,rec.id,rec.id,rec.id,rec.id,rec.id)
+        
             rec.env.cr.execute(query)
-            res = rec.env.cr.fetchall()
-            rec.nbr_contrats = res[0][0] if len(res) > 0 else "0"
-
-            query = """SELECT count(*) FROM hr_augmentation WHERE employee_id = %s""" % (rec.id)
-            rec.env.cr.execute(query)
-            res = rec.env.cr.fetchall()
-            rec.nbr_augmentations = res[0][0] if len(res) > 0 else "0"
-
-            query = """SELECT count(*) FROM hr_prime WHERE employee_id = %s""" % (rec.id)
-            rec.env.cr.execute(query)
-            res = rec.env.cr.fetchall()
-            rec.nbr_primes = res[0][0] if len(res) > 0 else "0"
-
-            query = """SELECT count(*) FROM hr_prelevement WHERE employee_id = %s AND is_credit='false'""" % (rec.id)
-            rec.env.cr.execute(query)
-            res = rec.env.cr.fetchall()
-            rec.nbr_prelevements = res[0][0] if len(res) > 0 else "0"
-
-            query = """SELECT count(*) FROM hr_prelevement WHERE employee_id = %s AND is_credit='true'""" % (rec.id)
-            rec.env.cr.execute(query)
-            res = rec.env.cr.fetchall()
-            rec.nbr_credits = res[0][0] if len(res) > 0 else "0"
-           
-            query = """SELECT count(*) FROM hr_holidays WHERE employee_id = %s""" % (rec.id)
-            rec.env.cr.execute(query)
-            res = rec.env.cr.fetchall()
-            rec.nbr_holidays = res[0][0] if len(res) > 0 else "0"
+            res = rec.env.cr.dictfetchall()
             
-            query = """SELECT count(*) FROM hr_payslip WHERE employee_id = %s""" % (rec.id)
-            rec.env.cr.execute(query)
-            res = rec.env.cr.fetchall()
-            rec.nbr_fiches_de_paie = res[0][0] if len(res) > 0 else "0"
-           
-            query = """SELECT count(*) FROM hr_stc WHERE employee_id = %s""" % (rec.id)
-            rec.env.cr.execute(query)
-            res = rec.env.cr.fetchall()
-            rec.nbr_stc = res[0][0] if len(res) > 0 else "0"
-
-            query = """SELECT count(*) FROM hr_rapport_pointage WHERE employee_id = %s""" % (rec.id)
-            rec.env.cr.execute(query)
-            res = rec.env.cr.fetchall()
-            rec.nbr_rapports_pointage = res[0][0] if len(res) > 0 else "0"
+            rec.nbr_contrats = res[0]['contract_count'] 
+            rec.nbr_augmentations = res[0]['augmentation_count']
+            rec.nbr_primes = res[0]['prime_count']
+            rec.nbr_prelevements = res[0]['prelevement_count']
+            rec.nbr_credits = res[0]['credit_count']
+            rec.nbr_holidays = res[0]['holiday_count']
+            rec.nbr_fiches_de_paie = res[0]['payslip_count']
+            rec.nbr_stc = res[0]['stc_count']
+            rec.nbr_rapports_pointage = res[0]['pointage_count']
 
     
     def creatiion_individuel_rapport_pointage(self):

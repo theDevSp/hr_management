@@ -98,7 +98,7 @@ class contrats(models.Model):
             vals['name'] = vals['type_emp'] + '-' + str(month) + '/' + str(year) + '/' + str(contract_sequence)
         else:
             raise ValidationError(
-                    "Erreur, Cet employé a déjà un contrat 'New' ou 'Running'."
+                    "Erreur, Cet employé a déjà un contrat prêt à utilisé."
                 )
         return super(contrats, self).create(vals)
 

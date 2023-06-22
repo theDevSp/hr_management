@@ -99,7 +99,7 @@ class hr_employee_add_transit(models.TransientModel):
             'state':'open'
         })
 
-        if self.chantier.periodicite == 1 and self.employee_type == 'o':
+        if self.chantier.periodicite == "1" and self.employee_type == 'o':
             self.env['hr.rapport.pointage'].sudo().create({
                 'employee_id':res.id,
                 'period_id':self.period_id.id,

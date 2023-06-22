@@ -328,9 +328,9 @@
                             <field name="rapport_lines" nolabel="1">
                                 <tree editable="bottom">
                                     <field name="name"/>
-                                    <field name="h_travailler" string="TH"/>
+                                    <field name="h_travailler" string="TH" sortable="0"/>
                                     <field name="h_travailler_v" string="THV"/>
-                                    <field name="h_sup" string="Supp >> 9"/>
+                                    <field name="h_sup" string="9+"/>
                                     <field name="h_bonus" string="Bonus"/>
                                     <field name="j_travaille_v" string="TJV"/>
                                     <field name="chantier_id" context="{'short': True}" options="{'no_create': True,'no_open': True}"/>
@@ -338,17 +338,17 @@
                                     <field name="vehicle_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="hide"/>
                                     <button name="update_engin_list" type="object" brand_icon="fa fa-plus-square" />
                                     <field name="emplacement_chantier_id"  options="{'no_create': True,'no_open': True}" string="Équipe"/>
-                                    <!-- <field name="details" />                                            -->
+                                    <field name="details" />
                                     <field name="note" />
                                     <field name="day_type" widget="badge"
-                                           decoration-success="day_type == '9'" 
+                                           decoration-success="day_type in ('1','9')" 
                                            decoration-danger="day_type in ('5','6','7')"
                                            decoration-muted="day_type == '2'"
                                            decoration-info="day_type == '3'"
                                            decoration-primary="day_type == '4'"
                                            decoration-warning="day_type == '8'"
                                            /> 
-                                    <field name="state" invisible="1"/>
+                                    <field name="state" invisible="0"/>
                                     <field name="day" invisible="1"/>
                                     <button name="update_wizard_ref_view" type="object" brand_icon="fa fa-pencil" />
                                 </tree>

@@ -93,17 +93,7 @@ class hr_employee_transfert(models.Model):
     def create(self,vals):
 
         vals['name'] = self.env['ir.sequence'].next_by_code('hr.employee.transfert')
-        """
-        period_id = self.env["account.period"].search([('date_stop','>=',fields.Date.from_string(vals['date_transfert']).strftime('%Y-%m-%d')),('date_start','<=',fields.Date.from_string(vals['date_transfert']).strftime('%Y-%m-%d'))])
-        rapport = self.env['hr.rapport.pointage'].search([('employee_id','=',vals['employee_id']),('period_id','=',period_id.id)])
-        if not rapport:
-            rapport = self.env['hr.rapport.pointage'].sudo().create({
-                'employee_id':vals['employee_id'],
-                'period_id':period_id.id,
-                'chantier_id':vals['chantier_id_source']
-                })
-        vals['rapport_id'] = rapport.id
-        """
+
         res = super(hr_employee_transfert,self).create(vals)
 
 
@@ -112,85 +102,51 @@ class hr_employee_transfert(models.Model):
     
     def write(self,vals):
 
-        period_month = fields.Date.from_string(self.date_transfert).month
-        period_year = fields.Date.from_string(self.date_transfert).year
-
-        quinzaine1_first_day = str(period_year)+'-'+str(period_month)+'-01'
-
-        query = """
-                    select create_uid from hr_employee_transfert where id = %s;
-                """   % (self.id)
-        self.env.cr.execute(query)
-        res = self.env.cr.dictfetchall()
-
-        if not self.date_arriver and not vals.get('date_arriver') and self.state == 'valide':
+        res = super().write(vals)
+        if not self.date_arriver and not vals.get('date_arriver') and self.state == 'done':
             raise UserError("Veuillez Spécifier la date d'arrivée")
         
-        if 'state' in vals and vals.get('state') == 'done':
+        if 'state' in vals and res:
             
-            if res[0]['create_uid'] == self.env.user.id and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
+            if self.create_uid.id == self.env.user.id and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
                 raise UserError("Action Non autorisé")
+            if vals['state'] in ('draft','cancel'):
+                self.update_corresponding_lines('1','9')
+            elif vals['state'] == 'done':
+                self.update_corresponding_lines('9','1')
 
-            lines = self.env['hr.rapport.pointage.line'].search([('employee_id','=',self.employee_id.id),('day','>=',fields.Date.from_string(quinzaine1_first_day).strftime('%Y-%m-%d')),('day','<=',fields.Date.from_string(self.date_transfert).strftime('%Y-%m-%d'))])
-            if lines:
-                if self.chantier_id_destiation.digital:
-                    for line in lines[0:len(lines) -1]:
-                        line.write({
-                            'state':'working'
-                        })
-            # TODO work on
-                lines[len(lines) - 1].write({
-                    'day_type':'9',
-                    'details':'Transfert vers '+self.chantier_id_destiation.simplified_name,
-                    'chantier_id':self.chantier_id_destiation.id
+        return res
+
+    def update_corresponding_lines(self,day_type,type_condition):
+        date_start = self.env['account.month.period'].get_period_from_date(self.date_transfert).date_start
+        lines = self.env['hr.rapport.pointage.line'].search([
+                ('day','>=',date_start),
+                ('day','<=',self.date_transfert),
+                ('day_type','=',type_condition)
+                ])
+        
+        if lines:
+            lines[len(lines) - 1].write({
+                'day_type': day_type,
+                'details' : 'Transfert vers %s'%self.chantier_id_destiation.simplified_name if type_condition == '1' else False,
+                'chantier_id': self.chantier_id_destiation.id if type_condition == '1' else False
+            })
+            lines[len(lines) - 1].rapport_id.write({
+                'chantier_id': self.chantier_id_destiation.id if type_condition == '1' else self.chantier_id_source
+            })
+            new_state = 'working' if type_condition == '1' else 'draft'
+            for line in lines[0:len(lines) -1]:
+                line.write({
+                    'state':new_state
                 })
-                for reports in  self.env['hr.rapport.pointage'].search([('employee_id','=',self.employee_id.id),('period_id','=',lines[len(lines) - 1].rapport_id.period_id.id)]):
-                    reports.write({
-                        'chantier_id':self.chantier_id_destiation.id
-                    })
-                self.employee_id.write({
-                    'chantier_id':self.chantier_id_destiation.id
-                })
+        return
 
-
-        if 'state' in vals and vals.get('state') == 'cancel':
-
-            if self.state not in ('draft','valide') and not self.env['res.users'].has_group("nxtm_employee_mngt.group_pointage_manager"):
-                raise UserError(u"Cette action n'est pas autoriser") 
-
-            lines = self.env['hr.rapport.pointage.line'].search([('employee_id','=',self.employee_id.id),('day','>=',fields.Date.from_string(quinzaine1_first_day).strftime('%Y-%m-%d')),('day','<=',fields.Date.from_string(self.date_transfert).strftime('%Y-%m-%d'))])
-            if lines:
-                if self.chantier_id_destiation.digital:
-                    for line in lines[0:len(lines) -1]:
-                        line.write({
-                            'state':'draft'
-                        })
-                
-                lines[len(lines) - 1].write({
-                        'day_type':'1',
-                        'details':'',
-                        'chantier_id':False
-                    })
-                for reports in  self.env['hr.rapport.pointage'].search([('employee_id','=',self.employee_id.id),('period_id','=',lines[len(lines) - 1].rapport_id.period_id.id)]):
-                    reports.write({
-                        'chantier_id':self.chantier_id_source.id
-                    })
-                self.employee_id.write({
-                    'chantier_id':self.chantier_id_source.id
-                }) 
-
-
-        return super(hr_employee_transfert,self).write(vals)
-
-    
     def is_pointeur(self):
         return self.env['res.users'].has_group("hr_management.group_pointeur")
      
     def user_company_id(self):
         return self.rapport_id.chantier_id.cofabri
 
-    
-    
     def open_transfert(self):
         
         form = self.env.ref(

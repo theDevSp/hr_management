@@ -18,6 +18,11 @@
         <field name="model">hr.jours.feries</field>
         <field name="arch" type="xml">
             <form>
+                <header class="bar-box-shadow mb-4">
+                    <button name="to_draft" string="Brouillon" type="object" states="validee" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie,hr_management.group_pointeur"/>
+                    <button name="to_validee" string="Valider" type="object" states="draft" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie,hr_management.group_pointeur"/>
+                    <field name="state" widget="statusbar" nolabel="1"/>
+                </header>
                 <sheet>
                     <div class="row mt-3">
                         <div class="col-md-4 col-lg-4">

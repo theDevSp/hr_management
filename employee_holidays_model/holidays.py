@@ -14,8 +14,9 @@ class holidays(models.Model):
     _description = "Holidays hr_management"
     _inherit = ['mail.thread','mail.activity.mixin']
 
+    name = fields.Char("Libellé",default="Congés")
     employee_id = fields.Many2one("hr.employee",string="Employé",required=True)
-    chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Chantier") 
+    chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Chantier",required=True) 
     motif = fields.Selection([
         ('maladie','Maladie'),
         ('deces',"Décès"),
@@ -28,17 +29,17 @@ class holidays(models.Model):
     remplacant_employee_id = fields.Many2one("hr.employee",string="Remplaçant")
     state = fields.Selection([
         ('draft','Brouillon'),
-        ('validee',"Validé"),
-        ('approuvee',"Approuvé"),
-        ('refusee',"Refusé"),
-        ('annulee',"Annulé")
+        ('confirm',"Validé"),
+        ('validate',"Approuvé"),
+        ('refuse',"Refusé"),
+        ('cancel',"Annulé")
         ],"État",
         default='draft',
         readonly=True
     )
 
-    date_start = fields.Date('Date de début',default=fields.Date.today)
-    date_end = fields.Date('Date de fin',default=fields.Date.today)
+    date_start = fields.Date('Date de début')
+    date_end = fields.Date('Date de fin')
     demi_jour = fields.Boolean("Demi Jour")
     heure_perso = fields.Boolean("Heures Personnalisées")
     heure_start = fields.Selection([
@@ -92,7 +93,7 @@ class holidays(models.Model):
         ('22', '22:00'), ('22.5', '22:30'),
         ('23', '23:00'), ('23.5', '23:30')], string='Heure de fin')
 
-    date_select_half_perso = fields.Date("Date",default=fields.Date.today) 
+    date_select_half_perso = fields.Date("Date") 
     matin_soir = fields.Selection([
             ('matin', 'Matinée'),
             ('soir', 'Après-Midi'),
@@ -128,10 +129,15 @@ class holidays(models.Model):
         self.duree_jours = date_difference
 
     def get_duree(self,start_date,end_date):
-        fmt = '%Y-%m-%d'
-        d1 = datetime.strptime(str(start_date), fmt)
-        d2 = datetime.strptime(str(end_date), fmt)
-        date_difference = (d2 - d1).days
+        date_difference = 0
+        if start_date and end_date:
+            fmt = '%Y-%m-%d'
+            d1 = datetime.strptime(str(start_date), fmt)
+            d2 = datetime.strptime(str(end_date), fmt)
+            sun_count = self.env['account.month.period'].get_count_sundays(start_date,self.env['account.month.period'].add_days_to_date(d2.date(),1))
+            jf_count = self.env["hr.jours.feries"].get_sum_days_jf_between_two_dates(d1.date(),d2.date())
+            date_difference = (d2 - d1).days + 1 - sun_count - jf_count
+            
         return date_difference
         
     @api.model
@@ -144,12 +150,18 @@ class holidays(models.Model):
         return super(holidays, self).create(vals)
 
     def write(self, vals):
-        return super(holidays, self).write(vals)
+        res = super().write(vals)
+        if res and 'state' in vals:
+            if vals['state'] in ('draft','refuse','cancel'):
+                self.update_corresponding_lines('1','4')
+            elif vals['state'] == 'confirm':
+                self.update_corresponding_lines('4','1')
+        return res
 
 
     def to_draft(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') or self.user_has_groups('hr_management.group_pointeur') :
-            if self.state not in {'draft','validee','approuvee','refusee'} :
+            if self.state not in {'draft','confirm','validate','refuse'} :
                 self.state = 'draft'
             else:
                 raise ValidationError(
@@ -162,8 +174,8 @@ class holidays(models.Model):
 
     def to_validee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') or self.user_has_groups('hr_management.group_pointeur') :
-            if self.state not in {'validee','approuvee','refusee','annulee'} :
-                self.state = 'validee'
+            if self.state not in {'confirm','validate','refuse','cancel'} :
+                self.state = 'confirm'
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -175,8 +187,8 @@ class holidays(models.Model):
     
     def to_approuvee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie'):
-            if self.state not in {'draft','approuvee','annulee'} :
-                self.state = 'approuvee'
+            if self.state not in {'draft','validate','cancel'} :
+                self.state = 'validate'
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -188,8 +200,8 @@ class holidays(models.Model):
 
     def to_refusee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie'):
-            if self.state not in {'draft', 'refusee', 'annulee'} :
-                self.state = 'refusee'
+            if self.state not in {'draft', 'refuse', 'cancel'} :
+                self.state = 'refuse'
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -199,11 +211,10 @@ class holidays(models.Model):
                     "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
                 )
 
-
     def to_annulee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') or self.user_has_groups('hr_management.group_pointeur') :
-            if self.state not in {'annulee'} :
-                self.state = 'annulee'
+            if self.state not in {'cancel'} :
+                self.state = 'cancel'
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -212,3 +223,22 @@ class holidays(models.Model):
             raise ValidationError(
                     "Erreur, Seulement les administrateurs,les agents de paie et les pointeurs qui peuvent changer le statut."
                 )
+        
+    def update_corresponding_lines(self,day_type,type_condition):
+        lines = self.env['hr.rapport.pointage.line'].search([
+                ('employee_id','=',self.employee_id.id),
+                ('day','>=',self.date_start),
+                ('day','<=',self.date_end),
+                ('day_type','=',type_condition)
+                ])
+        remplacant = (' - Remplacer par : %s - %s')%(self.remplacant_employee_id.cin,self.remplacant_employee_id.name) if self.remplacant_employee_id else ''
+        motif_holiday = dict(self.fields_get(allfields=['motif'])['motif']['selection'])[self.motif]
+        for line in lines:
+            line.write({
+                'day_type': day_type,
+                'details' : motif_holiday+remplacant if type_condition == '1' else False,
+                'chantier_id': line.rapport_id.chantier_id.id if type_condition == '1' else False,
+                'emplacement_chantier_id': line.rapport_id.emplacement_chantier_id.id if type_condition == '1' else False
+                })
+            
+        return

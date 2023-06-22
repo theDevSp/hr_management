@@ -10,7 +10,7 @@ class allocations(models.Model):
     _description = "Allocations"
     _inherit = ['mail.thread','mail.activity.mixin']
 
-    name = fields.Char("Libellé")
+    name = fields.Char("Libellé",default="Allocations")
     employee_id = fields.Many2one("hr.employee",string="Employé",required=True)
     categorie = fields.Selection([
         ('conge_annuel',"Congé annuel"),

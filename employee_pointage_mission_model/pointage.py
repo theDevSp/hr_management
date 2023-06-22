@@ -152,6 +152,7 @@ class hr_rapport_pointage(models.Model):
                 
 
     def _compute_message_end_existence_contract(self):
+        self.message_end_existence_contract = False
         if self.employee_id.contract_id:
             if self.employee_id.contract_id.contract_type.depends_duration == True:
                 end_date = datetime.now()
@@ -256,10 +257,10 @@ class hr_rapport_pointage(models.Model):
         repport_lines = []
         for number in range(nbr_days_months):
             day = number+1
-            day_type = 1
+            day_type = "1"
             name = self._get_day(period_id,day)
             if 'Dim' in name:
-                day_type = 2
+                day_type = "2"
             
             repport_lines.append({
                 'name':name,
@@ -275,125 +276,33 @@ class hr_rapport_pointage(models.Model):
         return calendar.monthrange(period_id.date_start.year, period_id.date_start.month)[1] 
 
     def _get_day(self,period_id,day):
-        locale.setlocale(locale.LC_TIME, 'fr_FR')
+        locale.setlocale(locale.LC_TIME, self.env.context['lang'] + '.utf8')
         return str('%02d' % day)+' '+datetime(period_id.date_start.year, period_id.date_start.month, day).strftime("%a").lower().capitalize().replace('.','')
-
-    def action_pointage_user(self,employee_type,etat):
-        pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
-        view = self.env.ref('hr_management.rapport_pointage_tree_user') if pointeur else self.env.ref('hr_management.rapport_pointage_tree')
-        form = self.env.ref('hr_management.rapport_pointage_form_user') if pointeur else self.env.ref('hr_management.rapport_pointage_form')
-        res=[]
-        where = ''
-        if etat:
-            where += 'etat = '+str(etat)
-        else:
-            where +='(etat = 5 or etat is null or etat = 9)'
-        dest = 'Salariés' if employee_type == 's' else 'Ouvriers'
-
-        query = ""
-
-        if pointeur:
-            query = """
-                    select id from hr_rapport_pointage where chantier_id in (select chantier_id from chantier_responsable_relation where user_id = %s) and %s;
-                """   % (self.env.user.id,where)
-        else:
-            query = """
-                    select id from hr_rapport_pointage where %s;
-                """   % (where)
-        self.env.cr.execute(query)
-        for result in self.env.cr.fetchall():
-            res.append(result[0])
-        
-        context = {
-                "search_default_group_by_public_market_id":1,
-                "search_default_group_by_period_id":1,
-                "search_default_group_by_emplacement_chantier_id":1
-            }
-        if employee_type == 'o':
-            context['search_default_group_by_quinzaine'] = 1
-        
-        return {
-            'name':'Pointage Mensuel ' + dest,
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'res_model': self._name,
-            'views': [(view.id, 'tree'),(form.id, 'form')],
-            #'view_id': view.id,
-            'target': 'current',
-            'domain':[('id','in',res),('employee_id.type_emp','=',employee_type)],
-            'context':context
-        }
-    
-    def remove_first_word(self,word):
-        if word:
-            res = []
-            for item in word.partition(' '):
-                if item.lower() not in (' ','equipe') :
-                    if '-' in item:
-                        for subItem in item.partition('-'):
-                            if '-' not in subItem:
-                                res.append(subItem.lower().strip())
-                    else:
-                        res.append(item.lower())
-            
-            if len(res) <= 1 :
-                return res[0].capitalize() 
-            else:
-                concat = ''
-                for item in res:
-                    concat += item[:4].capitalize()+'. '
-                return concat
-
-
+ 
     def get_first_n_characters(self,word,n):
         if word:
             if len(word) >= n:
                 return word[:n]
         return word
-    
 
     def is_pointeur(self):
         return self.env['res.users'].has_group("hr_management.group_pointeur")
-   
-   
-    """
-    @api.multi
-    def generate_payslip(self):
-        view = self.env.ref(
-            'hr_management.creation_payslip_wizard')
-        
-        
-        if self.employee_id.type_emp == 'o':
-            return {
-                'name': _('Création Fiche de paie'),
-                'type': 'ir.actions.act_window',
-                'view_type': 'form',
-                'view_mode': 'form',
-                'res_model': 'hr.filtre.pointage.wizard',
-                'views': [(view.id, 'form')],
-                'view_id': view.id,
-                'target': 'new',
-                'context':{
-                    'default_employee_id':self.employee_id.id,
-                    'default_sous_chantier':self.emplacement_chantier_id.id,
-                    'default_chantier_id':self.chantier_id.id,
-                    'default_rapport_id':self.id,
-                    'default_period_id':self.period_id.id
-                }
-            }
-        else:
-            self.create_payslip()
-
-    """
-
+ 
     def create_payslip(self,quinzaine):
         # periode = self.env['account.month.period'].search([('id','=',self.period_id.id)])
         # note = self.env['hr.payslip'].get_prev_note(self.employee_id,periode)
         equipe = False
         
-        res1 = self.env['hr.rapport.pointage.line'].search([('chantier_id','!=',False),('emplacement_chantier_id','!=',False),('rapport_id','=',self.id),('day','<=',str(self.get_half_month_day(self.period_id)))],order="id desc",limit=1)
-        res2 = self.env['hr.rapport.pointage.line'].search([('chantier_id','!=',False),('emplacement_chantier_id','!=',False),('rapport_id','=',self.id)],order="id desc",limit=1)
+        res1 = self.env['hr.rapport.pointage.line'].search([
+            ('chantier_id','!=',False),
+            ('emplacement_chantier_id','!=',False),
+            ('rapport_id','=',self.id),
+            ('day','<=',str(self.get_half_month_day(self.period_id)))],order="id desc",limit=1)
+        
+        res2 = self.env['hr.rapport.pointage.line'].search([
+            ('chantier_id','!=',False),
+            ('emplacement_chantier_id','!=',False),
+            ('rapport_id','=',self.id)],order="id desc",limit=1)
 
         if quinzaine == 'quinzaine1' and res1:             
             equipe = res1[0].emplacement_chantier_id.id
@@ -492,62 +401,54 @@ class hr_rapport_pointage(models.Model):
     def action_q1_working(self):
         self.write({'q1_state': 'q1_working'})
         for line in self.rapport_lines:
-            if fields.Date.from_string(line.day) <= self.get_half_month_day(self.period_id):
-                line.write({'state':'working'})
+            line.write({'state':'working'})
     
     def action_q1_draft(self):
         self.write({'q1_state': 'q1_draft'})
         for line in self.rapport_lines:
-            if fields.Date.from_string(line.day) <= self.get_half_month_day(self.period_id):
-                line.write({'state':'draft'})
+            line.write({'state':'draft'})
     
     def action_q1_valide(self):
         self.write({'q1_state': 'q1_valide'})
         for line in self.rapport_lines:
-            if fields.Date.from_string(line.day) <= self.get_half_month_day(self.period_id):
-                line.write({'state':'valide'})
+            line.write({'state':'valide'})
 
     def action_q1_done(self):
         self.write({'q1_state': 'q1_done'})
         for line in self.rapport_lines:
-            if fields.Date.from_string(line.day) <= self.get_half_month_day(self.period_id):
-                line.write({'state':'done'})
+            line.write({'state':'done'})
     
     #------------------------------- Q2 ---------------------------------
 
     def action_q2_working(self):
         self.write({'q2_state': 'q2_working'})
         for line in self.rapport_lines:
-            if fields.Date.from_string(line.day) > self.get_half_month_day(self.period_id) and fields.Date.from_string(line.day) <= self.get_last_month_day():
-                line.write({'state':'working'})
+            line.write({'state':'working'})
     
     def action_q2_draft(self):
         self.write({'q2_state': 'q2_draft'})
         for line in self.rapport_lines:
-            if fields.Date.from_string(line.day) > self.get_half_month_day(self.period_id) and fields.Date.from_string(line.day) <= self.get_last_month_day():
-                line.write({'state':'draft'})
+            line.write({'state':'draft'})
     
     def action_q2_valide(self):
         self.write({'q2_state': 'q2_valide'})
         for line in self.rapport_lines:
-            if fields.Date.from_string(line.day) > self.get_half_month_day(self.period_id) and fields.Date.from_string(line.day) <= self.get_last_month_day():
-                line.write({'state':'valide'})
+            line.write({'state':'valide'})
     
     def action_q2_done(self):
         self.write({'q2_state': 'q2_done'})
         for line in self.rapport_lines:
-            if fields.Date.from_string(line.day) > self.get_half_month_day(self.period_id) and fields.Date.from_string(line.day) <= self.get_last_month_day():
-                line.write({'state':'done'})
+            line.write({'state':'done'})
     
     def get_half_month_day(self,period_id):
-        period_month = fields.Date.from_string(period_id.date_start).month
-        period_year = fields.Date.from_string(period_id.date_start).year
-        return fields.Date.from_string(str(period_year)+'-'+str(period_month)+'-15')
+        period_month = period_id.date_start.month
+        period_year = period_id.date_start.year
+        return datetime.strptime(str(period_year)+'-'+str(period_month)+'-15', '%Y-%m-%d').date()
     
     def get_last_month_day(self):
-        period_month = fields.Date.from_string(self.period_id.date_start).month
-        period_year = fields.Date.from_string(self.period_id.date_start).year
-        return fields.Date.from_string(str(period_year)+'-'+str(period_month)+'-'+str(calendar.monthrange(period_year, period_month)[1]))
+        period_month = self.period_id.date_start.month
+        period_year = self.period_id.date_start.year
+        return datetime.strptime(str(period_year)+'-'+str(period_month)+'-'+str(calendar.monthrange(period_year, period_month)[1]), '%Y-%m-%d').date() 
 
     def user_company_id(self):
         return self.chantier_id.cofabri

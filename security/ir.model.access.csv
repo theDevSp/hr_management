@@ -217,20 +217,6 @@ hr_pointage_line_engin_controle_gestion,hr_pointage_line_engin,model_hr_rapport_
 hr_pointage_line_engin_pointeur,hr_pointage_line_engin,model_hr_rapport_pointage_line_engin,group_pointeur,1,1,1,0
 hr_pointage_line_engin_cnss_juridique,hr_pointage_line_engin,model_hr_rapport_pointage_line_engin,group_cnss_juridique,1,0,0,0
 
-hr_bank_admin_paie,hr_management_bank_admin,model_bank,group_admin_paie,1,1,1,1
-hr_bank_agent_paie,hr_management_bank,model_bank,group_agent_paie,1,0,0,0
-hr_bank_service_analytique,hr_management_bank,model_bank,group_service_analytique,1,0,0,0
-hr_bank_controle_gestion,hr_management_bank,model_bank,group_controle_gestion,1,0,0,0
-hr_bank_pointeur,hr_management_bank,model_bank,group_pointeur,1,0,0,0
-hr_bank_cnss_juridique,hr_management_bank,model_bank,group_cnss_juridique,1,0,0,0
-
-hr_city_admin_paie,hr_management_city_admin,model_city,group_admin_paie,1,1,1,1
-hr_city_agent_paie,hr_management_city,model_city,group_agent_paie,1,0,0,0
-hr_city_service_analytique,hr_management_city,model_city,group_service_analytique,1,0,0,0
-hr_city_controle_gestion,hr_management_city,model_city,group_controle_gestion,1,0,0,0
-hr_city_pointeur,hr_management_city,model_city,group_pointeur,1,0,0,0
-hr_city_cnss_juridique,hr_management_city,model_city,group_cnss_juridique,1,0,0,0
-
 hr_employee_transfert_admin_paie,hr_management_hr_employee_transfert_admin,model_hr_employee_transfert,group_admin_paie,1,1,1,1
 hr_employee_transfert_agent_paie,hr_management_hr_employee_transfert,model_hr_employee_transfert,group_agent_paie,1,1,1,0
 hr_employee_transfert_service_analytique,hr_management_hr_employee_transfert,model_hr_employee_transfert,group_service_analytique,1,0,0,0

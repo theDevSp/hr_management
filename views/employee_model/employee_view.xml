@@ -90,236 +90,255 @@
                     </div>
                 </div>
                 <div class="oe_button_box bar-box-shadow bg-white mt-4" name="button_box">
-                    <button name="all_contracts" type="object" class="oe_stat_button col-12" icon="fa-paste" string="Contracts" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_contrats"/></button> 
-                    <button name="all_augmentations" type="object" class="oe_stat_button col-12" icon="fa-chart-line" string="Augmentations" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_augmentations"/></button>
-                    <button name="all_primes" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Primes" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_primes"/></button>
-                    <button name="all_prelevements" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Prélèvements" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_prelevements"/></button>
-                    <button name="all_credits" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Crédits" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_credits"/></button>
-                    <button name="all_conges" type="object" class="oe_stat_button col-12" icon="fa-sliders" string="Congés" ><field name="nbr_holidays"/></button>
-                    <button name="all_fiche_paie" type="object" class="oe_stat_button col-12" icon="fa-barcode" string="Fiches de paie" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_fiches_de_paie"/></button>
-                    <button name="all_stc" type="object" class="oe_stat_button col-12" icon="fa-handshake-o" string="STC" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"><field name="nbr_stc"/></button>
-                    <button name="all_rapports_pointage" type="object" class="oe_stat_button col-12" icon="fa-file-contract" string="Rapports de pointage" ><field name="nbr_rapports_pointage"/></button>
+                    <button name="all_contracts" type="object" class="oe_stat_button col-12" icon="fa-paste" string="Contracts" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Contrats <field name="nbr_contrats"/></button> 
+                    <button name="all_augmentations" type="object" class="oe_stat_button col-12" icon="fa-chart-line" string="Augmentations" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Augmentations <field name="nbr_augmentations"/></button>
+                    <button name="all_primes" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Primes" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Primes <field name="nbr_primes"/></button>
+                    <button name="all_prelevements" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Prélèvements" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Prélèvements <field name="nbr_prelevements"/></button>
+                    <button name="all_credits" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Crédits" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Crédits <field name="nbr_credits"/></button>
+                    <button name="all_conges" type="object" class="oe_stat_button col-12" icon="fa-sliders" string="Congés" >Congés <field name="nbr_holidays"/></button>
+                    <button name="all_fiche_paie" type="object" class="oe_stat_button col-12" icon="fa-barcode" string="Fiches de paie" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Fiches de paie <field name="nbr_fiches_de_paie"/></button>
+                    <button name="all_stc" type="object" class="oe_stat_button col-12" icon="fa-handshake-o" string="STC" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">STC <field name="nbr_stc"/></button>
+                    <button name="all_rapports_pointage" type="object" class="oe_stat_button col-12" icon="fa-file-contract" string="Rapports de pointage" >Pointages <field name="nbr_rapports_pointage"/></button>
                 </div>
                 <div class="container-fliud p-3 my-3">
-                    <div class="row mt-3">
-                        <div class="col-md-4 col-lg-4">
-                            <div class="card-deck">
-                                <div class="card">
-                                    <center>
-                                        <field name="image_1920" widget='image' class="card-img-top mt-3 mb-2"/>
-                                    </center>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 ">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">Employé</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
                                     <div class="card-body">
-                                        <div class="md-form mb-n3">
-                                            <label for="company_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-building form-control-icon"></span>
-                                                    <field name="company_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>
+                                        <center>
+                                            <field name="image_1920" widget='image' class="card-img-top mt-3 mb-2"/>
+                                        </center>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="name" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                                             </div>
+                                            <field name="name" class="form-control"/>
                                         </div>
-                                        <div class="md-form mb-n3">
-                                            <label for="name" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-user form-control-icon"></span>
-                                                    <field name="name" class="form-control" required="1"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="md-form mb-n3">
-                                            <label for="cin" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-id-card form-control-icon"></span>
-                                                    <field name="cin" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="md-form mb-n3">
-                                            <label for="cnss" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-id-card form-control-icon"></span>
-                                                    <field name="cnss" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="md-form mb-n3">
-                                            <label for="date_naissance" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="date_naissance" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="md-form mb-n3">
-                                            <label for="lieu_naissance" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-city form-control-icon"></span>
-                                                    <field name="lieu_naissance" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="md-form mb-n3">
-                                            <label for="gender" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-user form-control-icon"></span>
-                                                    <field name="gender" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="md-form mb-n3">
-                                            <label for="marital" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-ring form-control-icon"></span>
-                                                    <field name="marital" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="md-form mb-n3">
-                                            <label for="nombre_enfants" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-users form-control-icon"></span>
-                                                    <field name="nombre_enfants" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="employee_age" class="ml-4"/>
-                                            <div class="card text-white bg-dark mb-3">
-                                                <div class="card-body">
-                                                    <h4 class="card-title text-center align-middle">
-                                                        <field name="employee_age" class="align-middle mt-3"/>
-                                                    </h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
-                                            hr_management.group_service_analytique,hr_management.group_controle_gestion,
-                                            hr_management.group_cnss_juridique">
-                                            <label for="working_years" class="ml-4"/>
-                                            <div class="card text-white bg-dark mb-3">
-                                                <div class="card-body">
-                                                    <h4 class="card-title text-center align-middle">
-                                                        <field name="working_years"  style="height:0.3em;"/>
-                                                    </h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <small class="text-muted">
-                                            <label for="date_cin" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="date_cin" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8 col-lg-8">
-                            <div class="card border-dark mb-3" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
-                                        hr_management.group_service_analytique,hr_management.group_controle_gestion,
-                                            hr_management.group_cnss_juridique" attrs="{'invisible':[('having_contrat', '=', 1)]}">
-                                <div class="card-header">Informations sur Contrat</div>
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="container">
-                                            <div class="alert alert-warning text-center" role="alert">
-                                                Alert ! Cet employé n'a pas encore de contrat.
-                                            </div>
-                                        </div>  
-                                    </div>
-                                    <div class="row">
-                                        <div class="container">
-                                            <center>
-                                                <button name="ajouter_contrat" type="object" class="oe_highlight" icon="fa-paste" string="Ajouter un contrat" width="150"/>
-                                            </center>
-                                        </div>  
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card border-dark mb-3" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
-                                        hr_management.group_service_analytique,hr_management.group_controle_gestion,
-                                            hr_management.group_cnss_juridique" attrs="{'invisible':[('having_contrat', '!=', 1)]}">
-                                <div class="card-header">Informations sur Contrat</div>
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="contract_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-barcode form-control-icon"></span>
-                                                    <field name="contract_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="chantier_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-city form-control-icon"></span>
-                                                    <field name="chantier_related" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="date_start" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-calendar form-control-icon"></span>
-                                                    <field name="date_start" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="type_contrat" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-file-contract form-control-icon"></span>
-                                                    <field name="type_contrat" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="date_end" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-calendar form-control-icon"></span>
-                                                    <field name="date_end" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="wage" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="wage" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <center>
                                         <div class="row">
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-3" style="max-width: 30em;">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="cin" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                    </div>
+                                                    <field name="cin" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="date_cin" class=""/></span>
+                                                    </div>
+                                                    <field name="date_cin" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="cnss" class=""/></span>
+                                            </div>
+                                            <field name="cnss" class="form-control"/>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="date_naissance" class=""/></span>
+                                                    </div>
+                                                    <field name="date_naissance" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="employee_age" class=""/></span>
+                                                    </div>
+                                                    <field name="employee_age" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="lieu_naissance" class=""/></span>
+                                                    </div>
+                                                    <field name="lieu_naissance" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="gender" class=""/></span>
+                                                    </div>
+                                                    <field name="gender" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="marital" class=""/></span>
+                                                    </div>
+                                                    <field name="marital" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="nombre_enfants" class=""/></span>
+                                                    </div>
+                                                    <field name="nombre_enfants" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="bg-white shadow p-3 my-3" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                        hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                            hr_management.group_cnss_juridique">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">Informations sur les paniers</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-4">
+                                                <label for="panier_conge" class=""/>
+                                                <div class="card text-white bg-dark mb-3">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title text-center align-middle">
+                                                            <field name="panier_conge" style="height:0.3em;"/>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4">
+                                                <label for="panier_jr_ferie" class=""/>
+                                                <div class="card text-white bg-dark mb-3">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title text-center align-middle">
+                                                            <field name="panier_jr_ferie" style="height:0.3em;"/>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4">
+                                                <label for="panier_dimanches" class=""/>
+                                                <div class="card text-white bg-dark mb-3">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title text-center align-middle">
+                                                            <field name="panier_dimanches" style="height:0.3em;"/>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div> 
+                            </div>   
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 my-3">
+                            <div class="bg-white shadow p-3" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                        hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                            hr_management.group_cnss_juridique">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">Informations sur Contrat</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body" attrs="{'invisible':[('having_contrat', '=', 1)]}">   
+                                        <div class="row">
+                                            <div class="container">
+                                                <div class="alert alert-warning text-center" role="alert">
+                                                    Alert ! Cet employé n'a pas encore de contrat.
+                                                </div>
+                                            </div>  
+                                        </div>
+                                        <div class="row">
+                                            <div class="container">
+                                                <center>
+                                                    <button name="ajouter_contrat" type="object" class="oe_highlight" icon="fa-paste" string="Ajouter un contrat" width="150"/>
+                                                </center>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    <div class="card-body" attrs="{'invisible':[('having_contrat', '!=', 1)]}">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="contract_id" class=""/></span>
+                                                    </div>
+                                                    <field name="company_id" invisible="1"/>
+                                                    <field name="contract_id" class="form-control" options="{'no_create': True,'no_open':True}" readonly="1"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="type_contrat" class=""/></span>
+                                                    </div>
+                                                    <field name="type_contrat" options="{'no_create': True,'no_open':True}" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="date_start" class=""/></span>
+                                                    </div>
+                                                    <field name="date_start" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="date_end" class=""/></span>
+                                                    </div>
+                                                    <field name="date_end" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="chantier_related" class=""/></span>
+                                                    </div>
+                                                    <field name="chantier_related" options="{'no_create': True,'no_open':True}" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="working_years" class=""/></span>
+                                                    </div>
+                                                    <field name="working_years" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-end">
+                                            <div class="col-6 col-lg-4">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="wage" class=""/></span>
+                                                    </div>
+                                                    <field name="wage" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-lg-4" style="max-width: 30em;">
                                                 <label for="salaire_actuel" class=""/>
                                                 <div class="card text-white bg-dark mb-3">
                                                     <div class="card-body">
@@ -329,420 +348,327 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6 mt-4">
+                                            <div class="col-12 col-lg-4">
                                                 <div class="alert alert-info text-center" role="alert">
                                                     Le salaire actuel représente le salaire de base plus les augmentations liées à cet employé.
                                                 </div>
                                             </div>
                                         </div>
-                                    </center>
-                                </div>
+                                    </div>
+                                </div> 
                             </div>
-
-                            <div class="card border-dark mb-3">
-                                <div class="card-header">Qualification et affectation</div>
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="col-md-4 col-sm-6">
-                                            <label for="type_emp" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-user form-control-icon"></span>
-                                                    <field name="type_emp" class="form-control" readonly="1"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 col-sm-6">
-                                            <label for="job_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-briefcase form-control-icon"></span>
-                                                    <field name="job_id" options="{'no_create': True, 'no_open': True}" class="form-control" readonly="1"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 col-sm-6">
-                                            <label for="job" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-briefcase form-control-icon"></span>
-                                                    <field name="job" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="chantier_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-city form-control-icon"></span>
-                                                    <field name="chantier_id" options="{'no_create': True, 'no_open': True}" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="emplacement_chantier_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-users form-control-icon"></span>
-                                                    <field name="emplacement_chantier_id" options="{'no_create': True, 'no_open': True}" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="embaucher_par" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-user form-control-icon"></span>
-                                                    <field name="embaucher_par" options="{'no_create': True, 'no_open': True}" class="form-control" readonly="1"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="recommander_par" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-user form-control-icon"></span>
-                                                    <field name="recommander_par" options="{'no_create': True, 'no_open': True}" class="form-control" readonly="1"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="motif_enbauche" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-envelope form-control-icon"></span>
-                                                    <field name="motif_enbauche" options="{'no_create': True, 'no_open': True}" class="form-control" readonly="1"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card border-dark mb-3">
-                                <div class="card-header">Contacts</div>
-                                <div class="card-body text-dark">
-                                    <label for="adress_personnel" class=""/>
-                                    <div class="main">
-                                        <div class="form-group">
-                                            <span class="fas fa-map-marker-alt form-control-icon"></span>
-                                            <field name="adress_personnel" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="mobile_phone" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-mobile-alt form-control-icon"></span>
-                                                    <field name="mobile_phone" class="form-control" string="Tél. Professionnel"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="phone1" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-mobile-alt form-control-icon"></span>
-                                                    <field name="phone1" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="phone2" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-mobile-alt form-control-icon"></span>
-                                                    <field name="phone2" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="phone3" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-mobile-alt form-control-icon"></span>
-                                                    <field name="phone3" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card border-dark mb-3" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                            <div class="bg-white shadow p-3 my-3" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
                                         hr_management.group_service_analytique,hr_management.group_controle_gestion,
                                             hr_management.group_cnss_juridique">
-                                <div class="card-header">Informations sur Profile de Paie</div>
-                                <div class="card-body text-dark">
-                                    <div class="row mt-2"></div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-4">
-                                            <label for="completer_salaire_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <field name="completer_salaire_related" widget="boolean_toggle"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="plafonner_bonus_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <field name="plafonner_bonus_related" widget="boolean_toggle"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="avoir_conge_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <field name="avoir_conge_related" widget="boolean_toggle"/>
-                                                </div>  
-                                            </div>
-                                        </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">Informations sur Profile de Paie</h2>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="code_profile_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-barcode form-control-icon"></span>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="completer_salaire_related" class=""/></span>
+                                                    </div>
+                                                    <field name="completer_salaire_related" widget="boolean_toggle" class="form-control"/>
+                                                </div>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="plafonner_bonus_related" class=""/></span>
+                                                    </div>
+                                                    <field name="plafonner_bonus_related" widget="boolean_toggle" class="form-control"/>
+                                                </div>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="avoir_conge_related" class=""/></span>
+                                                    </div>
+                                                    <field name="avoir_conge_related" widget="boolean_toggle" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="code_profile_related" class=""/></span>
+                                                    </div>
                                                     <field name="code_profile_related" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="name_profile_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-sliders form-control-icon"></span>
+                                                </div>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="name_profile_related" class=""/></span>
+                                                    </div>
                                                     <field name="name_profile_related" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div> 
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="type_profile_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-sliders form-control-icon"></span>
+                                                </div>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="type_profile_related" class=""/></span>
+                                                    </div>
                                                     <field name="type_profile_related" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="nbre_jour_worked_par_mois_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="nbre_jour_worked_par_mois_related" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div> 
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="nbre_heure_worked_par_jour_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="nbre_heure_worked_par_jour_related" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="nbre_heure_worked_par_demi_jour_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="nbre_heure_worked_par_demi_jour_related" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="definition_nbre_jour_worked_par_mois_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="definition_nbre_jour_worked_par_mois_related" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="period_id_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="period_id_related" widget="many2one_tags" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="periodicity_related" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="periodicity_related" widget="many2one_tags" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="salaire_jour_related" class=""/>
-                                            <div class="card text-white bg-dark mb-3">
-                                                <div class="card-body">
-                                                    <h4 class="card-title text-center align-middle">
-                                                        <field name="salaire_jour_related"  style="height:0.3em;"/>
-                                                    </h4>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="salaire_demi_jour_related" class=""/>
-                                            <div class="card text-white bg-dark mb-3">
-                                                <div class="card-body">
-                                                    <h4 class="card-title text-center align-middle">
-                                                        <field name="salaire_demi_jour_related"  style="height:0.3em;"/>
-                                                    </h4>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-4">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="nbre_jour_worked_par_mois_related" class=""/></span>
+                                                    </div>
+                                                    <field name="nbre_jour_worked_par_mois_related" string="Jrs / Mois" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="nbre_heure_worked_par_jour_related" class=""/></span>
+                                                    </div>
+                                                    <field name="nbre_heure_worked_par_jour_related" string="Heures / Jr" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="nbre_heure_worked_par_demi_jour_related" class=""/></span>
+                                                    </div>
+                                                    <field name="nbre_heure_worked_par_demi_jour_related" string="Heures / demi-Jr" class="form-control"/>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="salaire_heure_related" class=""/>
-                                            <div class="card text-white bg-dark mb-3">
-                                                <div class="card-body">
-                                                    <h4 class="card-title text-center align-middle">
-                                                        <field name="salaire_heure_related"  style="height:0.3em;"/>
-                                                    </h4>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-4">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="definition_nbre_jour_worked_par_mois_related" class=""/></span>
+                                                    </div>
+                                                    <field name="definition_nbre_jour_worked_par_mois_related" string="Définition" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="period_id_related" class=""/></span>
+                                                    </div>
+                                                    <field name="period_id_related" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="periodicity_related" class=""/></span>
+                                                    </div>
+                                                    <field name="periodicity_related" class="form-control"/>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="card border-dark mb-3" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
-                                        hr_management.group_service_analytique,hr_management.group_controle_gestion,
-                                            hr_management.group_cnss_juridique">
-                                <div class="card-header">Informations sur les paniers</div>
-                                <div class="card-body text-dark">
-                                    <div class="row mt-2"></div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="panier_conge" class=""/>
-                                            <div class="card text-white bg-dark mb-3">
-                                                <div class="card-body">
-                                                    <h4 class="card-title text-center align-middle">
-                                                        <field name="panier_conge" style="height:0.3em;"/>
-                                                    </h4>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-4">
+                                                <label for="salaire_jour_related" class=""/>
+                                                <div class="card text-white bg-dark mb-3">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title text-center align-middle">
+                                                            <field name="salaire_jour_related"  style="height:0.3em;"/>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4">
+                                                <label for="salaire_demi_jour_related" class=""/>
+                                                <div class="card text-white bg-dark mb-3">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title text-center align-middle">
+                                                            <field name="salaire_demi_jour_related"  style="height:0.3em;"/>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-4">
+                                                <label for="salaire_heure_related" class=""/>
+                                                <div class="card text-white bg-dark mb-3">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title text-center align-middle">
+                                                            <field name="salaire_heure_related"  style="height:0.3em;"/>
+                                                        </h4>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="panier_jr_ferie" class=""/>
-                                            <div class="card text-white bg-dark mb-3">
-                                                <div class="card-body">
-                                                    <h4 class="card-title text-center align-middle">
-                                                        <field name="panier_jr_ferie" style="height:0.3em;"/>
-                                                    </h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="panier_dimanches" class=""/>
-                                            <div class="card text-white bg-dark mb-3">
-                                                <div class="card-body">
-                                                    <h4 class="card-title text-center align-middle">
-                                                        <field name="panier_dimanches" style="height:0.3em;"/>
-                                                    </h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card border-dark mb-3" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
-                                hr_management.group_service_analytique,hr_management.group_controle_gestion,
-                                hr_management.group_cnss_juridique">
-                                <div class="card-header">Informations Bancaires et Cotisations</div>
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="bank_account" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="bank_account" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="bank" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-university form-control-icon"></span>
-                                                    <field name="bank" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>   
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="ville_bank" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-city form-control-icon"></span>
-                                                    <field name="ville_bank" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="bank_agence" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-university form-control-icon"></span>
-                                                    <field name="bank_agence" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>   
-                                </div>
+                                    </div> 
+                                </div> 
                             </div>
                         </div>
                     </div>
-                    <div class="card border-dark mb-5" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
-                                hr_management.group_service_analytique,hr_management.group_controle_gestion,
-                                hr_management.group_cnss_juridique">
-                        <div class="card-header">Historique Liste Noire</div>
-                        <div class="card-body text-dark">
-                            <group>
-                                <field name="blacklist_histo" nolabel="1">
-                                    <tree class="table" create="false" edit="false">
-                                        <field name="responsable_id"/>
-                                        <field name="directeur_id"/>
-                                        <field name="chantier_id"/>
-                                        <field name="motif"/>
-                                        <field name="date_effet"/>
-                                        <field name="action"/>
-                                        <field name="user_doing_action"/>
-                                    </tree>
-                                </field>
-                            </group>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">Contacts</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">            
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="adress_personnel" class=""/></span>
+                                                    </div>
+                                                    <field name="adress_personnel" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="mobile_phone" class=""/></span>
+                                                    </div>
+                                                    <field name="mobile_phone" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="phone1" class=""/></span>
+                                                    </div>
+                                                    <field name="phone1" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="phone2" class=""/></span>
+                                                    </div>
+                                                    <field name="phone2" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="phone3" class=""/></span>
+                                                    </div>
+                                                    <field name="phone3" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div>   
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 my-3">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">Qualification et affectation</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="type_emp" class=""/></span>
+                                                    </div>
+                                                    <field name="type_emp" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="job_id" class=""/></span>
+                                                    </div>
+                                                    <field name="job_id" options="{'no_create': True,'no_open':True}" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="job" class=""/></span>
+                                                    </div>
+                                                    <field name="job" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="chantier_id" class=""/></span>
+                                                    </div>
+                                                    <field name="chantier_id" options="{'no_create': True,'no_open':True}" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="emplacement_chantier_id" class=""/></span>
+                                                    </div>
+                                                    <field name="emplacement_chantier_id" options="{'no_create': True,'no_open':True}" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="vehicle_id" class=""/></span>
+                                                    </div>
+                                                    <field name="vehicle_id" options="{'no_create': True,'no_open':True}" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="embaucher_par" class=""/></span>
+                                                    </div>
+                                                    <field name="embaucher_par" options="{'no_create': True,'no_open':True}" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="recommander_par" class=""/></span>
+                                                    </div>
+                                                    <field name="recommander_par" options="{'no_create': True,'no_open':True}" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="motif_enbauche" class=""/></span>
+                                                    </div>
+                                                    <field name="motif_enbauche" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div> 
+                            </div>
                         </div>
                     </div>
+                    <div class="row" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                hr_management.group_cnss_juridique">
+                        <div class="bg-white shadow p-3 d-none d-lg-block">
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">Historique Liste Noire</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <field name="blacklist_histo" nolabel="1">
+                                        <tree class="table" create="false" edit="false">
+                                            <field name="responsable_id"/>
+                                            <field name="directeur_id"/>
+                                            <field name="chantier_id"/>
+                                            <field name="motif"/>
+                                            <field name="date_effet"/>
+                                            <field name="action"/>
+                                            <field name="user_doing_action"/>
+                                        </tree>
+                                    </field>
+                                </div> 
+                            </div> 
+                        </div>
+                    </div>
+
                 </div>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>

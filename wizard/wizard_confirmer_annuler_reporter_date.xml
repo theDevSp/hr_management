@@ -6,13 +6,28 @@
             <field name="model">wizard_confirmer_annuler_reporter_date</field>
             <field name="arch" type="xml">
                 <form string="Annuler Reporter Date">
-                    <group>
-                        <field name="message" nolabel="1"/>
-                    </group>
-                    <footer>
-                        <button name="action_confirm_annuler_reporter_date" string="Confirm" type="object" class="oe_highlight"/>
-                        or
-                        <button string="Cancel" class="oe_highlight" special="cancel"/>
+                    <div class="bg-white shadow p-3">
+                        
+                        <div class="card bg-light my-3">
+                            <div class="card-body">
+                                <div class="card my-3">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-text"><label for="message" class=""/></h4>
+                                    </div>
+                                    <div class="card-body text-dark text-center">
+                                        <field name="message"/>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div> 
+                    </div>
+                    <footer class="justify-content-center">
+                        <div class="row justify-content-center w-50">
+                            <div class="btn-group" role="group">
+                                <button name="action_confirm_annuler_reporter_date" string="Confirm" type="object" class="btn btn-success"/>
+                                <button string="Cancel" class="btn btn-danger" special="cancel"/>
+                            </div>
+                        </div>
                     </footer>
                 </form>
             </field>

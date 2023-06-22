@@ -14,6 +14,7 @@ class hr_rapport_pointage_line(models.Model):
         'valide': [('readonly', True)],
         'compute': [('readonly', True)],
         'done': [('readonly', True)],
+        'working': [('readonly', True)],
         'cancel': [('readonly', True)]
     }
 
@@ -110,14 +111,33 @@ class hr_rapport_pointage_line(models.Model):
     j_travaille = fields.Selection([('0', '0'), ('0.5', '0.5'), ('1', '1')],u"Jours Travaillés",default='0', states=READONLY_STATES_RL,tracking=True)
     j_travaille_v = fields.Selection([('0', '0'), ('0.5', '0.5'), ('1', '1'), ('1.5', '1.5'),('2','2')],u"Jours Travaillés Validés",default='0', states=READONLY_STATES_MG,tracking=True)
     day = fields.Date('Date Jour',readonly=True) 
-    day_type = fields.Selection([('1',u'Jour Ouvrable'),('2',u"Dimanche"),('3',u"Jour Ferié"),('4',u"Congé"),('5',u"Absence Non Autorisée"),('6',u"Abondement de Poste"),('7',u"STC"),('8',u'Accident du Travail'),('9',u'Transfert')],u"État Jour",required=True,tracking=True)
+    day_type = fields.Selection([
+
+                ('1',u'Jour Ouvrable'),
+                ('2',u"Dimanche"),
+                ('3',u"Jour Ferié"),
+                ('4',u"Congé"),
+                ('5',u"Absence Non Autorisée"),
+                ('6',u"Abondement de Poste"),
+                ('7',u"STC"),
+                ('8',u'Accident du Travail'),
+                ('9',u'Transfert')],u"État Jour",required=True,tracking=True)
+    
     details = fields.Text("Travaux Détaillés", states=READONLY_STATES_RL)
     note = fields.Char("Observation", states=READONLY_STATES_MG)
     modification_count = fields.Integer("Modifier",readonly=True,compute='_get_modification_count')
     modification_data = fields.Text('Data', readonly=True)
     modification_data_html = fields.Html('HTML Data', readonly=True, compute='_render_html')
     vehicle_ids = fields.One2many("hr.rapport.pointage.line.engin",'rapport_line',string="Engins")
-    state = fields.Selection([('draft',u'Brouillon'),('working',u'Traitement En Cours'),('valide',u"Validé"),('compute',u"Calculé"),('done',u"Clôturé"),('cancel','Annulé')],u"Etat Ligne Pointage",default='draft',readonly=True,tracking=True)
+    state = fields.Selection([
+
+                ('draft',u'Brouillon'),
+                ('working',u'Traitement En Cours'),
+                ('valide',u"Validé"),
+                ('compute',u"Calculé"),
+                ('done',u"Clôturé"),
+                ('cancel','Annulé')],u"Etat Ligne Pointage",default='draft',readonly=True,tracking=True)
+    
     grant_modification = fields.Boolean('Autoriser la  modification')
 
     rapport_id = fields.Many2one("hr.rapport.pointage",u"Rapport Pointage", ondelete='cascade')
@@ -277,11 +297,8 @@ class hr_rapport_pointage_line(models.Model):
         new = 0
         user_name = self.env.user.name
         date = datetime.today().strftime("%d-%m-%Y, %H:%M:%S")
-        old_data = []
-        
-        if self.modification_data:
-            old_data = json.loads(self.modification_data)
 
+        """
         if vals.get('day_type'):
             if self.day_type in ('2','3') or (vals['day_type'] ==  '2' and 'Dim' not in self.name):
                 vals.pop('day_type')
@@ -296,6 +313,7 @@ class hr_rapport_pointage_line(models.Model):
                 self.rapport_id.write({
                     'etat':False
                 })
+        """
         
         
         if 'h_travailler' in vals and not pointeur and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
@@ -343,11 +361,7 @@ class hr_rapport_pointage_line(models.Model):
             raise ValidationError("Erreur, Veuillez justifier les heures supplémentaires pour la journée %s" % (self.name))
             
         if vals.get('h_travailler'):
-            new = self.h_travailler
-            old_data.append({"new":{"hours":new,"date":date,"user_name":user_name},"old":{"hours":old}})
-            json_data = json.dumps(old_data)
-            self.modification_data = json_data
-
+            
             self.h_travailler_v = self.h_travailler
             
             self.h_sup = str(max(float(self.h_travailler) - 9.0,0.0))
