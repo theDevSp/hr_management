@@ -200,6 +200,13 @@ class hr_employee(models.Model):
         vals['state_employee_wtf'] ='new'
         return super(hr_employee,self).create(vals)
 
+    @api.model
+    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = args or []
+        domain = []
+        if name:
+            domain = ['|', ('cin', operator, name), '|',('name', operator, name),('cnss', operator, name)]
+        return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
 
     def open_wizard(self):
         view = self.env.ref('hr_management.wizard_blacklist_view_form')

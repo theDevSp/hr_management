@@ -1,12 +1,14 @@
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
 from num2words import num2words
+from datetime import datetime
 
 class augmentation(models.Model):
     _name = "hr.augmentation"
     _description = "Augmentation"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     
+    name = fields.Char('name')
     employee_id = fields.Many2one('hr.employee', string = "Employee", required=True)
     chantier_id = fields.Many2one('fleet.vehicle.chantier', string = "Chantier")
     responsable_id = fields.Many2one("hr.responsable.chantier", string = "Responsable")
@@ -14,6 +16,8 @@ class augmentation(models.Model):
     period_id = fields.Many2one("account.month.period", string = "Période")
     date_fait = fields.Date("Date de fait", required=True, default=fields.Date.today, tracking=True,
         help="Date d'augmentation de salaire pour l'employé.", index=True)
+    type_salaire = fields.Selection(related="employee_id.contract_id.type_salaire",
+        string=u"Type Salaire",readonly=True)
 
     montant_propose = fields.Float('Montant Proposé')
     montant_valide = fields.Float('Montant Validé')
@@ -31,7 +35,7 @@ class augmentation(models.Model):
 
     motif =  fields.Selection([
         ('renouvlement', 'Renouvelement du contrat'),
-        ('chang_fonction', 'Changement de la fonction'),
+        ('chang_fonction', 'Changement de fonction'),
         ('anciennete', 'Ancienneté'),
         ('rendement', 'Rendement'),
         ('competence', 'Compétence'),
@@ -41,7 +45,7 @@ class augmentation(models.Model):
         string='Motif'
     )
 
-    motif_autres = fields.Char("Motif Autres")
+    motif_autres = fields.Text("Motif Autres")
 
     observation = fields.Text('Observation')
 
@@ -59,7 +63,14 @@ class augmentation(models.Model):
 
     @api.model
     def create(self, vals):
-        return super(augmentation, self).create(vals)
+
+        today = datetime.now()
+        year = today.year
+        month = '{:02d}'.format(today.month)
+        contract_sequence = self.env['ir.sequence'].next_by_code('hr.raise.sequence')
+        vals['name'] = vals['type_emp'] + '-' + str(month) + '/' + str(year) + '/' + str(contract_sequence)
+
+        return super().create(vals)
 
     def write(self, vals):
         return super(augmentation, self).write(vals)
@@ -160,3 +171,14 @@ class augmentation(models.Model):
                 return msg
         msg = "NEANT"    
         return msg
+    
+    def get_sum_of_raises_by_period_id(self,employee,period_id):
+
+        query = """
+                SELECT case when SUM(montant_valide) is null then 0 else SUM(montant_valide) end as sum
+                FROM hr_augmentation 
+                WHERE employee_id = %s AND state='acceptee' AND period_id >= %s 
+            """ % (employee.id,period_id)
+        self.env.cr.execute(query)
+        res = self.env.cr.dictfetchall()
+        return res[0]['sum'] or 0

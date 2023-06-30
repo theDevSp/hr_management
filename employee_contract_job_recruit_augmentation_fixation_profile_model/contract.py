@@ -11,18 +11,27 @@ class contrats(models.Model):
     name = fields.Char('Référence', readonly=True, copy=False, default='New')
     chantier_id = fields.Many2one('fleet.vehicle.chantier', string = "Chantier")
     profile_paie_id = fields.Many2one('hr.profile.paie', string = "Profile de paie")   
-    tt_montant_a_ajouter = fields.Float(string="Montants d'Augmentation", required=True, readonly=True, tracking=True, compute = "compute_augmentation_montants_valides")
-    salaire_actuel = fields.Float('Salaire Actuel', readonly=True)
+    tt_montant_a_ajouter = fields.Float(string="Montants d'Augmentation", required=True, readonly=True, tracking=True, compute = "_compute_augmentation_montants_valides")
+    salaire_actuel = fields.Float('Salaire Prévu',compute = "_compute_salaire", readonly=True)
 
 
     type_emp = fields.Selection([("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé",default="s")
     embaucher_par  = fields.Many2one("hr.responsable.chantier",u"Embauché Par")
     recommander_par  = fields.Many2one("hr.responsable.chantier",u"Recommandé Par")
     motif_enbauche  = fields.Selection([("1","Satisfaire un besoin"),("2","Remplacement"),("3","Autre")],u"Motif d'embauche")
+    detail_motif = fields.Char('Raison d\'embauche')
 
     pp_personnel_id_many2one = fields.Many2one('hr.profile.paie.personnel',string = "Profile de paie")
 
+    type_salaire = fields.Selection(
+        [("j","Journalier"),
+         ("m","Mensuel")],
+        string=u"Type Salaire",
+        default="m",
+        required=True)
+
     type_profile_related = fields.Selection(related="pp_personnel_id_many2one.type_profile", readonly=False)
+    code_profile_related = fields.Char(related="pp_personnel_id_many2one.code", readonly=True)
     nbre_heure_worked_par_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.nbre_heure_worked_par_demi_jour", readonly=False)
     nbre_heure_worked_par_jour_related = fields.Float(related="pp_personnel_id_many2one.nbre_heure_worked_par_jour", readonly=False)
     nbre_jour_worked_par_mois_related = fields.Float(related="pp_personnel_id_many2one.nbre_jour_worked_par_mois", readonly=False)
@@ -34,7 +43,7 @@ class contrats(models.Model):
     salaire_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_jour", readonly=True)
     salaire_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_demi_jour", readonly=True)
     salaire_heure_related = fields.Float(related="pp_personnel_id_many2one.salaire_heure", readonly=True)
-    periodicity_related = fields.Selection(related="profile_paie_id.periodicity", readonly=True)
+    periodicity_related = fields.Selection(related="pp_personnel_id_many2one.periodicity", readonly=True)
     contract_type = fields.Many2one('hr.contract.type',string = "Types de contrats")
     current_month = fields.Char("Le mois en cours",compute="_compute_current_month")
 
@@ -42,19 +51,21 @@ class contrats(models.Model):
 		('name_contract_uniq', 'UNIQUE(name)', 'Cette référence est déjà utilisée.'),
 	]
 
-    def compute_augmentation_montants_valides(self):
+    def _compute_augmentation_montants_valides(self):
+        period = self.env['account.month.period'].get_period_from_date(self.date_start) if self.date_start else 0
         query = """
                 SELECT case when SUM(montant_valide) is null then 0 else SUM(montant_valide) end as sum
-                FROM hr_augmentation aug,hr_contract ctr, account_month_period mnth
-                WHERE aug.employee_id=ctr.employee_id AND aug.period_id=mnth.id AND aug.state='acceptee' AND ctr.employee_id=%s
-                AND mnth.date_start BETWEEN ctr.date_start AND CURRENT_DATE
-            """ % (self.employee_id.id)
+                FROM hr_augmentation 
+                WHERE employee_id = %s AND state='acceptee' AND period_id >= %s 
+            """ % (self.employee_id.id,period.id)
         self.env.cr.execute(query)
         res = self.env.cr.dictfetchall()
         self.tt_montant_a_ajouter = res[0]['sum']
-        self.salaire_actuel = self.wage + res[0]['sum']
 
-
+    @api.depends('tt_montant_a_ajouter')
+    def _compute_salaire(self):  
+        self.salaire_actuel = self.wage + self.tt_montant_a_ajouter 
+        
     def to_new(self):
         self.state = 'draft'
 
@@ -140,4 +151,22 @@ class contrats(models.Model):
         self.current_month = str(month) + "/" + str(year)
 
     
-    # def calcule_salaire(self):
+    def get_hours_per_day(self,hours):
+        demi_jour = 0
+
+        if self.profile_paie_id:
+            demi_jour = self.nbre_heure_worked_par_demi_jour_related 
+        elif self.employee_id.type_emp == 'o': 
+            demi_jour = 6
+        else:
+            demi_jour = 4.5
+        
+        if float(hours) > 0 and float(hours) <= demi_jour:
+            j_travaille = '0.5'
+        elif float(hours) > demi_jour  and float(hours)<= 24:
+            j_travaille = '1'
+        else :
+            j_travaille = '0'
+
+        return j_travaille 
+

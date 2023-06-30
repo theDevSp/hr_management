@@ -45,4 +45,24 @@ class profilepaiepersonnel(models.Model):
 
     def write(self, vals):
         return super(profilepaiepersonnel, self).write(vals)
+    
+    def get_wage_per_day(self,period=False):
+        res = 0
+        raise_obj = self.env['hr.augmentation']
+        month_range = period.get_number_of_days() if period else period.get_number_of_days(datetime.now()) 
+        nbrjpm = self.nbre_jour_worked_par_mois if self.definition_nbre_jour_worked_par_mois == 'jr_mois' else month_range
+        if self.contract_id and self.contract_id.type_salaire == 'j':
+            res = self.wage + raise_obj.get_sum_of_raises_by_period_id(period.id)
+        elif self.contract_id and self.contract_id.type_salaire == 'm':
+            pass
+
+        return res
+    
+    def get_wage_per_half_day(self):
+
+        return
+    
+    def get_wage_per_hour(self):
+
+        return
 

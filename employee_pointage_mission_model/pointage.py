@@ -45,19 +45,18 @@ class hr_rapport_pointage(models.Model):
             rapport.total_h_sup = res['ths'] if res else 0
             rapport.total_h_v = res['thtv'] if res else 0
         
-
-
     def _compute_days(self):
         for rapport in self:
             query = """
-                        select sum(j_travaille::real) as tj,sum(j_travaille_v::real) as tjv from hr_rapport_pointage_line where rapport_id = %s and day_type != '2';
+                        select sum(j_travaille::real) as tj,sum(j_travaille_v::real) as tjv 
+                        from hr_rapport_pointage_line where rapport_id = %s;
                     """   % (rapport.id)
         
             self.env.cr.execute(query)
             res = self.env.cr.dictfetchall()[0]
 
-            self.total_j = res['tj'] if res else 0
-            self.total_j_v = res['tjv'] if res else 0
+            rapport.total_j = res['tj'] if res else 0
+            rapport.total_j_v = res['tjv'] if res else 0
     
 
     def _compute_days_conge_absence_abondon(self):
@@ -66,7 +65,6 @@ class hr_rapport_pointage(models.Model):
                     select 
                     count(1) filter (where day_type='2' and h_travailler::real > 0) as tdim,
                     count(1) filter (where day_type='3' and h_travailler::real > 0) as tferie,
-                    count(1) filter (where day_type='4') as tconge,
                     count(1) filter (where day_type='5') as tabsense
                     from hr_rapport_pointage_line where rapport_id = %s;
                 """ % (rapport.id)
@@ -75,27 +73,49 @@ class hr_rapport_pointage(models.Model):
             res = self.env.cr.dictfetchall()[0]
             self.count_nbr_dim_days = res['tdim'] if res else 0
             self.count_nbr_ferier_days = res['tferie'] if res else 0
-            self.count_nbr_holiday_days = res['tconge'] if res else 0
             self.count_nbr_absense_days = res['tabsense'] if res else 0
-
+    
+    def _compute_total_holidays(self):
+        res = 0
+        for holiday in self.holiday_ids:
+            res += holiday.duree_jours
+        self.count_nbr_holiday_days = res
 
     def _compute_holidays_liste(self):
 
-        query_result = self.env['hr.holidays']
-        if self.employee_id and self.rapport_lines:
-            query = """
-                    select id from hr_holidays where
-                    employee_id = %s and
-                    ((date_start >= '%s' and date_start <= '%s') or (date_end >= '%s' and date_end <= '%s'))
-                    """   % (self.employee_id.id,self.rapport_lines[0].day,self.rapport_lines[len(self.rapport_lines) - 1].day,self.rapport_lines[0].day,self.rapport_lines[len(self.rapport_lines) - 1].day)
-            self.env.cr.execute(query)            
-            for id in self.env.cr.fetchall():
-                query_result += self.env['hr.holidays'].browse(id[0])
-        self.holiday_ids = query_result
+        date_start = self.rapport_lines[0].day
+        date_stop = self.rapport_lines[len(self.rapport_lines)-1].day
+
+        self.holiday_ids = self.env['hr.holidays'].search([
+                                    ('employee_id','=',self.employee_id.id),
+                                    '|',
+                                        '|',
+                                            '&',
+                                            ('date_start','>=',date_start),
+                                            ('date_start','<=',date_stop),
+                                            '&',
+                                            ('date_end','>=',date_start),
+                                            ('date_end','<=',date_stop),
+                                        '&',
+                                        ('date_select_half_perso','>=',date_start),
+                                        ('date_select_half_perso','<=',date_stop),
+                                    ])         
+
         
         
     def _compute_transferts_liste(self):
-        self.transfert_ids = self.env['hr.employee.transfert'].search([('employee_id','=',self.employee_id.id),('date_transfert','<=',self.period_id.date_stop),('date_transfert','>=',self.period_id.date_start)])
+        date_start = self.rapport_lines[0].day
+        date_stop = self.rapport_lines[len(self.rapport_lines)-1].day
+
+        self.transfert_ids = self.env['hr.employee.transfert'].search([
+                                                ('employee_id','=',self.employee_id.id),
+                                                '|',
+                                                    '&',
+                                                    ('date_transfert','>=',date_start),
+                                                    ('date_transfert','<=',date_stop),
+                                                    '&',
+                                                    ('date_arriver','>=',date_start),
+                                                    ('date_arriver','<=',date_stop)])
 
 
     name = fields.Char("Référence",readonly=True)
@@ -111,7 +131,7 @@ class hr_rapport_pointage(models.Model):
     vehicle_id = fields.Many2one("fleet.vehicle",u"Dérnier Code engin",readonly=True)
     emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement","Dernière Équipe",readonly=True)
 
-    period_id = fields.Many2one("account.month.period",u'Période',required=True,readonly=False,domain = _get_ab_default)
+    period_id = fields.Many2one("account.month.period",u'Période',required=True,readonly=True,domain = _get_ab_default)
 
     total_h = fields.Float("Heures Travaillées",compute="_compute_hours",readonly=True)
     total_h_bonus = fields.Float("Heures Bonus",compute="_compute_hours",readonly=True)
@@ -125,15 +145,13 @@ class hr_rapport_pointage(models.Model):
     payslip_ids = fields.One2many("hr.payslip",'rapport_id',u'Fiche Paie',readonly=True)
     holiday_ids = fields.One2many("hr.holidays",'rapport_id',u'Congés',readonly=True,compute="_compute_holidays_liste")
     rapport_lines = fields.One2many("hr.rapport.pointage.line", 'rapport_id',string="Lignes Rapport Pointage")
-    # ####holiday_ids = fields.Many2many('hr.holydays', 'rapport_holidays_relation', 'holiday_ids', 'rapport_id', string="Congés")
-    # transfert_ids = fields.One2many("hr.employee.transfert",'rapport_id',u'Transfert',readonly=True,compute="_compute_transferts_liste")
-
-    etat = fields.Selection([('5',u"Absence Non Autorisé"),('6',u"Abondement de Poste"),('7',u"STC"),('8',u'Accident du Travail'),('9',u'Transfert')],u"État Salarié")
+    transfert_ids = fields.One2many("hr.employee.transfert",'rapport_id',u'Transfert',readonly=True,compute="_compute_transferts_liste")
+    
     quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine")
 
     state = fields.Selection([('draft',u'Brouillon'),('working',u'Traitement En Cours'),('compute',u"Mois Calculé"),('valide',u"Validé"),('done',u"Clôturé"),('cancel','Annulé')],u"Etat Pointage",default='draft',tracking=True)
 
-    count_nbr_holiday_days = fields.Integer("Jours Congés",readonly=True,compute="_compute_days_conge_absence_abondon")
+    count_nbr_holiday_days = fields.Float("Jours Congés",readonly=True,compute="_compute_total_holidays")
     count_nbr_ferier_days = fields.Integer("Jours Fériés",readonly=True,compute="_compute_days_conge_absence_abondon")
     count_nbr_dim_days = fields.Integer("Dimanches",readonly=True,compute="_compute_days_conge_absence_abondon")
     count_nbr_absense_days = fields.Integer("Absences",readonly=True,compute="_compute_days_conge_absence_abondon")
@@ -227,29 +245,6 @@ class hr_rapport_pointage(models.Model):
             raise UserError('Rapport déja existe')
 
         return res
-    
-    """
-    def write(self,vals):
-        pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
-        res = super(hr_rapport_pointage,self).write(vals)
-        if pointeur or self._uid == SUPERUSER_ID:
-            self.employee_id.write({'chantier_id':self.chantier_id.id})
-            self.employee_id.write({'vehicle_id':self.vehicle_id.id})
-            self.employee_id.write({'emplacement_chantier_id':self.emplacement_chantier_id.id})
-        if 'state' in vals:
-            for line in self.rapport_lines:
-                line.write({'state':vals['state']})
-        if 'q1_state' in vals:
-            for line in self.rapport_lines:
-                if fields.Date.from_string(line.day) <= self.get_half_month_day(self.period_id):
-                    line.write({'state':vals['q1_state'][3:]})
-        if 'q2_state' in vals:
-            for line in self.rapport_lines:
-                if fields.Date.from_string(line.day) > self.get_half_month_day(self.period_id) and fields.Date.from_string(line.day) <= self.get_last_month_day():
-                    line.write({'state':vals['q2_state'][3:]})
-        return res
-    """
-    
 
     def _prepare_rapport_pointage_lines(self,period_id,rapport_id,employee_id):   
                     
@@ -394,51 +389,13 @@ class hr_rapport_pointage(models.Model):
         self.write({'state': 'done'})
 
     def action_working(self):
+        if not self.employee_id.contract_id.profile_paie_id:
+            raise ValidationError(
+                        "Manque d'information, Cet employé n'a pas encors de profile de paie pour commancer le traitement. Veuillez régler la situation avant de procéder."
+                    )
         self.write({'state': 'working'})
-    
-    #------------------------------- Q1 ---------------------------------
-
-    def action_q1_working(self):
-        self.write({'q1_state': 'q1_working'})
         for line in self.rapport_lines:
-            line.write({'state':'working'})
-    
-    def action_q1_draft(self):
-        self.write({'q1_state': 'q1_draft'})
-        for line in self.rapport_lines:
-            line.write({'state':'draft'})
-    
-    def action_q1_valide(self):
-        self.write({'q1_state': 'q1_valide'})
-        for line in self.rapport_lines:
-            line.write({'state':'valide'})
-
-    def action_q1_done(self):
-        self.write({'q1_state': 'q1_done'})
-        for line in self.rapport_lines:
-            line.write({'state':'done'})
-    
-    #------------------------------- Q2 ---------------------------------
-
-    def action_q2_working(self):
-        self.write({'q2_state': 'q2_working'})
-        for line in self.rapport_lines:
-            line.write({'state':'working'})
-    
-    def action_q2_draft(self):
-        self.write({'q2_state': 'q2_draft'})
-        for line in self.rapport_lines:
-            line.write({'state':'draft'})
-    
-    def action_q2_valide(self):
-        self.write({'q2_state': 'q2_valide'})
-        for line in self.rapport_lines:
-            line.write({'state':'valide'})
-    
-    def action_q2_done(self):
-        self.write({'q2_state': 'q2_done'})
-        for line in self.rapport_lines:
-            line.write({'state':'done'})
+            line.j_travaille_v = self.employee_id.contract_id.get_hours_per_day(line.h_travailler_v)
     
     def get_half_month_day(self,period_id):
         period_month = period_id.date_start.month

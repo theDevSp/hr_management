@@ -87,6 +87,7 @@ class hr_employee_transfert(models.Model):
 
     date_transfert = fields.Date('Date Transfert', states=READONLY_STATES_RL,required=True) 
     date_arriver = fields.Date('Date Arrivée', states=READONLY_STATES_ARR) 
+    rapport_id = fields.Many2one("hr.rapport.pointage", string = "Rapport de pointage")
             
 
     @api.model
@@ -101,7 +102,7 @@ class hr_employee_transfert(models.Model):
     
     
     def write(self,vals):
-
+        
         res = super().write(vals)
         if not self.date_arriver and not vals.get('date_arriver') and self.state == 'done':
             raise UserError("Veuillez Spécifier la date d'arrivée")

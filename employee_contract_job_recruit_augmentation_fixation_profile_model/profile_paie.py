@@ -17,9 +17,11 @@ class profilepaie(models.Model):
     type_profile = fields.Selection(
         [("h","Horaire"),
         ("j","Journalier")],
-        string=u"Type du Profile",
+        string=u"Type Profile",
         default="h",
         required=True)
+
+    
     nbre_heure_worked_par_demi_jour = fields.Float("Heures travaillées par demi jour", required=True)
     nbre_heure_worked_par_jour = fields.Float("Heures travaillées par jour", required=True)
     nbre_jour_worked_par_mois = fields.Float("Jours travaillés par mois", required=True, default=26)
@@ -34,11 +36,12 @@ class profilepaie(models.Model):
     completer_salaire = fields.Boolean("Compléter le salaire", default=True)
     plafonner_bonus = fields.Boolean("Plafonner le bonus", default=True)
     avoir_conge = fields.Boolean("Peut avoir un congé", default=True)
+    justification = fields.Boolean("Détails travaux obligé", default=True)
     period_id = fields.Many2one("account.month.period", string = "Période")
     periodicity = fields.Selection(
         [("q", "Quinzainier"),
          ("m", "mensuel")],
-         string="Périodicité"
+         string="Périodicité", required=True, default="q"
     )
 
     @api.constrains('nbre_heure_worked_par_jour')

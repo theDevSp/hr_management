@@ -248,16 +248,14 @@
                             </div>   
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 my-3">
-                            <div class="bg-white shadow p-3" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
-                                        hr_management.group_service_analytique,hr_management.group_controle_gestion,
-                                            hr_management.group_cnss_juridique">
+                            <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">
                                     <div class="card-body text-center">
                                         <h2 class="card-text">Informations sur Contrat</h2>
                                     </div>
                                 </div>
                                 <div class="card bg-light my-3">
-                                    <div class="card-body" attrs="{'invisible':[('having_contrat', '=', 1)]}">   
+                                    <div class="card-body"  attrs="{'invisible':[('having_contrat', '=', 1)]}">   
                                         <div class="row">
                                             <div class="container">
                                                 <div class="alert alert-warning text-center" role="alert">
@@ -265,7 +263,7 @@
                                                 </div>
                                             </div>  
                                         </div>
-                                        <div class="row">
+                                        <div class="row" groups="hr_management.group_admin_paie,hr_management.group_agent_paie">
                                             <div class="container">
                                                 <center>
                                                     <button name="ajouter_contrat" type="object" class="oe_highlight" icon="fa-paste" string="Ajouter un contrat" width="150"/>
@@ -320,7 +318,9 @@
                                                     <field name="chantier_related" options="{'no_create': True,'no_open':True}" class="form-control"/>
                                                 </div>
                                             </div>
-                                            <div class="col-12 col-lg-6">
+                                            <div class="col-12 col-lg-6" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                                                                    hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                                                                    hr_management.group_cnss_juridique">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" ><label for="working_years" class=""/></span>
@@ -329,7 +329,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row align-items-end">
+                                        <div class="row align-items-end"  groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                                                                    hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                                                                    hr_management.group_cnss_juridique">
                                             <div class="col-6 col-lg-4">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
@@ -338,7 +340,9 @@
                                                     <field name="wage" class="form-control"/>
                                                 </div>
                                             </div>
-                                            <div class="col-6 col-lg-4" style="max-width: 30em;">
+                                            <div class="col-6 col-lg-4"  groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                                                                    hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                                                                    hr_management.group_cnss_juridique" style="max-width: 30em;">
                                                 <label for="salaire_actuel" class=""/>
                                                 <div class="card text-white bg-dark mb-3">
                                                     <div class="card-body">
@@ -348,7 +352,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-12 col-lg-4">
+                                            <div class="col-12 col-lg-4"  groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                                                                    hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                                                                    hr_management.group_cnss_juridique">
                                                 <div class="alert alert-info text-center" role="alert">
                                                     Le salaire actuel représente le salaire de base plus les augmentations liées à cet employé.
                                                 </div>
@@ -497,8 +503,7 @@
                                 </div> 
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                    
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">
@@ -670,7 +675,7 @@
                     </div>
 
                 </div>
-                <div class="oe_chatter">
+                <div class="oe_chatter" groups="hr_management.group_admin_paie,hr_management.group_agent_paie">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>

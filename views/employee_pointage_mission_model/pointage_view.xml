@@ -14,8 +14,12 @@
                 <field name="emplacement_chantier_id"/>
                 <field name="total_h" />
                 <field name="total_j" />
-                <field name="total_h_v" />
-                <field name="total_j_v" />
+                <field name="total_h_v" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                                                                    hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                                                                    hr_management.group_cnss_juridique"/>
+                <field name="total_j_v" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                                                                    hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                                                                    hr_management.group_cnss_juridique"/>
                 <field name="state" widget="badge"/>
             </tree>
         </field>
@@ -27,7 +31,7 @@
         <field name="priority" eval="1"/>
         <field name="arch" type="xml">
             <form>
-                <header attrs="{'invisible': [('type_emp','=','o'),('quinzaine','!=','quinzaine12'),('periodicite','=','1')]}">
+                <header>
                     <button name="action_draft" states="cancel,valide,compute,working" string="Mettre en brouillon" type="object" class="oe_highlight" groups="hr_management.group_admin_paie"/>
                     <button name="action_working" states="draft" string="Traiter" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                     <button name="action_working" states="compute" string="Retourner" type="object" class="oe_highlight" groups="hr_management.group_agent_paie"/>
@@ -37,27 +41,89 @@
                     <button name="create_q12_payslip" string="Payé Mois" states="working" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,working,compute,valide,done"/>
                 </header>
-                <header attrs="{'invisible': ['|','|',('type_emp','!=','s'),('quinzaine','!=','quinzaine1'),('periodicite','=','2')]}">
-                    <button name="action_q1_draft" attrs="{'invisible': [('q1_state','in',('q1_draft'))]}" string="Mettre en brouillon" type="object" class="oe_highlight" groups="hr_management.group_admin_paie"/>
-                    <button name="action_q1_working" attrs="{'invisible': [('q1_state','!=','q1_draft')]}" string="Traiter" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
-                    <button name="action_q1_working" attrs="{'invisible': [('q1_state','!=','q1_compute')]}" string="Retourner" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
-                    <button name="action_q1_working" attrs="{'invisible': [('q1_state','not in',('q1_valide','q1_compute'))]}" string="Retourner" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_controle_gestion"/>
-                    <button name="action_q1_done"  attrs="{'invisible': [('q1_state','!=','q1_valide')]}" string="Clôturer" type="object" class="oe_highlight" groups="hr_management.group_controle_gestion,hr_management.group_admin_paie"/>
-                    <button name="create_q1_payslip" attrs="{'invisible': [('q1_state','!=','q1_working')]}" string="Payé Q1" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
-                    <field name="q1_state" widget="statusbar"/>
-                </header>
-                <header attrs="{'invisible': ['|','|',('type_emp','!=','s'),('quinzaine','!=','quinzaine2'),('periodicite','=','2')]}">
-                    <button name="action_q2_draft" attrs="{'invisible': [('q2_state','in',('q2_draft'))]}" string="Mettre en brouillon" type="object" class="oe_highlight" groups="hr_management.group_admin_paie"/>
-                    <button name="action_q2_working" attrs="{'invisible': [('q2_state','!=','q2_draft')]}" string="Traiter" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
-                    <button name="action_q2_working" attrs="{'invisible': [('q2_state','!=','q2_compute')]}" string="Retourner" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
-                    <button name="action_q2_working" attrs="{'invisible': [('q2_state','not in',('q2_valide','q2_compute'))]}" string="Retourner" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_controle_gestion"/>
-                    <button name="action_q2_done"  attrs="{'invisible': [('q2_state','!=','q2_valide')]}" string="Clôturer" type="object" class="oe_highlight" groups="hr_management.group_controle_gestion,hr_management.group_admin_paie"/>
-                    <button name="create_q2_payslip" attrs="{'invisible': [('q2_state','!=','q2_working')]}" string="Payé Q2" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
-                    <field name="q2_state" widget="statusbar"/>
-                </header>
                 <div class="container-fliud p-3 my-3 ">
                     <div class="row">
-                        <div class="col-md-4 mb-2">
+                        <div class="col-12 col-md-6 col-lg-4 mb-2">
+                            <div class="col-md-12 bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">Employé</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="employee_id" class=""/></span>
+                                            </div>
+                                            <field name="employee_id" class="form-control" options="{'no_create': True,'no_open':True}"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="type_emp" class=""/></span>
+                                            </div>
+                                            <field name="type_emp" class="form-control" options="{'no_create': True,'no_open':True}"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="cin" class=""/></span>
+                                            </div>
+                                            <field name="cin" class="form-control" options="{'no_create': True,'no_open':True}"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="job_id" class=""/></span>
+                                            </div>
+                                            <field name="job_id" class="form-control" options="{'no_create': True,'no_open':True}"/>
+                                        </div>  
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4 mb-2">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">Rapport N° <field name="name"/></h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="period_id" class=""/></span>
+                                            </div>
+                                            <field name="period_id" context="{'display_name': True}" class="form-control" options="{'no_create': True,'no_open':True}"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="periodicite" class=""/></span>
+                                            </div>
+                                            <field name="periodicite" class="form-control" options="{'no_create': True,'no_open':True}"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="quinzaine" class=""/></span>
+                                            </div>
+                                            <field name="quinzaine" class="form-control"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="chantier_id" class=""/></span>
+                                            </div>
+                                            <field name="chantier_id" class="form-control" context="{'short': True}" options="{'no_create': True,'no_open':True}"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="emplacement_chantier_id" class=""/></span>
+                                            </div>
+                                            <field name="emplacement_chantier_id" class="form-control"  options="{'no_create': True,'no_open':True}"/>
+                                        </div>
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-4 mb-2">
                             <div class="col-md-12 bg-white shadow p-3">
                                 <div class="card bg-light my-3">
                                     <div class="card-body text-center">
@@ -77,103 +143,12 @@
                                     <p><strong>Attention !!! </strong><field name="message_end_existence_contract"/>.</p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 mb-2">
-                            <div class="col-md-12 bg-white shadow p-3">
-                                <div class="card bg-light my-3">
-                                    <div class="card-body text-center">
-                                        <h2 class="card-text"> Rapport N° <field name="name"/></h2>
-                                    </div>
-                                </div>
-                                <div class="card bg-light my-3">
-                                    <div class="card-body">
-                                        <label for="period_id" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fas fa-user form-control-icon"></span>
-                                                <field name="period_id" context="{'display_name': True}" class="form-control" options="{'no_create': True,'no_open':True}"/>
-                                            </div>
-                                        </div>  
-                                        <label for="periodicite" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fas fa-user form-control-icon"></span>
-                                                <field name="periodicite" class="form-control" options="{'no_create': True,'no_open':True}"/>
-                                            </div>
-                                        </div>  
-                                        <label for="quinzaine" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fas fa-user form-control-icon"></span>
-                                                <field name="quinzaine" class="form-control" options="{'no_create': True,'no_open':True}"/>
-                                            </div>
-                                        </div>  
-                                        <label for="chantier_id" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fas fa-user form-control-icon"></span>
-                                                <field name="chantier_id" context="{'short': True}" class="form-control" options="{'no_create': True,'no_open':True}"/>
-                                            </div>
-                                        </div> 
-                                        <label for="emplacement_chantier_id" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fas fa-user form-control-icon"></span>
-                                                <field name="emplacement_chantier_id" class="form-control" options="{'no_create': True,'no_open':True}"/>
-                                            </div>
-                                        </div>   
-                                    </div>
-                                </div> 
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-2">
-                            <div class="col-md-12 bg-white shadow p-3">
-                                <div class="card bg-light my-3">
-                                    <div class="card-body text-center">
-                                        <h2 class="card-text">Employé</h2>
-                                    </div>
-                                </div>
-                                <div class="card bg-light my-3">
-                                    <div class="card-body">
-                                        <label for="employee_id" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fas fa-user form-control-icon"></span>
-                                                <field name="employee_id" class="form-control" options="{'no_create': True,'no_open':True}"/>
-                                            </div>
-                                        </div>  
-                                        <label for="type_emp" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fas fa-user form-control-icon"></span>
-                                                <field name="type_emp" class="form-control" options="{'no_create': True,'no_open':True}"/>
-                                            </div>
-                                        </div>  
-                                        <label for="cin" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fas fa-user form-control-icon"></span>
-                                                <field name="cin" class="form-control" options="{'no_create': True,'no_open':True}"/>
-                                            </div>
-                                        </div>  
-                                        <label for="job_id" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fas fa-user form-control-icon"></span>
-                                                <field name="job_id" class="form-control" options="{'no_create': True,'no_open':True}"/>
-                                            </div>
-                                        </div>  
-                                    </div>
-                                </div> 
-                            </div>
-                        </div>
-                        
+                        </div>                       
                     </div>
                     <div class="row mt-2">
-                        <div class="col-md-12">
-                            
-                            <div class="row justify-content-center">
-                                <div class="col-md-2 col-6 card-group mb-1">
+                        <div class="col-12 col-lg-5">
+                            <div class="row">
+                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
                                     <div class="col-12 bg-white shadow p-3">
                                         <div class="card card-primary">
                                             <div class="card-header">
@@ -189,7 +164,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-6 card-group mb-1">
+                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
                                     <div class="col-12 bg-white shadow p-3">
                                         <div class="card card-success">
                                             <div class="card-header">
@@ -205,39 +180,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-6 card-group mb-1">
-                                    <div class="col-12 bg-white shadow p-3">
-                                        <div class="card card-warning">
-                                            <div class="card-header">
-                                                <h3 class="text-center">
-                                                    <label for="total_h_sup"/>
-                                                </h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <h1 class="text-center">
-                                                    <field name="total_h_sup" />
-                                                </h1>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-6 card-group mb-1">
-                                    <div class="col-12 bg-white shadow p-3">
-                                        <div class="card card-primary">
-                                            <div class="card-header">
-                                                <h3 class="text-center">
-                                                    <label for="total_j"/>
-                                                </h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <h1 class="text-center">
-                                                    <field name="total_j" />
-                                                </h1>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-6 card-group mb-1">
+                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
                                     <div class="col-12 bg-white shadow p-3">
                                         <div class="card card-success">
                                             <div class="card-header">
@@ -252,10 +195,40 @@
                                             </div>
                                         </div>
                                     </div>  
-                                </div>                                
-                            </div>
-                            <div class="row justify-content-center mt-2">
-                                <div class="col-md-2 col-6  mb-1">
+                                </div>  
+                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
+                                    <div class="col-12 bg-white shadow p-3">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="text-center">
+                                                    <label for="total_j"/>
+                                                </h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <h1 class="text-center">
+                                                    <field name="total_j" />
+                                                </h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>           
+                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
+                                    <div class="col-12 bg-white shadow p-3">
+                                        <div class="card card-warning">
+                                            <div class="card-header">
+                                                <h3 class="text-center">
+                                                    <label for="total_h_sup"/>
+                                                </h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <h1 class="text-center">
+                                                    <field name="total_h_sup" />
+                                                </h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                  
+                                <div class="col-12 col-md-4 col-lg-3  mb-1">
                                     <div class="col-12 bg-white shadow p-3">
                                         <div class="card card-info">
                                             <div class="card-header">
@@ -271,7 +244,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-6 card-group mb-1">
+                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
                                     <div class="col-12 bg-white shadow p-3">
                                         <div class="card card-info">
                                             <div class="card-header">
@@ -287,7 +260,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-6 card-group mb-1">
+                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
                                     <div class="col-12 bg-white shadow p-3">
                                         <div class="card card-default">
                                             <div class="card-header">
@@ -303,7 +276,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-6 card-group mb-1">
+                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
                                     <div class="col-12 bg-white shadow p-3">
                                         <div class="card card-danger">
                                             <div class="card-header">
@@ -322,6 +295,55 @@
                             </div>
                                  
                         </div> 
+                        <div class="col-12 col-lg-7 d-none d-md-block">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3 py-1">
+                                    <div class="card-body">            
+                                        <notebook class="custom-notebook">
+                                            <page string="Infos Fiche Paie" groups="hr_management.group_admin_paie,hr_management.group_agent_paie">
+                                                <field name="payslip_ids" nolabel="1" class="table-inside-notebook">
+                                                    <tree editable="bottom">
+                                                        <field name="name" />
+                                                        <field name="period_id" />
+                                                        <field name="net_pay" />
+                                                        <field name="chantier_id"/>
+                                                        <field name="emplacement_chantier_id" />
+                                                        <field name="vehicle_id" /> 
+                                                        <!--<button name="open_payslip" type="object" class="oe_highlight oe_edit_only" string="Consulter" />-->
+                                                    </tree>
+                                                </field>
+                                            </page>
+                                            <page string="Infos Congés">
+                                                <field name="holiday_ids" nolabel="1" class="table-inside-notebook">
+                                                    <tree>
+                                                        <field name="chantier_id" options="{'no_create': True,'no_open': True}" string="Chantier"/>
+                                                        <field name="motif"/>
+                                                        <field name="date_select_half_perso" string="Date demi-Jour"/>
+                                                        <field name="date_start" string="Date Début"/>
+                                                        <field name="date_end" string="Date Fin"/>
+                                                        <field name="duree_jours" string="Nbr Jours"/>
+                                                        <field name="state"/>
+                                                        <!--<button name="open_holiday" type="object" class="oe_highlight oe_edit_only" string="Consulter" />-->
+                                                    </tree>
+                                                </field>   
+                                            </page>   
+                                            <page string="Infos Transfert">
+                                                <field name="transfert_ids" nolabel="1"  class="table-inside-notebook">
+                                                    <tree>
+                                                        <field name="chantier_id_source"/>
+                                                        <field name="chantier_id_destiation"/>
+                                                        <field name="date_transfert" string="Date Transfert"/>
+                                                        <field name="date_arriver" string="Date Arrivé"/>
+                                                        <field name="state"/>
+                                                        <!--<button name="open_transfert" type="object" class="oe_highlight oe_edit_only" string="Consulter" />-->
+                                                    </tree>
+                                                </field>
+                                            </page>
+                                        </notebook>
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-12">
@@ -329,14 +351,19 @@
                                 <tree editable="bottom">
                                     <field name="name"/>
                                     <field name="h_travailler" string="TH" sortable="0"/>
-                                    <field name="h_travailler_v" string="THV"/>
+                                    <field name="h_travailler_v" string="THV" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                                                                    hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                                                                    hr_management.group_cnss_juridique"/>
                                     <field name="h_sup" string="9+"/>
                                     <field name="h_bonus" string="Bonus"/>
-                                    <field name="j_travaille_v" string="TJV"/>
+                                    <field name="j_travaille" string="TJ"/>
+                                    <field name="j_travaille_v" string="TJV" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                                                                    hr_management.group_service_analytique,hr_management.group_controle_gestion,
+                                                                                    hr_management.group_cnss_juridique"/>
                                     <field name="chantier_id" context="{'short': True}" options="{'no_create': True,'no_open': True}"/>
                                     <field name="vehicle_id"  options="{'no_create': True,'no_open': True}" readonly="1" invisible="1"/>
-                                    <field name="vehicle_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="hide"/>
-                                    <button name="update_engin_list" type="object" brand_icon="fa fa-plus-square" />
+                                    <field name="vehicle_ids" widget="many2many_tags" optional="hide"/>
+                                    <button name="update_engin_list" type="object" icon="fa-plus-square" />
                                     <field name="emplacement_chantier_id"  options="{'no_create': True,'no_open': True}" string="Équipe"/>
                                     <field name="details" />
                                     <field name="note" />
@@ -348,104 +375,64 @@
                                            decoration-primary="day_type == '4'"
                                            decoration-warning="day_type == '8'"
                                            /> 
-                                    <field name="state" invisible="0"/>
+                                    <field name="state" invisible="1"/>
                                     <field name="day" invisible="1"/>
-                                    <button name="update_wizard_ref_view" type="object" brand_icon="fa fa-pencil" />
+                                    <button name="update_wizard_ref_view" type="object" icon="fas fa-pencil" />
                                 </tree>
                             </field>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-
-                            <notebook>
-                                <page string="Infos Fiche Paie">
-                                    <group>
-                                        <field name="payslip_ids" nolabel="1">
-                                            <tree editable="bottom">
-                                                <field name="name" />
-                                                <field name="period_id" />
-                                                <field name="net_pay" />
-                                                <field name="chantier_id"/>
-                                                <field name="emplacement_chantier_id" />
-                                                
-                                                <!--<field name="vehicle_id" /> <button name="open_payslip" type="object" class="oe_highlight oe_edit_only" string="Consulter" /> -->
-                                            </tree>
-                                        </field>
-                                    </group>
-                                </page>
-                                <page string="Infos Congés">
-                                    <field name="holiday_ids" nolabel="1">
-                                        <tree>
-                                            <field name="chantier_id" options="{'no_create': True,'no_open': True}" string="Chantier"/>
-                                            <field name="motif"/>
-                                            <field name="date_start" string="Date Début"/>
-                                            <field name="date_end" string="Date Fin"/>
-                                            <field name="duree_jours" string="Nbr Jours"/>
-                                            <field name="state"/>
-                                            <!-- <button name="open_holiday" type="object" class="oe_highlight oe_edit_only" string="Consulter" /> -->
-                                        </tree>
-                                    </field>   
-                                </page>   
-                                <!-- <page string="Infos Transfert">
-                                    <field name="transfert_ids" nolabel="1">
-                                        <tree>
-                                            <field name="name" options="{'no_create': True,'no_open': True}" string="Chantier"/>
-                                            <field name="chantier_id_source"/>
-                                            <field name="chantier_id_destiation"/>
-                                            <field name="date_transfert" string="Date Transfert"/>
-                                            <field name="date_arriver" string="Date Arrivé"/>
-                                            <field name="state"/>
-                                            <button name="open_transfert" type="object" class="oe_highlight oe_edit_only" string="Consulter" />
-                                        </tree>
-                                    </field>
-                                </page>  -->
-                            </notebook>
-
-                                
-
-                            <group string="">
-                                    <field name="note"/>
-                            </group>
-
-                            <div class="oe_chatter">
-                                <field name="message_follower_ids" widget="mail_followers"/>
-                                <field name="message_ids" widget="mail_thread"/>
-                            </div>     
-                        </div>
-                    </div>
                 </div>
-
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
 
             </form>
         </field>
     </record>
-
-    <!-- <record id="directeur_search" model="ir.ui.view">
-        <field name="name">Directeur Recherche</field>
-        <field name="model">hr.directeur</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="name" />
-                <field name="poste"/>		
-            </search>
-        </field>
-    </record> -->
 
     <record id="view_engins_list_view" model="ir.ui.view">
         <field name="name">engin.list</field>
         <field name="model">hr.rapport.pointage.line.engin</field>
         <field name="arch" type="xml">
             <form>
-                <group string="">
-                    <group string="">
-                        <field name="name"  options="{'no_create': True,'no_open': True}"/>
-                        <field name="time_start"/>
-                        <field name="time_end"/>
-                    </group>
-                    <group string="">
-                    </group>
-                </group>
+                <div class="bg-white shadow p-3">
+                    <div class="card bg-light my-3">
+                        <div class="card-body text-center">
+                            <h2 class="card-text">Horaires Travaux d'engins</h2>
+                        </div>
+                    </div>
+                    <div class="card bg-light my-3">
+                        <div class="card-body">
+                            <div class="col-12">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" ><label for="name" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                    </div>
+                                    <field name="name" options="{'no_create': True,'no_open': True}" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" ><label for="time_start" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                    </div>
+                                    <field name="time_start" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" ><label for="time_end" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                    </div>
+                                    <field name="time_end" class="form-control"/>
+                                </div>
+                            </div>
+                        </div> 
+                    </div> 
+                </div>
 
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
@@ -461,32 +448,24 @@
         <field name="model">hr.rapport.pointage.line</field>
         <field name="arch" type="xml">
             <form>
-                <group string="">   
-                    <field name="vehicle_ids" colspan="4" nolabel="1" >
-                        <tree editable="bottom">
-                            <field name="name"/>
-                            <field name="time_start"/>
-                            <field name="time_end"/>
-                        </tree>
-                    </field>
-                </group>
-            </form>
-        </field>
-    </record>
-    <record id="view_engin_list_view_manager" model="ir.ui.view">
-        <field name="name">engins.list</field>
-        <field name="model">hr.rapport.pointage.line</field>
-        <field name="arch" type="xml">
-            <form>
-                <group string="">   
-                    <field name="vehicle_ids" colspan="4" nolabel="1" readonly="1">
-                        <tree>
-                            <field name="name"  options="{'no_create': True,'no_open': True}"/>
-                            <field name="time_start"/>
-                            <field name="time_end"/>
-                        </tree>
-                    </field>
-                </group>
+                <div class="bg-white shadow p-3">
+                    <div class="card bg-light my-3">
+                        <div class="card-body text-center">
+                            <h2 class="card-text">Horaires Travaux d'engins</h2>
+                        </div>
+                    </div>
+                    <div class="card bg-light my-3">
+                        <div class="card-body">   
+                            <field name="vehicle_ids">
+                                <tree>
+                                    <field name="name"  options="{'no_create': True,'no_open': True}"/>
+                                    <field name="time_start"/>
+                                    <field name="time_end"/>
+                                </tree>
+                            </field>
+                        </div> 
+                    </div> 
+                </div> 
             </form>
         </field>
     </record>

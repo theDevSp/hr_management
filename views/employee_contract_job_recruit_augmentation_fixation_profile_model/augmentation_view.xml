@@ -54,114 +54,125 @@
                     <field name="state" widget="statusbar" nolabel="1"/>
                 </header>
                 <sheet>
-                    <div class="card border-dark mb-3 bg-light">
-                        <div class="card-body text-dark">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="employee_id" class=""/>
-                                    <div class="main">
-                                        <div class="form-group">
-                                            <span class="fas fa-user form-control-icon"></span>
-                                            <field name="employee_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        </div>  
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="chantier_id" class=""/>
-                                    <div class="main">
-                                        <div class="form-group">
-                                            <span class="fas fa-building form-control-icon"></span>
-                                            <field name="chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        </div>  
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="responsable_id" class=""/>
-                                    <div class="main">
-                                        <div class="form-group">
-                                            <span class="fas fa-user form-control-icon"></span>
-                                            <field name="responsable_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        </div>  
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="directeur_id" class=""/>
-                                    <div class="main">
-                                        <div class="form-group">
-                                            <span class="fas fa-user form-control-icon"></span>
-                                            <field name="directeur_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        </div>  
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="period_id" class=""/>
-                                    <div class="main">
-                                        <div class="form-group">
-                                            <span class="fas fa-clock form-control-icon"></span>
-                                            <field name="period_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        </div>  
-                                    </div>      
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="montant_propose" class=""/>
-                                    <div class="main">
-                                        <div class="form-group">
-                                            <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                            <field name="montant_propose" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        </div>  
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="date_fait" class=""/>
-                                    <div class="main">
-                                        <div class="form-group">
-                                            <span class="fas fa-calendar form-control-icon"></span>
-                                            <field name="date_fait" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        </div>  
-                                    </div>    
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="montant_valide" class=""/>
-                                    <div class="main">
-                                        <div class="form-group">
-                                            <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                            <field name="montant_valide" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        </div>  
-                                    </div>      
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="motif" class=""/>
-                                    <div class="main">
-                                        <div class="form-group">
-                                            <span class="fas fa-align-justify form-control-icon"></span>
-                                            <field name="motif" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        </div>  
-                                        <div class="form-group"  attrs="{'invisible': [('motif', '!=', 'autres')]}">
-                                            <span class="fas fa-align-justify form-control-icon"></span>
-                                            <field name="motif_autres" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        </div> 
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="observation" class=""/>
-                                    <div class="main">
-                                        <div class="form-group">
-                                            <span class="fas fa-comment form-control-icon"></span>
-                                            <field name="observation" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                        </div>  
-                                    </div>    
-                                </div>
+                    <div class="bg-white shadow p-3">
+                        <div class="alert alert-danger text-center mb-2"><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> Champs Obligatoire </div>
+                        <div class="card bg-light my-3">
+                            <div class="card-body text-center">
+                                <h2 class="card-text">AUGMENTATION</h2>
                             </div>
                         </div>
+                        <div class="card bg-light my-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="employee_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="employee_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="chantier_id" class=""/></span>
+                                            </div>
+                                            <field name="chantier_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"  class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="responsable_id" class=""/></span>
+                                            </div>
+                                            <field name="responsable_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"  class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="directeur_id" class=""/></span>
+                                            </div>
+                                            <field name="directeur_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"  class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="period_id" class=""/></span>
+                                            </div>
+                                            <field name="period_id"  options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"  class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="date_fait" class=""/></span>
+                                            </div>
+                                            <field name="date_fait" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="montant_propose" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="montant_propose" attrs="{'readonly': [('state', '!=', 'draft')]}"  class="form-control"/>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="montant_valide" class=""/></span>
+                                            </div>
+                                            <field name="montant_valide" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="motif" class=""/></span>
+                                            </div>
+                                            <field name="motif" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="type_salaire" class=""/></span>
+                                            </div>
+                                            <field name="type_salaire" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6"  attrs="{'invisible': [('motif', '!=', 'autres')]}">
+                                        <div class="card my-3">
+                                            <div class="card-body text-center">
+                                                <h6 class="card-text">Détail Motif <i class="fas fa-exclamation-triangle" style="color:#f00000;"></i></h6>
+                                            </div>
+                                            <div class="card-body text-dark text-center">
+                                                <field name="motif_autres" attrs="{'readonly': [('state', '!=', 'draft')],'required':[('motif', '=', 'autres')]}"/>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="card my-3">
+                                            <div class="card-body text-center">
+                                                <h6 class="card-text">Observation <i class="fas fa-exclamation-triangle" style="color:#f00000;"></i></h6>
+                                            </div>
+                                            <div class="card-body text-dark text-center">
+                                                <field name="observation" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div> 
+                        </div> 
                     </div>
+                    
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>

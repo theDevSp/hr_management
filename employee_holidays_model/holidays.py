@@ -110,6 +110,7 @@ class holidays(models.Model):
         if self.demi_jour:
             self.heure_perso = False
             self.duree_heures = 4
+            self.duree_jours = 0.5
         elif not self.heure_perso:
             date_difference = self.get_duree(self.date_start,self.date_end)
             self.duree_jours = date_difference
@@ -144,7 +145,8 @@ class holidays(models.Model):
     def create(self, vals):
         if vals["demi_jour"]:
             vals["duree_heures"] = 4
-        if not vals["demi_jour"] and not vals["heure_perso"]:
+            vals["duree_jours"] = 0.5
+        if not vals["demi_jour"] and not vals["heure_perso"] and vals["duree_jours"] > 0:
             date_difference = self.get_duree(vals["date_start"],vals["date_end"])
             vals["duree_jours"] = date_difference
         return super(holidays, self).create(vals)
@@ -225,6 +227,7 @@ class holidays(models.Model):
                 )
         
     def update_corresponding_lines(self,day_type,type_condition):
+        
         lines = self.env['hr.rapport.pointage.line'].search([
                 ('employee_id','=',self.employee_id.id),
                 ('day','>=',self.date_start),

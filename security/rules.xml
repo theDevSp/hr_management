@@ -13,10 +13,6 @@
         <field name="model_id" ref="model_hr_recrutement"/>
         <field name="domain_force">[('chantier_id','in',user.chantier_responsable_ids.ids)]</field>
         <field name="groups" eval="[(4,ref('hr_management.group_pointeur'))]"/>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
-        <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="False"/>
     </record>
 
 
@@ -30,6 +26,20 @@
     <record id="holidays_chantier_rule_pointeur" model="ir.rule">
         <field name="name">Holidays Chantier Rules Pointeur</field>
         <field name="model_id" ref="model_hr_holidays"/>
+        <field name="domain_force">[('chantier_id','in',user.chantier_responsable_ids.ids)]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_pointeur'))]"/>
+    </record>
+
+    <record id="pointage_chantier_rule_pointeur" model="ir.rule">
+        <field name="name">Pointage Chantier Rules Pointeur</field>
+        <field name="model_id" ref="model_hr_rapport_pointage"/>
+        <field name="domain_force">[('chantier_id','in',user.chantier_responsable_ids.ids)]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_pointeur'))]"/>
+    </record>
+
+    <record id="declaration_chantier_rule_pointeur" model="ir.rule">
+        <field name="name">Declaration Chantier Rules Pointeur</field>
+        <field name="model_id" ref="model_declaration_anomalie_employee_sur_chantier"/>
         <field name="domain_force">[('chantier_id','in',user.chantier_responsable_ids.ids)]</field>
         <field name="groups" eval="[(4,ref('hr_management.group_pointeur'))]"/>
     </record>

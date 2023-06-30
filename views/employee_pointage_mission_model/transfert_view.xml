@@ -28,8 +28,8 @@
           <form>
             <header>    
                 <button name="action_draft" states="cancel" string="Mettre en brouillon" type="object" class="oe_highlight" />
-                <button name="action_validation" states="draft" string="Validé" type="object" class="oe_highlight" />
-                <button name="action_done" states="valide" string="Arrivé" type="object" class="oe_highlight" />
+                <button name="action_validation" states="draft" string="Valider" type="object" class="oe_highlight" />
+                <button name="action_done" states="valide" string="Arriver" type="object" class="oe_highlight" />
                 <button name="action_cancel" states="draft,valide,done" string="Annuler" type="object" class="oe_highlight" />
 				<field name="state" widget="statusbar"/>
 			</header>

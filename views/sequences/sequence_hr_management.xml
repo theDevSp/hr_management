@@ -7,7 +7,6 @@
             <field name="active">TRUE</field>
             <field name="prefix">RECRUT</field>
             <field name="number_increment">1</field>
-            <field name="number_next">1</field>
             <field name="padding">5</field>
             <field name="implementation">standard</field>
         </record>
@@ -17,7 +16,14 @@
             <field name="active">TRUE</field>
             <field name="prefix"></field>
             <field name="number_increment">1</field>
-            <field name="number_next">1</field>
+            <field name="padding">5</field>
+            <field name="implementation">standard</field>
+        </record>
+        <record id="sequence_augmentation_increment" model="ir.sequence">
+            <field name="name">Augmentation Sequence</field>
+            <field name="code">hr.raise.sequence</field>
+            <field name="active">TRUE</field>
+            <field name="number_increment">1</field>
             <field name="padding">5</field>
             <field name="implementation">standard</field>
         </record>
@@ -27,7 +33,6 @@
             <field name="active">TRUE</field>
             <field name="prefix">EMP</field>
             <field name="number_increment">1</field>
-            <field name="number_next">1</field>
             <field name="padding">5</field>
             <field name="implementation">standard</field>
         </record>
@@ -37,7 +42,6 @@
             <field name="active">TRUE</field>
             <field name="prefix">PRE</field>
             <field name="number_increment">1</field>
-            <field name="number_next">1</field>
             <field name="padding">5</field>
             <field name="implementation">standard</field>
         </record>
@@ -47,7 +51,6 @@
             <field name="active">TRUE</field>
             <field name="prefix"></field>
             <field name="number_increment">1</field>
-            <field name="number_next">1</field>
             <field name="padding">5</field>
             <field name="implementation">standard</field>
         </record>
@@ -57,7 +60,6 @@
             <field name="active">TRUE</field>
             <field name="prefix">FP</field>
             <field name="number_increment">1</field>
-            <field name="number_next">1</field>
             <field name="padding">5</field>
             <field name="implementation">standard</field>
         </record>
@@ -67,7 +69,6 @@
             <field name="active">TRUE</field>
             <field name="prefix">RP</field>
             <field name="number_increment">1</field>
-            <field name="number_next">1</field>
             <field name="padding">5</field>
             <field name="implementation">standard</field>
         </record>
@@ -77,6 +78,16 @@
             <field name="code">hr.employee.transfert</field>
             <field name="active">TRUE</field>
             <field name="prefix">TR</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">standard</field>
+        </record>
+
+        <record id="sequence_declaration" model="ir.sequence">
+            <field name="name">Declaration sequence</field>
+            <field name="code">declaration.anomalie.employee.sur.chantier</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">DCR</field>
             <field name="padding">5</field>
             <field name="number_increment">1</field>
             <field name="implementation">standard</field>

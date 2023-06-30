@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record model="ir.actions.server" id="pointeur_responsable_sur_chantier">
-        <field name="model_id" ref="model_hr_recrutement"/>
-        <field name="name" >Pointeur Responsable Chantier</field >
-        <field name="code">
-            action = self.action_pointeur_user(cr,uid,context.get('active_ids',[]),context=context)
-        </field>
-    </record>
 
     <record id="recrutement_tree" model="ir.ui.view">
         <field name="name">HR Recrutement List</field>
         <field name="model">hr.recrutement</field>
         <field name="arch" type="xml">
-            <tree class="table">
+            <tree sample="1">
                 <field name="name"/>
                 <field name="chantier_id"/>
                 <field name="responsable_id"/>
@@ -43,144 +36,127 @@
                 </header>
                 <sheet>
                     <div class="row">
-                        <div class="col-md-3">
-                            <div class="card border-dark mb-3 bg-info">
-                                <div class="card-header text-center">
-                                    <h5>Référence</h5>
-                                </div>
-                                <div class="card-body text-dark text-center">
-                                    <h3>
-                                        <field name="name"/>
-                                    </h3>
+                        <div class="bg-white shadow p-3">
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text"><field name="name"/></h2>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="card border-dark mb-3 bg-light">
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="chantier_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-city form-control-icon"></span>
-                                                    <field name="chantier_id" options="{'no_create': True, 'no_open': True}" class="form-control"/>
-                                                </div>  
+                            <div class="card bg-light my-3">
+                                <div class="card-body">        
+                                    <div class="card border-dark mb-3 bg-light">
+                                        <div class="card-body text-dark">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="chantier_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                        </div>
+                                                        <field name="chantier_id" options="{'no_create': True, 'no_open': True}" class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="responsable_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                        </div>
+                                                        <field name="responsable_id" options="{'no_create': True, 'no_open': True}" class="form-control"/>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="responsable_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-user form-control-icon"></span>
-                                                    <field name="responsable_id" options="{'no_create': True, 'no_open': True}" class="form-control"/>
-                                                </div>  
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="nbr_effectif_demande" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                        </div>
+                                                        <field name="nbr_effectif_demande" class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="title_poste" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                        </div>
+                                                        <field name="title_poste" options="{'no_create': True, 'no_open': True}" class="form-control"/>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="nbr_effectif_demande" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-users form-control-icon"></span>
-                                                    <field name="nbr_effectif_demande" class="form-control"/>
-                                                </div>  
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="nbr_effectif_accepte" class=""/></span>
+                                                        </div>
+                                                        <field name="compute_readonly_eff_accepte" invisible="1"/>
+                                                        <field name="nbr_effectif_accepte" attrs="{'readonly': [('compute_readonly_eff_accepte', '=', True)]}" class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="equipe_id" class=""/></span>
+                                                        </div>
+                                                        <field name="equipe_id" options="{'no_create': True, 'no_open': True}" class="form-control"/>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="title_poste" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-briefcase form-control-icon"></span>
-                                                    <field name="title_poste" options="{'no_create': True, 'no_open': True}" class="form-control" />
-                                                </div>  
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="motif_recrut" class=""/></span>
+                                                        </div>
+                                                        <field name="motif_recrut" class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" attrs="{'invisible':[('motif_recrut','!=','remplacement')]}">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="motif_raison_nom_prenom" class=""/></span>
+                                                        </div>
+                                                        <field name="motif_raison_nom_prenom" class="form-control"/>
+                                                    </div>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="motif_raison_fonction" class=""/></span>
+                                                        </div>
+                                                        <field name="motif_raison_fonction" class="form-control"/>
+                                                    </div>
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="motif_raison_code_machine" class=""/></span>
+                                                        </div>
+                                                        <field name="motif_raison_code_machine" class="form-control"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" attrs="{'invisible':[('motif_recrut','not in',('raison_chantier','autre_raison'))]}">
+                                                    <div class="card my-3">
+                                                        <div class="card-body text-center">
+                                                            <h5 class="card-text">Plus de Détail</h5>
+                                                        </div>
+                                                        <div class="card-body text-dark text-center">
+                                                            <field name="motif_raison"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="nbr_effectif_accepte" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-users form-control-icon"></span>
-                                                    <field name="compute_readonly_eff_accepte" invisible="1"/>
-                                                    <field name="nbr_effectif_accepte" attrs="{'readonly': [('compute_readonly_eff_accepte', '=', True)]}" class="form-control" style="background-color:#ddd;"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="equipe_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-users form-control-icon"></span>
-                                                    <field name="equipe_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="motif_recrut" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-align-justify form-control-icon"></span>
-                                                    <field name="motif_recrut" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="observation" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-comment form-control-icon"></span>
-                                                    <field name="observation" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" attrs="{'invisible':[('motif_recrut','!=','remplacement')]}">
-                                        <div class="col-md-4">
-                                            <label for="motif_raison_nom_prenom" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-user form-control-icon"></span>
-                                                    <field name="motif_raison_nom_prenom" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="motif_raison_fonction" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-briefcase form-control-icon"></span>
-                                                    <field name="motif_raison_fonction" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="motif_raison_code_machine" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-barcode form-control-icon"></span>
-                                                    <field name="motif_raison_code_machine" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" attrs="{'invisible':[('motif_recrut','not in',('raison_chantier','autre_raison'))]}">
-                                        <div class="col-md-6">
-                                            <label for="motif_raison" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-sliders form-control-icon"></span>
-                                                    <field name="motif_raison" class="form-control"/>
-                                                </div>  
+                                            <div class="row" attrs="{'invisible':[('motif_recrut','!=','remplacement')]}">
+                                                <div class="col-12">
+                                                    <div class="card my-3">
+                                                        <div class="card-body text-center">
+                                                            <h5 class="card-text">OBSERVATION</h5>
+                                                        </div>
+                                                        <div class="card-body text-dark text-center">
+                                                            <field name="observation"/>
+                                                        </div>
+                                                    </div> 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </div> 
+                            </div> 
                         </div>
                     </div>
                 </sheet>

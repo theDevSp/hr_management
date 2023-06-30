@@ -1,6 +1,6 @@
 from odoo import models, fields, api, SUPERUSER_ID
 from odoo.exceptions import ValidationError
-from datetime import datetime
+from datetime import datetime,date
 import numpy as np
 import json
 import calendar
@@ -19,6 +19,7 @@ class hr_rapport_pointage_line(models.Model):
     }
 
     READONLY_STATES_MG = {
+        'draft': [('readonly', True)],
         'valide': [('readonly', True)],
         'compute': [('readonly', True)],
         'done': [('readonly', True)],
@@ -35,38 +36,6 @@ class hr_rapport_pointage_line(models.Model):
     for i in np.arange(0.0,24.5,0.5):
         hours_table_pointeur.append((str(i),str(i)))
 
-
-    def _get_content(self):
-        self.ensure_one()
-        content = []
-        if self.modification_data :
-            data = json.loads(self.modification_data)
-            for fname in data:
-                old_value = fname['old']['hours']
-                new_value = fname['new']['hours']
-                date = fname['new']['date']
-                name = fname['new']['user_name']
-                content.append((old_value, new_value, date, name))
-        return content
-
-
-    def _render_html(self):
-        thead = ''
-        for head in (('Ancienne valeur'), ('Nouvelle valeur'), ('Date de Modification'), ('Modifié Par')):
-            thead += '<th>%s</th>' % head
-        thead = '<thead><tr class="oe_list_header_columns">%s</tr></thead>' % thead
-        tbody = ''
-        for line in self._get_content():
-            row = ''
-            for item in line:
-                row += '<td>%s</td>' % item
-            tbody += '<tr>%s</tr>' % row
-        tbody = '<tbody>%s</tbody>' % tbody
-        self.modification_data_html = '<table class="oe_list_content">%s%s</table>' % (thead, tbody)
-
-    def _get_modification_count(self):
-        self.modification_count = max(len(self._get_content())-1,0)
-
     def _get_chantier_domain(self):
         pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
         
@@ -78,25 +47,6 @@ class hr_rapport_pointage_line(models.Model):
             for chantier in self.env['fleet.vehicle.chantier'].search([('type_chantier','in',('Chantier','Depot','Poste'))]):
                 res.append(chantier.id)
         
-        return [('id', 'in',res)] 
-
-
-    def _get_engin_domain(self):
-        pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
-        res = []
-        query = ""
-        if pointeur:
-            query = """
-                    select distinct(vehicle_id) from fleet_vehicle_chantier_affectation where
-                     chantier_id in (select chantier_id from hr_responsable_chantier where user_id = %s)
-                """   % (self.env.user.id)
-        else:
-            query = """
-                    select distinct(vehicle_id) from fleet_vehicle_chantier_affectation fvca inner join fleet_vehicle fv on fv.id = fvca.vehicle_id where fv.active = true;
-                """  
-        self.env.cr.execute(query)
-        for result in self.env.cr.fetchall():
-            res.append(result[0]) 
         return [('id', 'in',res)]  
     
     employee_id = fields.Many2one("hr.employee",u"Employée", states=READONLY_STATES_RL, ondelete='cascade')
@@ -107,7 +57,7 @@ class hr_rapport_pointage_line(models.Model):
     h_travailler = fields.Selection(hours_table_pointeur,u"Total Heures",default='0.0', states=READONLY_STATES_RL,tracking=True)
     h_travailler_v = fields.Selection(hours_table,string="Total Heures Validees",default='0.0', states=READONLY_STATES_MG,tracking=True)
     h_bonus = fields.Selection([('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'), ('9', '9'), ('10', '10'), ('11', '11'), ('12', '12')],u"Bonus",default='0', states=READONLY_STATES_RL,tracking=True)
-    h_sup = fields.Selection(hours_table_pointeur,"Heures Supplémentaires >> 9",default='0.0', states=READONLY_STATES_MG,tracking=True)
+    h_sup = fields.Selection(hours_table_pointeur,"Heures Supplémentaires >> 9",default='0.0', readonly=True)
     j_travaille = fields.Selection([('0', '0'), ('0.5', '0.5'), ('1', '1')],u"Jours Travaillés",default='0', states=READONLY_STATES_RL,tracking=True)
     j_travaille_v = fields.Selection([('0', '0'), ('0.5', '0.5'), ('1', '1'), ('1.5', '1.5'),('2','2')],u"Jours Travaillés Validés",default='0', states=READONLY_STATES_MG,tracking=True)
     day = fields.Date('Date Jour',readonly=True) 
@@ -125,9 +75,6 @@ class hr_rapport_pointage_line(models.Model):
     
     details = fields.Text("Travaux Détaillés", states=READONLY_STATES_RL)
     note = fields.Char("Observation", states=READONLY_STATES_MG)
-    modification_count = fields.Integer("Modifier",readonly=True,compute='_get_modification_count')
-    modification_data = fields.Text('Data', readonly=True)
-    modification_data_html = fields.Html('HTML Data', readonly=True, compute='_render_html')
     vehicle_ids = fields.One2many("hr.rapport.pointage.line.engin",'rapport_line',string="Engins")
     state = fields.Selection([
 
@@ -261,6 +208,7 @@ class hr_rapport_pointage_line(models.Model):
 
 
     def write(self,vals):
+        
         pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
         period_month = self.rapport_id.period_id.date_start.month
         period_year = self.rapport_id.period_id.date_start.year
@@ -271,19 +219,19 @@ class hr_rapport_pointage_line(models.Model):
 
         quinzaine1_delimite = datetime.strptime(str(period_year)+'-'+str(period_month)+'-15', "%Y-%m-%d")
         quinzaine2_delimite = datetime.strptime(str(period_year)+'-'+str(period_month)+'-'+str(calendar.monthrange(period_year, period_month)[1]), "%Y-%m-%d")
-        
+
         if 'state' not in vals and 'day_type' not in vals:
             if (self.rapport_id.chantier_id.periodicite == '2' or self.rapport_id.employee_id.type_emp == 's'):
-                if pointeur and not self.grant_modification and not self.rapport_id.chantier_id.grant_modification and self.day <= quinzaine2_delimite and datetime.today().strftime("%Y-%m-%d") >= quinzaine2_day_ref:
+                if pointeur and not self.grant_modification and not self.rapport_id.chantier_id.grant_modification and datetime.strptime(str(self.day), "%Y-%m-%d") <= quinzaine2_delimite and datetime.now() >= quinzaine2_day_ref:
                     raise ValidationError(
                         "Erreur, Vous n'étes plus autorisé à modifier ce jour."
                     )
             else:
-                if pointeur and not self.grant_modification and not self.rapport_id.chantier_id.grant_modification and self.day <= quinzaine1_delimite and self.day >= quinzaine1_first_day and datetime.today().strftime("%Y-%m-%d")  >= quinzaine1_day_ref:
+                if pointeur and not self.grant_modification and not self.rapport_id.chantier_id.grant_modification and datetime.strptime(str(self.day), "%Y-%m-%d") <= quinzaine1_delimite and datetime.strptime(str(self.day), "%Y-%m-%d") >= quinzaine1_first_day and datetime.now()  >= quinzaine1_day_ref:
                     raise ValidationError(
                         "Erreur, Vous n'étes plus autorisé à modifier ce jour."
                     )  
-                if pointeur and not self.grant_modification and not self.rapport_id.chantier_id.grant_modification and self.day <= quinzaine2_delimite and self.day > quinzaine1_delimite and datetime.today().strftime("%Y-%m-%d")  >= quinzaine2_day_ref:
+                if pointeur and not self.grant_modification and not self.rapport_id.chantier_id.grant_modification and datetime.strptime(str(self.day), "%Y-%m-%d") <= quinzaine2_delimite and datetime.strptime(str(self.day), "%Y-%m-%d") > quinzaine1_delimite and datetime.now()  >= quinzaine2_day_ref:
                     raise ValidationError(
                         "Erreur, Vous n'étes plus autorisé à modifier ce jour."
                     )
@@ -293,39 +241,10 @@ class hr_rapport_pointage_line(models.Model):
                         "Erreur, Vous n'étes plus autorisé à modifier ce jour."
                     ) 
 
-        old = self.h_travailler
-        new = 0
-        user_name = self.env.user.name
-        date = datetime.today().strftime("%d-%m-%Y, %H:%M:%S")
-
-        """
-        if vals.get('day_type'):
-            if self.day_type in ('2','3') or (vals['day_type'] ==  '2' and 'Dim' not in self.name):
-                vals.pop('day_type')
-
-        if vals.get('day_type'):
-            if vals['day_type'] in ('5','6','7','8'):
-                self.rapport_id.write({
-                    'etat':vals['day_type']
-                })
-                vals['details'] = dict(self.fields_get(allfields=['day_type'])['day_type']['selection'])[vals['day_type']]
-            if vals['day_type'] == '1':
-                self.rapport_id.write({
-                    'etat':False
-                })
-        """
-        
-        
-        if 'h_travailler' in vals and not pointeur and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
-            vals.pop('h_travailler') 
-        if 'h_bonus' in vals and not pointeur and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
-            vals.pop('h_bonus') 
-        if 'h_sup' in vals and not pointeur and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
-            vals.pop('h_sup') 
-        if 'chantier_id' in vals and not pointeur and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
-            vals.pop('chantier_id')
-        if 'emplacement_chantier_id' in vals and not pointeur and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
-            vals.pop('emplacement_chantier_id')
+        key_list = ['h_travailler','h_bonus','h_sup','chantier_id','emplacement_chantier_id']   
+        for key in key_list:    
+            if key in vals and not pointeur and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
+                vals.pop(key)
 
         if 'state' not in vals and 'day_type' not in vals:
             if not self.chantier_id and not vals.get('chantier_id') and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
@@ -343,17 +262,16 @@ class hr_rapport_pointage_line(models.Model):
 
         res = super(hr_rapport_pointage_line,self).write(vals) 
 
-        demi_jour = 6 if self.employee_id.type_emp == 'o' else 4.5
 
         chantier_id_heure_normal = self.get_normal_heur(self.day,self.chantier_id) if self.chantier_id else 0
 
-        if not self.employee_id.job_id and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
+        if not self.employee_id.contract_id.job_id and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
             raise ValidationError("Erreur, Veuillez ajouter un titre du poste pour Mr/Mme %s" % (self.employee_id.name))
         
         condition1 = float(self.h_travailler) > max(chantier_id_heure_normal,9)
         condition2 = not self.details and pointeur
         condition3 = self.employee_id.type_emp == 'o'
-        condition4 = 'gardien' not in self.employee_id.job_id.name.lower() if self._uid != SUPERUSER_ID and not self.env.user._is_admin() else True
+        condition4 = self.employee_id.contract_id.profile_paie_id.justification
         condition5 = float(self.h_travailler) > 0
         condition6 = self.day_type == '2'
 
@@ -363,23 +281,11 @@ class hr_rapport_pointage_line(models.Model):
         if vals.get('h_travailler'):
             
             self.h_travailler_v = self.h_travailler
-            
             self.h_sup = str(max(float(self.h_travailler) - 9.0,0.0))
+            self.j_travaille = self.employee_id.contract_id.get_hours_per_day(self.h_travailler)
 
-            if float(self.h_travailler) > 0 and float(self.h_travailler) <= demi_jour:
-                self.j_travaille = '0.5'
-            elif float(self.h_travailler) > demi_jour and float(self.h_travailler)<= 24:
-                self.j_travaille = '1'
-            else :
-                self.j_travaille = '0'
-
-        if vals.get('h_travailler_v'):    
-            if float(self.h_travailler_v) > 0 and float(self.h_travailler_v) <= demi_jour:
-                self.j_travaille_v = '0.5'
-            elif float(self.h_travailler_v) > demi_jour  and float(self.h_travailler_v) <= 24:
-                self.j_travaille_v = '1'
-            else :
-                self.j_travaille_v = '0'
+        if vals.get('h_travailler_v'):  
+            self.j_travaille_v = self.employee_id.contract_id.get_hours_per_day(self.h_travailler_v)
                 
         last_line = self.env['hr.rapport.pointage.line'].search([('chantier_id','!=',False),('rapport_id','=',self.rapport_id.id)],order="id desc",limit=1)
 
@@ -396,7 +302,7 @@ class hr_rapport_pointage_line(models.Model):
     @api.onchange("h_travailler")
     def onchange_h_travailler(self):
         self.chantier_id = self.rapport_id.employee_id.chantier_id
-        # self.vehicle_id = self.rapport_id.employee_id.vehicle_id
+        self.vehicle_id = self.rapport_id.employee_id.vehicle_id
         self.emplacement_chantier_id = self.rapport_id.employee_id.emplacement_chantier_id
 
     

@@ -9,18 +9,21 @@ class fiche_paie(models.Model):
     _description = "Fiche de paie"
     _inherit = ['mail.thread','mail.activity.mixin']
 
-    name =  fields.Char("Référence", readonly=True, copy=False, default='New')
+    name =  fields.Char("Référence", readonly=True, copy=False)
     employee_id = fields.Many2one("hr.employee",string="Employé",required=True)
-    chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Dernier Chantier")
+    contract_id = fields.Many2one("hr.contract", string = "Contrat",required=True)
+    type_emp = fields.Selection(related="contract_id.type_emp",string=u"Type d'employé", store=True, readonly=True)
+    job_id = fields.Many2one(related="contract_id.job_id", string='Poste', store=True, readonly=True)
+    type_profile_related = fields.Selection(related="contract_id.type_profile_related",string=u"Type du profile", required=False, store=True, readonly=True)
+    chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Dérnier Chantier",required=True)
+    vehicle_id = fields.Many2one('fleet.vehicle', string='Dérnier Code Engin')
+    emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Dérnière Équipe",required=True)
     period_id = fields.Many2one("account.month.period", string = "Période", required = True)
-    net_pay = fields.Float('Net à payer', compute="compute_net_a_payer", readonly=True)
-    jr_travaille_par_chantier = fields.One2many("jr.travaille.par.chantier", 'fiche_paie_id',string='Jours travaillés par chantier', readonly=True)
+    quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine", required = True)
     type_fiche = fields.Selection([
-        ("stc","STC"),
-        ("type1","Type 1"),
-        ("type2","Type 2"),
-        ("type3","Type 3"),
-        ("type4","Type 4"),
+        ("payroll","Payement Salaire"),
+        ("refund","Rembourssement"),
+        ("stc","STC")
         ],"Type de fiche", 
     )
 
@@ -28,29 +31,26 @@ class fiche_paie(models.Model):
         ("draft","Brouillon"),
         ("validee","Validée"),
         ("annulee","Annulée"),
+        ("blocked","Bloquée"),
         ],"Status", 
         default="draft",
     )
     
     affich_bonus_jour = fields.Float("Bonus jour", compute="compute_affich_bonus_jour", readonly=True)
     affich_jour_conge = fields.Float("Jour congé", compute="compute_affich_jour_conge", readonly=True)
-    stc_id = fields.Many2one("hr.stc", string = "STC", required=False)
     
-    nbr_jour_travaille =  fields.Float("Nombre de jours travaillés")
-    nbr_heure_travaille =  fields.Float("Nombre des heures travaillées")
-    contract_id = fields.Many2one("hr.contract", string = "Contrat")
-    type_emp = fields.Selection(related="contract_id.type_emp",string=u"Type d'employé", required=False, store=True, readonly=True)
-    job_id = fields.Many2one(related="contract_id.job_id", string='Poste', store=True, readonly=True)
-    salaire_actuel = fields.Float(related="contract_id.salaire_actuel", string='Salaire Actuel', store=True, readonly=True)
+    net_pay = fields.Float('Net à payer', compute="compute_net_a_payer", readonly=True)
+    nbr_jour_travaille = fields.Float("Nombre de jours travaillés")
+    nbr_heure_travaille = fields.Float("Nombre des heures travaillées")
     date_validation = fields.Date(u'Date de validation', readonly=True)
+    salaire_actuel = fields.Float(related="contract_id.salaire_actuel", string='Salaire Actuel', store=True, readonly=True)
     salaire_jour = fields.Float(compute='compute_salaires',string="Salaire du jour", readonly=True)
     salaire_demi_jour = fields.Float(compute='compute_salaires',string="Salaire du demi-jour", readonly=True)
     salaire_heure = fields.Float(compute='compute_salaires',string="Salaire d'heure", readonly=True)
-    quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine")
-    emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Équipe")
-    type_profile_related = fields.Selection(related="contract_id.type_profile_related",string=u"Type du profile", required=False, store=True, readonly=True)
-    rapport_id = fields.Many2one("hr.rapport.pointage", string = "Rapport de pointage")
-    # vehicle_id = ...................
+    rapport_id = fields.Many2one("hr.rapport.pointage", string = "Rapport de pointage", readonly=True)
+    stc_id = fields.Many2one("hr.stc", string = "STC", required=False)
+
+    jr_travaille_par_chantier = fields.One2many("jr.travaille.par.chantier", 'fiche_paie_id',string='Jours travaillés par chantier', readonly=True)
 
     @api.model
     def create(self, vals):
@@ -64,7 +64,6 @@ class fiche_paie(models.Model):
     def write(self, vals):
         return super(fiche_paie, self).write(vals)
 
-    
     @api.depends('employee_id','period_id','contract_id')
     def compute_salaires(self):
         for rec in self:

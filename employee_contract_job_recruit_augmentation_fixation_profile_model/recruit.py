@@ -26,14 +26,40 @@ class recruit(models.Model):
         'terminee': [('readonly', False)]
     }
 
-    name = fields.Char('Référence', readonly=True, required=True, copy=False, default='New')
-    chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier", states = READONLY_STATES, required=True)
-    responsable_id = fields.Many2one("hr.responsable.chantier","Responsable", states = READONLY_STATES)
-    title_poste = fields.Many2one("hr.job","Titre du poste", states = READONLY_STATES)
+    def _get_chantier_domain(self):
+        pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
+        
+        res = []
+        if pointeur :
+            for user_chantier in self.env.user.chantier_responsable_ids:
+                res.append(user_chantier.id)
+        else:
+            for chantier in self.env['fleet.vehicle.chantier'].search([('type_chantier','in',('Chantier','Depot','Poste'))]):
+                res.append(chantier.id)
+        
+        return [('id', 'in',res)]  
+
+    def _get_engin_domain(self):
+        
+        res = []
+
+        query = """
+                select distinct(vehicle_id) from fleet_vehicle_chantier_affectation fvca inner join fleet_vehicle fv on fv.id = fvca.vehicle_id where fv.active = true;
+            """  
+        self.env.cr.execute(query)
+        for result in self.env.cr.fetchall():
+            res.append(result[0])
+                
+        return [('id', 'in',res)]
+
+    name = fields.Char('Référence', readonly=True, required=True, copy=False)
+    chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier",domain=_get_chantier_domain, states = READONLY_STATES, required=True)
+    responsable_id = fields.Many2one("hr.responsable.chantier","Responsable", states = READONLY_STATES, required=True)
+    title_poste = fields.Many2one("hr.job","Titre du poste", states = READONLY_STATES, required=True)
     observation = fields.Text("Observation", states = READONLY_STATES)
-    nbr_effectif_demande = fields.Integer("Nombre d'effectif demandé", states = READONLY_STATES)
+    nbr_effectif_demande = fields.Integer("Nombre demandé", states = READONLY_STATES, required=True)
    
-    nbr_effectif_accepte = fields.Integer("Nombre d'effectif accepté", states = READONLY_STATES_NBR_EFF_ACCEPTE)
+    nbr_effectif_accepte = fields.Integer("Nombre accepté", states = READONLY_STATES_NBR_EFF_ACCEPTE)
     compute_readonly_eff_accepte = fields.Boolean(string="check field", compute='get_user')
 
     state  = fields.Selection([
@@ -57,7 +83,7 @@ class recruit(models.Model):
     )
     motif_raison_nom_prenom = fields.Char("Nom et prénom",states = READONLY_STATES)
     motif_raison_fonction = fields.Char("Fonction",states = READONLY_STATES)
-    motif_raison_code_machine = fields.Char("Code Machine",states = READONLY_STATES)
+    motif_raison_code_machine = fields.Many2one("fleet.vehicle",u'Code Engin',domain=_get_engin_domain,states = READONLY_STATES)
     motif_raison = fields.Text("Plus de détails",states = READONLY_STATES)
     equipe_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Équipe",states = READONLY_STATES)
     

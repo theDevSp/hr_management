@@ -7,7 +7,8 @@
             <tree string="Congés" multi_edit="1" sample="1" class="table">
                 <field name="employee_id" readonly="1" widget="many2one_avatar_employee"/>
                 <field name="chantier_id"/>
-                <field name="rapport_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
                 <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
                 <field name="motif"/>
             </tree>
@@ -20,7 +21,8 @@
             <tree string="Congés" multi_edit="1" sample="1" class="table">
                 <field name="employee_id" readonly="1" widget="many2one_avatar_employee"/>
                 <field name="chantier_id"/>
-                <field name="rapport_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
                 <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
                 <field name="motif"/>
             </tree>
