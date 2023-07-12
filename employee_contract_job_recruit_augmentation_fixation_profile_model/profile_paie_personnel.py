@@ -10,12 +10,25 @@ class profilepaiepersonnel(models.Model):
     _description = "Profile de paie Personnel"
     _inherit = ['hr.profile.paie','mail.thread', 'mail.activity.mixin']
 
-    contract_id = fields.Many2one("hr.contract", "Contrats")
+        
+    @api.depends('contract_id.salaire_actuel','contract_id.wage','nbre_jour_worked_par_mois','definition_nbre_jour_worked_par_mois')
+    def _compute_salaire_jour(self):
+        self.salaire_jour = self.get_wage_per_day()
+
+    @api.depends('contract_id.salaire_actuel','contract_id.wage','nbre_heure_worked_par_jour')
+    def _compute_salaire_hour(self):
+        self.salaire_heure = self.get_wage_per_hour()
+    
+    @api.depends('contract_id.salaire_actuel','contract_id.wage','nbre_heure_worked_par_demi_jour')
+    def _compute_salaire_demi_jour(self):
+        self.salaire_demi_jour = self.get_wage_per_half_day()
+
+    contract_id = fields.Many2one("hr.contract", "Contrats",ondelete="cascade")
 
     salaire_mois = fields.Float("Salaire du mois")
-    salaire_jour = fields.Float("Salaire du jour")
-    salaire_demi_jour = fields.Float("Salaire du demi-jour")
-    salaire_heure = fields.Float("Salaire d'heure")
+    salaire_jour = fields.Float("Salaire du jour",compute="_compute_salaire_jour")
+    salaire_demi_jour = fields.Float("Salaire du demi-jour",compute="_compute_salaire_demi_jour")
+    salaire_heure = fields.Float("Salaire d'heure",compute="_compute_salaire_hour")
 
     @api.constrains('nbre_heure_worked_par_jour')
     def _check_nbre_heure_worked_par_jour(self):
@@ -37,9 +50,9 @@ class profilepaiepersonnel(models.Model):
     @api.model
     def create(self, vals):
         res = super(profilepaiepersonnel, self).create(vals)
-        res.salaire_jour = res.salaire_mois / res.nbre_jour_worked_par_mois
-        res.salaire_heure = res.salaire_jour / res.nbre_heure_worked_par_jour
-        res.salaire_demi_jour = res.salaire_heure * res.nbre_heure_worked_par_demi_jour
+        #res.salaire_jour = res.salaire_mois / res.nbre_jour_worked_par_mois
+        #res.salaire_heure = res.salaire_jour / res.nbre_heure_worked_par_jour
+        #res.salaire_demi_jour = res.salaire_heure * res.nbre_heure_worked_par_demi_jour
         return res
 
 
@@ -48,21 +61,35 @@ class profilepaiepersonnel(models.Model):
     
     def get_wage_per_day(self,period=False):
         res = 0
-        raise_obj = self.env['hr.augmentation']
-        month_range = period.get_number_of_days() if period else period.get_number_of_days(datetime.now()) 
-        nbrjpm = self.nbre_jour_worked_par_mois if self.definition_nbre_jour_worked_par_mois == 'jr_mois' else month_range
-        if self.contract_id and self.contract_id.type_salaire == 'j':
-            res = self.wage + raise_obj.get_sum_of_raises_by_period_id(period.id)
-        elif self.contract_id and self.contract_id.type_salaire == 'm':
-            pass
+        for record in self:    
+            if record:    
+                raise_obj = self.env['hr.augmentation']
+                period_obj = self.env['account.month.period']
 
-        return res
+                contract_start_period = period_obj.get_period_from_date(record.contract_id.date_start)
+                contract_wage = record.contract_id.wage + raise_obj.get_sum_of_raises_by_period_id(employee_id = record.contract_id.employee_id,period_id = contract_start_period)
+
+                month_range = period.get_number_of_days_per_month() if period else period_obj.get_number_of_days_per_month(datetime.now()) 
+
+                nbrjpm = record.nbre_jour_worked_par_mois if record.definition_nbre_jour_worked_par_mois == 'nbr_saisie' else month_range
+
+                if record.contract_id and record.contract_id.type_salaire == 'j':
+                    res = contract_wage
+                elif record.contract_id and self.contract_id.type_salaire == 'm':
+                    res = contract_wage / nbrjpm
+
+        return round(res, 2)
     
-    def get_wage_per_half_day(self):
-
-        return
+    def get_wage_per_half_day(self,period=False):
+        res = 0
+        for record in self: 
+            res = record.get_wage_per_hour(period=period) * record.nbre_heure_worked_par_demi_jour
+        return round(res, 2)
     
-    def get_wage_per_hour(self):
+    def get_wage_per_hour(self,period=False):
+        res = 0
+        for record in self:
+            res = record.get_wage_per_day(period=period) / record.nbre_heure_worked_par_jour
+        return round(res, 2)
 
-        return
 

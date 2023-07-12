@@ -10,8 +10,7 @@
     'depends': [
         'base', 
         'mail', 
-        'hr', 
-        'stock', 
+        'hr',  
         'hr_contract', 
         'construction_site_management', 
         'muk_web_theme', 

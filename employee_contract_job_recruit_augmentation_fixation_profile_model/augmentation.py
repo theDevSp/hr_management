@@ -19,6 +19,7 @@ class augmentation(models.Model):
     type_salaire = fields.Selection(related="employee_id.contract_id.type_salaire",
         string=u"Type Salaire",readonly=True)
 
+    
     montant_propose = fields.Float('Montant Proposé')
     montant_valide = fields.Float('Montant Validé')
 
@@ -60,6 +61,9 @@ class augmentation(models.Model):
         if self.montant_valide < 0:
             raise ValidationError("Les montants doivent être supérieurs de la valeur 0.")
 
+    @api.onchange('montant_propose')
+    def _onchange_montant_propose(self):
+        self.montant_valide = self.montant_propose
 
     @api.model
     def create(self, vals):
@@ -68,7 +72,8 @@ class augmentation(models.Model):
         year = today.year
         month = '{:02d}'.format(today.month)
         contract_sequence = self.env['ir.sequence'].next_by_code('hr.raise.sequence')
-        vals['name'] = vals['type_emp'] + '-' + str(month) + '/' + str(year) + '/' + str(contract_sequence)
+        type_emp = self.env['hr.employee'].browse(vals['employee_id'])[0].type_emp
+        vals['name'] = type_emp + '-' + str(month) + '/' + str(year) + '/' + str(contract_sequence)
 
         return super().create(vals)
 
@@ -172,13 +177,13 @@ class augmentation(models.Model):
         msg = "NEANT"    
         return msg
     
-    def get_sum_of_raises_by_period_id(self,employee,period_id):
+    def get_sum_of_raises_by_period_id(self,employee_id,period_id):
 
         query = """
                 SELECT case when SUM(montant_valide) is null then 0 else SUM(montant_valide) end as sum
                 FROM hr_augmentation 
                 WHERE employee_id = %s AND state='acceptee' AND period_id >= %s 
-            """ % (employee.id,period_id)
+            """ % (employee_id.id,period_id.id)
         self.env.cr.execute(query)
         res = self.env.cr.dictfetchall()
         return res[0]['sum'] or 0

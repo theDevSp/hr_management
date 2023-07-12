@@ -38,7 +38,7 @@
                     <button name="action_working" states="valide,done" string="Retourner" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_controle_gestion"/>
                     <button name="action_done" states="valide" string="Clôturer" type="object" class="oe_highlight" groups="hr_management.group_controle_gestion,hr_management.group_admin_paie"/>
                     <button name="action_cancel" states="draft,valide,done" string="Annuler" type="object" class="oe_highlight" groups="hr_management.group_admin_paie"/>
-                    <button name="create_q12_payslip" string="Payé Mois" states="working" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+                    <button name="create_payslip" string="Payement" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,working,compute,valide,done"/>
                 </header>
                 <div class="container-fliud p-3 my-3 ">

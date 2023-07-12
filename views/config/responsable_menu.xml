@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem name="Responsables" id="responsables_hr_menu" parent="config_hr_menu" action="construction_site_management.responsable_action" sequence="2" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+    <menuitem name="Responsables" id="responsables_hr_menu" parent="general_config_submenu" action="construction_site_management.responsable_action" sequence="200" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
 </odoo>

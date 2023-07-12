@@ -103,20 +103,20 @@
                                 <div class="card-body text-dark">
                                     <div class="row" attrs="{'invisible': [('type_prelevement', '!=', 'en_jour')]}">
                                         <div class="col-md-4">
-                                            <label for="type_prelevemenet_en_jour_nbrjour" class=""/>
+                                            <label for="nbr_jour" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="type_prelevemenet_en_jour_nbrjour" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="nbr_jour" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="type_prelevemenet_en_jour_salairejour" class=""/>
+                                            <label for="salaire_jour" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="type_prelevemenet_en_jour_salairejour" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                    <field name="salaire_jour" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>  
                                             </div>
                                         </div>

@@ -45,6 +45,17 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
+                                        <label for="type_payement" class=""/>
+                                        <div class="main">
+                                            <div class="form-group">
+                                                <span class="fa fa-plus form-control-icon"></span>
+                                                <field name="type_payement" class="form-control"/>
+                                            </div>  
+                                        </div>      
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
                                         <label for="montant" class=""/>
                                         <div class="main">
                                             <div class="form-group">

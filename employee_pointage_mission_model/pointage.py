@@ -283,39 +283,35 @@ class hr_rapport_pointage(models.Model):
     def is_pointeur(self):
         return self.env['res.users'].has_group("hr_management.group_pointeur")
  
-    def create_payslip(self,quinzaine):
-        # periode = self.env['account.month.period'].search([('id','=',self.period_id.id)])
-        # note = self.env['hr.payslip'].get_prev_note(self.employee_id,periode)
-        equipe = False
-        
-        res1 = self.env['hr.rapport.pointage.line'].search([
-            ('chantier_id','!=',False),
-            ('emplacement_chantier_id','!=',False),
-            ('rapport_id','=',self.id),
-            ('day','<=',str(self.get_half_month_day(self.period_id)))],order="id desc",limit=1)
-        
-        res2 = self.env['hr.rapport.pointage.line'].search([
-            ('chantier_id','!=',False),
-            ('emplacement_chantier_id','!=',False),
-            ('rapport_id','=',self.id)],order="id desc",limit=1)
+    def create_payslip(self):
+        view = self.env.ref('hr_management.fiche_paie_formulaire')
 
-        if quinzaine == 'quinzaine1' and res1:             
-            equipe = res1[0].emplacement_chantier_id.id
-        if quinzaine != 'quinzaine1' and res2:
-            equipe = res2[0].emplacement_chantier_id.id
         data = {
             'employee_id':self.employee_id.id,
+            'contract_id':self.employee_id.contract_id.id,
             'chantier_id':self.chantier_id.id,
             'period_id':self.period_id.id,
             'job_id':self.employee_id.job_id.id,
             'type_emp':self.employee_id.type_emp,
             'vehicle_id':self.vehicle_id.id,
-            'emplacement_chantier_id':equipe,
+            'emplacement_chantier_id':self.emplacement_chantier_id.id,
             'rapport_id':self.id,
-            'quinzaine':quinzaine,
-            # 'note':note and note.get("note") or False
+            'quinzaine':self.quinzaine,
+            'nbr_jour_travaille':self.total_j_v,
+            'nbr_heure_travaille':self.total_h_v
         }
-        return self.env['hr.payslip'].create(data)
+        created_payroll = self.env['hr.payslip'].create(data)
+
+        return {
+            'name': ("Fiche de paie %s crée" % created_payroll.name),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'hr.payslip',
+            'res_id': created_payroll.id,
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+        }
  
 
     def create_q1_payslip(self):

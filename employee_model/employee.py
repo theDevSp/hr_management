@@ -207,6 +207,13 @@ class hr_employee(models.Model):
         if name:
             domain = ['|', ('cin', operator, name), '|',('name', operator, name),('cnss', operator, name)]
         return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
+    
+    def name_get(self):
+        result = []
+        for employee in self:
+            name = employee.cin + ' - ' + employee.name
+            result.append((employee.id, name))
+        return result
 
     def open_wizard(self):
         view = self.env.ref('hr_management.wizard_blacklist_view_form')

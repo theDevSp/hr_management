@@ -25,7 +25,8 @@ class contrats(models.Model):
 
     type_salaire = fields.Selection(
         [("j","Journalier"),
-         ("m","Mensuel")],
+         ("m","Mensuel")
+         ],
         string=u"Type Salaire",
         default="m",
         required=True)
@@ -62,7 +63,7 @@ class contrats(models.Model):
         res = self.env.cr.dictfetchall()
         self.tt_montant_a_ajouter = res[0]['sum']
 
-    @api.depends('tt_montant_a_ajouter')
+    @api.depends('tt_montant_a_ajouter','wage')
     def _compute_salaire(self):  
         self.salaire_actuel = self.wage + self.tt_montant_a_ajouter 
         
@@ -134,7 +135,7 @@ class contrats(models.Model):
                 "period_id": self.profile_paie_id.period_id.id,    
                 "salaire_mois": self.salaire_actuel,
                 "contract_id": self.id,
-                "periodicity": self.periodicity_related   
+                "periodicity": self.profile_paie_id.periodicity  
                 }
             obj = self.env['hr.profile.paie.personnel'].create(champs)
             self.pp_personnel_id_many2one = obj
@@ -143,6 +144,11 @@ class contrats(models.Model):
                     "Erreur, Vous devez séléctionner un profil de paie pour le générer."
                 )
         return True
+    
+    def reset_profile(self):
+        if self.pp_personnel_id_many2one:
+            self.pp_personnel_id_many2one.unlink()
+            self.profile_paie_id = False
     
     def _compute_current_month(self):
         today = datetime.now()

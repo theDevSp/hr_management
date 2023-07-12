@@ -9,6 +9,8 @@ class fiche_paie(models.Model):
     _description = "Fiche de paie"
     _inherit = ['mail.thread','mail.activity.mixin']
 
+    _profile_perso_obj = "hr.profile.paie.personnel"
+
     name =  fields.Char("Référence", readonly=True, copy=False)
     employee_id = fields.Many2one("hr.employee",string="Employé",required=True)
     contract_id = fields.Many2one("hr.contract", string = "Contrat",required=True)
@@ -20,11 +22,12 @@ class fiche_paie(models.Model):
     emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Dérnière Équipe",required=True)
     period_id = fields.Many2one("account.month.period", string = "Période", required = True)
     quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine", required = True)
+    
     type_fiche = fields.Selection([
         ("payroll","Payement Salaire"),
         ("refund","Rembourssement"),
         ("stc","STC")
-        ],"Type de fiche", 
+        ],"Type de fiche", default="payroll"
     )
 
     state  = fields.Selection([
@@ -44,9 +47,9 @@ class fiche_paie(models.Model):
     nbr_heure_travaille = fields.Float("Nombre des heures travaillées")
     date_validation = fields.Date(u'Date de validation', readonly=True)
     salaire_actuel = fields.Float(related="contract_id.salaire_actuel", string='Salaire Actuel', store=True, readonly=True)
-    salaire_jour = fields.Float(compute='compute_salaires',string="Salaire du jour", readonly=True)
-    salaire_demi_jour = fields.Float(compute='compute_salaires',string="Salaire du demi-jour", readonly=True)
-    salaire_heure = fields.Float(compute='compute_salaires',string="Salaire d'heure", readonly=True)
+    salaire_jour = fields.Float(compute='_compute_salaire_jour',string="Salaire du jour", readonly=True)
+    salaire_demi_jour = fields.Float(compute='_compute_salaire_demi_jour',string="Salaire du demi-jour", readonly=True)
+    salaire_heure = fields.Float(compute='_compute_salaire_heure',string="Salaire d'heure", readonly=True)
     rapport_id = fields.Many2one("hr.rapport.pointage", string = "Rapport de pointage", readonly=True)
     stc_id = fields.Many2one("hr.stc", string = "STC", required=False)
 
@@ -58,44 +61,30 @@ class fiche_paie(models.Model):
         year = today.year
         month = '{:02d}'.format(today.month)
         fiche_paie_sequence = self.env['ir.sequence'].next_by_code('hr.payslip.sequence')
-        vals['name'] =  str(fiche_paie_sequence) + '/' + str(month) + '/' + str(year)        
-        return super(fiche_paie, self).create(vals)
+        vals['name'] =  str(fiche_paie_sequence) + '/' + str(month) + '/' + str(year)   
+        res = super(fiche_paie, self).create(vals)
+        res.payroll_validation()     
+        return res
 
     def write(self, vals):
-        return super(fiche_paie, self).write(vals)
+        res = super(fiche_paie, self).write(vals)
+        self.payroll_validation()
+        return res
 
     @api.depends('employee_id','period_id','contract_id')
-    def compute_salaires(self):
+    def _compute_salaire_jour(self):
         for rec in self:
-            if self.contract_id:
-                query = """ select nbre_jour_worked_par_mois,
-                                nbre_heure_worked_par_jour,
-                                nbre_heure_worked_par_demi_jour,
-                                definition_nbre_jour_worked_par_mois
-                            from hr_profile_paie_personnel 
-                            where contract_id = %s;
-                        """ % (rec.contract_id.id)
-                
-                rec.env.cr.execute(query)
-                res = rec.env.cr.fetchall()
+            rec.salaire_jour = rec.contract_id.pp_personnel_id_many2one.get_wage_per_day(rec.period_id)
 
-                if len(res) > 0:
-                    jr_worked_par_mois = res[0][0]
-                    heure_worked_par_jour = res[0][1]
-                    heure_worked_par_demi_jour = res[0][2]
-
-                    rec.salaire_jour = rec.salaire_actuel / jr_worked_par_mois
-                    rec.salaire_heure = rec.salaire_jour / heure_worked_par_jour
-                    rec.salaire_demi_jour = rec.salaire_heure * heure_worked_par_demi_jour
-                else :
-                    rec.salaire_jour = 0
-                    rec.salaire_heure = 0
-                    rec.salaire_demi_jour = 0
-            else: 
-                rec.salaire_jour = 0
-                rec.salaire_heure = 0
-                rec.salaire_demi_jour = 0
-
+    @api.depends('employee_id','period_id','contract_id')
+    def _compute_salaire_demi_jour(self):
+        for rec in self:
+            rec.salaire_demi_jour = rec.contract_id.pp_personnel_id_many2one.get_wage_per_half_day(rec.period_id)
+    
+    @api.depends('employee_id','period_id','contract_id')
+    def _compute_salaire_heure(self):
+        for rec in self:
+            rec.salaire_heure = rec.contract_id.pp_personnel_id_many2one.get_wage_per_hour(rec.period_id)
 
     @api.onchange('employee_id')
     def get_contract_actif(self):
@@ -108,39 +97,38 @@ class fiche_paie(models.Model):
        
        
     def compute_affich_bonus_jour(self):
-        worked_time = 0
-        base_time = 0
-        res = 0
+        for record in self:
+            worked_time = 0
+            base_time = 0
+            res = 0
 
-        profile_paie_p = self.contract_id.pp_personnel_id_many2one
-        type_profile = profile_paie_p.type_profile
-        code_profile = profile_paie_p.definition_nbre_jour_worked_par_mois
-        
-        if type_profile == 'j':
-            worked_time = self.nbr_jour_travaille
-            base_time = profile_paie_p.nbre_jour_worked_par_mois if code_profile == 'nbr_saisie' else 30
-        elif type_profile == 'h':
-            worked_time = self.nbr_heure_travaille
-            base_time = profile_paie_p.nbre_heure_worked_par_jour * profile_paie_p.nbre_jour_worked_par_mois
-        res = worked_time / base_time * 1.5
+            profile_paie_p = record.contract_id.pp_personnel_id_many2one
+            type_profile = profile_paie_p.type_profile
+            code_profile = profile_paie_p.definition_nbre_jour_worked_par_mois
+            worked_days_per_month = profile_paie_p.nbre_jour_worked_par_mois if code_profile == 'nbr_saisie' else record.period_id.get_number_of_days_per_month()
+            
+            if type_profile == 'j':
+                worked_time = record.nbr_jour_travaille
+                base_time = profile_paie_p.nbre_jour_worked_par_mois if code_profile == 'nbr_saisie' else 30
+            elif type_profile == 'h':
+                worked_time = record.nbr_heure_travaille
+                base_time = profile_paie_p.nbre_heure_worked_par_jour * worked_days_per_month
+            res = worked_time / base_time * 1.5
 
-        if profile_paie_p.periodicity == "m":
-            self.affich_bonus_jour = min(res, 1.5)
-        else:
-            self.affich_bonus_jour = min(res,0.75)  
+            if profile_paie_p.periodicity == "m":
+                record.affich_bonus_jour = min(res, 1.5)
+            else:
+                record.affich_bonus_jour = min(res,0.75)  
 
 
     @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel')
     def compute_net_a_payer(self):
         resultat = 0
         for rec in self:
-            if self.contract_id:
-                type_profile = rec.type_profile_related
-                if type_profile == "h":
-                    resultat = rec.nbr_heure_travaille * rec.salaire_heure
-                elif type_profile == "j":
-                    resultat = rec.nbr_jour_travaille * rec.salaire_jour
-        self.net_pay = resultat
+            if rec.contract_id:
+                rec.net_pay = rec.nbr_heure_travaille * rec.salaire_heure if rec.type_profile_related == "h" else rec.nbr_jour_travaille * rec.salaire_jour
+            else:
+                rec.net_pay = 0
 
 
     def to_draft(self):
@@ -185,6 +173,23 @@ class fiche_paie(models.Model):
                     "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
                 )
 
+    def payroll_validation(self):
+
+        contract_period = self.env['account.month.period'].get_period_from_date(self.contract_id.date_start)
+        unique_payroll_per_period = self.env[self._name].search_count([
+                                                        ('employee_id', '=', self.employee_id.id),
+                                                        ('period_id', '=', self.period_id.id),
+                                                        ('quinzaine', '=', self.quinzaine)]) 
+
+        if not self.contract_id or self.period_id.date_stop <= contract_period.date_start:
+            raise ValidationError(
+                    "Anomalie détectée !!! la période choisie pour le payement ne correspond pas au contrat de l'employé veuillez choisir un contrat convenable."
+                )
+        
+        if unique_payroll_per_period > 0:
+            raise ValidationError(
+                    "Anomalie d'unicité détectée !!! une fiche de paie existe déja pour la période %s." % self.period_id.name
+                )
 
 
 class loan_list(models.Model):

@@ -4,20 +4,29 @@
         <field name="name">Fiche de paie</field>
         <field name="model">hr.payslip</field>
         <field name="arch" type="xml">
-            <tree string="Fiche de paie" multi_edit="1" sample="1" class="table">
+            <tree string="Fiche de paie" multi_edit="1" sample="1">
                 <field name="name"/>
+                <field name="period_id" optional="hide"/>
+                <field name="date_validation" optional="show"/>
+                <field name="quinzaine" optional="show"/>
                 <field name="employee_id"/>
+                <field name="type_emp" optional="show"/>
+                <field name="job_id" optional="show"/>
                 <field name="chantier_id"/>
-                <field name="period_id"/>
+                <field name="emplacement_chantier_id" optional="show"/>
+                <field name="vehicle_id" optional="show"/>
                 <field name="net_pay"/>
-                <field name="nbr_jour_travaille"/>
-                <field name="nbr_heure_travaille"/>
-                <field name="jr_travaille_par_chantier"/>
-                <field name="type_fiche"/>
-                <field name="contract_id"/>
-                <field name="rapport_id"/>
-                <field name="date_validation"/>
-                <field name="stc_id"/>
+                <field name="affich_bonus_jour" optional="hide"/>
+                <field name="affich_jour_conge" optional="hide"/>
+                <field name="salaire_actuel" optional="hide"/>
+                <field name="nbr_jour_travaille" optional="hide"/>
+                <field name="nbr_heure_travaille" optional="hide"/>
+                <field name="jr_travaille_par_chantier" optional="hide"/>
+                <field name="type_fiche" optional="hide"/>
+                <field name="contract_id" optional="hide"/>
+                <field name="rapport_id" optional="hide"/>
+                
+                <field name="stc_id" optional="hide"/>
                 <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
             </tree>
         </field>
@@ -97,16 +106,16 @@
                                         </div>
                                         <field name="type_fiche" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                     </div>
-                                    <div class="input-group mb-3">
+                                    <div class="input-group mb-3" attrs="{'invisible': [('rapport_id', '=', False)]}">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" ><label for="rapport_id" class=""/></span>
                                         </div>
                                         <field name="rapport_id" domain="[('employee_id', '=', employee_id)]" 
                                                                  class="form-control" 
-                                                                 options="{'no_create': True, 'no_open': True}" 
-                                                                 attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                                 options="{'no_create': True}" 
+                                                                 readonly="1"/>
                                     </div>
-                                    <div class="input-group mb-3">
+                                    <div class="input-group mb-3" attrs="{'invisible': [('type_fiche', '!=', 'stc')]}">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" ><label for="stc_id" class=""/></span>
                                         </div>
@@ -132,7 +141,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" ><label for="employee_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                                                 </div>
-                                                <field name="employee_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                <field name="employee_id" class="form-control" options="{'no_create': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -141,7 +150,7 @@
                                                     <span class="input-group-text" ><label for="contract_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                                                 </div>
                                                 <field name="contract_id" domain="[('employee_id', '=', employee_id)]" class="form-control"
-                                                    force_save="1" options="{'no_create': True, 'no_open': True}" 
+                                                    force_save="1" options="{'no_create': True}" 
                                                     attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                             </div>
                                         </div>
@@ -398,6 +407,7 @@
                 <searchpanel>
                     <field name="chantier_id" icon="fa-city" enable_counters="1" select="multi"/>
                     <field name="period_id" icon="fa-clock" enable_counters="1" select="multi"/>
+                    <field name="quinzaine" icon="fa-clock" enable_counters="1"/>
                     <field name="emplacement_chantier_id" icon="fa-users" enable_counters="1" select="multi"/>
                 </searchpanel>
             </search>

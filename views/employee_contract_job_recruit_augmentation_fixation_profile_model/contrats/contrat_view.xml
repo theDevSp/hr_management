@@ -250,7 +250,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-12 my-3">
                             <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">
                                     <div class="card-body text-center">
@@ -266,11 +266,12 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" ><label for="profile_paie_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                                                         </div>
-                                                        <field name="profile_paie_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                                        <field name="profile_paie_id" options="{'no_create': True}" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
                                                     </div>
                                                     <div class="form-group d-flex justify-content-center mb-3">
                                                         <field name="pp_personnel_id_many2one" invisible="1"/>
                                                         <button name="generer_profile" type="object" class="btn btn-success" icon="fa-upload" string="Générer Profile" max-width="200" states="draft" attrs="{'invisible': [('pp_personnel_id_many2one', '!=', False ), ('state', '!=', 'draft')]}"/>
+                                                        <button name="reset_profile" type="object" class="btn btn-danger" icon="fa-trash" string="Reset" max-width="200" states="draft" attrs="{'invisible': [('pp_personnel_id_many2one', '!=', False ), ('state', '!=', 'draft')]}"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -338,12 +339,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-12 col-lg-4">
+                                                    <div class="col-12 col-lg-4" attrs="{'invisible': [('definition_nbre_jour_worked_par_mois_related', '=', 'jr_mois')]}">
                                                         <div class="input-group mb-3">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><label for="nbre_jour_worked_par_mois_related" class=""/></span>
                                                             </div>
-                                                            <field name="nbre_jour_worked_par_mois_related" attrs="{'readonly': [('state', '!=', 'draft')]}" string="Jrs / Mois" class="form-control"/>
+                                                            <field name="nbre_jour_worked_par_mois_related" 
+                                                                    attrs="{'readonly': [('state', '!=', 'draft')]}" 
+                                                                    string="Jrs / Mois" class="form-control"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-lg-4">

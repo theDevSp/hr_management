@@ -16,6 +16,13 @@ class primetype(models.Model):
         string="Type d'addition",
         default='indiv'
     )
+    type_payement = fields.Selection(
+        [("j","Journalier"),
+         ("m","Mensuel")
+         ],
+        string=u"Payement",
+        default="m",
+        required=True)
 
     montant = fields.Float('Montant')
 

@@ -11,9 +11,9 @@ class prime(models.Model):
     
     name = fields.Char("ref")
     employee_id = fields.Many2one("hr.employee", string = "Employee")
-    first_period_id = fields.Many2one("account.month.period", string = "Première Période", required=True)
+    first_period_id = fields.Many2one("account.month.period", string = "Première Période", required=True,compute="_compute_first_period",store=True)
     paiement_prime_ids = fields.One2many("hr.paiement.ligne","prime_id", string = "Paiement Ligne")
-    date_fait = fields.Date("Date de fait", required=True, default=fields.Date.today, tracking=True, index=True)
+    date_fait = fields.Date("Date de fait", required=True, tracking=True, index=True)
     donneur_order = fields.Many2one("hr.directeur", string = "Directeur")
     responsable_id = fields.Many2one("hr.responsable.chantier", string = "Responsable")
     type_prime = fields.Many2one("hr.prime.type", string = "Type de Prime")
@@ -44,6 +44,11 @@ class prime(models.Model):
     def _compute_reste_a_payer(self):
         for rec in self:
             rec.reste_a_paye = rec.montant_total_prime - rec.montant_paye
+    
+    @api.depends('date_fait')
+    def _compute_first_period(self):
+        for record in self:
+            record.first_period_id = self.env['account.month.period'].get_period_from_date(record.date_fait)
     
     @api.onchange("type_prime")
     def onchange_type_prime(self):

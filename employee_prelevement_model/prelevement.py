@@ -23,12 +23,12 @@ class prelevement(models.Model):
         ("en_jour","Prélèvement En Jour"),
         ],"Type de prélèvement",
     )
-    type_prelevemenet_en_jour_nbrjour = fields.Float("Nombre de jours", default="1")
-    type_prelevemenet_en_jour_salairejour = fields.Float("Salaire du jour")
+    nbr_jour = fields.Float("Nombre de jours", default="1")
+    salaire_jour = fields.Float("Salaire du jour")
     
     is_credit = fields.Boolean("Crédit?", default = False)
     
-    first_period_id = fields.Many2one("account.month.period", string = "Première Période", required=False)
+    first_period_id = fields.Many2one("account.month.period", string = "Première Période", required=True,compute="_compute_first_period",store=True)
     echeance = fields.Float("Échéance", required=False)
     objet_emprunt = fields.Text("Objet de l'Emprunt")
     stc_id = fields.Many2one("hr.stc", string = "STC", required=False)
@@ -40,7 +40,7 @@ class prelevement(models.Model):
         if vals.get("type_prelevement") and vals["type_prelevement"] == "en_jour":
             periode_retournee = self.recuperer_id_periode(vals["date_fait"])
             vals["first_period_id"] = periode_retournee
-        print(self.env.context)
+        
         vals['name'] = credit_seq if vals['is_credit'] else prelv_seq
         return super(prelevement, self).create(vals)
          
@@ -75,6 +75,11 @@ class prelevement(models.Model):
                 
         return super(prelevement, self).write(vals)
     
+    @api.depends('date_fait')
+    def _compute_first_period(self):
+        for record in self:
+            if record.date_fait:
+                record.first_period_id = self.env['account.month.period'].get_period_from_date(record.date_fait)
 
     def compute_prelevement(self):
         if self.echeance > 0 and self.echeance <= self.montant_total_prime:
@@ -84,7 +89,6 @@ class prelevement(models.Model):
         else:
             raise ValidationError("Probléme d'échéance, Le systéme ne peut pas lancer le calcule à cause d'une erreur au niveau de l'échéance.")
             
-
     def compute_alimenter_paiement_prelevement(self,nbr_periodes):
         for rec in self:
             query = """
@@ -109,12 +113,10 @@ class prelevement(models.Model):
            
             self.create_paiement_prelevement(paiement_lines)
 
-
     def create_paiement_prelevement(self,paiement_lines):
         for rec in paiement_lines:
             self.env["hr.paiement.prelevement"].create(rec)
         
-
     def to_draft(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
             if self.state not in {'draft','validee'} :
@@ -127,7 +129,6 @@ class prelevement(models.Model):
         else:
             raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
 
-
     def to_validee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
             if self.state not in {'validee','annulee','cloture_paye','cloture'} :
@@ -137,7 +138,6 @@ class prelevement(models.Model):
         else:
             raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
 
-
     def to_annulee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
             if self.state not in {'annulee','cloture_paye','cloture'} :
@@ -146,7 +146,6 @@ class prelevement(models.Model):
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
             raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
-
 
     def to_cloturer_payer(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
@@ -160,7 +159,6 @@ class prelevement(models.Model):
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
             raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
-    
 
     def to_cloturer(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
@@ -175,42 +173,25 @@ class prelevement(models.Model):
         else:
             raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
         
-
-    def nbr_days_of_current_month(self):
-        year_val = self.date_fait.year
-        month_val = self.date_fait.month
-        nbr_days = monthrange(year_val, month_val)[1]
-        return nbr_days
-
     def recuperer_salaire(self):
-        profile_paie_employee = self.env['hr.employee'].browse(self.employee_id.id)
-        definition_nbr_jour = profile_paie_employee.pp_personnel_id_many2one.definition_nbre_jour_worked_par_mois
-        if definition_nbr_jour == "nbr_saisie":
-            self.type_prelevemenet_en_jour_salairejour = profile_paie_employee.pp_personnel_id_many2one.salaire_jour
-        elif definition_nbr_jour == "jr_mois":
-            nbr_days_of_current_month = self.nbr_days_of_current_month()
-            self.type_prelevemenet_en_jour_salairejour = profile_paie_employee.salaire_actuel / nbr_days_of_current_month
+        for record in self:
+            period_id = record.recuperer_id_periode(record.date_fait)
+            record.salaire_jour = record.employee_id.contract_id.pp_personnel_id_many2one.get_wage_per_day(period_id)
 
-    @api.onchange("employee_id")
+    @api.depends("employee_id")
     def onchange_employee_nbr_jour(self):
         self.recuperer_salaire()
 
-    @api.onchange("type_prelevemenet_en_jour_nbrjour","type_prelevemenet_en_jour_salairejour","type_prelevement")
+    @api.depends("nbr_jour","salaire_jour","type_prelevement")
     def calculer_montant_onchange(self):
-        if self.type_prelevement == "en_jour" and self.is_credit != True:
-            nbr_jour = self.type_prelevemenet_en_jour_nbrjour
-            salaire_jr = self.type_prelevemenet_en_jour_salairejour
-            self.montant_total_prime = nbr_jour * salaire_jr
-            self.echeance = self.montant_total_prime
+        for record in self:
+            if record.type_prelevement == "en_jour" and record.is_credit != True:
+                record.montant_total_prime = record.nbr_jour * record.salaire_jour
+                record.echeance = record.montant_total_prime
 
     def recuperer_id_periode(self,date_fait):
-        query = """
-                SELECT id from account_month_period
-                WHERE '%s' between date_start and date_stop;
-            """  % (date_fait)
-        self.env.cr.execute(query)
-        res = self.env.cr.fetchall()
-        return res[0][0]
+        
+        return self.env['account.month.period'].get_period_from_date(date_fait)
     
     def report_derniere_periode_emprunt(self):
         query = """

@@ -65,6 +65,7 @@ class profilepaie(models.Model):
     def _onchange_definition_nbre_jour_worked_par_mois(self):
         today = date.today()
         nbr_days = monthrange(today.year, today.month)[1]
+        print(nbr_days)
         self.nbre_jour_worked_par_mois = nbr_days if self.definition_nbre_jour_worked_par_mois == 'jr_mois' else 26
 
     @api.model
