@@ -110,7 +110,9 @@
             
         ],
         'web.assets_backend': [
-    
+            'hr_management/static/src/js/*.js',
+            'hr_management/static/src/xml/*.xml',
+            'hr_management/static/src/css/*.scss',
         ],
         'web.report_assets_pdf': [
             'hr_management/static/src/**/*.scss',  

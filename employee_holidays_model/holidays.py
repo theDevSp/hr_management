@@ -2,12 +2,10 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
-from collections import namedtuple, defaultdict
 from pytz import timezone, UTC
 from datetime import datetime
 from datetime import date
 
-DummyAttendance = namedtuple('DummyAttendance', 'hour_from, hour_to, dayofweek, day_period, week_type')
 
 class holidays(models.Model):
     _name = "hr.holidays"
@@ -38,60 +36,38 @@ class holidays(models.Model):
         readonly=True
     )
 
+    _hours_table = [
+        ('0', '00:00'), ('0.5', '00:30'),
+        ('1', '01:00'), ('1.5', '01:30'),
+        ('2', '02:00'), ('2.5', '02:30'),
+        ('3', '03:00'), ('3.5', '03:30'),
+        ('4', '04:00'), ('4.5', '04:30'),
+        ('5', '05:00'), ('5.5', '05:30'),
+        ('6', '06:00'), ('6.5', '06:30'),
+        ('7', '07:00'), ('7.5', '07:30'),
+        ('8', '08:00'), ('8.5', '08:30'),
+        ('9', '09:00'), ('9.5', '09:30'),
+        ('10', '10:00'), ('10.5', '10:30'),
+        ('11', '11:00'), ('11.5', '11:30'),
+        ('12', '12:00'), ('12.5', '12:30'),
+        ('13', '13:00'), ('13.5', '13:30'),
+        ('14', '14:00'), ('14.5', '14:30'),
+        ('15', '15:00'), ('15.5', '15:30'),
+        ('16', '16:00'), ('16.5', '16:30'),
+        ('17', '17:00'), ('17.5', '17:30'),
+        ('18', '18:00'), ('18.5', '18:30'),
+        ('19', '19:00'), ('19.5', '19:30'),
+        ('20', '20:00'), ('20.5', '20:30'),
+        ('21', '21:00'), ('21.5', '21:30'),
+        ('22', '22:00'), ('22.5', '22:30'),
+        ('23', '23:00'), ('23.5', '23:30')]
+
     date_start = fields.Date('Date de début')
     date_end = fields.Date('Date de fin')
     demi_jour = fields.Boolean("Demi Jour")
     heure_perso = fields.Boolean("Heures Personnalisées")
-    heure_start = fields.Selection([
-        ('0', '00:00'), ('0.5', '00:30'),
-        ('1', '01:00'), ('1.5', '01:30'),
-        ('2', '02:00'), ('2.5', '02:30'),
-        ('3', '03:00'), ('3.5', '03:30'),
-        ('4', '04:00'), ('4.5', '04:30'),
-        ('5', '05:00'), ('5.5', '05:30'),
-        ('6', '06:00'), ('6.5', '06:30'),
-        ('7', '07:00'), ('7.5', '07:30'),
-        ('8', '08:00'), ('8.5', '08:30'),
-        ('9', '09:00'), ('9.5', '09:30'),
-        ('10', '10:00'), ('10.5', '10:30'),
-        ('11', '11:00'), ('11.5', '11:30'),
-        ('12', '12:00'), ('12.5', '12:30'),
-        ('13', '13:00'), ('13.5', '13:30'),
-        ('14', '14:00'), ('14.5', '14:30'),
-        ('15', '15:00'), ('15.5', '15:30'),
-        ('16', '16:00'), ('16.5', '16:30'),
-        ('17', '17:00'), ('17.5', '17:30'),
-        ('18', '18:00'), ('18.5', '18:30'),
-        ('19', '19:00'), ('19.5', '19:30'),
-        ('20', '20:00'), ('20.5', '20:30'),
-        ('21', '21:00'), ('21.5', '21:30'),
-        ('22', '22:00'), ('22.5', '22:30'),
-        ('23', '23:00'), ('23.5', '23:30')], string='Heure de début')
-    heure_end = fields.Selection([
-        ('0', '00:00'), ('0.5', '00:30'),
-        ('1', '01:00'), ('1.5', '01:30'),
-        ('2', '02:00'), ('2.5', '02:30'),
-        ('3', '03:00'), ('3.5', '03:30'),
-        ('4', '04:00'), ('4.5', '04:30'),
-        ('5', '05:00'), ('5.5', '05:30'),
-        ('6', '06:00'), ('6.5', '06:30'),
-        ('7', '07:00'), ('7.5', '07:30'),
-        ('8', '08:00'), ('8.5', '08:30'),
-        ('9', '09:00'), ('9.5', '09:30'),
-        ('10', '10:00'), ('10.5', '10:30'),
-        ('11', '11:00'), ('11.5', '11:30'),
-        ('12', '12:00'), ('12.5', '12:30'),
-        ('13', '13:00'), ('13.5', '13:30'),
-        ('14', '14:00'), ('14.5', '14:30'),
-        ('15', '15:00'), ('15.5', '15:30'),
-        ('16', '16:00'), ('16.5', '16:30'),
-        ('17', '17:00'), ('17.5', '17:30'),
-        ('18', '18:00'), ('18.5', '18:30'),
-        ('19', '19:00'), ('19.5', '19:30'),
-        ('20', '20:00'), ('20.5', '20:30'),
-        ('21', '21:00'), ('21.5', '21:30'),
-        ('22', '22:00'), ('22.5', '22:30'),
-        ('23', '23:00'), ('23.5', '23:30')], string='Heure de fin')
+    heure_start = fields.Selection(_hours_table, string='Heure de début')
+    heure_end = fields.Selection(_hours_table, string='Heure de fin')
 
     date_select_half_perso = fields.Date("Date") 
     matin_soir = fields.Selection([
@@ -107,6 +83,7 @@ class holidays(models.Model):
     
     @api.onchange("demi_jour")
     def onchange_demi_jour(self):
+        self.date_end = False
         if self.demi_jour:
             self.heure_perso = False
             self.duree_heures = 4
@@ -149,6 +126,10 @@ class holidays(models.Model):
         if not vals["demi_jour"] and not vals["heure_perso"] and vals["duree_jours"] > 0:
             date_difference = self.get_duree(vals["date_start"],vals["date_end"])
             vals["duree_jours"] = date_difference
+
+        if self.holidays_validation(vals["employee_id"],vals["date_start"],vals["date_end"]):
+            raise ValidationError("Vous ne pouvez pas avoir 2 demandes de congés qui se chevauchent dans la même journée.")
+        
         return super(holidays, self).create(vals)
 
     def write(self, vals):
@@ -160,6 +141,33 @@ class holidays(models.Model):
                 self.update_corresponding_lines('4','1')
         return res
 
+    def holidays_validation(self,employee_id,date_start,date_end=False):
+        print(date_end)
+        result = self.env[self._name].search_count([
+                '&',
+                    ('employee_id','=',employee_id),
+                    '|',
+                        '&',
+                            ('date_start','<=',date_start),
+                            ('date_end','>=',date_start),
+                        '|',
+                            '&',
+                                ('date_start','<=',date_end),
+                                ('date_end','>=',date_end),
+                            '&',
+                                ('date_start','<=',date_start),
+                                ('date_end','>=',date_end)]) if date_end else self.env[self._name].search_count([
+                                                                                        ('employee_id','=',employee_id),
+                                                                                        '|',
+                                                                                            '&',
+                                                                                                ('date_start','<=',date_start),
+                                                                                                ('date_end','>=',date_start),
+                                                                                            ('date_start','=',date_start)
+                                                                                            ])
+        if result > 0:
+            return True
+            
+        return False
 
     def to_draft(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') or self.user_has_groups('hr_management.group_pointeur') :

@@ -16,7 +16,7 @@ class fiche_paie(models.Model):
     contract_id = fields.Many2one("hr.contract", string = "Contrat",required=True)
     type_emp = fields.Selection(related="contract_id.type_emp",string=u"Type d'employé", store=True, readonly=True)
     job_id = fields.Many2one(related="contract_id.job_id", string='Poste', store=True, readonly=True)
-    type_profile_related = fields.Selection(related="contract_id.type_profile_related",string=u"Type du profile", required=False, store=True, readonly=True)
+    type_profile_related = fields.Selection(related="contract_id.type_profile_related",string=u"Type du profile", readonly=True)
     chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Dérnier Chantier",required=True)
     vehicle_id = fields.Many2one('fleet.vehicle', string='Dérnier Code Engin')
     emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Dérnière Équipe",required=True)
@@ -32,16 +32,26 @@ class fiche_paie(models.Model):
 
     state  = fields.Selection([
         ("draft","Brouillon"),
+        ("cal","Calculée"),
         ("validee","Validée"),
         ("annulee","Annulée"),
         ("blocked","Bloquée"),
         ],"Status", 
         default="draft",
     )
+
+    cal_state = fields.Boolean('cal_state',default=False)
     
-    affich_bonus_jour = fields.Float("Bonus jour", compute="compute_affich_bonus_jour", readonly=True)
-    affich_jour_conge = fields.Float("Jour congé", compute="compute_affich_jour_conge", readonly=True)
+    affich_bonus_jour = fields.Float("Bonus jour", compute="_compute_affich_bonus_jour", readonly=True)
+    affich_jour_conge = fields.Float("Panier congé", compute="_compute_panier", readonly=True, store=True)
+    affich_jour_dimanche_conge = fields.Float("Panier dimanche", compute="_compute_panier", readonly=True, store=True)
+    affich_jour_dimanche = fields.Float(related="rapport_id.count_nbr_dim_days",string="Dimanches Travailés")
+    affich_jour_ferier = fields.Float(related="rapport_id.count_nbr_ferier_days",string="JF Travailés")
+    affich_conge = fields.Float(related="rapport_id.count_nbr_holiday_days",string="Congé Payée")
+    affich_jour_absence = fields.Float(related="rapport_id.count_nbr_absense_days",string="Absence")
     
+    addition = fields.Float('Total Avantage',compute="_compute_total_addition",store=True)
+    deduction = fields.Float('Total Déduction',compute="_compute_total_deduction",store=True)
     net_pay = fields.Float('Net à payer', compute="compute_net_a_payer", readonly=True)
     nbr_jour_travaille = fields.Float("Nombre de jours travaillés")
     nbr_heure_travaille = fields.Float("Nombre des heures travaillées")
@@ -53,7 +63,8 @@ class fiche_paie(models.Model):
     rapport_id = fields.Many2one("hr.rapport.pointage", string = "Rapport de pointage", readonly=True)
     stc_id = fields.Many2one("hr.stc", string = "STC", required=False)
 
-    jr_travaille_par_chantier = fields.One2many("jr.travaille.par.chantier", 'fiche_paie_id',string='Jours travaillés par chantier', readonly=True)
+    jr_travaille_par_chantier = fields.One2many("jr.travaille.par.chantier", 'fiche_paie_id',string='Jours travaillés par chantier')
+    jr_par_prime = fields.One2many("days.per.addition", 'payroll_id',string='Jours par prime')
 
     @api.model
     def create(self, vals):
@@ -62,13 +73,14 @@ class fiche_paie(models.Model):
         month = '{:02d}'.format(today.month)
         fiche_paie_sequence = self.env['ir.sequence'].next_by_code('hr.payslip.sequence')
         vals['name'] =  str(fiche_paie_sequence) + '/' + str(month) + '/' + str(year)   
-        res = super(fiche_paie, self).create(vals)
-        res.payroll_validation()     
-        return res
+        self.payroll_validation(vals['contract_id'],vals['period_id'])  
+        self.unique_payroll_validation(vals['employee_id'],vals['period_id'],vals['quinzaine'])   
+        return super(fiche_paie, self).create(vals)
 
     def write(self, vals):
         res = super(fiche_paie, self).write(vals)
-        self.payroll_validation()
+        self.payroll_validation(self.contract_id.id,self.period_id.id) 
+        
         return res
 
     @api.depends('employee_id','period_id','contract_id')
@@ -85,18 +97,54 @@ class fiche_paie(models.Model):
     def _compute_salaire_heure(self):
         for rec in self:
             rec.salaire_heure = rec.contract_id.pp_personnel_id_many2one.get_wage_per_hour(rec.period_id)
+    
+    @api.depends('employee_id','period_id','contract_id')
+    def _compute_panier(self):
+        for rec in self:
+            contract_period = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start)
+            rec.affich_jour_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period) if rec.employee_id and rec.period_id else 0
+    
+    @api.depends('employee_id','period_id','contract_id')
+    def _compute_panier_dimanche(self):
+        for rec in self:
+            contract_period = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start)
+            rec.affich_jour_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period) if rec.employee_id and rec.period_id else 0
+            rec.affich_jour_dimmanche_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period,True) if rec.employee_id and rec.period_id else 0
+
+    
+    
+    @api.depends('cal_state')
+    def _compute_total_addition(self):
+        pass
 
     @api.onchange('employee_id')
     def get_contract_actif(self):
         if self.employee_id:
             self.contract_id = self.employee_id.contract_id
+            
+    @api.depends('period_id')
+    def _onchange_period_id(self):
+        for rec in self:
+            if rec.period_id:
+                query = """
+                    SELECT id
+                    FROM hr_prime
+                    WHERE type_prime in (select id from hr_prime_type where type_payement = 'j' and type_addition = 'perio')
+                    AND state = 'validee' ANd first_period_id <= %s
+                """ %(rec.period_id.id)
+                rec.env.cr.execute(query)
+                
+                res = rec.env.cr.fetchall()
+                data = []
+                if res:
+                    for line in res[0]:
+                        data.append((0, 0, {
+                            'prime_id':line
+                        }))
+                rec.jr_par_prime.unlink()
+                rec.jr_par_prime = data
 
-        
-    def compute_affich_jour_conge(self):
-        self.affich_jour_conge = self.employee_id.panier_conge + self.employee_id.panier_jr_ferie
-       
-       
-    def compute_affich_bonus_jour(self):
+    def _compute_affich_bonus_jour(self):
         for record in self:
             worked_time = 0
             base_time = 0
@@ -121,12 +169,13 @@ class fiche_paie(models.Model):
                 record.affich_bonus_jour = min(res,0.75)  
 
 
-    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel')
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','addition','deduction')
     def compute_net_a_payer(self):
         resultat = 0
         for rec in self:
             if rec.contract_id:
                 rec.net_pay = rec.nbr_heure_travaille * rec.salaire_heure if rec.type_profile_related == "h" else rec.nbr_jour_travaille * rec.salaire_jour
+                rec.net_pay +=  (rec.addition - rec.deduction) 
             else:
                 rec.net_pay = 0
 
@@ -145,6 +194,19 @@ class fiche_paie(models.Model):
                     "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
                 )
 
+    def to_cal(self):
+        if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
+            if self.state not in {'validee','annulee'} :
+                self.state = 'cal'
+            else:
+                raise ValidationError(
+                        "Erreur, Cette action n'est pas autorisée."
+                    )
+        else:
+            raise ValidationError(
+                    "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
+                )
+        
     def to_validee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
             if self.state not in {'validee','annulee'} :
@@ -173,24 +235,28 @@ class fiche_paie(models.Model):
                     "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
                 )
 
-    def payroll_validation(self):
+    def payroll_validation(self,contract_id,period_id):
 
-        contract_period = self.env['account.month.period'].get_period_from_date(self.contract_id.date_start)
-        unique_payroll_per_period = self.env[self._name].search_count([
-                                                        ('employee_id', '=', self.employee_id.id),
-                                                        ('period_id', '=', self.period_id.id),
-                                                        ('quinzaine', '=', self.quinzaine)]) 
+        contract_period = self.env['account.month.period'].get_period_from_date(self.env['hr.contract'].browse(contract_id).date_start)
 
-        if not self.contract_id or self.period_id.date_stop <= contract_period.date_start:
+        if self.env['account.month.period'].browse(period_id).date_stop <= contract_period.date_start:
             raise ValidationError(
                     "Anomalie détectée !!! la période choisie pour le payement ne correspond pas au contrat de l'employé veuillez choisir un contrat convenable."
                 )
         
+    def unique_payroll_validation(self,employee_id,period_id,quinzaine):
+
+        unique_payroll_per_period = self.env[self._name].search_count([
+                                                        ('employee_id', '=', employee_id),
+                                                        ('period_id', '=', period_id),
+                                                        ('quinzaine', '=', quinzaine)]) 
         if unique_payroll_per_period > 0:
             raise ValidationError(
                     "Anomalie d'unicité détectée !!! une fiche de paie existe déja pour la période %s." % self.period_id.name
                 )
 
+    def update_cal_state(self):
+        self.cal_state = not self.cal_state
 
 class loan_list(models.Model):
     _name = "loan.list"
@@ -215,3 +281,13 @@ class fiche_paie_stc(models.Model):
     emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Équipe")
     #vehicle = fields.Many2one('fleet.vehicle',string="Dernier Engin", states=READONLY_STATES)
     stc_id = fields.Many2one("hr.stc",u'STC',ondelete='cascade')
+
+class days_per_addition(models.Model):
+    
+    _name = "days.per.addition"
+
+    prime_id = fields.Many2one('hr.prime', string='prime')
+    payroll_id = fields.Many2one('hr.payslip', string='payroll')
+    jour_prime = fields.Float("Jour Prime") # ce champs didié pour sauvegarder les jours à payer d'un prime journalier exemple hrira
+    is_cal = fields.Boolean('calculé',default=False)
+    

@@ -43,6 +43,7 @@ class declaration_anomalie_employee_sur_chantier(models.Model):
         ('approuved','Approuvée')
     ], string='Status',default='draft')
 
+    _prefix_dict = {'5':'AB','6':'AP','7':'STC','8':'AT'}
 
     @api.model
     def create(self, vals):
@@ -57,36 +58,38 @@ class declaration_anomalie_employee_sur_chantier(models.Model):
         """ % (vals['type_declaration'])
         self.env.cr.execute(query)
         res = "{:05d}".format(self.env.cr.dictfetchall()[0]['count']+ 1 ) 
-        prefix_dict = {'5':'AB','6':'AP','7':'STC','8':'AT'}
-        vals['name'] = prefix_dict[vals['type_declaration']]+str(res)
+        
+        vals['name'] = self._prefix_dict[vals['type_declaration']]+str(res)
 
 
         return super().create(vals)
 
     def write(self, vals):
-
-        return super().write(vals)
+        res= super().write(vals)
+        if 'state' in vals and res:
+            
+            if self.create_uid.id == self.env.user.id and self._uid != SUPERUSER_ID and not self.env.user._is_admin() and vals['state'] not in ('draft','cancel','valide'):
+                raise UserError("Action Non autorisé")
+            if vals['state'] in ('draft','cancel'):
+                self.update_corresponding_lines('1',self.type_declaration)
+            elif vals['state'] == 'valide':
+                self.update_corresponding_lines(self.type_declaration,'1')
+        return res
     
     def update_corresponding_lines(self,day_type,type_condition):
-        date_start = self.env['account.month.period'].get_period_from_date(self.date_transfert).date_start
         lines = self.env['hr.rapport.pointage.line'].search([
-                ('day','>=',date_start),
-                ('day','<=',self.date_transfert),
+                ('employee_id','=',self.employee_id.id),
+                ('day','=',self.date_fait),
                 ('day_type','=',type_condition)
                 ])
         
         if lines:
-            lines[len(lines) - 1].write({
-                'day_type': day_type,
-                'details' : 'Transfert vers %s'%self.chantier_id_destiation.simplified_name if type_condition == '1' else False,
-                'chantier_id': self.chantier_id_destiation.id if type_condition == '1' else False
-            })
-            lines[len(lines) - 1].rapport_id.write({
-                'chantier_id': self.chantier_id_destiation.id if type_condition == '1' else self.chantier_id_source
-            })
             new_state = 'working' if type_condition == '1' else 'draft'
-            for line in lines[0:len(lines) -1]:
+            for line in lines:
                 line.write({
+                    'day_type': day_type,
+                    'details' : self.motif if type_condition == '1' else False,
+                    'chantier_id': line.rapport_id.chantier_id.id if type_condition == '1' else False,
                     'state':new_state
                 })
         return

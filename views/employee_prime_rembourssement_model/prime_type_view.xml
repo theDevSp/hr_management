@@ -18,56 +18,56 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <center>
-                        <div class="card border-dark mb-3 bg-light" style="max-width: 30em;text-align:left;">
-                            <div class="card-body text-dark">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label for="name" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fas fa-comment form-control-icon"></span>
-                                                <field name="name" class="form-control"/>
-                                            </div>  
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-6">
+                            <div class="bg-white shadow p-3">
+                                <div class="alert alert-danger text-center mb-2"><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> Champs Obligatoire </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">DEFINITION PRIME</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="name" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="name" class="form-control"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="type_addition" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="type_addition" class="form-control"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="type_payement" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="type_payement" class="form-control"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="payement_condition" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="payement_condition" class="form-control text-center"/>
+                                            <field name="j_m" class="form-control text-center"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="montant" class=""/></span>
+                                            </div>
+                                            <field name="montant" class="form-control text-center"/>
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label for="type_addition" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fa fa-plus form-control-icon"></span>
-                                                <field name="type_addition" class="form-control"/>
-                                            </div>  
-                                        </div>      
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label for="type_payement" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fa fa-plus form-control-icon"></span>
-                                                <field name="type_payement" class="form-control"/>
-                                            </div>  
-                                        </div>      
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label for="montant" class=""/>
-                                        <div class="main">
-                                            <div class="form-group">
-                                                <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                <field name="montant" class="form-control"/>
-                                            </div>  
-                                        </div>
-                                    </div>
-                                </div>
+                                </div> 
                             </div>
                         </div>
-                    </center>
+                    </div>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>

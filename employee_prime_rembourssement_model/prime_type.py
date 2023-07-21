@@ -11,7 +11,7 @@ class primetype(models.Model):
     name = fields.Char('Libellé')
     type_addition = fields.Selection([
         ('indiv', 'Individuelle'),
-        ('perio', 'Périodique')
+        ('perio', 'Collectif')
         ], 
         string="Type d'addition",
         default='indiv'
@@ -25,9 +25,20 @@ class primetype(models.Model):
         required=True)
 
     montant = fields.Float('Montant')
+    payement_condition = fields.Integer('Condition de Payement')
+    j_m = fields.Selection([
+        ('j', 'Jours'),
+        ('m', 'Mois'),
+        ('a', 'Années')
+    ], string='j_m')
 
     @api.constrains('montant')
     def _check_montant(self):
         if self.montant < 0:
             raise ValidationError("Le montant doit être supérieur ou égale à 0.")
+        
+    @api.model
+    def create(self, vals):
+        vals['name'] = vals['name'].title()
+        return super().create(vals)
   

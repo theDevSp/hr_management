@@ -152,9 +152,9 @@ class hr_rapport_pointage(models.Model):
     state = fields.Selection([('draft',u'Brouillon'),('working',u'Traitement En Cours'),('compute',u"Mois Calculé"),('valide',u"Validé"),('done',u"Clôturé"),('cancel','Annulé')],u"Etat Pointage",default='draft',tracking=True)
 
     count_nbr_holiday_days = fields.Float("Jours Congés",readonly=True,compute="_compute_total_holidays")
-    count_nbr_ferier_days = fields.Integer("Jours Fériés",readonly=True,compute="_compute_days_conge_absence_abondon")
-    count_nbr_dim_days = fields.Integer("Dimanches",readonly=True,compute="_compute_days_conge_absence_abondon")
-    count_nbr_absense_days = fields.Integer("Absences",readonly=True,compute="_compute_days_conge_absence_abondon")
+    count_nbr_ferier_days = fields.Float("Jours Fériés",readonly=True,compute="_compute_days_conge_absence_abondon")
+    count_nbr_dim_days = fields.Float("Dimanches",readonly=True,compute="_compute_days_conge_absence_abondon")
+    count_nbr_absense_days = fields.Float("Absences",readonly=True,compute="_compute_days_conge_absence_abondon")
 
     q1_state = fields.Selection([('q1_draft',u'En Attente'),('q1_working',u'Q1 Traitement En Cours'),('q1_compute',u"Q1 Calculé"),('q1_valide',u"Q1 Validé"),('q1_done',u"Q1 Clôturé")],u"Première Quinzaine",default="q1_draft")
     q2_state = fields.Selection([('q2_draft',u'En Attente'),('q2_working',u'Q2 Traitement En Cours'),('q2_compute',u"Q2 Calculé"),('q2_valide',u"Q2 Validé"),('q2_done',u"Q2 Clôturé")],u"Deuxième Quinzaine",default="q2_draft")

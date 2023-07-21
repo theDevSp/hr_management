@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template >
+    <t t-name="hr_management.DeductionField" owl="1">
+        <div class="row mt-3 mt-md-3 justify-content-center">
+            <div class="sep-title h2">
+                Prélévements
+            </div>
+        </div>
+        <t t-if="state.prelevement_list.length > 0">
+            <div class="row mt-3 mt-md-3">
+                <t t-foreach="state.prelevement_list" t-as="prelevement" t-key="prelevement.prelevement_id">
+                    <div class="col-12 col-lg-6 position-relative">
+                        <span t-attf-class="position-absolute top-0 start-50 translate-middle badge rounded-pill py-2 px-3 mt-4 {{ this.get_state_back_color(prelevement.state) }}">
+                            <span t-esc="prelevement.state" class="text-white h5"/>
+                        </span>
+                        <div class="bg-white shadow mt-3 price-box">
+                            <div class="pricing-name text-center">
+                                <h4 class="mb-0"><span t-esc="prelevement.label"/></h4>
+                            </div>
+                            <div class="price-features mt-1 text-center">
+                                <p><span t-esc="prelevement.period"/></p>
+                            </div>
+                            <div class="row justify-content-center ">
+                                <div t-attf-class="col-12 plan-price text-center mt-4">
+                                    +<span class="text-custom font-weight-normal mb-0 h1" t-esc="prelevement.amount" /><span>DH</span>
+                                </div>
+                            </div>
+                            <div class="price-features mt-5 text-center">
+                                <p t-if="prelevement.note"><span t-esc="prelevement.note"/></p>
+                            </div>
+                        </div>
+                    </div>
+                </t>  
+            </div>
+        </t>
+        <t t-else="">
+            <div class="row mt-3 mt-md-3 justify-content-center">
+                <div class="col-12 col-md-4 d-flex align-items-center">
+                    <div class="bg-white shadow p-3">
+                        <div class="card bg-light my-3">
+                            <div class="card-body">
+                                <h3 class="text-center">
+                                    Auncune Résultat à afficher
+                                </h3>
+                            </div> 
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+</template>

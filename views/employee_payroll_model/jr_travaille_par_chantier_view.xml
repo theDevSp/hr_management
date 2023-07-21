@@ -9,7 +9,6 @@
                 <field name="emplacement_chantier_id"/>
                 <field name="nbr_jour"/>
                 <field name="nbr_heure"/>
-                <field name="nbr_dimanches_travaille"/>
                 <field name="fiche_paie_id"/>
             </tree>
         </field>
@@ -61,15 +60,6 @@
                                                 <div class="form-group">
                                                     <span class="fas fa-money-bill-wave form-control-icon"></span>
                                                     <field name="nbr_heure" class="form-control" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="nbr_dimanches_travaille"/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="nbr_dimanches_travaille" class="form-control"/>
                                                 </div>
                                             </div>
                                         </div>

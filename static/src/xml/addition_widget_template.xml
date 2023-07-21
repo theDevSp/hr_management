@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+    <t t-name="hr_management.AdditionField" owl="1">
+        <t t-if="state.prime_list">
+            <div class="row mt-3 mt-md-3 justify-content-center">
+                <div class="sep-title h2">
+                    Primes
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <button t-attf-class="btn {{ state.is_cal ? 'btn-custom ' : 'btn-success' }} text-white" t-on-click="()=>this.calculateSum()">
+                    <i t-attf-class="fas fa-{{ state.is_cal ? 'undo' : 'calculator' }}"></i>
+                    <span t-if="state.is_cal"> Reset</span>
+                    <span t-else=""> Calculer</span>
+                </button>
+            </div>
+            
+            <div class="row mt-3 mt-md-3">
+                <t t-foreach="state.prime_list" t-as="prime" t-key="prime.payement_id">
+                    <div class="col-12 col-lg-6 position-relative">
+                        <span t-attf-class="position-absolute top-0 start-50 translate-middle badge rounded-pill py-2 px-3 mt-4 {{ this.get_state_back_color(prime.state) }}">
+                            <span t-esc="prime.state" class="text-white h5"/>
+                        </span>
+                        <div class="bg-white shadow mt-3 price-box">
+                            <div class="pricing-name text-center">
+                                <h4 class="mb-0"><span t-esc="prime.prime.label"/></h4>
+                            </div>
+                            <div class="price-features mt-1 text-center">
+                                <p><span t-esc="prime.period"/></p>
+                            </div>
+                            <div class="row justify-content-center ">
+                                <div t-attf-class="{{ prime.prime.pay_rate == 'j' ? 'col-2' : 'col-12' }} plan-price text-center mt-4">
+                                    +<span class="text-custom font-weight-normal mb-0 h1" t-esc="prime.amount" /><span>DH</span>
+                                </div>
+                                <t t-if="prime.prime.pay_rate == 'j' and this.state.parent_state === 'draft' and !prime.is_cal">
+                                    <div class="col-5 plan-price text-center mt-4 pl-1 d-flex align-items-center">
+                                        <div style="width:10px"></div> &#xD7; 
+                                        <input type="number" t-attf-id="prime-{{ prime.prime_id }}" class="text-center mx-1" step="any" 
+                                                t-att-value="prime.nbr_days || 0" t-on-change="()=>this.valide(prime)"/><span>Jour</span>
+                                    </div>
+                                    <div class="col-12 plan-price text-center mt-4">
+                                        = + <span class="text-custom font-weight-normal mb-0 h1" t-esc="prime.amount * prime.nbr_days" /><span>DH</span>
+                                    </div>
+                                </t>
+                                <t t-elif="prime.prime.pay_rate == 'j' and this.state.parent_state != 'draft' or prime.is_cal">
+                                    <div class="col-5 plan-price text-center mt-4">
+                                        &#xD7; <span class="text-custom font-weight-normal mb-0 h1" t-esc="prime.nbr_days"/><span>Jour</span>
+                                    </div>
+                                    <div class="col-12 plan-price text-center mt-2 pl-1">
+                                        = + <span class="text-custom font-weight-normal mb-0 h1" t-esc="prime.amount * prime.nbr_days" /><span>DH</span>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                </t>
+                            </div>
+                            <div class="price-features mt-5 text-center">
+                                <p t-if="prime.note"><span t-esc="prime.note"/></p>
+                            </div>
+                            <div t-if="prime.state == 'Non Payé'" class="text-center mt-5">
+                                <button class="btn btn-custom text-white" t-on-click="()=>this.update_payement(prime)">Reporter</button>
+                            </div>
+                        </div>
+                    </div>
+                </t>  
+            </div>
+        </t>
+        <t t-else="">
+            <div class="row mt-3 mt-md-3 justify-content-center">
+                <div class="col-12 col-md-4 d-flex align-items-center">
+                    <div class="bg-white shadow p-3">
+                        <div class="card bg-light my-3">
+                            <div class="card-body">
+                                <h3 class="text-center">
+                                    Auncune Résultat à afficher
+                                </h3>
+                            </div> 
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+</template>

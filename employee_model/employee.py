@@ -260,51 +260,54 @@ class hr_employee(models.Model):
 
     def _compute_panier_conge(self):
         for rec in self :
+            period_debut_contrat = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start) if rec.contract_id else 0
             query = """
                 SELECT SUM(nbr_jour)
                 FROM hr_allocations
-                WHERE categorie in ('conge_annuel','indemnite_conge','compensation','stc') 
-                AND employee_id = %s
+                WHERE categorie in ('bonus','conge_annuel','indemnite_conge','compensation','stc') 
+                AND employee_id = %s AND period_id >= %s
                 AND state = 'approuvee'
-            """ % (rec.id)
+            """ % (rec.id,period_debut_contrat.id)
             rec.env.cr.execute(query)
             res = rec.env.cr.fetchall()
             if len(res) > 0:
                 rec.panier_conge = res[0][0]
             else :
-                rec.panier_conge = "0"
+                rec.panier_conge = 0
 
     def _compute_panier_jr_ferie(self):
         for rec in self :
+            period_debut_contrat = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start) if rec.contract_id else 0
             query = """
                 SELECT SUM(nbr_jour)
                 FROM hr_allocations
                 WHERE categorie = 'jour_ferie' 
-                AND employee_id = %s
+                AND employee_id = %s AND period_id >= %s
                 AND state = 'approuvee'
-            """ % (rec.id)
+            """ % (rec.id,period_debut_contrat.id)
             rec.env.cr.execute(query)
             res = rec.env.cr.fetchall()
             if len(res) > 0:
                 rec.panier_jr_ferie = res[0][0]
             else :
-                rec.panier_jr_ferie = "0"
+                rec.panier_jr_ferie = 0
 
     def _compute_panier_dimanches(self):
         for rec in self :
+            period_debut_contrat = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start) if rec.contract_id else 0
             query = """
                 SELECT SUM(nbr_jour)
                 FROM hr_allocations
                 WHERE categorie = 'dimanche_travaille' 
-                AND employee_id = %s
+                AND employee_id = %s AND period_id >= %s
                 AND state = 'approuvee'
-            """ % (rec.id)
+            """ % (rec.id,period_debut_contrat.id)
             rec.env.cr.execute(query)
             res = rec.env.cr.fetchall()
             if len(res) > 0:
                 rec.panier_dimanches = res[0][0]
             else :
-                rec.panier_dimanches = "0"
+                rec.panier_dimanches = 0
 
 
     def all_contracts(self):

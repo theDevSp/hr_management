@@ -109,7 +109,7 @@ class hr_employee_transfert(models.Model):
         
         if 'state' in vals and res:
             
-            if self.create_uid.id == self.env.user.id and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
+            if self.create_uid.id == self.env.user.id and self._uid != SUPERUSER_ID and not self.env.user._is_admin() and vals['state'] == 'done':
                 raise UserError("Action Non autorisé")
             if vals['state'] in ('draft','cancel'):
                 self.update_corresponding_lines('1','9')
@@ -121,6 +121,7 @@ class hr_employee_transfert(models.Model):
     def update_corresponding_lines(self,day_type,type_condition):
         date_start = self.env['account.month.period'].get_period_from_date(self.date_transfert).date_start
         lines = self.env['hr.rapport.pointage.line'].search([
+                ('employee_id','=',self.employee_id.id),
                 ('day','>=',date_start),
                 ('day','<=',self.date_transfert),
                 ('day_type','=',type_condition)

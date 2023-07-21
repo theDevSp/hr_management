@@ -47,218 +47,184 @@
                     <button name="to_cloturer" string="Clôturer" type="object" attrs="{'invisible': [('state', 'in', ('draft','annulee','cloture_paye','cloture'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
                     <field name="state" widget="statusbar" nolabel="1"/>
                 </header>
-                <sheet>
-                    <div class="row mt-3">
-                        <div class="col-md-4 col-lg-4">
-                            <div class="card-deck">
-                                <div class="card">
-                                    <center>
-                                        <div class="card border-dark mb-3 bg-info mt-4">
-                                            <div class="card-header text-center">
-                                                <h5>Employé</h5>
-                                            </div>
-                                            <div class="card-body text-dark text-center">
-                                                <h3>
-                                                    <field name="employee_id" required="1" class="card-img-top mt-3 mb-2" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </h3>
-                                            </div>
-                                        </div>
-                                    </center>
-                                    <div class="card-body">
-                                        <div class="md-form mb-n3" attrs="{'invisible': [('is_credit', '=', 'True')]}">
-                                            <label for="type_prelevement" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-sliders form-control-icon"></span>
-                                                    <field name="is_credit" class="card-img-top mt-3 mb-2" invisible="1"/>
-                                                    <field name="type_prelevement" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('is_credit', '=', 'True')]}"/>
-                                                    <field name="addition_deduction" invisible="1"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="md-form mb-n3">
-                                            <label for="responsable_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-user form-control-icon"></span>
-                                                    <field name="responsable_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="md-form mb-n3">
-                                            <label for="donneur_order" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-user form-control-icon"></span>
-                                                    <field name="donneur_order" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
+                    <div class="row justify-content-center">
+                        <div class="col-12 mt-3 col-md-6 col-lg-4">
+                            <div class="bg-white shadow p-3">
+                                <div class="alert alert-danger text-center mb-2"><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> Champs Obligatoire </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">INFOS PRELEVEMENT</h2>
                                     </div>
                                 </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="employee_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="employee_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                        </div>
+                                        <div class="input-group mb-3" attrs="{'invisible': [('is_credit', '=', 'True')]}">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="type_prelevement" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="is_credit" invisible="1"/>
+                                            <field name="addition_deduction" invisible="1"/>
+                                            <field name="type_prelevement" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="responsable_id" class=""/></span>
+                                            </div>
+                                            <field name="responsable_id" class="form-control"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="donneur_order" class=""/></span>
+                                            </div>
+                                            <field name="donneur_order" class="form-control"/>
+                                        </div>
+                                    </div> 
+                                </div> 
                             </div>
                         </div>
-                        <div class="col-md-8">
-                            <div class="card border-dark mb-3 bg-light">
-                                <div class="card-body text-dark">
-                                    <div class="row" attrs="{'invisible': [('type_prelevement', '!=', 'en_jour')]}">
-                                        <div class="col-md-4">
-                                            <label for="nbr_jour" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="nbr_jour" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="salaire_jour" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="salaire_jour" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="montant_total_prime" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="montant_total_prime" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
+                        <div class="col-12 mt-3 col-md-6 col-lg-3">
+                            <div class="bg-white shadow p-3">
+                                <div class="alert alert-danger text-center mb-2"><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> Champs Obligatoire </div>
+                                    <div class="card bg-light my-3">
+                                        <div class="card-body text-center">
+                                            <h2 class="card-text">CADRE TEMPORAIRE</h2>
                                         </div>
                                     </div>
-                                    <div class="row" attrs="{'invisible': [('type_prelevement', '!=', 'en_montant')]}">
-                                        <div class="col-md-6">
-                                            <label for="montant_total_prime" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="montant_total_prime" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div> 
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="date_fait" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
+                                    <div class="card bg-light my-3">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="date_fait" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                    </div>
                                                     <field name="date_fait" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>    
-                                        </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-md-5" style="height:5em;">
-                                            <label for="montant_paye" class=""/>
-                                            <div class="card text-white bg-dark mb-3">
-                                                <div class="card-body">
-                                                    <h4 class="card-title text-center align-middle">
-                                                        <field name="montant_paye" style="height:0.3em;"/> 
-                                                    </h4>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-1" style="height:5em;"></div>
-                                        <div class="col-md-5" style="height:5em;">
-                                            <label for="reste_a_paye" class=""/>
-                                            <div class="card text-white bg-dark mb-3">
-                                                <div class="card-body">
-                                                    <h4 class="card-title text-center align-middle">
-                                                        <field name="reste_a_paye" style="height:0.3em;"/>
-                                                    </h4>
+                                            <div class="row">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="first_period_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                    </div>
+                                                    <field name="first_period_id" class="form-control" options="{'related_end_date': 'date_fait', 'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-1" style="height:5em;"></div>
+                                        </div> 
+                                    </div> 
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3 col-md-12 col-lg-5">
+                            <div class="bg-white shadow p-3">
+                                <div class="alert alert-danger text-center mb-2"><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> Champs Obligatoire </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">MONTANTS ET ECHEANCE</h2>
                                     </div>
                                 </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="row justify-content-center">
+                                            <div class="col-12 col-md-6" attrs="{'invisible': [('type_prelevement', '=', 'en_montant')]}">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="nbr_jour" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                    </div>
+                                                    <field name="nbr_jour" class="form-control text-center"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" attrs="{'invisible': [('type_prelevement', '=', 'en_montant')]}">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="salaire_jour" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                    </div>
+                                                    <field name="salaire_jour" class="form-control text-center"/>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="montant_total_prime" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                    </div>
+                                                    <field name="montant_total_prime" force_save="1" class="form-control text-center" attrs="{'readonly': [('type_prelevement', '=', 'en_jour')]}"/>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="echeance" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                    </div>
+                                                    <field name="echeance" force_save="1" class="form-control text-center"/>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="montant_paye" class=""/><i class="fas fa-check-circle" style="color: #1fb36a;"></i></span>
+                                                    </div>
+                                                    <field name="montant_paye" string="Payé" class="form-control text-center"/>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="reste_a_paye" class=""/><i class="fas fa-times-circle" style="color: #f00000;"></i></span>
+                                                    </div>
+                                                    <field name="reste_a_paye" string="Reste" class="form-control text-center"/>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                        
+                                    </div> 
+                                </div> 
                             </div>
-                            <div class="card border-dark mb-3 mt-3">
-                                <div class="card-header">Période et échéance</div>
-                                <div class="card-body text-dark">
-                                    <div class="row" attrs="{'invisible': [('type_prelevement', '!=', 'en_montant')]}">
-                                        <div class="col-md-6">
-                                            <label for="first_period_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="first_period_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>      
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="echeance" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="echeance" class="form-control" 
-                                                            attrs="{'readonly': [('state', '!=', 'draft')],
-                                                                    'required':[('addition_deduction','=','prelevement'),('type_prelevement','=','en_montant')]}"/>
-                                                </div>  
-                                            </div> 
+                        </div> 
+                        <div class="row mt-3 justify-content-center">
+                            <div class="col-12 col-lg-8">
+                                <div class="bg-white shadow p-3">
+                                    <div class="card bg-light my-3">
+                                        <div class="card-body text-center">
+                                            <h2 class="card-text">DETAILS PAYEMENT</h2>
                                         </div>
                                     </div>
-                                     <div class="row" attrs="{'invisible': [('type_prelevement', '!=', 'en_jour')]}">
-                                        <div class="col-md-12">
-                                            <label for="date_fait" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="date_fait" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>    
-                                        </div>
-                                    </div>
-                                    <div class="row" groups="hr_management.group_admin_paie">
-                                        <div class="col-md-12">
-                                            <label for="paiement_prelevement_ids" class="" string="Paiement prélèvement"/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <field name="paiement_prelevement_ids" options="{'no_create': True, 'no_open': True}">
-                                                        <tree string="Les paiements des prélèvements" multi_edit="1" sample="1" class="table">
-                                                            <field name="period_id"/>
-                                                            <field name="montant_a_payer"/>
-                                                            <field name="state" widget="badge" decoration-danger="state == 'non_paye'" decoration-success="state == 'paye'"/>
-                                                            <button name="open_wizard_reporte_dates_prelevement" type="object" class="oe_highlight" icon="fa-clock" attrs="{'invisible': [('state', '!=', ('non_paye'))]}"/>
-                                                            <button name="annuler_reporter_date_prelevement" type="object" class="oe_highlight" icon="fa-times" attrs="{'invisible': [('state', '!=', ('reportee'))]}"/>
-                                                            <field name="observations"/>
-                                                            <button name="open_wizard_details_prelevement" type="object" class="oe_highlight" icon="fa-eye" groups="hr_management.group_admin_paie"/>
-                                                        </tree>
-                                                    </field>
-                                                </div>  
-                                            </div>      
-                                        </div>
-                                    </div>
-                                    <div class="row" groups="hr_management.group_agent_paie">
-                                        <div class="col-md-12">
-                                            <label for="paiement_prelevement_ids" class="" string="Paiement prélèvement"/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <field name="paiement_prelevement_ids" options="{'no_create': True, 'no_open': True}" readonly="1">
-                                                        <tree string="Les paiements des prélèvements" multi_edit="1" sample="1" class="table">
-                                                            <field name="period_id"/>
-                                                            <field name="montant_a_payer"/>
-                                                            <field name="state" widget="badge" decoration-danger="state == 'non_paye'" decoration-success="state == 'paye'"/>
-                                                            <button name="open_wizard_reporte_dates_prelevement" type="object" class="oe_highlight" icon="fa-clock" attrs="{'invisible': [('state', '!=', ('non_paye'))]}"/>
-                                                            <button name="annuler_reporter_date_prelevement" type="object" class="oe_highlight" icon="fa-times" attrs="{'invisible': [('state', '!=', ('reportee'))]}"/>
-                                                            <field name="observations"/>
-                                                            <button name="open_wizard_details_prelevement" type="object" class="oe_highlight" icon="fa-eye" groups="hr_management.group_admin_paie"/>
-                                                        </tree>
-                                                    </field>
-                                                </div>  
-                                            </div>      
-                                        </div>
-                                    </div>
+                                    <div class="card bg-light my-3">
+                                        <div class="card-body">
+                                            <field name="paiement_prelevement_ids">
+                                                <tree string="Les paiements des prélèvements" editable="bottom" create="false" delete="false" multi_edit="1" sample="1">
+                                                    <field name="period_id" readonly="1"/>
+                                                    <field name="montant_a_payer" readonly="1"/>
+                                                    <field name="state" widget="badge" decoration-danger="state == 'non_paye'" decoration-success="state == 'paye'" readonly="1"/>
+                                                    <button name="open_wizard_reporte_dates_prelevement" type="object" class="btn btn-outline-info rounded border-0" icon="fa-clock" attrs="{'invisible': [('state', '!=', ('non_paye'))]}"/>
+                                                    <button name="annuler_reporter_date_prelevement" type="object" class="btn btn-outline-info rounded border-0" icon="fa-times" attrs="{'invisible': [('state', '!=', ('reportee'))]}"/>
+                                                    <field name="observations"/>
+                                                    <button name="open_wizard_details_prelevement" type="object" class="btn btn-outline-info rounded border-0" icon="fa-eye" groups="hr_management.group_admin_paie"/>
+                                                </tree>
+                                            </field>
+                                        </div> 
+                                    </div> 
                                 </div>
-                                   
-                            </div>
+                            </div>  
                         </div>
                     </div>
-                </sheet>
-                <div class="oe_chatter">
+                <div class="oe_chatter mt-3">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>

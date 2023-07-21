@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
 from math import *
@@ -9,11 +10,13 @@ class prime(models.Model):
     _description = "Prime"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     
-    name = fields.Char("ref")
-    employee_id = fields.Many2one("hr.employee", string = "Employee")
+    name = fields.Char("Désignation")
+    employee_id = fields.Many2one("hr.employee", string = "Employé")
     first_period_id = fields.Many2one("account.month.period", string = "Première Période", required=True,compute="_compute_first_period",store=True)
     paiement_prime_ids = fields.One2many("hr.paiement.ligne","prime_id", string = "Paiement Ligne")
-    date_fait = fields.Date("Date de fait", required=True, tracking=True, index=True)
+    date_fait = fields.Date("Date de fait", tracking=True, index=True)
+    date_start = fields.Date('Date de début')
+    date_end = fields.Date('Date de fin')
     donneur_order = fields.Many2one("hr.directeur", string = "Directeur")
     responsable_id = fields.Many2one("hr.responsable.chantier", string = "Responsable")
     type_prime = fields.Many2one("hr.prime.type", string = "Type de Prime")
@@ -31,7 +34,8 @@ class prime(models.Model):
         ],"Status", 
         default="draft",
     )
-    type_addition = fields.Char("Type d'addition")
+    type_addition = fields.Selection(related="type_prime.type_addition")
+    type_payement = fields.Selection(related="type_prime.type_payement")
     
     addition_deduction = fields.Selection([
         ("prime","Prime"),
@@ -45,19 +49,47 @@ class prime(models.Model):
         for rec in self:
             rec.reste_a_paye = rec.montant_total_prime - rec.montant_paye
     
-    @api.depends('date_fait')
+    @api.depends('date_fait','date_start')
     def _compute_first_period(self):
         for record in self:
-            record.first_period_id = self.env['account.month.period'].get_period_from_date(record.date_fait)
+            date = record.date_fait 
+            if record.date_end:
+                date = record.date_end 
+            record.first_period_id = self.env['account.month.period'].get_period_from_date(date)
     
-    @api.onchange("type_prime")
-    def onchange_type_prime(self):
-        self.montant_total_prime = self.type_prime.montant
-        self.type_addition = self.type_prime.type_addition
+    @api.onchange('montant_total_prime')
+    def _onchange_montant_total_prime(self):
+        for record in self:
+            record.echeance = record.montant_total_prime
 
+    @api.onchange('type_prime')
+    def _onchange_type_prime(self):
+        for record in self:
+            record.montant_total_prime = record.type_prime.montant
+            record.echeance = record.montant_total_prime 
+            record.date_fait = False
+            record.date_start = False
+            record.date_end = False
+    
+    @api.onchange('date_fait')
+    def _onchange_date_fait(self):
+        for record in self:
+            record.date_start = False
+            record.date_end = False
+    
+    @api.onchange('date_start')
+    def _onchange_date_start(self):
+        for record in self:
+            record.date_fait = False
+    
+    @api.onchange('date_end')
+    def _onchange_date_end(self):
+        for record in self:
+            record.date_fait = False
+    
     @api.constrains('echeance')
     def _check_echeance(self):
-        if self.echeance <= 0 or self.echeance > self.montant_total_prime :
+        if self.echeance <= 0 or self.echeance > self.montant_total_prime and self.type_payement == 'm':
             raise ValidationError("L'échéance doit être inférieur du montant et strictement supérieur à 0.")
     
 
