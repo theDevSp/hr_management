@@ -7,20 +7,13 @@
                     Primes
                 </div>
             </div>
-            <div class="col-12 col-md-3">
-                <button t-attf-class="btn {{ state.is_cal ? 'btn-custom ' : 'btn-success' }} text-white" t-on-click="()=>this.calculateSum()">
-                    <i t-attf-class="fas fa-{{ state.is_cal ? 'undo' : 'calculator' }}"></i>
-                    <span t-if="state.is_cal"> Reset</span>
-                    <span t-else=""> Calculer</span>
-                </button>
-            </div>
-            
             <div class="row mt-3 mt-md-3">
                 <t t-foreach="state.prime_list" t-as="prime" t-key="prime.payement_id">
                     <div class="col-12 col-lg-6 position-relative">
                         <span t-attf-class="position-absolute top-0 start-50 translate-middle badge rounded-pill py-2 px-3 mt-4 {{ this.get_state_back_color(prime.state) }}">
                             <span t-esc="prime.state" class="text-white h5"/>
                         </span>
+
                         <div class="bg-white shadow mt-3 price-box">
                             <div class="pricing-name text-center">
                                 <h4 class="mb-0"><span t-esc="prime.prime.label"/></h4>
@@ -36,7 +29,8 @@
                                     <div class="col-5 plan-price text-center mt-4 pl-1 d-flex align-items-center">
                                         <div style="width:10px"></div> &#xD7; 
                                         <input type="number" t-attf-id="prime-{{ prime.prime_id }}" class="text-center mx-1" step="any" 
-                                                t-att-value="prime.nbr_days || 0" t-on-change="()=>this.valide(prime)"/><span>Jour</span>
+                                                t-att-value="prime.nbr_days || 0"/><span>Jour</span>
+                                        <button class="btn btn-custom text-white" t-on-click="() => this.valide(prime)"><i class="fas fa-calculator"></i></button>
                                     </div>
                                     <div class="col-12 plan-price text-center mt-4">
                                         = + <span class="text-custom font-weight-normal mb-0 h1" t-esc="prime.amount * prime.nbr_days" /><span>DH</span>
@@ -53,16 +47,75 @@
                                 <t t-else="">
                                 </t>
                             </div>
-                            <div class="price-features mt-5 text-center">
-                                <p t-if="prime.note"><span t-esc="prime.note"/></p>
+                            <div t-if="prime.note" class="price-features mt-2 text-center">
+                                <div class="row mt-3 mt-md-3 justify-content-center">
+                                    <div class="sep-title h5">
+                                        Observation
+                                    </div>
+                                </div>
+                                <p><span t-esc="prime.note"/></p>
                             </div>
-                            <div t-if="prime.state == 'Non Payé'" class="text-center mt-5">
-                                <button class="btn btn-custom text-white" t-on-click="()=>this.update_payement(prime)">Reporter</button>
+                            <div class="row justify-content-center">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button t-if="prime.state == 'Non Payé' and this.state.parent_state === 'draft'"
+                                            class="btn btn-custom text-white" 
+                                            t-on-click="()=>{
+                                                this.state.postpone_action = true;
+                                                this.state.cancel_postepone_action = false}"
+                                            data-bs-toggle="modal"
+                                            t-attf-data-bs-target="#modal-prime-{{ prime.prime_id }}"
+                                            >Reporter</button>
+                                    <button t-if="prime.state == 'Décalé' and this.state.parent_state === 'draft'"
+                                            class="btn btn-warning text-white" 
+                                            t-on-click="()=>{
+                                                this.state.postpone_action = false;
+                                                this.state.cancel_postepone_action = true}"
+                                            data-bs-toggle="modal"
+                                            t-attf-data-bs-target="#modal-prime-{{ prime.prime_id }}"
+                                            >Annuler le décalage</button>
+                                    <button t-if="this.state.parent_state === 'draft'" 
+                                            class="btn btn-primary text-white" 
+                                            t-on-click="()=>{
+                                                this.state.postpone_action = false;
+                                                this.state.cancel_postepone_action = false}"
+                                            data-bs-toggle="modal" 
+                                            t-attf-data-bs-target="#modal-prime-{{ prime.prime_id }}">Note</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" t-attf-id="modal-prime-{{ prime.prime_id }}" tabindex="-100" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel"><span t-esc="prime.prime.label"/> Note pour la période <span t-esc="prime.period"/></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" ><i class="far fa-sticky-note"></i></span>
+                                    <input type="text" class="form-control" t-attf-id="note-prime-{{ prime.prime_id }}"
+                                            t-att-value="this.state.postpone_action ? '' : prime.note" placeholder="Note" aria-label="Username" aria-describedby="basic-addon1"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                <button type="button" class="btn btn-primary" 
+                                        t-if="!this.state.postpone_action and !this.state.cancel_postepone_action" 
+                                        t-on-click="()=>this.save_note(prime)">Enrgistrer</button>
+                                <button type="button" class="btn btn-custom" 
+                                        t-if="this.state.postpone_action and !this.state.cancel_postepone_action" 
+                                        t-on-click="()=>this.postepone_action(prime)">Reporter</button>
+                                <button type="button" class="btn btn-warning" 
+                                        t-if="this.state.cancel_postepone_action and !this.state.postpone_action" 
+                                        t-on-click="()=>this.cancel_postepone_action(prime)">Procéder</button>
+                            </div>
                             </div>
                         </div>
                     </div>
                 </t>  
             </div>
+            
         </t>
         <t t-else="">
             <div class="row mt-3 mt-md-3 justify-content-center">

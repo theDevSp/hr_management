@@ -3,7 +3,7 @@
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
 from math import *
- 
+
 class paiement_ligne(models.Model):
     _name = "hr.paiement.ligne"
     _description = "Paiement Ligne"

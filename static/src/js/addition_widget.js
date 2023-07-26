@@ -24,7 +24,9 @@ export class AdditionField extends Component {
             parent_state: '',
             prime_list: [],
             prime_per_day_list: [],
-            is_cal: false
+            is_cal: false,
+            postpone_action:false,
+            cancel_postepone_action:false
         })
         this.orm = useService("orm")
         this.jourInput = useRef("jour-input")
@@ -60,26 +62,30 @@ export class AdditionField extends Component {
         const prime_per_day_list = []
         const prime_list = []
         const res = []
-        if (quinzaine != 'quinzaine1' & employee_id & period_id) {
-            const result = await this.rpc("/hr_management/get_line_paiement/" + employee_id + "/" + period_id)
-            result['result'].forEach((element) => {
-                if (element.prime.pay_rate === 'j')
-                    prime_per_day_list.push(element)
-                else
-                    prime_list.push(element)
-            });
-
-            (async () => {
-                prime_list.forEach(element => {
-                    res.push(element)
+        try {
+            if (quinzaine != 'quinzaine1' & employee_id & period_id) {
+                const result = await this.rpc("/hr_management/get_line_paiement/" + employee_id + "/" + period_id)
+                result['result'].forEach((element) => {
+                    if (element.prime.pay_rate === 'j')
+                        prime_per_day_list.push(element)
+                    else
+                        prime_list.push(element)
                 });
-                (await this.get_prime_per_day_list(prime_per_day_list, fiche)).forEach(element => {
-                    res.push(element)
-                });
-                this.state.prime_list = res
-            })()
-        } else {
-            this.state.prime_list = []
+                (async () => {
+                    prime_list.forEach(element => {
+                        res.push(element)
+                    });
+                    (await this.get_prime_per_day_list(prime_per_day_list, fiche)).forEach(element => {
+                        res.push(element)
+                    });
+                    this.state.prime_list = res
+                })()
+            } else {
+                this.state.prime_list = []
+            }
+            return true
+        } catch (error) {
+            return false
         }
 
     }
@@ -89,12 +95,13 @@ export class AdditionField extends Component {
         object.forEach((element) => {
             ids.push(element.prime_id)
         });
-        const res = await this.orm.searchRead(this.addition_model, [['prime_id', 'in', ids], ['payroll_id', '=', fiche]], ["prime_id", "jour_prime", "is_cal"])
+        const res = await this.orm.searchRead(this.addition_model, [['prime_id', 'in', ids], ['payroll_id', '=', fiche]], ["prime_id", "jour_prime", "is_cal","observations"])
         object.forEach((element) => {
             res.forEach(days => {
                 if (element.prime_id == days.prime_id[0])
                     element.nbr_days = days.jour_prime
                 element.is_cal = days.is_cal
+                element.note = days.observations
             });
         });
         return object
@@ -116,6 +123,60 @@ export class AdditionField extends Component {
             })
 
         await this.get_prime(this.props.record.data.quinzaine, this.props.record.data.employee_id[0], this.props.record.data.period_id[0], this.props.record.data.id)
+        
+    }
+
+    async save_note(prime){
+        const prime_note = document.getElementById('note-prime-' + prime.prime_id).value
+        if (prime.prime.pay_rate == 'm') {
+            await this.orm.write(this.payement_model, [prime.payement_id], { observations: prime_note })
+        } else {
+            const res = await this.orm.searchRead(this.addition_model, [['prime_id', '=', prime.prime_id], ['payroll_id', '=', this.props.record.data.id]], ["is_cal"])
+            res.forEach(async element => {
+                await this.orm.write(this.addition_model, [element.id], { observations: prime_note })
+            })
+        }
+        this.get_prime(this.props.record.data.quinzaine,
+            this.props.record.data.employee_id[0],
+            this.props.record.data.period_id[0],
+            this.props.record.data.id).then((res) => {
+                $('#modal-prime-' + prime.prime_id).modal('hide')
+                this.showNotification(res) 
+            })
+    }
+
+    async postepone_action(prime){
+        const prime_note = document.getElementById('note-prime-' + prime.prime_id).value
+        this.rpc('/hr_management/reporter_prime/'+prime.payement_id+'/'+prime_note).then((res) => {
+            if (res.code == 200) {
+                this.get_prime(this.props.record.data.quinzaine,
+                    this.props.record.data.employee_id[0],
+                    this.props.record.data.period_id[0],
+                    this.props.record.data.id).then((res) => {
+                        $('#modal-prime-' + prime.prime_id).modal('hide')
+                        this.showNotification(res) 
+                    })
+            } else {
+                this.showNotification(false)
+            }
+        })
+    }
+
+    async cancel_postepone_action(prime){
+        const prime_note = document.getElementById('note-prime-' + prime.prime_id).value
+        this.rpc('/hr_management/cancel_gap/'+prime.payement_id+'/'+prime_note).then((res) => {
+            if (res.code == 200) {
+                this.get_prime(this.props.record.data.quinzaine,
+                    this.props.record.data.employee_id[0],
+                    this.props.record.data.period_id[0],
+                    this.props.record.data.id).then((res) => {
+                        $('#modal-prime-' + prime.prime_id).modal('hide')
+                        this.showNotification(res) 
+                    })
+            } else {
+                this.showNotification(false,res.code == 303 ? res.msg : false)
+            }
+        })
     }
 
     get_state_back_color(key) {
@@ -126,28 +187,6 @@ export class AdditionField extends Component {
             "Décalé": "bg-warning",
         }
         return background[key]
-    }
-
-    async update_payement(prime) {
-        const action = this.env.services.action
-        action.doAction({
-            type: "ir.actions.act_window",
-            name: ("Décaler le paiement de : \"" + prime.prime.label + "  " + prime.period + "\""),
-            res_model: "wizard_reporter_dates",
-            domain: [],
-            context: {
-                'line_id': prime.payement_id,
-                'current_model': "prime"
-            },
-            views: [
-                [false, "form"],
-            ],
-            view_type: 'form',
-            view_mode: 'form',
-            target: "new"
-        })
-        if (call)
-            await this.get_prime(this.props.record.data.quinzaine, this.props.record.data.employee_id[0], this.props.record.data.period_id[0], this.props.record.data.id)
     }
 
     async calculateSum() {
@@ -161,6 +200,22 @@ export class AdditionField extends Component {
             });
 
         await this.props.update(sum)
+    }
+
+    showNotification(result,msg="Une erreur est roncontrer durant le traitement veuillez réessayer plustard"){
+        const notification = this.env.services.notification
+        let msg = ""
+        let type = "" 
+        result ? msg = "Action réussi" : msg
+        result ? type = "success" : "danger"
+        
+        notification.add(msg, {
+            title: "Notification",
+            type: type, //info, warning, danger, success
+            sticky: false,
+            className: "p-4",
+            buttons: []
+        })
     }
 }
 

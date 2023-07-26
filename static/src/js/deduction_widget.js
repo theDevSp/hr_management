@@ -24,6 +24,8 @@ export class DeductionField extends Component {
             prelevement_list:[],
         })
         this.rpc = this.env.services.rpc
+        this.orm = useService("orm")
+        this.payement_model = "hr.paiement.prelevement"
 
         onWillStart(async ()=>{
             await this.get_prelevement(this.props.record.data.quinzaine,this.props.record.data.employee_id[0],this.props.record.data.period_id[0])
@@ -31,22 +33,36 @@ export class DeductionField extends Component {
         onWillUpdateProps(async (nextProps) => {
             this.get_prelevement(nextProps.record.data.quinzaine,nextProps.record.data.employee_id[0],nextProps.record.data.period_id[0])
         });
+
+        useEffect(
+            () => {
+
+                this.state.fiche_id = this.props.record.data.fiche_id
+                this.state.employee_id = this.props.record.data.employee_id
+                this.state.period_id = this.props.record.data.period_id
+                this.state.quinzaine = this.props.record.data.quinzaine
+                this.state.parent_state = this.props.record.data.state
+                
+            }
+        )
     }
     
     async get_prelevement(quinzaine,employee_id,period_id){
         const prelevement_list = []
         const res = []
-        if (quinzaine != 'quinzaine1' & employee_id & period_id){
-            const result = await this.rpc("/hr_management/get_line_prelevement/"+employee_id+"/"+period_id)
-            result['result'].forEach((element) => {
-                prelevement_list.push(element)
-            });
-            
-
-            this.state.prelevement_list = prelevement_list
-
-        }else{
-            this.state.prelevement_list = []
+        try {
+            if (quinzaine != 'quinzaine1' & employee_id & period_id){
+                const result = await this.rpc("/hr_management/get_line_prelevement/"+employee_id+"/"+period_id)
+                result['result'].forEach((element) => {
+                    prelevement_list.push(element)
+                });
+                this.state.prelevement_list = prelevement_list
+            }else{
+                this.state.prelevement_list = []
+            }
+            return true
+        } catch (error) {
+            return false
         }
     }
 
@@ -58,6 +74,69 @@ export class DeductionField extends Component {
             "Décalé" : "bg-warning",
         }
         return background[key]
+    }
+
+    async update_payement(prelevement) {
+        const action = this.env.services.action
+        action.doAction({
+            type: "ir.actions.act_window",
+            name: ("Décaler le paiement de : \"" + prelevement.label + "  " + prelevement.period + "\""),
+            res_model: "wizard_reporter_dates",
+            domain: [],
+            context: {
+                'line_id': prelevement.payement_id,
+                'current_model': "prelevement"
+            },
+            views: [
+                [false, "form"],
+            ],
+            view_type: 'form',
+            view_mode: 'form',
+            target: "new"
+        })
+    }
+
+    async save_note(prelevement){
+        const prelevement_note = document.getElementById('note-prelevement-' + prelevement.prelevement_id).value
+        await this.orm.write(this.payement_model, [prelevement.payement_id], { observations: prelevement_note })
+        
+        this.get_prelevement(this.props.record.data.quinzaine,
+                this.props.record.data.employee_id[0],
+                this.props.record.data.period_id[0]).then((res) => {
+            $('#modal-prelevement-' + prelevement.prelevement_id).modal('hide')
+            this.showNotification(res) 
+        })
+    }
+
+    showNotification(result){
+        const notification = this.env.services.notification
+        let msg = ""
+        let type = "" 
+        result ? msg = "Action réusii" : "Une erreur est roncontrer durant le traitement veuillez réessayer plustard"
+        result ? type = "success" : "danger"
+        
+        notification.add(msg, {
+            title: "Notification",
+            type: type, //info, warning, danger, success
+            sticky: false,
+            className: "p-4",
+            buttons: [
+                /*{
+                    name: "Notification Action",
+                    onClick: ()=>{
+                        console.log("This is notification action")
+                    },
+                    primary: true,
+                },
+                {
+                    name: "Show me again",
+                    onClick: ()=>{
+                        this.showNotification()
+                    },
+                    primary: false,
+                }*/
+            ]
+        })
     }
 
     async calculateSum() {

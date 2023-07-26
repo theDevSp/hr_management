@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
-from datetime import datetime
+from datetime import date, datetime
 
 class fiche_paie(models.Model):
     _name = "hr.payslip"
@@ -13,6 +13,7 @@ class fiche_paie(models.Model):
 
     name =  fields.Char("Référence", readonly=True, copy=False)
     employee_id = fields.Many2one("hr.employee",string="Employé",required=True)
+    working_years = fields.Char(related="employee_id.working_years",string="Ancienneté",readonly=True)
     contract_id = fields.Many2one("hr.contract", string = "Contrat",required=True)
     type_emp = fields.Selection(related="contract_id.type_emp",string=u"Type d'employé", store=True, readonly=True)
     job_id = fields.Many2one(related="contract_id.job_id", string='Poste', store=True, readonly=True)
@@ -32,8 +33,9 @@ class fiche_paie(models.Model):
 
     state  = fields.Selection([
         ("draft","Brouillon"),
-        ("cal","Calculée"),
         ("validee","Validée"),
+        ("cal","Calculée"),
+        ("done","Payée"),
         ("annulee","Annulée"),
         ("blocked","Bloquée"),
         ],"Status", 
@@ -80,6 +82,10 @@ class fiche_paie(models.Model):
     def write(self, vals):
         res = super(fiche_paie, self).write(vals)
         self.payroll_validation(self.contract_id.id,self.period_id.id) 
+        if vals.get('cal_state') and self.cal_state == True:
+            self.write({
+                'state':'cal'
+            })
         
         return res
 
@@ -110,39 +116,56 @@ class fiche_paie(models.Model):
             contract_period = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start)
             rec.affich_jour_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period) if rec.employee_id and rec.period_id else 0
             rec.affich_jour_dimmanche_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period,True) if rec.employee_id and rec.period_id else 0
-
-    
     
     @api.depends('cal_state')
     def _compute_total_addition(self):
-        pass
+        for rec in self:
+            res = 0
+            if rec.employee_id and rec.period_id and rec.quinzaine != 'quinzaine1' and rec.cal_state:
+                query = """
+                    SELECT pl.montant_a_payer as amount,COALESCE(pt.payement_condition,0) as condition,p.date_fait as date_start
+                    FROM hr_paiement_ligne pl
+                    INNER JOIN hr_prime p ON pl.prime_id = p.id
+                    INNER JOIN hr_prime_type pt ON p.type_prime = pt.id
+                    WHERE pt.type_payement = 'm' and (p.employee_id = %s or p.employee_id is null) 
+                    and p.state = 'validee' and pl.period_id = %s and pl.state = 'non_paye'
 
+                    UNION
+
+                    SELECT dp.jour_prime * p.montant_total_prime,0,current_date
+                    FROM days_per_addition dp
+                    INNER JOIN hr_prime p ON dp.prime_id = p.id
+                    INNER JOIN hr_prime_type pt ON p.type_prime = pt.id
+                    WHERE pt.type_payement = 'j' and pt.type_addition = 'perio' and (p.employee_id = %s or p.employee_id is null) 
+                    and p.state = 'validee' and p.first_period_id = %s and dp.payroll_id = %s
+                    
+                """ %(rec.employee_id.id,rec.period_id.id,rec.employee_id.id,rec.period_id.id,rec.id)
+                rec.env.cr.execute(query)
+                for prime in rec.env.cr.dictfetchall():
+                    if rec.employee_id.get_working_years_in_days(prime['date_start']) >= prime['condition']:
+                        res += prime['amount']
+                #res = rec.env.cr.dictfetchall()[0]['tt']
+            rec.addition = res 
+
+    @api.depends('cal_state')
+    def _compute_total_deduction(self):
+        for rec in self:
+            res = 0
+            if rec.employee_id and rec.period_id and rec.quinzaine != 'quinzaine1' and rec.cal_state:
+                query = """
+                    SELECT COALESCE(sum(pl.montant_a_payer),0) as tt
+                    FROM hr_paiement_prelevement pl
+                    INNER JOIN hr_prelevement p ON pl.prelevement_id = p.id
+                    WHERE p.state = 'validee' and p.employee_id = %s and pl.period_id = %s and pl.state = 'non_paye';
+                """ %(rec.employee_id.id,rec.period_id.id)
+                rec.env.cr.execute(query)
+                res = rec.env.cr.dictfetchall()[0]['tt']
+            rec.deduction = res 
+            
     @api.onchange('employee_id')
     def get_contract_actif(self):
         if self.employee_id:
             self.contract_id = self.employee_id.contract_id
-            
-    @api.depends('period_id')
-    def _onchange_period_id(self):
-        for rec in self:
-            if rec.period_id:
-                query = """
-                    SELECT id
-                    FROM hr_prime
-                    WHERE type_prime in (select id from hr_prime_type where type_payement = 'j' and type_addition = 'perio')
-                    AND state = 'validee' ANd first_period_id <= %s
-                """ %(rec.period_id.id)
-                rec.env.cr.execute(query)
-                
-                res = rec.env.cr.fetchall()
-                data = []
-                if res:
-                    for line in res[0]:
-                        data.append((0, 0, {
-                            'prime_id':line
-                        }))
-                rec.jr_par_prime.unlink()
-                rec.jr_par_prime = data
 
     def _compute_affich_bonus_jour(self):
         for record in self:
@@ -185,6 +208,7 @@ class fiche_paie(models.Model):
             if self.state not in {'draft'} :
                 self.state = 'draft'
                 self.date_validation = ""
+                self.cal_state = False
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -194,10 +218,23 @@ class fiche_paie(models.Model):
                     "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
                 )
 
-    def to_cal(self):
+    def to_done(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
-            if self.state not in {'validee','annulee'} :
-                self.state = 'cal'
+            if self.state == 'cal' :
+                self.state = 'done'
+            else:
+                raise ValidationError(
+                        "Erreur, Cette action n'est pas autorisée."
+                    )
+        else:
+            raise ValidationError(
+                    "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
+                )
+    
+    def reset(self):
+        if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
+            if self.state == 'cal' :
+                self.state = 'validee'
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -226,6 +263,32 @@ class fiche_paie(models.Model):
             if self.state not in {'annulee'} :
                 self.state = 'annulee'
                 self.date_validation = ""
+            else:
+                raise ValidationError(
+                        "Erreur, Cette action n'est pas autorisée."
+                    )
+        else:
+            raise ValidationError(
+                    "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
+                )
+    
+    def block(self):
+        if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
+            if self.state in {'cal','done'} :
+                self.state = 'blocked'
+            else:
+                raise ValidationError(
+                        "Erreur, Cette action n'est pas autorisée."
+                    )
+        else:
+            raise ValidationError(
+                    "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
+                )
+    
+    def unblock(self):
+        if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
+            if self.state == 'blocked' :
+                self.state = 'cal'
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -290,4 +353,4 @@ class days_per_addition(models.Model):
     payroll_id = fields.Many2one('hr.payslip', string='payroll')
     jour_prime = fields.Float("Jour Prime") # ce champs didié pour sauvegarder les jours à payer d'un prime journalier exemple hrira
     is_cal = fields.Boolean('calculé',default=False)
-    
+    observations = fields.Text("Observations")

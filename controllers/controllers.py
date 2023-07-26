@@ -29,7 +29,6 @@ class HrManagement(http.Controller):
                     'add_rate':line.prime_id.type_prime.type_addition,
                     'pay_rate':line.prime_id.type_prime.type_payement,
                     'condition':line.prime_id.type_prime.payement_condition,
-                    'j_m':line.prime_id.type_prime.j_m,
                     'date_start':line.prime_id.date_start,
                     'date_end':line.prime_id.date_end
                 },
@@ -69,6 +68,54 @@ class HrManagement(http.Controller):
         return {
             'result':res
         }
+    
+    @http.route('/hr_management/reporter_prime/<int:prime_line_id>/<string:note>', type='json', auth='user')
+    def recompute_prime(self,prime_line_id,note):
+        prime_line = http.request.env['hr.paiement.ligne']
+        res = []
+        try:  
+            prime_line.browse(prime_line_id).recompute_prime(note)  
+            return {
+                'code':200,
+                'msg':'succes'
+            }
+        except:
+            return {
+                'code':504,
+                'msg':'error'
+            }
+    
+    @http.route('/hr_management/cancel_gap/<int:prime_line_id>', type='json', auth='user')
+    def recompute_prime(self,prime_line_id):
+        prime_line = http.request.env['hr.paiement.ligne']
+        current_line = prime_line.browse(prime_line_id)
+        follow_lines = current_line.prime_id.paiement_prime_ids.paiement_prime_ids.filtered(lambda ln: ln.id > prime_line_id and ln.state == "non_paye")
+        nbr_lignes = len(follow_lines)
+        derniere_ligne = follow_lines[nbr_lignes - 1]
+
+        if nbr_lignes <= 0:
+            return {
+                'code':303,
+                'msg':"Anomalie détéctée, Vous ne pouvez pas annuler le décalage de cette période, parceque toutes les périodes qui suivent sont traitées"
+            }
+        elif derniere_ligne.id > prime_line_id:
+            try:  
+                current_line.annuler_reporter_date_apres_confirmation(derniere_ligne)
+                return {
+                    'code':200,
+                    'msg':'succes'
+                }
+            except:
+                return {
+                    'code':504,
+                    'msg':'error'
+                }
+        else:
+            return {
+                'code':.303,
+                'msg':'Anomalie détéctée, Ce paiement est le dernier et décalé en même temps quelque chose qui clôche.'
+            }
+            
     
 """   
     @http.route('/hr_management/get_per_day_line_paiement/<int:period_id>', type='json', auth='user')

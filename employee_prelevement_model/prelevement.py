@@ -42,7 +42,7 @@ class prelevement(models.Model):
         
         vals['name'] = credit_seq if vals['is_credit'] else prelv_seq
         return super(prelevement, self).create(vals)
-         
+        
     def write(self, vals):
         
         if vals.get("echeance") or vals.get("montant_total_prime"):

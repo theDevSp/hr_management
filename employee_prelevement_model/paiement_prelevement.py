@@ -137,6 +137,7 @@ class paiement_prelevement(models.Model):
             elif last_period_non_paye == -1:
                 raise ValidationError("Erreur, Vous ne pouvez pas annuler le décalage du paiement, parceque les paiements qui suivent cette période sont différents du statut \"Non Payé\".")
             else:
+                #dict fetch option from value
                 if derniere_ligne.state == "paye":
                     statut = "Payé"
                 elif derniere_ligne.state == "non_paye":

@@ -17,20 +17,16 @@ class primetype(models.Model):
         default='indiv'
     )
     type_payement = fields.Selection(
-        [("j","Journalier"),
-         ("m","Mensuel")
-         ],
+        [
+            ("j","Journalier"),
+            ("m","Mensuel")
+        ],
         string=u"Payement",
         default="m",
         required=True)
 
     montant = fields.Float('Montant')
-    payement_condition = fields.Integer('Condition de Payement')
-    j_m = fields.Selection([
-        ('j', 'Jours'),
-        ('m', 'Mois'),
-        ('a', 'Années')
-    ], string='j_m')
+    payement_condition = fields.Integer('Condition de Payement (En mois)')
 
     @api.constrains('montant')
     def _check_montant(self):
@@ -41,4 +37,3 @@ class primetype(models.Model):
     def create(self, vals):
         vals['name'] = vals['name'].title()
         return super().create(vals)
-  

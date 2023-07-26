@@ -163,6 +163,9 @@ class hr_employee(models.Model):
             else :
                 employee.working_years = str(0) + ' jours'
 
+    def get_working_years_in_days(self,date):
+        start_woring_year = fields.Date.from_string(self.contract_id.date_start)
+        return relativedelta(date, start_woring_year).years * 12 + relativedelta(date, start_woring_year).months + relativedelta(date, start_woring_year).days/30
 
     def _compute_salaire_jour(self):
         for employee in self:
