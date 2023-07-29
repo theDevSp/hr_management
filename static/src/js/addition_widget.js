@@ -164,7 +164,8 @@ export class AdditionField extends Component {
 
     async cancel_postepone_action(prime){
         const prime_note = document.getElementById('note-prime-' + prime.prime_id).value
-        this.rpc('/hr_management/cancel_gap/'+prime.payement_id+'/'+prime_note).then((res) => {
+        this.rpc('/hr_management/cancel_gap/'+prime.payement_id).then((res) => {
+            
             if (res.code == 200) {
                 this.get_prime(this.props.record.data.quinzaine,
                     this.props.record.data.employee_id[0],
@@ -202,11 +203,11 @@ export class AdditionField extends Component {
         await this.props.update(sum)
     }
 
-    showNotification(result,msg="Une erreur est roncontrer durant le traitement veuillez réessayer plustard"){
+    showNotification(result,message="Une erreur est roncontrer durant le traitement veuillez réessayer plustard"){
         const notification = this.env.services.notification
         let msg = ""
         let type = "" 
-        result ? msg = "Action réussi" : msg
+        result ? msg = "Action réussi" : message
         result ? type = "success" : "danger"
         
         notification.add(msg, {
@@ -215,6 +216,22 @@ export class AdditionField extends Component {
             sticky: false,
             className: "p-4",
             buttons: []
+        })
+    }
+
+    access_record(prime){
+        const action = this.env.services.action
+        action.doAction({
+            type: "ir.actions.act_window",
+            name: "Action Service",
+            res_model: "hr.prime",
+            res_id:prime.prime_id,
+            domain:[],
+            views:[
+                [false, "form"]
+            ],
+            view_mode:"form",
+            target: "current"
         })
     }
 }

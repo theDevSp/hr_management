@@ -145,7 +145,7 @@ class hr_employee_transfert(models.Model):
 
     def is_pointeur(self):
         return self.env['res.users'].has_group("hr_management.group_pointeur")
-     
+
     def user_company_id(self):
         return self.rapport_id.chantier_id.cofabri
 
@@ -182,4 +182,16 @@ class hr_employee_transfert(models.Model):
     def action_done(self):
         self.write({'state': 'done'})
     
+    def open_transfert(self):
+        view = self.env.ref('hr_management.hr_employee_transfert_form')
+        
+        return {
+            'name': ("Transferts %s " % self.name),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': self._name,
+            'res_id': self.id,
+            'views': [(view.id, 'form')]
+        }
 

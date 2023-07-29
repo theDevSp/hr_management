@@ -33,10 +33,34 @@
                                 </div>
                                 <p><span t-esc="prelevement.note"/></p>
                             </div>
-                            <div class="row justify-content-center">
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button t-if="prelevement.state == 'Non Payé' and this.state.parent_state === 'draft'" class="btn btn-custom text-white" t-on-click="()=>this.update_payement(prelevement)">Reporter</button>
-                                    <button t-if="this.state.parent_state === 'draft'" class="btn btn-primary text-white" data-bs-toggle="modal" t-attf-data-bs-target="#modal-prelevement-{{ prelevement.prelevement_id }}">Note</button>
+                            <div class="row justify-content-center mt-2">
+                                <div class="btn-group col-12 col-md-8" role="group" aria-label="Basic example">
+                                    <button t-if="prelevement.state == 'Non Payé' and this.state.parent_state === 'draft'"
+                                            class="btn btn-custom text-white" 
+                                            t-on-click="()=>{
+                                                this.state.postpone_action = true;
+                                                this.state.cancel_postepone_action = false}"
+                                            data-bs-toggle="modal"
+                                            t-attf-data-bs-target="#modal-prelevement-{{ prelevement.prelevement_id }}"
+                                            >Reporter</button>
+                                    <button t-if="prelevement.state == 'Décalé' and this.state.parent_state === 'draft'"
+                                            class="btn btn-warning text-white" 
+                                            t-on-click="()=>{
+                                                this.state.postpone_action = false;
+                                                this.state.cancel_postepone_action = true}"
+                                            data-bs-toggle="modal"
+                                            t-attf-data-bs-target="#modal-prelevement-{{ prelevement.prelevement_id }}"
+                                            >Reactiver</button>
+                                    <button t-if="this.state.parent_state === 'draft'" 
+                                            class="btn btn-primary text-white" 
+                                            t-on-click="()=>{
+                                                this.state.postpone_action = false;
+                                                this.state.cancel_postepone_action = false}"
+                                            data-bs-toggle="modal" 
+                                            t-attf-data-bs-target="#modal-prelevement-{{ prelevement.prelevement_id }}">Note</button>
+                                    <button class="btn btn-link"
+                                            t-on-click="()=>{this.access_record(prelevement)}"
+                                            ><i class="fas fa-link"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +80,15 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                                <button type="button" class="btn btn-primary" t-on-click="()=>this.save_note(prelevement)">Enrgistrer</button>
+                                <button type="button" class="btn btn-primary" 
+                                        t-if="!this.state.postpone_action and !this.state.cancel_postepone_action" 
+                                        t-on-click="()=>this.save_note(prelevement)">Enrgistrer</button>
+                                <button type="button" class="btn btn-custom" 
+                                        t-if="this.state.postpone_action and !this.state.cancel_postepone_action" 
+                                        t-on-click="()=>this.postepone_action(prelevement)">Reporter</button>
+                                <button type="button" class="btn btn-warning" 
+                                        t-if="this.state.cancel_postepone_action and !this.state.postpone_action" 
+                                        t-on-click="()=>this.cancel_postepone_action(prelevement)">Procéder</button>
                             </div>
                             </div>
                         </div>

@@ -86,10 +86,10 @@ class HrManagement(http.Controller):
             }
     
     @http.route('/hr_management/cancel_gap/<int:prime_line_id>', type='json', auth='user')
-    def recompute_prime(self,prime_line_id):
+    def cancel_gap(self,prime_line_id):
         prime_line = http.request.env['hr.paiement.ligne']
         current_line = prime_line.browse(prime_line_id)
-        follow_lines = current_line.prime_id.paiement_prime_ids.paiement_prime_ids.filtered(lambda ln: ln.id > prime_line_id and ln.state == "non_paye")
+        follow_lines = current_line.prime_id.paiement_prime_ids.filtered(lambda ln: ln.id > prime_line_id and ln.state == "non_paye")
         nbr_lignes = len(follow_lines)
         derniere_ligne = follow_lines[nbr_lignes - 1]
 
@@ -116,7 +116,70 @@ class HrManagement(http.Controller):
                 'msg':'Anomalie détéctée, Ce paiement est le dernier et décalé en même temps quelque chose qui clôche.'
             }
             
+    @http.route('/hr_management/reporter_prelevement/<int:prelevement_line_id>/<string:note>', type='json', auth='user')
+    def recompute_prelevement(self,prelevement_line_id,note):
+        prelevement_line = http.request.env['hr.paiement.prelevement']
+        res = []
+        try:  
+            prelevement_line.browse(prelevement_line_id).recompute_prelevement(note)  
+            return {
+                'code':200,
+                'msg':'succes'
+            }
+        except:
+            return {
+                'code':504,
+                'msg':'error'
+            }
+        
     
+    @http.route('/hr_management/cancel_prelevement_gap/<int:prelevement_line_id>', type='json', auth='user')
+    def cancel_prelevement_gap(self,prelevement_line_id):
+        prelevement_line = http.request.env['hr.paiement.prelevement']
+        current_line = prelevement_line.browse(prelevement_line_id)
+        follow_lines = current_line.prelevement_id.paiement_prelevement_ids.filtered(lambda ln: ln.id > prelevement_line_id and ln.state == "non_paye")
+        nbr_lignes = len(follow_lines)
+        derniere_ligne = follow_lines[nbr_lignes - 1]
+
+        if nbr_lignes <= 0:
+            return {
+                'code':303,
+                'msg':"Anomalie détéctée, Vous ne pouvez pas annuler le décalage de cette période, parceque toutes les périodes qui suivent sont traitées"
+            }
+        elif derniere_ligne.id > prelevement_line_id:
+            try:  
+                current_line.annuler_reporter_date_prelevement(derniere_ligne)
+                return {
+                    'code':200,
+                    'msg':'succes'
+                }
+            except:
+                return {
+                    'code':504,
+                    'msg':'error'
+                }
+        else:
+            return {
+                'code':.303,
+                'msg':'Anomalie détéctée, Ce paiement est le dernier et décalé en même temps quelque chose qui clôche.'
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
 """   
     @http.route('/hr_management/get_per_day_line_paiement/<int:period_id>', type='json', auth='user')
     def get_prime_per_day_list(self,period_id):

@@ -14,7 +14,6 @@ class contrats(models.Model):
     tt_montant_a_ajouter = fields.Float(string="Montants d'Augmentation", required=True, readonly=True, tracking=True, compute = "_compute_augmentation_montants_valides")
     salaire_actuel = fields.Float('Salaire Prévu',compute = "_compute_salaire", readonly=True)
 
-
     type_emp = fields.Selection([("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé",default="s")
     embaucher_par  = fields.Many2one("hr.responsable.chantier",u"Embauché Par")
     recommander_par  = fields.Many2one("hr.responsable.chantier",u"Recommandé Par")
@@ -24,9 +23,11 @@ class contrats(models.Model):
     pp_personnel_id_many2one = fields.Many2one('hr.profile.paie.personnel',string = "Profile de paie")
 
     type_salaire = fields.Selection(
-        [("j","Journalier"),
-         ("m","Mensuel")
-         ],
+        [  
+            ("h","Horaire"),
+            ("j","Journalier"),
+            ("m","Mensuel")
+        ],
         string=u"Type Salaire",
         default="m",
         required=True)

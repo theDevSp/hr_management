@@ -151,7 +151,6 @@ class prelevement(models.Model):
             self.recuperer_salaire()
         self._compute_montant()
         self._compute_echeance()
-   
     def recuperer_salaire(self):
         for record in self:
             period_id = record.recuperer_id_periode(record.date_fait)

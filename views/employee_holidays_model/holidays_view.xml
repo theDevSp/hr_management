@@ -34,203 +34,178 @@
         <field name="arch" type="xml">
             <form>
                 <header class="bar-box-shadow mb-4">
-                    <button name="to_draft" string="Brouillon" type="object" attrs="{'invisible': [('state', 'in', ('draft','validee','approuvee','refusee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie,hr_management.group_pointeur"/>
-                    <button name="to_validee" string="Valider" type="object" attrs="{'invisible': [('state', 'in', ('validee','approuvee','refusee','annulee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie,hr_management.group_pointeur"/>
+                    <button name="to_draft" string="Brouillon" type="object" attrs="{'invisible': [('state', '=', 'draft')]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie,hr_management.group_pointeur"/>
+                    <button name="to_draft" string="Brouillon" type="object" attrs="{'invisible': [('state', '!=', 'validate')]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_validee" string="Valider" type="object" attrs="{'invisible': [('state', '!=', 'draft')]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie,hr_management.group_pointeur"/>
                     <button name="to_approuvee" string="Approuver" type="object" attrs="{'invisible': [('state', 'in', ('draft','approuvee','annulee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
                     <button name="to_refusee" string="Refuser" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'refusee', 'annulee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
                     <button name="to_annulee" string="Annuler" type="object" attrs="{'invisible': [('state', 'in', ('annulee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie,hr_management.group_pointeur"/>
                     <field name="state" widget="statusbar" nolabel="1"/>
                 </header>
-                <sheet>
-                    <div class="row mt-3">
-                        <div class="col-md-4 col-lg-4">
-                            <div class="card-deck">
-                                <div class="card">
-                                    <center>
-                                        <div class="card border-dark mb-3 bg-info mt-4">
-                                            <div class="card-header text-center">
-                                                <h5>Employé</h5>
-                                            </div>
-                                            <div class="card-body text-dark text-center">
-                                                <h3>
-                                                    <field name="employee_id" class="card-img-top mt-3 mb-2" options="{'no_create': True, 'no_open': True}" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                </h3>
-                                            </div>
-                                        </div>
-                                        <div class="card border-dark mb-3 bg-success mt-4">
-                                            <div class="card-header text-center">
-                                                <h5>Remplaçant</h5>
-                                            </div>
-                                            <div class="card-body text-dark text-center">
-                                                <h3>
-                                                    <field name="remplacant_employee_id" class="card-img-top mt-3 mb-2" options="{'no_create': True, 'no_open': True}" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                </h3>
-                                            </div>
-                                        </div>
-                                    </center>
+                <div class="row mt-3 justify-content-center">
+                    <div class="col-12 col-lg-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="alert alert-danger text-center mb-2"><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> Champs Obligatoire </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">EMPLOYE</h2>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-8" attrs="{'readonly':[('state','!=','draft')]}">
-                            <div class="card border-dark mb-3 bg-light">
-                                <div class="card-body text-dark mt-3">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label for="demi_jour" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <field name="demi_jour" widget="boolean_toggle" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                </div>  
-                                            </div> 
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" ><label for="employee_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                                         </div>
-                                         <div class="col-md-4">
-                                            <label for="heure_perso" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <field name="heure_perso" widget="boolean_toggle" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                </div>  
-                                            </div> 
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="chantier_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-building form-control-icon"></span>
-                                                    <field name="chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
+                                        <field name="employee_id" attrs="{'readonly':[('state','!=','draft')]}" class="form-control"/>
                                     </div>
-                                    <div class="row" attrs="{'invisible':['|',('demi_jour','=',True),('heure_perso','=',True)]}">
-                                        <div class="col-md-3">
-                                            <label for="date_start" string="Du"/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="date_start" class="form-control" nolabel="1" widget="daterange" options="{'related_end_date': 'date_end'}" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                </div>
-                                            </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" ><label for="remplacant_employee_id" class=""/></span>
                                         </div>
-                                        <div class="col-md-3">
-                                            <label for="date_end" string="Au"/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="date_end" class="form-control" nolabel="1" widget="daterange" options="{'related_start_date': 'date_start'}" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <field name="remplacant_employee_id" attrs="{'readonly':[('state','!=','draft')]}" class="form-control"/>
                                     </div>
-                                    <div class="row" attrs="{'invisible':[('demi_jour','!=',True)]}">
-                                        <div class="col-md-5">
-                                            <label for="date_start" string="Date"/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <div class="">
-                                                        <span class="fas fa-calendar form-control-icon"></span><field name="date_select_half_perso" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" ><label for="motif" class=""/></span>
                                         </div>
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-3">
-                                            <label for="matin_soir" string="Matinée/Soirée"/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <div class="">
-                                                        <span class="fas fa-clock form-control-icon"></span><field name="matin_soir" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <field name="motif" attrs="{'readonly':[('state','!=','draft')]}" class="form-control"/>
                                     </div>
-                                    <div class="row" attrs="{'invisible':[('heure_perso','!=',True)]}">
-                                        <div class="col-md-5">
-                                            <label for="date_start" string="Date"/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <div class="">
-                                                        <span class="fas fa-calendar form-control-icon"></span><field name="date_select_half_perso" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div class="card my-3">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-text">Description</h6>
                                         </div>
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-3">
-                                            <label for="date_start" string="Du"/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span><field name="heure_start" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                </div>
-                                            </div>
+                                        <div class="card-body text-dark text-center">
+                                            <field name="description" attrs="{'readonly':[('state','!=','draft')]}"/>
                                         </div>
-                                        <div class="col-md-3">
-                                            <label for="date_start" string="Au"/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span><field name="heure_end" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" attrs="{'invisible':['|',('demi_jour','=',True),('heure_perso','=',True)]}">
-                                        <div class="col-md-6">
-                                            <label for="duree_jours" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="duree_jours" class="form-control" style="max-width: 50%;" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                    <span><b> Jour(s) (x 8 Heures)</b></span>
-                                                </div>  
-                                            </div> 
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="rapport_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-file-contract form-control-icon"></span>
-                                                    <field name="rapport_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                </div>  
-                                            </div> 
-                                        </div>
-                                    </div>
-                                    <div class="row" attrs="{'invisible':[('demi_jour','!=',True),('heure_perso','!=',True)]}">
-                                        <div class="col-md-6">
-                                            <label for="duree_heures" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="duree_heures" class="form-control" style="max-width: 50%;" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                    <span><b> Heure(s)</b></span>
-                                                </div>  
-                                            </div> 
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="motif" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-align-justify form-control-icon"></span>
-                                                    <field name="motif" class="form-control" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="description" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-comment form-control-icon"></span>
-                                                    <field name="description" class="form-control" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                </div>  
-                                            </div> 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                    </div>  
+                                </div> 
+                            </div> 
                         </div>
                     </div>
-                </sheet>
+                    <div class="col-12 col-lg-7">
+                        <div class="bg-white shadow p-3">
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">DETAILS CONGES</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">            
+                                    <div class="row col-12">
+                                        <div class="col-md-4">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" ><label for="demi_jour" class=""/></span>
+                                                </div>
+                                                <field name="demi_jour" widget="boolean_toggle" class="form-control" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                            </div>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" ><label for="heure_perso" class=""/></span>
+                                                </div>
+                                                <field name="heure_perso" widget="boolean_toggle" class="form-control" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" ><label for="chantier_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                </div>
+                                                <field name="chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                            </div>
+                                            <div class="row" attrs="{'invisible':['|',('demi_jour','=',True),('heure_perso','=',True)]}">
+                                                <div class="col-12 col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="date_start" string="Du" class=""/></span>
+                                                        </div>
+                                                        <field name="date_start" class="form-control" nolabel="1" widget="daterange" options="{'related_end_date': 'date_end'}" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="date_end" string="Au" class=""/></span>
+                                                        </div>
+                                                        <field name="date_end" class="form-control" nolabel="1" widget="daterange" options="{'related_start_date': 'date_start'}" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="duree_jours" class=""/></span>
+                                                        </div>
+                                                        <field name="duree_jours" class="form-control text-center" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">Jour(s)</div></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" attrs="{'invisible':[('demi_jour','=',False)]}">
+                                                <div class="col-12 col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="date_start" class=""/></span>
+                                                        </div>
+                                                        <field name="date_select_half_perso" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="matin_soir" class=""/></span>
+                                                        </div>
+                                                        <field name="matin_soir" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="duree_heures" class=""/></span>
+                                                        </div>
+                                                        <field name="duree_heures" class="form-control text-center" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">Heure(s)</div></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" attrs="{'invisible':[('heure_perso','=',False)]}">
+                                                <div class="col-12">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="date_start" class=""/></span>
+                                                        </div>
+                                                        <field name="date_select_half_perso" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="heure_start" string="Du" class=""/></span>
+                                                        </div>
+                                                        <field name="heure_start" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="heure_end" string="Au" class=""/></span>
+                                                        </div>
+                                                        <field name="heure_end" class="form-control text-center" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div> 
+                        </div>
+
+                    </div>
+                </div>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>

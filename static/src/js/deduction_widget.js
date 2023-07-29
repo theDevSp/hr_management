@@ -108,11 +108,46 @@ export class DeductionField extends Component {
         })
     }
 
-    showNotification(result){
+    async postepone_action(prelevement){
+        const prime_note = document.getElementById('note-prelevement-' + prelevement.prelevement_id).value
+        this.rpc('/hr_management/reporter_prelevement/'+prelevement.payement_id+'/'+prime_note).then((res) => {
+            if (res.code == 200) {
+                this.get_prelevement(this.props.record.data.quinzaine,
+                    this.props.record.data.employee_id[0],
+                    this.props.record.data.period_id[0],
+                    this.props.record.data.id).then((res) => {
+                        $('#modal-prime-' + prelevement.prime_id).modal('hide')
+                        this.showNotification(res) 
+                    })
+            } else {
+                this.showNotification(false)
+            }
+        })
+    }
+
+    async cancel_postepone_action(prelevement){
+        const prime_note = document.getElementById('note-prelevement-' + prelevement.prelevement_id).value
+        this.rpc('/hr_management/cancel_prelevement_gap/'+prelevement.payement_id).then((res) => {
+            
+            if (res.code == 200) {
+                this.get_prelevement(this.props.record.data.quinzaine,
+                    this.props.record.data.employee_id[0],
+                    this.props.record.data.period_id[0],
+                    this.props.record.data.id).then((res) => {
+                        $('#modal-prelevement-' + prelevement.prelevement_id).modal('hide')
+                        this.showNotification(res) 
+                    })
+            } else {
+                this.showNotification(false,res.code == 303 ? res.msg : false)
+            }
+        })
+    }
+
+    showNotification(result,message="Une erreur est roncontrer durant le traitement veuillez réessayer plustard"){
         const notification = this.env.services.notification
         let msg = ""
         let type = "" 
-        result ? msg = "Action réusii" : "Une erreur est roncontrer durant le traitement veuillez réessayer plustard"
+        result ? msg = "Action réusii" : message
         result ? type = "success" : "danger"
         
         notification.add(msg, {
@@ -146,6 +181,23 @@ export class DeductionField extends Component {
         });
         let value = sum 
         await this.props.update(value)
+    }
+
+    access_record(prelevement){
+        console.log(this.env.ref)
+        const action = this.env.services.action
+        action.doAction({
+            type: "ir.actions.act_window",
+            name: "Action Service",
+            res_model: "hr.prelevement",
+            res_id:prelevement.prelevement_id,
+            domain:[],
+            views:[
+                [false, "form"]
+            ],
+            view_mode:"form",
+            target: "current"
+        })
     }
 }
 

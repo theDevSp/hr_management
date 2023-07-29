@@ -62,7 +62,6 @@ class hr_rapport_pointage_line(models.Model):
     j_travaille_v = fields.Selection([('0', '0'), ('0.5', '0.5'), ('1', '1'), ('1.5', '1.5'),('2','2')],u"Jours Travaillés Validés",default='0', states=READONLY_STATES_MG,tracking=True)
     day = fields.Date('Date Jour',readonly=True) 
     day_type = fields.Selection([
-
                 ('1',u'Jour Ouvrable'),
                 ('2',u"Dimanche"),
                 ('3',u"Jour Ferié"),

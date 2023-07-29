@@ -55,8 +55,9 @@
                             <div class="alert alert-danger text-center mb-2"><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> Champs Obligatoire </div>
                             <div class="card bg-light my-3">
                                 <div class="card-body text-center">
-                                    
-                                    <h2 class="card-text">INFOS CREDIT</h2>
+                                    <field name="is_credit" invisible="1"/>
+                                    <h2 attrs="{'invisible': [('is_credit', '=', False)]}" class="card-text">INFOS CREDIT</h2>
+                                    <h2 attrs="{'invisible': [('is_credit', '=', True)]}" class="card-text">INFOS PRELEVEMENT</h2>
                                 </div>
                             </div>
                             <div class="card bg-light my-3">

@@ -315,11 +315,25 @@ class fiche_paie(models.Model):
                                                         ('quinzaine', '=', quinzaine)]) 
         if unique_payroll_per_period > 0:
             raise ValidationError(
-                    "Anomalie d'unicité détectée !!! une fiche de paie existe déja pour la période %s." % self.period_id.name
+                    "Anomalie d'unicité détectée !!! une fiche de paie existe déja pour la période %s." % self.env['account.month.period'].browse(period_id).name
                 )
 
     def update_cal_state(self):
         self.cal_state = not self.cal_state
+    
+    def open_payslip(self):
+        view = self.env.ref('hr_management.fiche_paie_formulaire')
+
+        return {
+            'name': ("Fiche de paie %s " % self.name),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'hr.payslip',
+            'res_id': self.id,
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+        }
 
 class loan_list(models.Model):
     _name = "loan.list"

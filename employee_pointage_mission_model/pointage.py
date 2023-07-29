@@ -10,7 +10,6 @@ class hr_rapport_pointage(models.Model):
     _name="hr.rapport.pointage"
     _description = "Rapport de Pointage"
     _inherit = ['mail.thread', 'mail.activity.mixin']
-   
 
     READONLY_STATES = {
         'working': [('readonly', True)],
@@ -35,7 +34,11 @@ class hr_rapport_pointage(models.Model):
 
         for rapport in self:
             query = """
-                    select sum(h_travailler::real) as tht,sum(h_bonus::real) as thb,sum(h_sup::real) as ths,sum(h_travailler_v::real) as thtv  from hr_rapport_pointage_line where rapport_id = %s;
+                    select sum(h_travailler::real) as tht,
+                            sum(h_bonus::real) as thb,
+                            sum(h_sup::real) as ths,
+                            sum(h_travailler_v::real) as thtv  
+                            from hr_rapport_pointage_line where rapport_id = %s;
                 """   % (rapport.id)
             self.env.cr.execute(query)
             res = self.env.cr.dictfetchall()[0]
@@ -49,7 +52,7 @@ class hr_rapport_pointage(models.Model):
         for rapport in self:
             query = """
                         select sum(j_travaille::real) as tj,sum(j_travaille_v::real) as tjv 
-                        from hr_rapport_pointage_line where rapport_id = %s;
+                        from hr_rapport_pointage_line where rapport_id = %s and day_type = '1';
                     """   % (rapport.id)
         
             self.env.cr.execute(query)
@@ -88,6 +91,7 @@ class hr_rapport_pointage(models.Model):
 
         self.holiday_ids = self.env['hr.holidays'].search([
                                     ('employee_id','=',self.employee_id.id),
+                                    ('state','!=','draft'),
                                     '|',
                                         '|',
                                             '&',
@@ -143,7 +147,7 @@ class hr_rapport_pointage(models.Model):
     note = fields.Text("Observation", states=READONLY_STATES)
 
     payslip_ids = fields.One2many("hr.payslip",'rapport_id',u'Fiche Paie',readonly=True)
-    holiday_ids = fields.One2many("hr.holidays",'rapport_id',u'Congés',readonly=True,compute="_compute_holidays_liste")
+    holiday_ids = fields.One2many("hr.holidays",'rapport_id',u'Congés',compute="_compute_holidays_liste")
     rapport_lines = fields.One2many("hr.rapport.pointage.line", 'rapport_id',string="Lignes Rapport Pointage")
     transfert_ids = fields.One2many("hr.employee.transfert",'rapport_id',u'Transfert',readonly=True,compute="_compute_transferts_liste")
     
@@ -273,7 +277,7 @@ class hr_rapport_pointage(models.Model):
     def _get_day(self,period_id,day):
         locale.setlocale(locale.LC_TIME, self.env.context['lang'] + '.utf8')
         return str('%02d' % day)+' '+datetime(period_id.date_start.year, period_id.date_start.month, day).strftime("%a").lower().capitalize().replace('.','')
- 
+
     def get_first_n_characters(self,word,n):
         if word:
             if len(word) >= n:
@@ -282,7 +286,7 @@ class hr_rapport_pointage(models.Model):
 
     def is_pointeur(self):
         return self.env['res.users'].has_group("hr_management.group_pointeur")
- 
+
     def create_payslip(self):
         view = self.env.ref('hr_management.fiche_paie_formulaire')
 
@@ -312,65 +316,6 @@ class hr_rapport_pointage(models.Model):
             'views': [(view.id, 'form')],
             'view_id': view.id,
         }
- 
-
-    def create_q1_payslip(self):
-        total_h,total_j = 0,0.0
-        payslip_id = self.create_payslip('quinzaine1')
-        for line_day in self.rapport_lines:
-            if float(line_day.name[:2]) < 16 :
-                total_h += float(line_day.h_travailler_v)
-                total_j += float(line_day.j_travaille_v)
-        if payslip_id:
-            payslip_id.recuperer_rubriques_payslip()
-            for line in payslip_id.view_line_ids:
-                if line.code == 'h1':
-                    line.valeur = total_h
-                if line.code == 'njt':
-                    line.valeur = total_j 
-            payslip_id.compute_sheet_ma()
-            self.write({
-                    'q1_state':'q1_compute'
-                })
-        
-
-    def create_q2_payslip(self):
-        total_h,total_j = 0,0.0
-        payslip_id = self.create_payslip('quinzaine2')
-        for line_day in self.rapport_lines:
-            if float(line_day.name[:2]) >= 16 :
-                total_h += float(line_day.h_travailler_v)
-                total_j += float(line_day.j_travaille_v)
-        if payslip_id:
-            payslip_id.recuperer_rubriques_payslip()
-            for line in payslip_id.view_line_ids:
-                if line.code == 'h1':
-                    line.valeur = total_h
-                if line.code == 'njt':
-                    line.valeur = total_j 
-            payslip_id.compute_sheet_ma()
-            self.write({
-                    'q2_state':'q2_compute'
-                })
-
-
-    def create_q12_payslip(self):
-        total_h,total_j = 0,0.0
-        payslip_id = self.create_payslip('quinzaine12')
-        total_h = self.total_h_v
-        total_j = self.total_j_v
-        if payslip_id:
-            payslip_id.recuperer_rubriques_payslip()
-            for line in payslip_id.view_line_ids:
-                if line.code == 'h1':
-                    line.valeur = total_h
-                if line.code == 'njt':
-                    line.valeur = total_j 
-            payslip_id.compute_sheet_ma()
-            self.write({
-                    'state':'compute'
-                })
-
 
     def action_validation(self):
         self.write({'state': 'valide'})
@@ -409,5 +354,11 @@ class hr_rapport_pointage(models.Model):
     @api.depends('employee_id')
     def _compute_type_employee(self):
         self.employee_type = self.employee_id.type_emp
- 
-    
+
+    def group_worked_time(self):
+        data = {}
+        for line in self.rapport_lines:
+            key = line.chantier_id.id or 0 + line.emplacement_chantier_id.id or 0 + line.vehicle_id.id or 0
+            if key > 0:
+                data[key] = key 
+        print(data)

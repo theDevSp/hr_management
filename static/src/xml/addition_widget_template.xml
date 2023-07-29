@@ -55,8 +55,8 @@
                                 </div>
                                 <p><span t-esc="prime.note"/></p>
                             </div>
-                            <div class="row justify-content-center">
-                                <div class="btn-group" role="group" aria-label="Basic example">
+                            <div class="row justify-content-center mt-2">
+                                <div class="btn-group col-12 col-md-8" role="group" aria-label="Basic example">
                                     <button t-if="prime.state == 'Non Payé' and this.state.parent_state === 'draft'"
                                             class="btn btn-custom text-white" 
                                             t-on-click="()=>{
@@ -72,7 +72,7 @@
                                                 this.state.cancel_postepone_action = true}"
                                             data-bs-toggle="modal"
                                             t-attf-data-bs-target="#modal-prime-{{ prime.prime_id }}"
-                                            >Annuler le décalage</button>
+                                            >Reactiver</button>
                                     <button t-if="this.state.parent_state === 'draft'" 
                                             class="btn btn-primary text-white" 
                                             t-on-click="()=>{
@@ -80,6 +80,9 @@
                                                 this.state.cancel_postepone_action = false}"
                                             data-bs-toggle="modal" 
                                             t-attf-data-bs-target="#modal-prime-{{ prime.prime_id }}">Note</button>
+                                    <button class="btn btn-link"
+                                            t-on-click="()=>{this.access_record(prime)}"
+                                            ><i class="fas fa-link"></i></button>
                                 </div>
                             </div>
                         </div>

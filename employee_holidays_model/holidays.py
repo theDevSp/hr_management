@@ -79,7 +79,9 @@ class holidays(models.Model):
     duree_jours = fields.Float("Durée jour", readonly=True)
     duree_heures = fields.Float("Durée heure")
     description = fields.Text("Description")
+
     rapport_id = fields.Many2one("hr.rapport.pointage", string = "Rapport de pointage")
+    nbr_jour_compenser = fields.Float('Jours de Compensation')
     
     @api.onchange("demi_jour")
     def onchange_demi_jour(self):
@@ -142,7 +144,7 @@ class holidays(models.Model):
         return res
 
     def holidays_validation(self,employee_id,date_start,date_end=False):
-        print(date_end)
+        
         result = self.env[self._name].search_count([
                 '&',
                     ('employee_id','=',employee_id),
@@ -253,3 +255,16 @@ class holidays(models.Model):
                 })
             
         return
+    
+    def open_holiday(self):
+        view = self.env.ref('hr_management.holidays_formulaire')
+
+        return {
+            'name': ("Congés %s " % self.name),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': self._name,
+            'res_id': self.id,
+            'views': [(view.id, 'form')]
+        }

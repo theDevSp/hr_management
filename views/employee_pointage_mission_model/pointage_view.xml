@@ -39,11 +39,12 @@
                     <button name="action_done" states="valide" string="Clôturer" type="object" class="oe_highlight" groups="hr_management.group_controle_gestion,hr_management.group_admin_paie"/>
                     <button name="action_cancel" states="draft,valide,done" string="Annuler" type="object" class="oe_highlight" groups="hr_management.group_admin_paie"/>
                     <button name="create_payslip" string="Payement" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+                    <button name="group_worked_time" type="object" string="test"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,working,compute,valide,done"/>
                 </header>
                 <div class="container-fliud p-3 my-3 ">
-                    <div class="row">
-                        <div class="col-12 col-md-6 col-lg-4 mb-2">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-6 col-lg-3 mb-2">
                             <div class="col-md-12 bg-white shadow p-3">
                                 <div class="card bg-light my-3">
                                     <div class="card-body text-center">
@@ -80,7 +81,7 @@
                                 </div> 
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 col-lg-4 mb-2">
+                        <div class="col-12 col-md-6 col-lg-3 mb-2">
                             <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">
                                     <div class="card-body text-center">
@@ -145,155 +146,114 @@
                             </div>
                         </div>                       
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-12 col-lg-5">
-                            <div class="row">
-                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
-                                    <div class="col-12 bg-white shadow p-3">
-                                        <div class="card card-primary">
-                                            <div class="card-header">
-                                                <h3 class="text-center">
-                                                    <label for="total_h"/>
-                                                </h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <h1 class="text-center">
-                                                    <field name="total_h" />
-                                                </h1>
-                                            </div>
-                                        </div>
+                    <div class="row mt-2 justify-content-center">
+                        <div class="col-12 col-lg-3">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">RESUME RAPPORT</h2>
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
-                                    <div class="col-12 bg-white shadow p-3">
-                                        <div class="card card-success">
-                                            <div class="card-header">
-                                                <h3 class="text-center">
-                                                    <label for="total_h_v"/>
-                                                </h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <h1 class="text-center">
-                                                    <field name="total_h_v" />
-                                                </h1>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
-                                    <div class="col-12 bg-white shadow p-3">
-                                        <div class="card card-success">
-                                            <div class="card-header">
-                                                <h3 class="text-center">
-                                                    <label for="total_j_v"/>
-                                                </h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <h1 class="text-center">
-                                                    <field name="total_j_v" />
-                                                </h1>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>  
-                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
-                                    <div class="col-12 bg-white shadow p-3">
-                                        <div class="card card-primary">
-                                            <div class="card-header">
-                                                <h3 class="text-center">
-                                                    <label for="total_j"/>
-                                                </h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <h1 class="text-center">
-                                                    <field name="total_j" />
-                                                </h1>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>           
-                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
-                                    <div class="col-12 bg-white shadow p-3">
-                                        <div class="card card-warning">
-                                            <div class="card-header">
-                                                <h3 class="text-center">
-                                                    <label for="total_h_sup"/>
-                                                </h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <h1 class="text-center">
-                                                    <field name="total_h_sup" />
-                                                </h1>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>                  
-                                <div class="col-12 col-md-4 col-lg-3  mb-1">
-                                    <div class="col-12 bg-white shadow p-3">
-                                        <div class="card card-info">
-                                            <div class="card-header">
-                                                <h3 class="text-center">
-                                                    <label for="count_nbr_holiday_days"/>
-                                                </h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <h1 class="text-center">
-                                                    <field name="count_nbr_holiday_days" />
-                                                </h1>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
-                                    <div class="col-12 bg-white shadow p-3">
-                                        <div class="card card-info">
-                                            <div class="card-header">
-                                                <h3 class="text-center">
-                                                    <label for="count_nbr_ferier_days"/>
-                                                </h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <h1 class="text-center">
-                                                    <field name="count_nbr_ferier_days" />
-                                                </h1>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
-                                    <div class="col-12 bg-white shadow p-3">
-                                        <div class="card card-default">
-                                            <div class="card-header">
-                                                <h3 class="text-center">
-                                                    <label for="count_nbr_dim_days"/>
-                                                </h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <h1 class="text-center">
-                                                    <field name="count_nbr_dim_days" />
-                                                </h1>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-4 col-lg-3 card-group mb-1">
-                                    <div class="col-12 bg-white shadow p-3">
-                                        <div class="card card-danger">
-                                            <div class="card-header">
-                                                <h3 class="text-center">
-                                                    <label for="count_nbr_absense_days"/>
-                                                </h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <h1 class="text-center">
-                                                    <field name="count_nbr_absense_days" />
-                                                </h1>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">   
+                                        <ul class="list-group">
+                                            <li class="list-group-item active text-center">Jour / Heure Travailés</li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="total_h"/>
+                                                    </div>
+                                                    <div class="col-4 bg-success text-center text-white">
+                                                        <field name="total_h" readonly="1" class="h3"/> H
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="total_h_v"/>
+                                                    </div>
+                                                    <div class="col-4 bg-success text-center text-white">
+                                                        <field name="total_h_v" readonly="1" class="h3"/> H
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="total_j"/>
+                                                    </div>
+                                                    <div class="col-4 bg-success text-center text-white">
+                                                        <field name="total_j" readonly="1" class="h3"/> Jr
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="total_j_v"/>
+                                                    </div>
+                                                    <div class="col-4 bg-success text-center text-white">
+                                                        <field name="total_j_v" readonly="1" class="h3"/> Jr
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item active text-center">CONGES / DIMANCHE / JF ...</li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="total_h_sup"/>
+                                                    </div>
+                                                    <div class="col-4 bg-info text-center text-white">
+                                                        <field name="total_h_sup" readonly="1" class="h3"/> H
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="count_nbr_holiday_days"/>
+                                                    </div>
+                                                    <div class="col-4 bg-warning text-center text-white">
+                                                        <field name="count_nbr_holiday_days" readonly="1" class="h3"/> Jr
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="count_nbr_ferier_days"/>
+                                                    </div>
+                                                    <div class="col-4 bg-warning text-center text-white">
+                                                        <field name="count_nbr_ferier_days" readonly="1" class="h3"/> Jr
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="count_nbr_dim_days"/>
+                                                    </div>
+                                                    <div class="col-4 bg-warning text-center text-white">
+                                                        <field name="count_nbr_dim_days" readonly="1" class="h3"/> Jr
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="count_nbr_absense_days"/>
+                                                    </div>
+                                                    <div class="col-4 bg-danger text-center text-white">
+                                                        <field name="count_nbr_absense_days" readonly="1" class="h3"/> Jr
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>  
+                                    </div> 
+                                </div> 
                             </div>
-                                 
                         </div> 
                         <div class="col-12 col-lg-7 d-none d-md-block">
                             <div class="bg-white shadow p-3">
@@ -301,7 +261,7 @@
                                     <div class="card-body">            
                                         <notebook class="custom-notebook">
                                             <page string="Infos Fiche Paie" groups="hr_management.group_admin_paie,hr_management.group_agent_paie">
-                                                <field name="payslip_ids" nolabel="1" class="table-inside-notebook">
+                                                <field name="payslip_ids" readonly="1" nolabel="1" class="table-inside-notebook">
                                                     <tree editable="bottom">
                                                         <field name="name" />
                                                         <field name="period_id" />
@@ -309,21 +269,24 @@
                                                         <field name="chantier_id"/>
                                                         <field name="emplacement_chantier_id" />
                                                         <field name="vehicle_id" /> 
-                                                        <!--<button name="open_payslip" type="object" class="oe_highlight oe_edit_only" string="Consulter" />-->
+                                                        <button name="open_payslip" type="object" icon="fa-external-link-alt"
+                                                                class="btn btn-link"/>
                                                     </tree>
                                                 </field>
                                             </page>
                                             <page string="Infos Congés">
                                                 <field name="holiday_ids" nolabel="1" class="table-inside-notebook">
-                                                    <tree>
-                                                        <field name="chantier_id" options="{'no_create': True,'no_open': True}" string="Chantier"/>
-                                                        <field name="motif"/>
-                                                        <field name="date_select_half_perso" string="Date demi-Jour"/>
-                                                        <field name="date_start" string="Date Début"/>
-                                                        <field name="date_end" string="Date Fin"/>
-                                                        <field name="duree_jours" string="Nbr Jours"/>
-                                                        <field name="state"/>
-                                                        <!--<button name="open_holiday" type="object" class="oe_highlight oe_edit_only" string="Consulter" />-->
+                                                    <tree editable="bottom">
+                                                        <field name="chantier_id" readonly="1" options="{'no_create': True,'no_open': True}" string="Chantier"/>
+                                                        <field name="motif" readonly="1"/>
+                                                        <field name="date_select_half_perso" readonly="1" string="Date demi-Jour"/>
+                                                        <field name="date_start" readonly="1" string="Date Début"/>
+                                                        <field name="date_end" readonly="1" string="Date Fin"/>
+                                                        <field name="duree_jours" readonly="1" string="Nbr Jours"/>
+                                                        <field name="nbr_jour_compenser" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"  attrs="{'readonly': [('parent.state', '!=', 'draft')]}"/>
+                                                        <field name="state" readonly="1"/>
+                                                        <button name="open_holiday" type="object" icon="fa-external-link-alt"
+                                                                class="btn btn-link"/>
                                                     </tree>
                                                 </field>   
                                             </page>   
@@ -335,7 +298,8 @@
                                                         <field name="date_transfert" string="Date Transfert"/>
                                                         <field name="date_arriver" string="Date Arrivé"/>
                                                         <field name="state"/>
-                                                        <!--<button name="open_transfert" type="object" class="oe_highlight oe_edit_only" string="Consulter" />-->
+                                                        <button name="open_transfert" type="object" icon="fa-external-link-alt"
+                                                                class="btn btn-link"/>
                                                     </tree>
                                                 </field>
                                             </page>
@@ -368,16 +332,15 @@
                                     <field name="details" />
                                     <field name="note" />
                                     <field name="day_type" widget="badge"
-                                           decoration-success="day_type in ('1','9')" 
-                                           decoration-danger="day_type in ('5','6','7')"
-                                           decoration-muted="day_type == '2'"
-                                           decoration-info="day_type == '3'"
-                                           decoration-primary="day_type == '4'"
-                                           decoration-warning="day_type == '8'"
-                                           /> 
+                                            decoration-success="day_type in ('1','9')" 
+                                            decoration-danger="day_type in ('5','6','7')"
+                                            decoration-muted="day_type == '2'"
+                                            decoration-info="day_type == '3'"
+                                            decoration-primary="day_type == '4'"
+                                            decoration-warning="day_type == '8'"/> 
                                     <field name="state" invisible="1"/>
                                     <field name="day" invisible="1"/>
-                                    <button name="update_wizard_ref_view" type="object" icon="fas fa-pen-square" />
+                                    <button name="update_wizard_ref_view" type="object" class="btn btn-link" icon="fa-pen" />
                                 </tree>
                             </field>
                         </div>
