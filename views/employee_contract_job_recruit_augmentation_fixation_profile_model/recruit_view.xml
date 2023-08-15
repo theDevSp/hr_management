@@ -39,7 +39,7 @@
                         <div class="bg-white shadow p-3">
                             <div class="card bg-light my-3">
                                 <div class="card-body text-center">
-                                    <h2 class="card-text"><field name="name"/></h2>
+                                    <h2 class="card-text">DEMANDE DE RECRUTEMENT : <field name="name"/></h2>
                                 </div>
                             </div>
                             <div class="card bg-light my-3">

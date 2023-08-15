@@ -184,7 +184,6 @@ export class DeductionField extends Component {
     }
 
     access_record(prelevement){
-        console.log(this.env.ref)
         const action = this.env.services.action
         action.doAction({
             type: "ir.actions.act_window",

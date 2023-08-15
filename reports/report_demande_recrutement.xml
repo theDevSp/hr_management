@@ -1,141 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="report_demande_recrutement">
+    <template id="report_demande_recrutemen">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
                 <t t-call="web.internal_layout">
                     <t t-set="documents_title" t-value="'DEMANDE DE RECRUTEMENT'"/>
                     <t t-set="documents_ref" t-value="doc.name"/>
-                    <div class="page pg_recrut">
-                        <div class="row">
-                            <div class="col-1"></div>
-                            <div class="col-10">
-                                <div class="card mb-3 bg-light job-card-fixed">
-                                    <div class="card-header border-top border-left border-right border-dark text-center">
-                                        <h5>Demandeur</h5>
-                                    </div>
-                                    <div class="card-body border border-dark text-dark">
-                                        <center>
-                                            <table>
-                                                <tr>
-                                                    <td class="text-left" width="40%"><strong>Nom et prénom</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-                                                    <td class="text-left" width="70%"><span t-field="doc.responsable_id.name"/></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-left" width="40%"><strong>Qualité</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-                                                    <td class="text-left" width="70%"><span t-field="doc.responsable_id.poste"/></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-left" width="40%"><strong>Chantier</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-                                                    <td class="text-left" width="70%"><span t-field="doc.chantier_id.name"/></td>
-                                                </tr>
-                                            </table>
-                                        </center>
-                                    </div>
-                                </div>
+                    <t t-set="responsable" t-value="doc.responsable_id"/>
+                    <t t-set="chantier" t-value="doc.chantier_id"/>
+                    <div class="page">
+                        <div class="row justify-content-center">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <t t-call="hr_management.responsable_template">
+                                </t>  
                             </div>
-                            <div class="col-1"></div>
+                            <div class="col-2"></div>
                         </div>
-                        <div class="row cards_page_recrut">
-                            <div class="col-1"></div>
-                            <div class="col-10">
-                                <div class="card mb-3 bg-light job-card-fixed">
-                                    <div class="card-header border-top border-left border-right border-dark text-center">
-                                        <h5>Profil demandé</h5>
-                                    </div>
-                                    <div class="card-body border-right border-bottom border-left border-dark text-dark">
-                                        <center>
-                                            <table>
-                                                <tr>
-                                                    <td class="text-left" width="40%"><strong>Profil</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-                                                    <td class="text-left" width="70%"><span t-field="doc.title_poste.name"/></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-left" width="40%"><strong>Nombre existant</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-                                                    <td class="text-left" width="70%"><span t-out="doc.calculer_nbr_existant()"/></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-left" width="40%"><strong>Nombre demandé</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-                                                    <td class="text-left" width="70%"><span t-field="doc.nbr_effectif_demande"/></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-left" width="40%"><strong>Équipe</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-                                                    <td class="text-left" width="70%"><span t-field="doc.equipe_id.name"/></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-left" width="40%"><strong>Motif de recrutement</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-                                                    <td class="text-left" width="70%"><span t-field="doc.motif_recrut"/></td>
-                                                </tr>
-                                                <t t-if="doc.motif_recrut == 'raison_chantier'">
-                                                    <tr>
-                                                        <td class="text-left" width="40%"><strong>Plus de précision:</strong></td>
-                                                        <td width="8%" class="text-center"> : </td>
-                                                        <td class="text-left" width="70%"><span t-field="doc.motif_raison"/></td>
-                                                    </tr>
-                                                </t>
-                                                <t t-elif="doc.motif_recrut == 'autre_raison'">
-                                                    <tr>
-                                                        <td class="text-left" width="40%"><strong>Plus de précision:</strong></td>
-                                                        <td width="8%" class="text-center"> : </td>
-                                                        <td class="text-left" width="70%"><span t-field="doc.motif_raison"/></td>
-                                                    </tr>
-                                                </t>
-                                            </table>
-                                        </center>
-                                    </div>
-                                </div>
+                        <div class="row mt-5">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" colspan="4" class="align-middle text-center">Détails Demande</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Profil:</td>
+                                            <td><span t-field="doc.title_poste.name"/></td>
+                                            <td>Nombre existant:</td>
+                                            <td class="text-center"><span t-out="doc.calculer_nbr_existant()"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Equipe:</td>
+                                            <td><span t-field="doc.equipe_id.name"/></td>
+                                            <td>Nombre demandé:</td>
+                                            <td class="text-center"><strong><span t-field="doc.nbr_effectif_demande"/></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Motif de recrutement:</td>
+                                            <td><span t-field="doc.motif_recrut"/></td>
+                                            <td>Plus de précision:</td>
+                                            <td><span t-field="doc.motif_raison"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table> 
                             </div>
-                            <div class="col-1"></div>
+                            <div class="col-2"></div>
                         </div>
-                        <t t-if="doc.motif_recrut == 'remplacement'">
-                            <div class="row cards_page_recrut">
-                                <div class="col-1"></div>
-                                <div class="col-10">
-                                    <div class="card mb-3 bg-light job-card-fixed">
-                                        <div class="card-header border-top border-left border-right border-dark text-center">
-                                            <h5>Plus d'informations sur le salarié sortant</h5>
-                                        </div>
-                                        <div class="card-body border-left border-right border-bottom border-dark text-dark">
-                                            <center>
-                                                <table>
-                                                    <tr>
-                                                        <td class="text-left" width="40%"><strong>Nom et prénom</strong></td>
-                                                        <td width="8%" class="text-center"> : </td>
-                                                        <td class="text-left" width="70%"><span t-field="doc.motif_raison_nom_prenom"/></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-left" width="40%"><strong>Fonction</strong></td>
-                                                        <td width="8%" class="text-center"> : </td>
-                                                        <td class="text-left" width="70%"><span t-field="doc.motif_raison_fonction"/></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-left" width="40%"><strong>Code Machine</strong></td>
-                                                        <td width="8%" class="text-center"> : </td>
-                                                        <td class="text-left" width="70%"><span t-field="doc.motif_raison_code_machine"/></td>
-                                                    </tr>
-                                                </table>
-                                            </center>
-                                        </div>
-                                    </div>
+                        <t  t-if="doc.motif_recrut == 'remplacement'">
+                            <div class="row mt-5">
+                                <div class="col-2"></div>
+                                <div class="col-8">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" rowspan="5" class="align-middle w-50">
+                                                    <i class="fas fa-user fa-lg"></i> Empployé
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" colspan="2">Informations sur le salarié sortant</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"><strong>Nom et prénom:</strong></td>
+                                                <td class="text-left"><span t-field="doc.motif_raison_nom_prenom"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"><strong>Fonction:</strong></td>
+                                                <td class="text-left"><span t-field="doc.motif_raison_fonction"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left"><strong>Code Machine:</strong></td>
+                                                <td class="text-left"><span t-field="doc.motif_raison_code_machine"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="col-1"></div>
+                                <div class="col-2"></div>
                             </div>
                         </t>
-                        <div class="row text-nb" style="margin-left: 1%;">
-                            <b><u>NB:</u> Les CV des profils déjà existants, sont à joindre obligatoirement à la présente demande pour approbation par la Direction.</b>
-                        </div>
                     </div>
-                    <t t-call="reports_templates.common_footer">
-                        <t t-call="reports_templates.bc_rh_signature"/>
-                    </t>
+                    <!-- 
+                        <t t-call="reports_templates.common_footer">
+                            <t t-call="reports_templates.bc_rh_signature"/>
+                        </t>
+
+                    -->
+                    <div class="footer">
+                        Page: <span class="page"/> / <span class="topage"/>
+                    </div>
                 </t>
             </t>
         </t>

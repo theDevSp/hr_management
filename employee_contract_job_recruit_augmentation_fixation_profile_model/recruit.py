@@ -52,13 +52,12 @@ class recruit(models.Model):
                 
         return [('id', 'in',res)]
 
-    name = fields.Char('Référence', readonly=True, required=True, copy=False)
+    name = fields.Char('Référence', readonly=True, copy=False)
     chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier",domain=_get_chantier_domain, states = READONLY_STATES, required=True)
     responsable_id = fields.Many2one("hr.responsable.chantier","Responsable", states = READONLY_STATES, required=True)
     title_poste = fields.Many2one("hr.job","Titre du poste", states = READONLY_STATES, required=True)
     observation = fields.Text("Observation", states = READONLY_STATES)
     nbr_effectif_demande = fields.Integer("Nombre demandé", states = READONLY_STATES, required=True)
-   
     nbr_effectif_accepte = fields.Integer("Nombre accepté", states = READONLY_STATES_NBR_EFF_ACCEPTE)
     compute_readonly_eff_accepte = fields.Boolean(string="check field", compute='get_user')
 

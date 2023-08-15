@@ -12,6 +12,7 @@ class prime(models.Model):
     
     name = fields.Char("Désignation")
     employee_id = fields.Many2one("hr.employee", string = "Employé")
+    chantier_id = fields.Many2one("fleet.vehicle.chantier", string = "Chantier (Zone)")
     first_period_id = fields.Many2one("account.month.period", string = "Première Période", required=True,compute="_compute_first_period",store=True)
     paiement_prime_ids = fields.One2many("hr.paiement.ligne","prime_id", string = "Paiement Ligne")
     date_fait = fields.Date("Date de fait", tracking=True, index=True)

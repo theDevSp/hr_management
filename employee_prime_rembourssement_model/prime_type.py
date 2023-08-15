@@ -19,7 +19,8 @@ class primetype(models.Model):
     type_payement = fields.Selection(
         [
             ("j","Journalier"),
-            ("m","Mensuel")
+            ("m","Mensuel"),
+            ('z','Zone')
         ],
         string=u"Payement",
         default="m",

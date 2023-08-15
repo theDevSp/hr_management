@@ -63,20 +63,19 @@ class profilepaiepersonnel(models.Model):
         res = 0
         for record in self:    
             if record:    
-                raise_obj = self.env['hr.augmentation']
+                
                 period_obj = self.env['account.month.period']
-
-                contract_start_period = period_obj.get_period_from_date(record.contract_id.date_start)
-                contract_wage = record.contract_id.wage + raise_obj.get_sum_of_raises_by_period_id(employee_id = record.contract_id.employee_id,period_id = contract_start_period)
-
+                contract_wage = record.get_contract_wage_after_raise()
                 month_range = period.get_number_of_days_per_month() if period else period_obj.get_number_of_days_per_month(datetime.now()) 
 
                 nbrjpm = record.nbre_jour_worked_par_mois if record.definition_nbre_jour_worked_par_mois == 'nbr_saisie' else month_range
 
                 if record.contract_id and record.contract_id.type_salaire == 'j':
                     res = contract_wage
-                elif record.contract_id and self.contract_id.type_salaire == 'm':
+                elif record.contract_id and record.contract_id.type_salaire == 'm':
                     res = contract_wage / nbrjpm
+                else:
+                    res = contract_wage * record.nbre_heure_worked_par_jour
 
         return round(res, 2)
     
@@ -89,7 +88,18 @@ class profilepaiepersonnel(models.Model):
     def get_wage_per_hour(self,period=False):
         res = 0
         for record in self:
-            res = record.get_wage_per_day(period=period) / record.nbre_heure_worked_par_jour
+            if record.contract_id and record.contract_id.type_salaire != 'h':
+                res = record.get_wage_per_day(period=period) / record.nbre_heure_worked_par_jour
+            else:
+                res = record.get_contract_wage_after_raise()
         return round(res, 2)
 
+    def get_contract_wage_after_raise(self):
+        
+        for record in self:
+            raise_obj = self.env['hr.augmentation']
+            period_obj = self.env['account.month.period']
+            contract_start_period = period_obj.get_period_from_date(record.contract_id.date_start)
+            contract_wage = record.contract_id.wage + raise_obj.get_sum_of_raises_by_period_id(employee_id = record.contract_id.employee_id,period_id = contract_start_period)
 
+        return contract_wage

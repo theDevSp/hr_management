@@ -42,7 +42,7 @@
                             <field name="active" invisible="1"/>
                         </h2>
                     </div>
-                    <div class="row">
+                    <div class="row justify-content-center">
                         <div class="col-12 col-lg-6 mb-3">
                             <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">
@@ -95,23 +95,11 @@
                                                                             attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
                                                 </div>
                                             </div>
-                                            <div class="col-12">
-                                                <div class="card my-3">
-                                                    <div class="card-body text-center">
-                                                        <h6 class="card-text">Note</h6>
-                                                    </div>
-                                                    <div class="card-body text-dark text-center">
-                                                        <field name="notes"/>
-                                                    </div>
-                                                </div>  
-                                            </div>
                                         </div>
                                     </div> 
                                 </div> 
                             </div>
-                        </div>
-                        <div class="col-12 col-lg-6">
-                            <div class="bg-white shadow p-3">
+                            <div class="bg-white shadow p-3 my-3">
                                 <div class="card bg-light my-3">
                                     <div class="card-body text-center">
                                         <h2 class="card-text">EMPLOYE</h2>
@@ -183,11 +171,13 @@
                                                 </div>
                                             </div>
                                         </div>
-
+    
                                     </div> 
                                 </div> 
                             </div>
-                            <div class="bg-white shadow p-3 my-2">
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="bg-white shadow p-3 mt-3 mt-md-0">
                                 <div class="card bg-light my-3">
                                     <div class="card-body text-center">
                                         <h2 class="card-text">SALAIRE</h2>
@@ -248,8 +238,39 @@
                                     </div> 
                                 </div> 
                             </div>
+                            <div class="bg-white shadow p-3 my-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">REPARTITION SALAIRE</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <field name="repartition_salaire_ids">
+                                            <tree editable="bottom" nolabel="1">
+                                                <field name="payement_mode_id" />
+                                                <field name="bank_account_id" />
+                                                <field name="montant" />
+                                            </tree>
+                                        </field>
+                                    </div> 
+                                </div> 
+                            </div>
                         </div>
-
+                        <div class="col-12 col-lg-8 my-3">
+                            <div class="bg-white shadow p-3">
+                                <div class="col-12">
+                                    <div class="card my-3">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-text">Note</h6>
+                                        </div>
+                                        <div class="card-body text-dark">
+                                            <field name="notes"/>
+                                        </div>
+                                    </div>  
+                                </div> 
+                            </div>
+                        </div>
                         <div class="col-12 my-3">
                             <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">

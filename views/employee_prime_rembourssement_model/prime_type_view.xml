@@ -53,6 +53,7 @@
                                             </div>
                                             <field name="payement_condition" class="form-control text-center"/>
                                         </div>
+                                        <!-- 
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" ><label for="montant" class=""/></span>
@@ -61,7 +62,9 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
                                             </div>
-                                        </div>
+                                        </div>  
+                                        -->
+                                        
                                     </div>
                                 </div> 
                             </div>

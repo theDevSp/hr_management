@@ -4,6 +4,7 @@ from datetime import datetime,date
 from dateutil.relativedelta import relativedelta
 import calendar
 import locale
+import math
 
 class hr_rapport_pointage(models.Model):
     
@@ -19,7 +20,7 @@ class hr_rapport_pointage(models.Model):
         'cancel': [('readonly', True)]
     }
     
-    def _get_ab_default(self):
+    def _get_period_default(self):
         domain = [('id','=','-1')]
         year = date.today().year
         period_ids = []
@@ -67,7 +68,9 @@ class hr_rapport_pointage(models.Model):
             query = """
                     select 
                     count(1) filter (where day_type='2' and h_travailler::real > 0) as tdim,
-                    count(1) filter (where day_type='3' and h_travailler::real > 0) as tferie,
+                    count(1) filter (where day_type='2' and h_travailler_v::real > 0) as tdimv,
+                    count(1) filter (where day_type='3') as tferie,
+                    count(1) filter (where day_type='3' and h_travailler_v::real > 0) as tferiev,
                     count(1) filter (where day_type='5') as tabsense
                     from hr_rapport_pointage_line where rapport_id = %s;
                 """ % (rapport.id)
@@ -76,13 +79,19 @@ class hr_rapport_pointage(models.Model):
             res = self.env.cr.dictfetchall()[0]
             self.count_nbr_dim_days = res['tdim'] if res else 0
             self.count_nbr_ferier_days = res['tferie'] if res else 0
+            self.count_nbr_dim_days_v = res['tdimv'] if res else 0
+            self.count_nbr_ferier_days_v = res['tferiev'] if res else 0
             self.count_nbr_absense_days = res['tabsense'] if res else 0
     
     def _compute_total_holidays(self):
         res = 0
+        res2 = 0
+
         for holiday in self.holiday_ids:
             res += holiday.duree_jours
+            res2 += holiday.nbr_jour_compenser
         self.count_nbr_holiday_days = res
+        self.count_nbr_holiday_days_v = res2
 
     def _compute_holidays_liste(self):
 
@@ -104,9 +113,7 @@ class hr_rapport_pointage(models.Model):
                                         ('date_select_half_perso','>=',date_start),
                                         ('date_select_half_perso','<=',date_stop),
                                     ])         
-
-        
-        
+    
     def _compute_transferts_liste(self):
         date_start = self.rapport_lines[0].day
         date_stop = self.rapport_lines[len(self.rapport_lines)-1].day
@@ -135,7 +142,7 @@ class hr_rapport_pointage(models.Model):
     vehicle_id = fields.Many2one("fleet.vehicle",u"Dérnier Code engin",readonly=True)
     emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement","Dernière Équipe",readonly=True)
 
-    period_id = fields.Many2one("account.month.period",u'Période',required=True,readonly=True,domain = _get_ab_default)
+    period_id = fields.Many2one("account.month.period",u'Période',required=True,readonly=True,domain = _get_period_default)
 
     total_h = fields.Float("Heures Travaillées",compute="_compute_hours",readonly=True)
     total_h_bonus = fields.Float("Heures Bonus",compute="_compute_hours",readonly=True)
@@ -160,11 +167,22 @@ class hr_rapport_pointage(models.Model):
     count_nbr_dim_days = fields.Float("Dimanches",readonly=True,compute="_compute_days_conge_absence_abondon")
     count_nbr_absense_days = fields.Float("Absences",readonly=True,compute="_compute_days_conge_absence_abondon")
 
+    count_nbr_holiday_days_v = fields.Float("Jours Congés",readonly=True,compute="_compute_total_holidays")
+    count_nbr_ferier_days_v = fields.Float("Jours Fériés Travaillés",readonly=True,compute="_compute_days_conge_absence_abondon")
+    count_nbr_dim_days_v = fields.Float("Dimanches",readonly=True,compute="_compute_days_conge_absence_abondon")
+
+    def _compute_businesdays(self):
+        self.jom = self.period_id.get_business_days_per_month()
+
+    jom = fields.Float("Jours Ouvrable",readonly=True,compute="_compute_businesdays")
+
     q1_state = fields.Selection([('q1_draft',u'En Attente'),('q1_working',u'Q1 Traitement En Cours'),('q1_compute',u"Q1 Calculé"),('q1_valide',u"Q1 Validé"),('q1_done',u"Q1 Clôturé")],u"Première Quinzaine",default="q1_draft")
     q2_state = fields.Selection([('q2_draft',u'En Attente'),('q2_working',u'Q2 Traitement En Cours'),('q2_compute',u"Q2 Calculé"),('q2_valide',u"Q2 Validé"),('q2_done',u"Q2 Clôturé")],u"Deuxième Quinzaine",default="q2_draft")
 
     type_emp = fields.Selection(related="employee_id.contract_id.type_emp",string=u"Type d'employé", required=False)
 
+
+    
     def _compute_message_change_chantier(self):
         self.message_change_chantier = False
         if self.employee_id.contract_id.contract_type.depends_emplacement == True:
@@ -172,7 +190,6 @@ class hr_rapport_pointage(models.Model):
                 if rapport_line.chantier_id.id != self.employee_id.contract_id.chantier_id.id and rapport_line.chantier_id:
                     self.message_change_chantier = "Attention !!! Cet employée posséde une contrat de chantier et il y a un changement de chantier détécté durant cette période."
                 
-
     def _compute_message_end_existence_contract(self):
         self.message_end_existence_contract = False
         if self.employee_id.contract_id:
@@ -249,6 +266,14 @@ class hr_rapport_pointage(models.Model):
             raise UserError('Rapport déja existe')
 
         return res
+    
+    def write(self, vals):
+        if 'state' in vals:
+            for line in self.rapport_lines:
+                line.write({
+                    'state':vals['state']
+                })
+        return super().write(vals)
 
     def _prepare_rapport_pointage_lines(self,period_id,rapport_id,employee_id):   
                     
@@ -362,3 +387,74 @@ class hr_rapport_pointage(models.Model):
             if key > 0:
                 data[key] = key 
         print(data)
+
+    def rapport_result(self):
+        contract = self.employee_id.contract_id # contrat par defaut
+        can_complete = contract.completer_salaire_related # autorisation de compensation
+        type_emp = contract.type_emp
+        type_profile = contract.type_profile_related
+        jd = self.count_nbr_dim_days_v # jour dimanche travaillé et validé par service rh
+        jc = self.count_nbr_holiday_days_v # jour congé validé par service rh
+        jft = self.count_nbr_ferier_days_v # jour férie travaillé et validé par service rh
+        jf = self.count_nbr_ferier_days # total des jour férié travaillé + non travaillé
+        jom = self.jom # jour ouvrable par mois
+        joe = contract.nbre_jour_worked_par_mois_related # jour ouvrable sur lesquels le salaire de base de l'employé est définis
+        default_day_2_add = joe - jom # jour de réguralisation pour les mois exceptionnels (24-25-27)
+        hnt = contract.nbre_jour_worked_par_mois_related * contract.nbre_heure_worked_par_jour_related # heure de travail sur lesquelles le salaire de base de l'employé est définis
+        jot = self.total_j_v + default_day_2_add # jour travaillé par le salarié + la régularisation
+        ht = self.total_h_v # heure travaillées par le salarié
+        h_comp = hnt - ht # heure de compensation de salaire
+        j_comp = joe - jot # jour de compensation de salaire
+
+        return {
+            'contract':contract,
+            'can_complete':can_complete,
+            'type_emp':type_emp,
+            'type_profile':type_profile,
+            'jc':jc,
+            'jd':jd,
+            'jf':jf+jft,
+            'jnt':joe,
+            'jt':jot,
+            'hnt':hnt,
+            'ht':ht,
+            'h_comp':h_comp,
+            'j_comp':j_comp
+        }
+        
+    def handle_jf_for_daily_worker(self):
+        resume = self.rapport_result()
+        comp_jf = resume['j_comp'] - resume['jf']
+        
+        return {
+            'handeled_days':min(resume['j_comp'],resume['jf']),
+            'j_r_comp' : comp_jf if comp_jf > 0 else 0, # régler avec dimanche travaillé ou congé justifier (condition > 0)
+            'jf_alloacation' : -comp_jf if comp_jf < 0 else 0 # allocation panier jour férier (condition > 0)
+        }
+    
+    def handle_j_comp_unused_jd_jc_for_daily_worker(self):
+        resume = self.rapport_result()
+        unhandeled_j_comp = self.handle_jf_for_daily_worker()['j_r_comp']
+        comp_jd = unhandeled_j_comp - min(resume['jc'],resume['jd'])
+        jd_jc_used = resume['jc'] - resume['jd']
+
+        handeled_days,j_alloaction = 0,0
+
+        if comp_jd > 0:
+            handeled_days = resume['jc']
+            j_alloaction = max(0,-jd_jc_used)
+
+        elif comp_jd < 0 and jd_jc_used > 0:
+            handeled_days = unhandeled_j_comp
+            j_alloaction = max(0,resume['jd'] - unhandeled_j_comp)
+        elif comp_jd < 0 and jd_jc_used < 0:
+            handeled_days = min(resume['jc'],unhandeled_j_comp)
+            j_alloaction = max(0,resume['jd'] - handeled_days)
+
+        return {
+            'handeled_days' : handeled_days,
+            'jd_alloaction' : j_alloaction # allocation panier dimanche (condition > 0)
+        }
+    
+    def handle_hours_needed_for_hourly_worker(self):
+        return

@@ -18,6 +18,9 @@
                             <div class="pricing-name text-center">
                                 <h4 class="mb-0"><span t-esc="prime.prime.label"/></h4>
                             </div>
+                            <div class="pricing-name text-center">
+                                <h4 class="mb-0"><span t-esc="prime.chantier"/></h4>
+                            </div>
                             <div class="price-features mt-1 text-center">
                                 <p><span t-esc="prime.period"/></p>
                             </div>
@@ -57,7 +60,7 @@
                             </div>
                             <div class="row justify-content-center mt-2">
                                 <div class="btn-group col-12 col-md-8" role="group" aria-label="Basic example">
-                                    <button t-if="prime.state == 'Non Payé' and this.state.parent_state === 'draft'"
+                                    <button t-if="prime.state == 'Non Payé' and this.state.parent_state === 'draft' and prime.pay_rate != 'z'"
                                             class="btn btn-custom text-white" 
                                             t-on-click="()=>{
                                                 this.state.postpone_action = true;
@@ -65,7 +68,7 @@
                                             data-bs-toggle="modal"
                                             t-attf-data-bs-target="#modal-prime-{{ prime.prime_id }}"
                                             >Reporter</button>
-                                    <button t-if="prime.state == 'Décalé' and this.state.parent_state === 'draft'"
+                                    <button t-if="prime.state == 'Décalé' and this.state.parent_state === 'draft' and prime.pay_rate != 'z'"
                                             class="btn btn-warning text-white" 
                                             t-on-click="()=>{
                                                 this.state.postpone_action = false;

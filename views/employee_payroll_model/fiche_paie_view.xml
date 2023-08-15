@@ -383,7 +383,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-md-8 col-lg-6">
-                        <div class="row mt-3 justify-content-center">
+                        <div class="row mt-3 mt-md-0 justify-content-center">
                             <div class="col-12">
                                 <field name="addition" class="d-block" widget="addition_payement"/>
                             </div>

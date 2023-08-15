@@ -81,7 +81,7 @@ class holidays(models.Model):
     description = fields.Text("Description")
 
     rapport_id = fields.Many2one("hr.rapport.pointage", string = "Rapport de pointage")
-    nbr_jour_compenser = fields.Float('Jours de Compensation')
+    nbr_jour_compenser = fields.Float('Jours Validé')
     
     @api.onchange("demi_jour")
     def onchange_demi_jour(self):
@@ -267,4 +267,21 @@ class holidays(models.Model):
             'res_model': self._name,
             'res_id': self.id,
             'views': [(view.id, 'form')]
+        }
+
+    def open_update_wizard(self):
+        view = self.env.ref('hr_management.holiday_validation_wizard_view_form')
+        return {
+            'name': ("Validation des jours"),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'holiday.validation.wizard',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'context' : {
+                "default_holiday_id" : self.id,
+                "default_nbr_jour_compenser" : self.nbr_jour_compenser
+            }
         }

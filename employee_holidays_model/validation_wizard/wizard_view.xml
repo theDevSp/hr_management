@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="holiday_validation_wizard_view_form" model="ir.ui.view">
+        <field name="name">holiday_validation_wizard.view.form</field>
+        <field name="model">holiday.validation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+
+                    <div class="bg-white shadow p-3">
+                        <div class="card bg-light my-3">
+                            <div class="card-body text-center">
+                                <h2 class="card-text">Mettre à jour</h2>
+                            </div>
+                        </div>
+                        <div class="card bg-light my-3">
+                            <div class="card-body">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <label for="nbr_jour_compenser" class="" />
+                                            <i class="fas fa-exclamation-triangle"
+                                                style="color: #f00000;"></i>
+                                        </span>
+                                    </div>
+                                    <field name="nbr_jour_compenser"
+                                        class="form-control text-center" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+                <footer class="justify-content-center">
+                    <div class="row justify-content-center w-50">
+                        <div class="btn-group" role="group">
+                            <button name="update_holiday_day_valid" string="Confirm" type="object"
+                                class="btn btn-success" />
+                            <button string="Cancel" class="btn btn-danger" special="cancel" />
+                        </div>
+                    </div>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

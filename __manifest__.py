@@ -60,7 +60,10 @@
         'views/employee_pointage_mission_model/transfert_view.xml',
         'views/employee_pointage_mission_model/wizards/add_new_employee_wizard.xml',
         'views/employee_pointage_mission_model/wizards/create_single_emplyee_reppoart.xml',
+        'employee_holidays_model/validation_wizard/wizard_view.xml',
 
+        'reports/responsable_template.xml',
+        'reports/employee_template.xml',
         'reports/report_demande_recrutement.xml',
         'reports/report_fiche_employee.xml',
         'reports/template_employee.xml',
@@ -115,8 +118,7 @@
             'hr_management/static/src/css/*.scss',
         ],
         'web.report_assets_pdf': [
-            'hr_management/static/src/**/*.scss',  
-  
+            'hr_management/static/src/report_css/*.scss',  
         ],
         'web.assets_common': [
             'hr_management/static/src/**/*.scss',  

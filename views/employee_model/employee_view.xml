@@ -247,7 +247,7 @@
                                 </div> 
                             </div>   
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 my-3">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 my-3 my-md-0">
                             <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">
                                     <div class="card-body text-center">
@@ -559,7 +559,7 @@
                                 </div> 
                             </div>
                         </div>   
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 my-3">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 my-3 my-md-0">
                             <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">
                                     <div class="card-body text-center">
@@ -650,7 +650,7 @@
                     <div class="row" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
                                 hr_management.group_service_analytique,hr_management.group_controle_gestion,
                                 hr_management.group_cnss_juridique">
-                        <div class="bg-white shadow p-3 d-none d-lg-block">
+                        <div class="bg-white shadow p-3 d-none d-lg-block my-3">
                             <div class="card bg-light my-3">
                                 <div class="card-body text-center">
                                     <h2 class="card-text">Historique Liste Noire</h2>

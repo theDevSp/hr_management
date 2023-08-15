@@ -49,6 +49,8 @@ class contrats(models.Model):
     contract_type = fields.Many2one('hr.contract.type',string = "Types de contrats")
     current_month = fields.Char("Le mois en cours",compute="_compute_current_month")
 
+    repartition_salaire_ids = fields.One2many('repartition.salaire', 'contract_id', string='repartition_salaire')
+
     _sql_constraints = [
 		('name_contract_uniq', 'UNIQUE(name)', 'Cette référence est déjà utilisée.'),
 	]
@@ -141,7 +143,7 @@ class contrats(models.Model):
             obj = self.env['hr.profile.paie.personnel'].create(champs)
             self.pp_personnel_id_many2one = obj
         else:
-           raise ValidationError(
+            raise ValidationError(
                     "Erreur, Vous devez séléctionner un profil de paie pour le générer."
                 )
         return True
@@ -177,3 +179,13 @@ class contrats(models.Model):
 
         return j_travaille 
 
+
+
+class repartition_salaire(models.Model):
+    _name = 'repartition.salaire'
+    _description = 'Classe pour Répartition des salaires selon la déclaration cnss par mode de payement et compte bancaire'
+
+    contract_id = fields.Many2one('hr.contract', string='Contract')
+    payement_mode_id = fields.Many2one('payement.mode', string='Mode de paiement',required=True)
+    bank_account_id = fields.Many2one(related='payement_mode_id.bank_account_id', string='Compte bancaire',readonly=True)
+    montant = fields.Float('Montant')

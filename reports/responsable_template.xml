@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="responsable_template" name="responsable_template">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th rowspan="4" class="align-middle w-50">
+                            <i class="fas fa-user-tie fa-lg"></i> Demandeur
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="align-middle">Nom:</td>
+                        <td><span t-field="responsable.name"/></td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle">Qualité:</td>
+                        <td><span t-field="responsable.poste"/></td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle">Chantier:</td>
+                        <td><span t-field="chantier.name"/></td>
+                    </tr>
+                </tbody>
+            </table>
+        </template>
+    </data>
+</odoo>

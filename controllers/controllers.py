@@ -5,6 +5,8 @@ from odoo.http import request
 class HrManagement(http.Controller):
     @http.route('/hr_management/get_line_paiement/<int:employee_id>/<int:period_id>', type='json', auth='user')
     def get_prime_list(self,employee_id,period_id):
+        base_url = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        print (base_url)
         prime = http.request.env['hr.prime']
         res = []
         
@@ -20,6 +22,7 @@ class HrManagement(http.Controller):
                         ]).paiement_prime_ids.filtered(lambda ln: ln.period_id.id == period_id):
             res.append({
                 'period': line.period_id.code,
+                'chantier': line.prime_id.chantier_id.simplified_name,
                 'nbr_days': 0,
                 'amount':line.montant_a_payer,
                 'state':dict(line.fields_get(allfields=['state'])['state']['selection'])[line.state],

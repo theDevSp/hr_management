@@ -368,3 +368,7 @@ class days_per_addition(models.Model):
     jour_prime = fields.Float("Jour Prime") # ce champs didié pour sauvegarder les jours à payer d'un prime journalier exemple hrira
     is_cal = fields.Boolean('calculé',default=False)
     observations = fields.Text("Observations")
+
+
+
+    
