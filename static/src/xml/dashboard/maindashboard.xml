@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="hr_management.main_dashboard" owl="1">
+        <Layout display="display">
+            <div class="row p-3">
+
+                <div class="col col-lg-3">
+                    <ChantierDrop></ChantierDrop>
+                </div>
+
+            </div>
+        </Layout>
+    </t>
+</templates>

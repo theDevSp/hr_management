@@ -157,41 +157,6 @@ class hr_rapport_pointage_line(models.Model):
     @api.model
     def create(self,vals):
         res = super(hr_rapport_pointage_line,self).create(vals)
-        query_transfert = """
-                    select hrt.chantier_id_destiation,fvc.simplified_name
-                    from hr_employee_transfert hrt
-                    left join fleet_vehicle_chantier fvc
-                    on fvc.id = hrt.chantier_id_destiation
-                    where hrt.date_transfert = '%s' and hrt.state = 'done' and hrt.employee_id = %s
-                """  % (res.day,res.employee_id.id)
-        self.env.cr.execute(query_transfert)
-        query_res_transfert = self.env.cr.dictfetchall()
-        
-        if len(query_res_transfert) > 0:
-            res.write({
-                'day_type':'9',
-                'details':'Transfert vers '+query_res_transfert[0]['simplified_name'],
-                'chantier_id':query_res_transfert[0]['chantier_id_destiation']
-            })
-        
-        query_holiday = """
-                    select * from hr_holidays where
-                    employee_id = %s and
-                    date_start <= '%s' and date_end >= '%s' and state = 'validate'
-                    
-                """   % (res.employee_id.id,res.day,res.day)
-
-        self.env.cr.execute(query_holiday)
-        query_res_holiday = self.env.cr.dictfetchall()
-        if len(query_res_holiday) > 0:
-            placement = self.env['hr.employee'].browse(query_res_holiday[0]['employee_remplacant_id'])
-            remplacant = (' - Remplacer par : ' + placement.name + ' - ' + placement.identification_id) if placement else ''
-            res.write({
-                'day_type':'4',
-                'details':(dict(self.env['hr.holidays'].browse(query_res_holiday[0]['id']).fields_get(allfields=['motif'])['motif']['selection'])[self.env['hr.holidays'].browse(query_res_holiday[0]['id']).motif] + remplacant),
-                'chantier_id':query_res_holiday[0]['chantier_id'],
-                'emplacement_chantier_id':res.rapport_id.emplacement_chantier_id.id,
-            })
 
         return res
     

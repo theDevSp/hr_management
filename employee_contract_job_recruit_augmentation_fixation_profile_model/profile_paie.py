@@ -36,6 +36,7 @@ class profilepaie(models.Model):
     completer_salaire = fields.Boolean("Compléter le salaire", default=True)
     plafonner_bonus = fields.Boolean("Plafonner le bonus", default=True)
     avoir_conge = fields.Boolean("Peut avoir un congé", default=True)
+    payed_holidays = fields.Boolean("Jours Férié Remboursser", default=True)
     justification = fields.Boolean("Détails travaux obligé", default=True)
     period_id = fields.Many2one("account.month.period", string = "Période")
     periodicity = fields.Selection(

@@ -252,15 +252,15 @@ class hr_rapport_pointage(models.Model):
             
             if res.chantier_id.periodicite == '1' and res.employee_id.type_emp == 'o':
                 if res.quinzaine == 'quinzaine1':
-                    for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,employee_id=vals['employee_id']):
+                    for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,vals['employee_id'],res.emplacement_chantier_id):
                         if line['day'].date() <= self.get_half_month_day(res.period_id):
                             self.env['hr.rapport.pointage.line'].create(line)
                 elif res.quinzaine == 'quinzaine2':
-                    for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,employee_id=vals['employee_id']):
+                    for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,vals['employee_id'],res.emplacement_chantier_id):
                         if line['day'].date() > self.get_half_month_day(res.period_id):
                             self.env['hr.rapport.pointage.line'].create(line)
             else:
-                for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,employee_id=vals['employee_id']):
+                for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,vals['employee_id'],res.emplacement_chantier_id):
                     self.env['hr.rapport.pointage.line'].create(line)
         else:
             raise UserError('Rapport déja existe')
@@ -275,27 +275,112 @@ class hr_rapport_pointage(models.Model):
                 })
         return super().write(vals)
 
-    def _prepare_rapport_pointage_lines(self,period_id,rapport_id,employee_id):   
-                    
+    def _prepare_rapport_pointage_lines(self,period_id,rapport_id,employee_id,emplacement_chantier_id):   
+        
         nbr_days_months = self.get_range_month(period_id)
         repport_lines = []
+        special_days = self.get_declaration_per_period(self.get_jour_ferie_per_period(self.get_holidays_per_period(period_id,employee_id),period_id),period_id,employee_id)
         for number in range(nbr_days_months):
             day = number+1
-            day_type = "1"
+            day_date = datetime(period_id.date_start.year,period_id.date_start.month, day)
+            day_type = special_days[day_date.strftime("%m%d%Y")]['day_type'] if day_date.strftime("%m%d%Y") in special_days else "1"
+            chantier_id = special_days[day_date.strftime("%m%d%Y")]['chantier_id'] if day_date.strftime("%m%d%Y") in special_days and 'chantier_id' in special_days[day_date.strftime("%m%d%Y")] else False
+            details = special_days[day_date.strftime("%m%d%Y")]['details'] if day_date.strftime("%m%d%Y") in special_days else False
             name = self._get_day(period_id,day)
             if 'Dim' in name:
                 day_type = "2"
-            
+
             repport_lines.append({
                 'name':name,
-                'day':datetime(period_id.date_start.year,period_id.date_start.month, day),
+                'day':day_date,
                 'day_type':str(day_type),
                 'rapport_id':rapport_id,
-                'employee_id':employee_id
+                'employee_id':employee_id,
+                'details' : details,
+                'chantier_id': chantier_id,
+                'emplacement_chantier_id': emplacement_chantier_id
             })
+
         return repport_lines
+
     
+    def get_holidays_per_period(self,period_id,employee_id):
+
+        holidays = self.env['hr.holidays'].search(
+            [('employee_id', '=', employee_id),('state', 'in', ('validate','confirm')),
+                '|',
+                    '|',
+                        '&',
+                            ('date_start', '>=', period_id.date_start),
+                            ('date_start', '<=', period_id.date_stop),
+                        '&',
+                            ('date_end', '>=', period_id.date_start),
+                            ('date_end', '<=', period_id.date_stop),
+                    '&',
+                        ('date_select_half_perso', '>=', period_id.date_start),
+                        ('date_select_half_perso', '<=', period_id.date_stop)],
+        )
+
+        result = {}
+        for hold in holidays:
+            remplacant = (' - Remplacer par : %s - %s')%(hold.remplacant_employee_id.cin,hold.remplacant_employee_id.name) if hold.remplacant_employee_id else ''
+            motif_holiday = dict(hold.fields_get(allfields=['motif'])['motif']['selection'])[hold.motif]
+            if hold.demi_jour:
+                result[hold.date_select_half_perso.strftime("%m%d%Y")] = {
+                    'day_type': '4',
+                    'details' : motif_holiday+remplacant,
+                    'chantier_id': hold.chantier_id.id ,
+                    'emplacement_chantier_id': self.emplacement_chantier_id.id
+                }
+            else:
+                for single_date in self.env['account.month.period'].daterange(hold.date_start,hold.date_end):
+                    result[single_date.strftime("%m%d%Y")] = {
+                        'day_type': '4',
+                        'details' : motif_holiday+remplacant,
+                        'chantier_id': hold.chantier_id.id 
+                    }
+            
+        return result
     
+    def get_jour_ferie_per_period(self,result,period_id):
+
+        jour_feries = self.env['hr.jours.feries'].search(
+            [('state', '=', 'validee'),
+                '|',
+                    '&',
+                        ('date_start', '>=', period_id.date_start),
+                        ('date_start', '<=', period_id.date_stop),
+                    '&',
+                        ('date_end', '>=', period_id.date_start),
+                        ('date_end', '<=', period_id.date_stop),],
+        )
+
+        for jf in jour_feries:
+            for single_date in self.env['account.month.period'].daterange(jf.date_start,jf.date_end):
+                    result[single_date.strftime("%m%d%Y")] = {
+                        'day_type': '3',
+                        'details' : jf.name
+                    }
+
+        return result    
+    
+    def get_declaration_per_period(self,result,period_id,employee_id):
+
+        declaration = self.env['declaration.anomalie.employee.sur.chantier'].search(
+            [('employee_id', '=', employee_id),('state', 'in',('valide', 'approuved')),
+                ('date_fait', '>=', period_id.date_start),
+                ('date_fait', '<=', period_id.date_stop)],
+        )
+
+        for dc in declaration:
+            result[dc.date_fait.strftime("%m%d%Y")] = {
+                    'day_type': dc.type_declaration,
+                    'details' : dc.motif,
+                    'chantier_id': dc.chantier_id.id
+                }
+
+        return result  
+        
     def get_range_month(self,period_id):
         return calendar.monthrange(period_id.date_start.year, period_id.date_start.month)[1] 
 
@@ -384,13 +469,28 @@ class hr_rapport_pointage(models.Model):
         data = {}
         for line in self.rapport_lines:
             key = line.chantier_id.id or 0 + line.emplacement_chantier_id.id or 0 + line.vehicle_id.id or 0
-            if key > 0:
-                data[key] = key 
+            if key not in data:
+                data[key] = {}
+            data[key]['chantier_id'] = line.chantier_id.id
+            data[key]['emplacement_chantier_id'] = line.emplacement_chantier_id.id
+            data[key]['vehicle_id'] = line.vehicle_id.id
+            if 'h' in data[key]:
+                data[key]['h'] += float(line.h_travailler_v)
+            else:
+                data[key]['h'] = float(line.h_travailler_v)
+
+            if 'j' in data[key]:
+                data[key]['j'] += float(line.j_travaille_v)
+            else:
+                data[key]['j'] = float(line.j_travaille_v)
+                
+        
         print(data)
 
     def rapport_result(self):
         contract = self.employee_id.contract_id # contrat par defaut
         can_complete = contract.completer_salaire_related # autorisation de compensation
+        can_pay_holidays = contract.payed_holidays_related # autorisation de compensation
         type_emp = contract.type_emp
         type_profile = contract.type_profile_related
         jd = self.count_nbr_dim_days_v # jour dimanche travaillé et validé par service rh
@@ -398,9 +498,9 @@ class hr_rapport_pointage(models.Model):
         jft = self.count_nbr_ferier_days_v # jour férie travaillé et validé par service rh
         jf = self.count_nbr_ferier_days # total des jour férié travaillé + non travaillé
         jom = self.jom # jour ouvrable par mois
-        joe = contract.nbre_jour_worked_par_mois_related # jour ouvrable sur lesquels le salaire de base de l'employé est définis
-        default_day_2_add = joe - jom # jour de réguralisation pour les mois exceptionnels (24-25-27)
-        hnt = contract.nbre_jour_worked_par_mois_related * contract.nbre_heure_worked_par_jour_related # heure de travail sur lesquelles le salaire de base de l'employé est définis
+        joe = contract.nbre_jour_worked_par_mois_related if contract.definition_nbre_jour_worked_par_mois_related == 'nbr_saisie' else self.period.get_number_of_days_per_month() # jour ouvrable sur lesquels le salaire de base de l'employé est définis
+        default_day_2_add = joe - jom  if contract.definition_nbre_jour_worked_par_mois_related == 'nbr_saisie' else 0 # jour de réguralisation pour les mois exceptionnels (24-25-27)
+        hnt = joe * contract.nbre_heure_worked_par_jour_related # heure de travail sur lesquelles le salaire de base de l'employé est définis
         jot = self.total_j_v + default_day_2_add # jour travaillé par le salarié + la régularisation
         ht = self.total_h_v # heure travaillées par le salarié
         h_comp = hnt - ht # heure de compensation de salaire
@@ -409,6 +509,7 @@ class hr_rapport_pointage(models.Model):
         return {
             'contract':contract,
             'can_complete':can_complete,
+            'can_pay_holidays':can_pay_holidays,
             'type_emp':type_emp,
             'type_profile':type_profile,
             'jc':jc,
@@ -419,7 +520,9 @@ class hr_rapport_pointage(models.Model):
             'hnt':hnt,
             'ht':ht,
             'h_comp':h_comp,
-            'j_comp':j_comp
+            'j_comp':j_comp,
+            'default_day_2_add':default_day_2_add,
+            'jft':jf
         }
         
     def handle_jf_for_daily_worker(self):
@@ -438,14 +541,14 @@ class hr_rapport_pointage(models.Model):
         comp_jd = unhandeled_j_comp - min(resume['jc'],resume['jd'])
         jd_jc_used = resume['jc'] - resume['jd']
 
-        handeled_days,j_alloaction = 0,0
+        handeled_days,handeled_sun_days,j_alloaction = 0,0,0
 
         if comp_jd > 0:
             handeled_days = resume['jc']
             j_alloaction = max(0,-jd_jc_used)
 
         elif comp_jd < 0 and jd_jc_used > 0:
-            handeled_days = unhandeled_j_comp
+            handeled_sun_days = unhandeled_j_comp
             j_alloaction = max(0,resume['jd'] - unhandeled_j_comp)
         elif comp_jd < 0 and jd_jc_used < 0:
             handeled_days = min(resume['jc'],unhandeled_j_comp)
@@ -453,8 +556,21 @@ class hr_rapport_pointage(models.Model):
 
         return {
             'handeled_days' : handeled_days,
+            'handeled_sun_days' : handeled_sun_days,
             'jd_alloaction' : j_alloaction # allocation panier dimanche (condition > 0)
         }
     
     def handle_hours_needed_for_hourly_worker(self):
-        return
+        resume = self.rapport_result()
+        unhandeled_hours = resume['h_comp']
+        default_paied_hours = resume['default_day_2_add'] * resume['contract'].nbre_heure_worked_par_jour_related
+        jf_paied,j_default_allocation,j_allocation = resume['jft'],0,0
+        if unhandeled_hours >= 0:
+            j_default_allocation = resume['default_day_2_add']
+            unhandeled_hours = unhandeled_hours - default_paied_hours
+            j_allocation = min(resume['jc'],unhandeled_hours/resume['contract'].nbre_heure_worked_par_jour_related)
+            
+        return {
+            'panier_jour_ferier':jf_paied,
+            'default_allocation' : j_default_allocation,
+        }

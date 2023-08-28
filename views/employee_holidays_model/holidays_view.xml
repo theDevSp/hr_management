@@ -9,6 +9,8 @@
                 <field name="chantier_id"/>
                 <field name="date_start"/>
                 <field name="date_end"/>
+                <field name="date_select_half_perso"/>
+                <field name="duree_jours"/>
                 <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
                 <field name="motif"/>
             </tree>
@@ -23,6 +25,8 @@
                 <field name="chantier_id"/>
                 <field name="date_start"/>
                 <field name="date_end"/>
+                <field name="date_select_half_perso"/>
+                <field name="duree_jours"/>
                 <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
                 <field name="motif"/>
             </tree>

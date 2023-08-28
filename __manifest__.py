@@ -102,8 +102,11 @@
         'views/employee_payroll_model/jr_travaille_par_chantier_menu.xml',
         'views/employee_pointage_mission_model/pointage_menu.xml',
         'views/declaration/declaration_menu.xml',
-        'views/declaration/declaration_views.xml'
-    ],
+        'views/declaration/declaration_views.xml',
+
+        'views/dashboards/dashboards_menu.xml',
+
+],
 
     'demo': [
     ],
@@ -114,7 +117,9 @@
         ],
         'web.assets_backend': [
             'hr_management/static/src/js/*.js',
+            'hr_management/static/src/js/**/*.js',
             'hr_management/static/src/xml/*.xml',
+            'hr_management/static/src/xml/**/*.xml',
             'hr_management/static/src/css/*.scss',
         ],
         'web.report_assets_pdf': [

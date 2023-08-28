@@ -20,7 +20,8 @@ class holidays(models.Model):
         ('deces',"Décès"),
         ('nv_ne','Nouveau né'),
         ('mariage','Mariage'),
-        ('conge_annuel','Congé annuel')
+        ('conge_annuel','Congé annuel'),
+        ('arret','Arrét Aid'),
         ],"Motif", required=True
     )
         

@@ -41,6 +41,8 @@ class contrats(models.Model):
     completer_salaire_related = fields.Boolean(related="pp_personnel_id_many2one.completer_salaire", readonly=False)
     plafonner_bonus_related = fields.Boolean(related="pp_personnel_id_many2one.plafonner_bonus", readonly=False)
     avoir_conge_related = fields.Boolean(related="pp_personnel_id_many2one.avoir_conge", readonly=False)
+    payed_holidays_related = fields.Boolean(related="pp_personnel_id_many2one.payed_holidays", readonly=False)
+    justification_related = fields.Boolean(related="pp_personnel_id_many2one.justification", readonly=False)
     period_id_related = fields.Many2one(related="pp_personnel_id_many2one.period_id", readonly=False)
     salaire_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_jour", readonly=True)
     salaire_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_demi_jour", readonly=True)

@@ -71,6 +71,22 @@
                                                 </div>  
                                             </div>
                                         </div>
+                                        <div class="col-md-4">
+                                            <label for="payed_holidays" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <field name="payed_holidays" widget="boolean_toggle"/>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="justification" class=""/>
+                                            <div class="main">
+                                                <div class="form-group">
+                                                    <field name="justification" widget="boolean_toggle"/>
+                                                </div>  
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">

@@ -321,9 +321,21 @@
                                                     <div class="col-12 col-lg-6">
                                                         <div class="input-group mb-3">
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text" ><label for="code_profile_related" class=""/></span>
+                                                                <span class="input-group-text" ><label for="plafonner_bonus_related" class=""/></span>
                                                             </div>
-                                                            <field name="code_profile_related" class="form-control"/>
+                                                            <field name="plafonner_bonus_related" widget="boolean_toggle" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                                        </div>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" ><label for="payed_holidays_related" class=""/></span>
+                                                            </div>
+                                                            <field name="payed_holidays_related" widget="boolean_toggle" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                                        </div>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" ><label for="justification_related" class=""/></span>
+                                                            </div>
+                                                            <field name="justification_related" class="form-control"/>
                                                         </div>
                                                         <div class="input-group mb-3">
                                                             <div class="input-group-prepend">
