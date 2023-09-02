@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="pointage_form_view_inherit" model="ir.ui.view">
+            <field name="name">pointage.form.view.inherit</field>
+            <field name="model">hr.rapport.pointage</field>
+            <field name="inherit_id" ref="hr_management.rapport_pointage_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="js_class">report_pointage_one_salarie</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="pointage_list_view_inherit" model="ir.ui.view">
+            <field name="name">pointage.list.view.inherit</field>
+            <field name="model">hr.rapport.pointage</field>
+            <field name="inherit_id" ref="hr_management.rapport_pointage_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="js_class">report_pointage_list</attribute>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+    
+</odoo>

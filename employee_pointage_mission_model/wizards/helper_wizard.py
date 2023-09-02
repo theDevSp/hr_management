@@ -37,7 +37,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
         
     chantier_id = fields.Many2one("fleet.vehicle.chantier",u"Chantier",domain=_get_chantier_domain)
     periodicite = fields.Selection(related="chantier_id.periodicite")
-    sous_chantier = fields.Many2one("fleet.vehicle.chantier.emplacement2",string="Equipes")
+    sous_chantier = fields.Many2one("fleet.vehicle.chantier.emplacement",string="Equipes")
     employee_type = fields.Selection([("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé")
     period_id = fields.Many2one("account.month.period",u'Période',domain = _get_ab_default)
     quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine",default='quinzaine1')

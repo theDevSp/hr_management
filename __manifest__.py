@@ -106,6 +106,8 @@
 
         'views/dashboards/dashboards_menu.xml',
 
+        'views/owl_pointage/report_pointage_views_inherit.xml'
+
 ],
 
     'demo': [
@@ -121,6 +123,7 @@
             'hr_management/static/src/xml/*.xml',
             'hr_management/static/src/xml/**/*.xml',
             'hr_management/static/src/css/*.scss',
+            'hr_management/static/src/css/*/*/.scss'
         ],
         'web.report_assets_pdf': [
             'hr_management/static/src/report_css/*.scss',  
