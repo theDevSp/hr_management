@@ -6,7 +6,6 @@ import { ListController } from "@web/views/list/list_controller";
 import { useService } from "@web/core/utils/hooks";
 
 import { content_report_pointage_many_salarie } from "./content_report_pointage_many_salarie";
-import { content_report_pointage_many_ouvrier } from "./content_report_pointage_many_ouvrier";
 
 class PointageListController extends ListController {
   setup() {
@@ -36,7 +35,7 @@ class PointageListController extends ListController {
     const data = await Promise.all(
       ids.map(async (id) => {
         const res = await this.rpc(
-          "/hr_management/get_report_pointage_report/" + id
+          "/hr_management/get_report_pointage_salarie_ouvrier/" + id
         );
         return res ? res : null;
       })
@@ -66,7 +65,7 @@ class PointageListController extends ListController {
       });
     }
     else if (ouv.length > 0) {
-      this.notification.add("Merci de sélectionner un seul type d'employé (Salarié).", {
+      this.notification.add("Merci de sélectionner uniquement le type d'employé (salarié).", {
         title: "Erreur de sélection multiple !",
         type: "warning",
         sticky: true,

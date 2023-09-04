@@ -32,7 +32,7 @@ class PointageFormController extends FormController {
       spinner.style.display = "block";
 
       const res = await this.rpc(
-        `/hr_management/get_report_pointage_Salarie_lines/${this.model.root.data.id}`
+        `/hr_management/get_report_pointage_salarie_ouvrier/${this.model.root.data.id}`
       );
       const data = res[0];
       const len = res.length;
@@ -51,7 +51,7 @@ class PointageFormController extends FormController {
         header: portrait_header(),
         pageSize: "A4",
         pageOrientation: "portrait",
-        content: res[0].typeEmployee == 's' ? content_report_pointage_one_salarie(data, len, len): content_report_pointage_one_ouvrier(data, len, len),
+        content: res[0].typeEmployee == 's' ? content_report_pointage_one_salarie(data, len, len) : content_report_pointage_one_ouvrier(data, len, len),
       };
 
       const pdfDocGenerator = pdfMake.createPdf(pdfDefinition);

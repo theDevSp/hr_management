@@ -357,7 +357,7 @@ export function content_report_pointage_one_ouvrier(data, pageNumber, totalPages
         footerTable,
         {
             alignment: 'justify',
-            margin: [10, 195],
+            margin: [10, 185],
                 columns: [
                 {
                     text: `Page ${pageNumber} of ${totalPages}`,
