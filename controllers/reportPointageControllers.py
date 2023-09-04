@@ -38,6 +38,7 @@ class reportPointageController(http.Controller):
                 'dEquipe': res.emplacement_chantier_id.abrv if res.emplacement_chantier_id.abrv else "",
                 'dEngin': res.vehicle_id.code if res.vehicle_id.code else "",
                 'totalheure': res.total_h if res.total_h else "",
+                'typeEmployee': res.type_emp if res.type_emp else "",
                 'dates': data_lines,
             }
         )
@@ -66,7 +67,7 @@ class reportPointageController(http.Controller):
                     'chantier': line.chantier_id.simplified_name if line.chantier_id.simplified_name else "",
                     'equipe': line.emplacement_chantier_id.abrv if line.emplacement_chantier_id.abrv else "",
                     'observation': line.details if line.details else "",
-                    'code': str(code),
+                    'code': str(code)
                 }
             )
 
@@ -83,6 +84,7 @@ class reportPointageController(http.Controller):
                 'totalHeure': res.total_h if res.total_h else "",
                 'typeEmployee': res.type_emp if res.type_emp else "",
                 'dates': data_lines,
+                'quinzaine' : res.quinzaine if res.quinzaine else ""
             }
         )
 

@@ -1,9 +1,15 @@
 /** @odoo-module */
 
 import { content_report_pointage_one_salarie } from "./content_report_pointage_one_salarie";
+import { content_report_pointage_one_ouvrier } from './content_report_pointage_one_ouvrier'
 import { portrait_header } from "@reports_templates/js/headers";
 
 export async function content_report_pointage_many_ouvrier(data) {
+
+
+  console.log(data)
+
+
   const overlay = document.createElement("div");
   overlay.className = "overlay";
 
@@ -28,7 +34,7 @@ export async function content_report_pointage_many_ouvrier(data) {
     };
 
     await Promise.all(data.map(async (salarie, index) => {
-      const pdfContent = await content_report_pointage_one_salarie(
+      const pdfContent = await content_report_pointage_one_ouvrier(
         salarie,
         index + 1,
         data.length
@@ -68,6 +74,8 @@ export async function content_report_pointage_many_ouvrier(data) {
     document.querySelector("#iframemodal").style.display = "block";
     document.querySelector("#modalClose").addEventListener('click', () => {
       document.querySelector("#iframemodal").style.display = "none";
+      const targetElement = document.querySelector("#iframeContainer");
+      targetElement.removeAttribute("src");
     });
   }
 }

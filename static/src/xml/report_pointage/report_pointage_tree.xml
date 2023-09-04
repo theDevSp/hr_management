@@ -3,7 +3,7 @@
     <t t-name="owl.hrPointageListView.Buttons" t-inherit="web.ListView.Buttons" owl="1">
         <xpath expr="//button[hasclass('o_list_button_add')]" position="after">
             <div class="dropdown">
-                <button t-if="nbSelected" class=" ms-2 btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button t-if="nbSelected" class="custom ms-2 btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa fa-print"></i>
                 </button>
                 <ul class="dropdown-menu">

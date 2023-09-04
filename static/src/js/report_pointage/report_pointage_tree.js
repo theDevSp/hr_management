@@ -12,6 +12,8 @@ class PointageListController extends ListController {
   setup() {
     super.setup();
     this.rpc = useService("rpc");
+
+    this.notification = useService("notification")
   }
 
   async print(url) {
@@ -42,7 +44,7 @@ class PointageListController extends ListController {
     return data
   }
 
-  getPDF(data){
+  getPDF(data) {
     const sal = [];
     const ouv = [];
 
@@ -57,19 +59,22 @@ class PointageListController extends ListController {
     });
 
     if (sal.length > 0 && ouv.length > 0) {
-      const notification = this.env.services.notification;
-      notification.add("Merci de sélectionner un seul type d'employé (Ouvrier ou Salarié).", {
+      this.notification.add("Merci de sélectionner un seul type d'employé (Salarié).", {
         title: "Erreur de sélection multiple !",
-        type: "danger", // info, warning, danger, success
+        type: "danger",
         sticky: true,
-      });sal
-      return null;
-    } else {
-      if (sal.length > 0) {
-        return content_report_pointage_many_salarie(sal);
-      } else if (ouv.length > 0) {
-        return content_report_pointage_many_ouvrier(ouv);
-      }
+      });
+    }
+    else if (ouv.length > 0) {
+      this.notification.add("Merci de sélectionner un seul type d'employé (Salarié).", {
+        title: "Erreur de sélection multiple !",
+        type: "warning",
+        sticky: true,
+      });
+    }
+    else if (sal.length > 0) {
+      return content_report_pointage_many_salarie(sal);
+
     }
   }
 }

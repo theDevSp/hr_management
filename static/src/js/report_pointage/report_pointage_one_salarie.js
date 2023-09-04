@@ -3,6 +3,7 @@ import { registry } from "@web/core/registry";
 import { formView } from "@web/views/form/form_view";
 import { FormController } from "@web/views/form/form_controller";
 import { content_report_pointage_one_salarie } from "./content_report_pointage_one_salarie";
+import { content_report_pointage_one_ouvrier } from "./content_report_pointage_one_ouvrier";
 import { useService } from "@web/core/utils/hooks";
 import { portrait_header } from "@reports_templates/js/headers";
 
@@ -46,11 +47,11 @@ class PointageFormController extends FormController {
 
       const pdfDefinition = {
         info: pdfMetaData,
-        pageMargins: [12, 110, 10, 8],
+        pageMargins: [12, 115, 10, 8],
         header: portrait_header(),
         pageSize: "A4",
         pageOrientation: "portrait",
-        content: content_report_pointage_one_salarie(data, len, len),
+        content: res[0].typeEmployee == 's' ? content_report_pointage_one_salarie(data, len, len): content_report_pointage_one_ouvrier(data, len, len),
       };
 
       const pdfDocGenerator = pdfMake.createPdf(pdfDefinition);
@@ -74,7 +75,7 @@ class PointageFormController extends FormController {
       document.querySelector("#modalClose").addEventListener('click', () => {
         document.querySelector("#iframemodal").style.display = "none";
         const targetElement = document.querySelector("#iframeContainer");
-      targetElement.removeAttribute("src");
+        targetElement.removeAttribute("src");
       });
     }
   }
