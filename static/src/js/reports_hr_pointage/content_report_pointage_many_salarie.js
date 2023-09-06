@@ -56,7 +56,7 @@ export async function content_report_pointage_many_salarie(data) {
     showModal();
   } catch (error) {
     console.error("Error:", error);
-  } finally {
+  } finally {CongesListController.template = "";
     overlay.style.display = "none";
     spinner.style.display = "none";
     document.body.removeChild(overlay);
