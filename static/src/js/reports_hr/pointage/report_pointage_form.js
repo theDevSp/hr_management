@@ -11,33 +11,21 @@ class PointageFormController extends FormController {
   setup() {
     super.setup();
     this.rpc = useService("rpc");
+    this.overlay = document.createElement("div");
+    this.spinner = document.createElement("div");
+    this.overlay.className = "overlay";
+    this.spinner.id = "spinner";
+    this.spinner.className = "spinner";
   }
 
   async print(url) {
-    // Create the overlay element dynamically
-    const overlay = document.createElement("div");
-    overlay.className = "overlay";
-
-    // Create the spinner element dynamically
-    const spinner = document.createElement("div");
-    spinner.id = "spinner";
-    spinner.className = "spinner";
-
-    // Append the overlay and spinner to the body of the document
-    document.body.appendChild(overlay);
-    document.body.appendChild(spinner);
-
     try {
-      overlay.style.display = "block";
-      spinner.style.display = "block";
+      this.showOverlayAndSpinner();
 
-      const res = await this.rpc(
-        `/hr_management/get_report_pointage_salarie_ouvrier/${this.model.root.data.id}`
-      );
+      const res = await this.rpc(`/hr_management/get_report_pointage_salarie_ouvrier/${this.model.root.data.id}`);
       const data = res[0];
       const len = res.length;
 
-      // Define PDF metadata
       const pdfMetaData = {
         title: `RAPPORT POINTAGE N°: ${data.report_num}-${data.cin}-${data.nometpnom}-${data.month}`,
         author: "BIOUI TRAVAUX",
@@ -51,36 +39,52 @@ class PointageFormController extends FormController {
         header: portrait_header(),
         pageSize: "A4",
         pageOrientation: "portrait",
-        content: res[0].typeEmployee == 's' ? content_report_pointage_one_salarie(data, len, len) : content_report_pointage_one_ouvrier(data, len, len),
+        content: data.typeEmployee === 's' ?
+          content_report_pointage_one_salarie(data, len, len) :
+          content_report_pointage_one_ouvrier(data, len, len),
       };
 
       const pdfDocGenerator = pdfMake.createPdf(pdfDefinition);
-
       const dataUrl = await pdfDocGenerator.getDataUrl();
       const targetElement = document.querySelector("#iframeContainer");
       targetElement.setAttribute("src", dataUrl);
-      showModal();
+      this.showModal();
 
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      // Hide and remove the overlay and spinner
-      overlay.style.display = "none";
-      spinner.style.display = "none";
-      document.body.removeChild(overlay);
-      document.body.removeChild(spinner);
-    }
-    function showModal() {
-      document.querySelector("#iframemodal").style.display = "block";
-      document.querySelector("#modalClose").addEventListener('click', () => {
-        document.querySelector("#iframemodal").style.display = "none";
-        const targetElement = document.querySelector("#iframeContainer");
-        targetElement.removeAttribute("src");
-      });
+      this.hideOverlayAndSpinner();
     }
   }
 
+  showOverlayAndSpinner() {
+    this.overlay.style.display = "block";
+    this.spinner.style.display = "block";
+    document.body.appendChild(this.overlay);
+    document.body.appendChild(this.spinner);
+  }
 
+  hideOverlayAndSpinner() {
+    this.overlay.style.display = "none";
+    this.spinner.style.display = "none";
+    document.body.removeChild(this.overlay);
+    document.body.removeChild(this.spinner);
+  }
+
+  showModal() {
+    const iframeModal = document.querySelector("#iframemodal");
+    if (iframeModal) {
+      iframeModal.style.display = "block";
+      const modalClose = document.querySelector("#modalClose");
+      if (modalClose) {
+        modalClose.addEventListener('click', () => {
+          iframeModal.style.display = "none";
+          const targetElement = document.querySelector("#iframeContainer");
+          targetElement.removeAttribute("src");
+        });
+      }
+    }
+  }
 }
 
 PointageFormController.template = "owl.ReportPointageFormView";

@@ -250,7 +250,7 @@ export function content_report_pointage_one_salarie(data,pageNumber, totalPages)
     });
     
     const footerTable = {
-        margin: [0, 4, 3, 0],
+        margin: [0, 3, 3, 0],
         layout: {
             hLineColor: 'gray',
             vLineColor: 'gray'
@@ -299,10 +299,10 @@ export function content_report_pointage_one_salarie(data,pageNumber, totalPages)
                 ],
                 [{
                         text: data.totalheure,
-                        fontSize: 19,
+                        fontSize: 15,
                         bold: true,
                         alignment: 'center',
-                        margin: [0, 30],
+                        margin: [0, 25],
                         //padding: [0, 20]
                     },
                     {
@@ -325,7 +325,7 @@ export function content_report_pointage_one_salarie(data,pageNumber, totalPages)
         }
     }
 
-    const dd = {
+    const def = {
         
         content: [{
                 table: {
@@ -340,7 +340,7 @@ export function content_report_pointage_one_salarie(data,pageNumber, totalPages)
             },
 
             {
-                margin: [0, 4, 0, 0],
+                margin: [0, 3, 0, 0],
                 layout: {
                     hLineColor: 'gray',
                     vLineColor: 'gray'
@@ -363,12 +363,12 @@ export function content_report_pointage_one_salarie(data,pageNumber, totalPages)
                         fontSize: 7,
                         alignment: 'right',
                         bold: true,
-                        margin: [0,3,2,0]
+                        margin: [0,2,2,0]
                     },
                     {
                         text: `Imprimer le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`,
                         fontSize: 7,
-                        margin: [0,3,2,0],
+                        margin: [0,2,2,0],
                         alignment: 'right',
                         bold: true,
                     }
@@ -379,5 +379,5 @@ export function content_report_pointage_one_salarie(data,pageNumber, totalPages)
         ]
     }
 
-    return dd.content
+    return def.content
 }
