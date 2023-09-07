@@ -252,15 +252,15 @@ class hr_rapport_pointage(models.Model):
             
             if res.chantier_id.periodicite == '1' and res.employee_id.type_emp == 'o':
                 if res.quinzaine == 'quinzaine1':
-                    for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,vals['employee_id'],res.emplacement_chantier_id):
+                    for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,vals['employee_id'],res.emplacement_chantier_id.id):
                         if line['day'].date() <= self.get_half_month_day(res.period_id):
                             self.env['hr.rapport.pointage.line'].create(line)
                 elif res.quinzaine == 'quinzaine2':
-                    for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,vals['employee_id'],res.emplacement_chantier_id):
+                    for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,vals['employee_id'],res.emplacement_chantier_id.id):
                         if line['day'].date() > self.get_half_month_day(res.period_id):
                             self.env['hr.rapport.pointage.line'].create(line)
             else:
-                for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,vals['employee_id'],res.emplacement_chantier_id):
+                for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,vals['employee_id'],res.emplacement_chantier_id.id):
                     self.env['hr.rapport.pointage.line'].create(line)
         else:
             raise UserError('Rapport déja existe')

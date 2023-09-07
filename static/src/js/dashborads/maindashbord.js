@@ -13,6 +13,8 @@ import { Component, useSubEnv, onWillStart, useEffect, useState, useRef } from "
 export class HrMainDashboard extends Component {
     setup() {
 
+        this.rpc = useService("rpc");
+
         this.display = {
             controlPanel: { "top-right": false, "bottom-right": false }
         }
@@ -29,6 +31,16 @@ export class HrMainDashboard extends Component {
         useEffect(() => { 
             
         })
+        
+        this.test()
+        
+    }
+
+    async test() {
+        const res = await this.rpc(
+            `/hr_management/get_dashboard_report_pointage_salarie_ouvrier/2`
+          );
+          console.log(res)
     }
 
 }
