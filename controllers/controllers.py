@@ -5,8 +5,6 @@ from odoo.http import request
 class HrManagement(http.Controller):
     @http.route('/hr_management/get_line_paiement/<int:employee_id>/<int:period_id>', type='json', auth='user')
     def get_prime_list(self,employee_id,period_id):
-        base_url = http.request.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        print (base_url)
         prime = http.request.env['hr.prime']
         res = []
         

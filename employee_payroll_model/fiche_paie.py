@@ -63,10 +63,12 @@ class fiche_paie(models.Model):
     salaire_demi_jour = fields.Float(compute='_compute_salaire_demi_jour',string="Salaire du demi-jour", readonly=True)
     salaire_heure = fields.Float(compute='_compute_salaire_heure',string="Salaire d'heure", readonly=True)
     rapport_id = fields.Many2one("hr.rapport.pointage", string = "Rapport de pointage", readonly=True)
-    stc_id = fields.Many2one("hr.stc", string = "STC", required=False)
+    stc_id = fields.Many2one("hr.stc", string = "STC", readonly=True)
 
     jr_travaille_par_chantier = fields.One2many("jr.travaille.par.chantier", 'fiche_paie_id',string='Jours travaillés par chantier')
     jr_par_prime = fields.One2many("days.per.addition", 'payroll_id',string='Jours par prime')
+
+    notes = fields.Html('Notes')
 
     @api.model
     def create(self, vals):
@@ -287,12 +289,7 @@ class fiche_paie(models.Model):
     
     def unblock(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
-            if self.state == 'blocked' :
-                self.state = 'cal'
-            else:
-                raise ValidationError(
-                        "Erreur, Cette action n'est pas autorisée."
-                    )
+            self.state = 'cal'
         else:
             raise ValidationError(
                     "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
@@ -335,29 +332,6 @@ class fiche_paie(models.Model):
             'view_id': view.id,
         }
 
-class loan_list(models.Model):
-    _name = "loan.list"
-
-    emprunt_id = fields.Many2one("hr.prelevement",u'Emprunt',readonly=True)
-    emprunt_balance = fields.Float(related="emprunt_id.reste_a_paye",string="Reste à payer",readonly=True)
-    emprunt_montant = fields.Float(related="emprunt_id.montant_total_prime",string="Montant d'emprunt",readonly=True)
-    montant_payer = fields.Float(u"Montant à payer")
-    add = fields.Boolean('Ajouter au calcule', default=True)
-    note = fields.Char('Observation')
-    stc_id = fields.Many2one("hr.stc",u'STC',ondelete='cascade')
-
-
-
-class fiche_paie_stc(models.Model):
-    _name = "hr.payslip.stc"
-
-    payslip_id = fields.Many2one("hr.payslip",u'Fiche de paie',readonly=True)
-    period_id = fields.Many2one("account.month.period", string = "Période", required = True)
-    net_pay = fields.Float('Net à payer')
-    chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Dernier Chantier")
-    emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Équipe")
-    #vehicle = fields.Many2one('fleet.vehicle',string="Dernier Engin", states=READONLY_STATES)
-    stc_id = fields.Many2one("hr.stc",u'STC',ondelete='cascade')
 
 class days_per_addition(models.Model):
     

@@ -50,6 +50,13 @@
                 <field name="contract_id"/>
                 <field name="date_validation"/>
                 <field name="stc_id"/>
+                <field name="state" widget="badge" 
+                                                    decoration-muted="state == 'draft'" 
+                                                    decoration-info="state == 'cal'" 
+                                                    decoration-danger="state in ('blocked','annulee')" 
+                                                    decoration-warning="state == 'validee'"
+                                                    decoration-success="state == 'done'"
+                                            />
             </tree>
         </field>
     </record>
@@ -62,6 +69,9 @@
                 <header class="bar-box-shadow mb-4">            
                     <button name="to_draft" string="Brouillon" type="object" attrs="{'invisible': [('state', 'in', ('draft','done'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie,hr_management.group_pointeur"/>
                     <button name="to_validee" string="Valider" type="object" attrs="{'invisible': [('state', '!=', 'draft')]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <field name="cal_state" invisible="1"/>
+                    <button name="update_cal_state" string="Calculer" class="btn btn-success rounded border-1" icon="fa-calculator" type="object" attrs="{'invisible': ['|',('state', '!=', 'validee'),('cal_state', '=', True)]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="update_cal_state" string="Reset" class="btn btn-danger rounded border-1" icon="fa-undo" type="object" attrs="{'invisible': ['|',('state', '!=', 'validee'),('cal_state', '=', False)]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
                     <button name="to_done" string="Payer" class="btn btn-success rounded border-1" icon="fa-cash-register" type="object" attrs="{'invisible': ['|',('state', '!=', 'cal'),('cal_state','=',False)]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
                     <button name="reset" string="Reset" class="btn btn-warning rounded border-1" icon="fa-undo" type="object" attrs="{'invisible': [('state', '!=', 'cal')]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
                     <button name="block" string="Bloquer" class="btn btn-danger rounded border-1" icon="fa-ban" type="object" attrs="{'invisible': [('state', 'not in', ('cal','done'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
@@ -226,11 +236,6 @@
                                         <h2 class="card-text">RESULTAT DE CALCULE</h2>
                                     </div>
                                 </div>
-                                <center attrs="{'invisible': [('state', '!=', 'validee')]}">
-                                    <field name="cal_state" invisible="1"/>
-                                    <button name="update_cal_state" string="Calculer" class="btn btn-success rounded border-1" icon="fa-calculator" type="object" attrs="{'invisible': [('cal_state', '=', True)]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                                    <button name="update_cal_state" string="Reset" class="btn btn-danger rounded border-1" icon="fa-undo" type="object" attrs="{'invisible': [('cal_state', '=', False)]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                                </center>
                                 <div class="card bg-light my-3">
                                     <div class="card-body">
                                         <div class="input-group mb-3" attrs="{'invisible': [('type_profile_related', '=', 'h')]}">
@@ -396,7 +401,21 @@
                     </div>
                 </div>
                 <div class="row mt-3 justify-content-center">
-                    <div class="col-12 col-lg-9">
+                    <div class="col-12 col-lg-4">
+                        <div class="bg-white shadow p-3">
+                            <div class="col-12">
+                                <div class="card my-3">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-text">Note</h6>
+                                    </div>
+                                    <div class="card-body text-dark">
+                                        <field name="notes" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                    </div>
+                                </div>  
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-8">
                         <div class="bg-white shadow p-3">
                             <div class="card bg-light my-3">
                                 <div class="card-body text-center">

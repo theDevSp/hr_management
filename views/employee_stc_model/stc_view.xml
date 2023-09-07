@@ -5,18 +5,19 @@
         <field name="model">hr.stc</field>
         <field name="arch" type="xml">
             <tree string="STC" multi_edit="1" sample="1" class="table">
-                <field name="name"/>
-                <field name="employee_id"/>
-                <field name="cin"/>
-                <field name="job"/>
-                <field name="job_id"/>
-                <field name="chantier"/>
-                <field name="date_debut"/>
-                <field name="date_fin"/>
-                <field name="montant_total"/>
-                <field name="motif"/>
-                <field name="note"/>
-                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
+                <field name="name" />
+                <field name="employee_id" />
+                <field name="cin" />
+                <field name="job" />
+                <field name="job_id" />
+                <field name="chantier" />
+                <field name="date_debut" />
+                <field name="date_fin" />
+                <field name="montant_total" />
+                <field name="motif" />
+                <field name="note" />
+                <field name="state" widget="badge" decoration-info="state == 'draft'"
+                    decoration-warning="state == 'annulee'" decoration-success="state == 'validee'" />
             </tree>
         </field>
     </record>
@@ -26,18 +27,19 @@
         <field name="model">hr.stc</field>
         <field name="arch" type="xml">
             <tree string="STC" multi_edit="1" sample="1" class="table">
-                <field name="name"/>
-                <field name="employee_id"/>
-                <field name="cin"/>
-                <field name="job"/>
-                <field name="job_id"/>
-                <field name="chantier"/>
-                <field name="date_debut"/>
-                <field name="date_fin"/>
-                <field name="montant_total"/>
-                <field name="motif"/>
-                <field name="note"/>
-                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
+                <field name="name" />
+                <field name="employee_id" />
+                <field name="cin" />
+                <field name="job" />
+                <field name="job_id" />
+                <field name="chantier" />
+                <field name="date_debut" />
+                <field name="date_fin" />
+                <field name="montant_total" />
+                <field name="motif" />
+                <field name="note" />
+                <field name="state" widget="badge" decoration-info="state == 'draft'"
+                    decoration-warning="state == 'annulee'" decoration-success="state == 'validee'" />
             </tree>
         </field>
     </record>
@@ -48,473 +50,737 @@
         <field name="arch" type="xml">
             <form string="stc">
                 <header>
-                    <button name="action_done" states="valide" string="Terminer" type="object" class="oe_highlight" />
-                    <button name="action_valide" states="draft" string="Valider" type="object" class="oe_highlight" />
-                    <button name="action_cancel" states="done,valide" string="Annuler" type="object" class="oe_highlight" />
-                    <button name="action_draft" states="cancel" string="Mettre en brouillon" type="object" class="oe_highlight" />
-                    <field name="state" widget="statusbar"/>
+                    <button name="action_done" states="valide" string="Terminer" type="object"
+                        class="oe_highlight" />
+                    <button name="action_valide" states="draft" string="Valider" type="object"
+                        class="oe_highlight" />
+                    <button name="action_cancel" states="done,valide" string="Annuler" type="object"
+                        class="oe_highlight" />
+                    <button name="action_draft" states="cancel" string="Mettre en brouillon"
+                        type="object" class="oe_highlight" />
+                    <button name="reset" string="Reset" 
+                            class="btn btn-danger rounded border-1" icon="fa-undo" 
+                            type="object" attrs="{'invisible': ['|',('state', '!=', 'draft'),('employee_id', '=', False)]}" 
+                            groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <field name="state" widget="statusbar" />
                 </header>
-                <sheet>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="card border-dark mb-3 bg-info">
-                                <div class="card-header text-center">
-                                    <h5>Référence STC</h5>
-                                </div>
-                                <div class="card-body text-dark text-center">
-                                    <h2>
-                                        <field name="name" required="1"/>
-                                    </h2>
-                                </div>
-                            </div>
-                            <div class="card border-dark mb-3 bg-success">
-                                <div class="card-header text-center">
-                                    <h5>Montant Total (DH)</h5>
-                                </div>
-                                <div class="card-body text-dark text-center">
-                                    <h1><field name="montant_total"/></h1>
-                                </div>
-                            </div>
-                            <div class="card border-dark mb-3 bg-success">
-                                <div class="card-header text-center">
-                                    <h5>Montant Validé (DH)</h5>
-                                </div>
-                                <div class="card-body text-dark text-center">
-                                    <h1><field name="valide_salaire"/></h1>
-                                </div>
-                            </div>
-                            <div class="card border-dark mb-3 bg-warning">
-                                <div class="card-header text-center">
-                                    <h5>Reste Emprunts (DH)</h5>
-                                </div>
-                                <div class="card-body text-dark text-center">
-                                    <h1><field name="emprunt"/></h1>
-                                </div>
-                            </div>
-                            <div class="card border-dark mb-3 bg-warning">
-                                <div class="card-header text-center">
-                                    <h5>Reste du salaire (DH)</h5>
-                                </div>
-                                <div class="card-body text-dark text-center">
-                                    <h1><field name="reste_salaire"/></h1>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="card border-dark mb-3">
-                                <div class="card-header">Informations sur l'employé</div>
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="employee_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-user form-control-icon"></span>
-                                                    <field name="employee_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="cin" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-id-card form-control-icon"></span>
-                                                    <field name="cin" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="employee_type" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-user form-control-icon"></span>
-                                                    <field name="employee_type" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="job_id" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-briefcase form-control-icon"></span>
-                                                    <field name="job_id" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>  
-                                            </div>
-                                        </div> 
-                                        <div class="col-md-4">
-                                            <label for="contract" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-file-contract form-control-icon"></span>
-                                                    <field name="contract" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="job" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fa fa-briefcase form-control-icon"></span>
-                                                    <field name="job" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="profile_paie" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-barcode form-control-icon"></span>
-                                                    <field name="profile_paie" class="form-control" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>  
-                                            </div>
-                                        </div> 
-                                        <div class="col-md-4">
-                                            <label for="date_debut" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="date_debut" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="date_fin" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="date_fin" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <label for="chantier" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-city form-control-icon"></span>
-                                                    <field name="chantier" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}" options="{'no_create': True, 'no_open': True}"/>
-                                                </div>  
-                                            </div>
-                                        </div> 
-                                        <div class="col-md-3">
-                                            <label for="bank" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="bank" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div> 
-                                        <div class="col-md-3">
-                                            <label for="modePay" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="modePay" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="ordre" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-user form-control-icon"></span>
-                                                    <field name="ordre" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="card border-dark mb-3">
-                                <div class="card-header">Informations STC</div>
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="date_start" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-calendar form-control-icon"></span>
-                                                    <field name="date_start" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="salaire" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="salaire" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="last_period_days" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="last_period_days" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="motif" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-align-justify form-control-icon"></span>
-                                                    <field name="motif" class="form-control"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="note" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-comment form-control-icon"></span>
-                                                    <field name="note" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                    </div>
+                <div class="row mt-3 justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-3 mt-3 mt-md-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="alert alert-danger text-center mb-2"><i
+                                    class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                Champs Obligatoire </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">INFORMATION STC</h2>
                                 </div>
                             </div>
-
-                            <div class="card border-dark mb-3">
-                                <div class="card-header">Jours congés et dimanches</div>
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="jr_conge" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <field name="jr_conge" class="form-control" style="max-width:40%;"/>
-                                                    <span> = </span>
-
-                                                    <field name="jr_conge_m" class="form-control" style="max-width:40%;"/>
-                                                    <span> (DH) </span>
-                                                </div>  
-                                            </div>
-                                        </div>                                    
-                                        <div class="col-md-4">
-                                            <label for="nombre_dimanche_a_payer" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="nombre_dimanche_a_payer" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <label for="name" class="" />
+                                            </span>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="jr_dim" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <field name="jr_dim" class="form-control" style="max-width:40%;"/>
-                                                    <span> = </span>
-
-                                                    <field name="montant_dim" class="form-control" style="max-width:40%;"/>
-                                                    <span> (DH) </span>
-                                                </div>  
-                                            </div>
+                                        <field name="name" class="form-control" />
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <label for="montant_total" class="" />
+                                            </span>
+                                        </div>
+                                        <field name="montant_total" class="form-control" />
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <div class="o_form_label o_form_label_readonly">DH</div>
+                                            </span>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="card border-dark mb-3">
-                                <div class="card-header">Frais et dépenses</div>
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="frais_depense" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="frais_depense" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>    
-                                            </div>
-                                        </div>                                    
-                                        <div class="col-md-4">
-                                            <label for="frais_route" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="frais_route" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <label for="valide_salaire" class="" />
+                                            </span>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="jr_block" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-clock form-control-icon"></span>
-                                                    <field name="jr_block" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>    
-                                            </div>
+                                        <field name="valide_salaire" class="form-control" />
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <div class="o_form_label o_form_label_readonly">DH</div>
+                                            </span>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="card border-dark mb-3">
-                                <div class="card-header">Préavis</div>
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="preavis_retenu" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <field name="preavis_retenu" class="form-control" style="max-width:30%;"/>
-                                                    =
-                                                    <field name="preavis_retenu_m" class="form-control" style="max-width:30%;"/>
-                                                    (DH)
-                                                </div>    
-                                            </div>
-                                        </div>                                    
-                                        <div class="col-md-6">
-                                            <label for="preavis_ajouter" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <field name="preavis_ajouter" class="form-control" style="max-width:30%;"/>
-                                                    =
-                                                    <field name="preavis_ajouter_m" class="form-control" style="max-width:30%;"/>
-                                                    (DH)
-                                                </div>  
-                                            </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <label for="reste_salaire" class="" />
+                                            </span>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card border-dark mb-3">
-                                <div class="card-header">Prime et licenciement</div>
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="prime" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="prime" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>    
-                                            </div>
-                                        </div>                                    
-                                        <div class="col-md-4">
-                                            <label for="licenciement" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="licenciement" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
+                                        <field name="reste_salaire" class="form-control" />
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <div class="o_form_label o_form_label_readonly">DH</div>
+                                            </span>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="dgi" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="dgi" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>    
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card border-dark mb-3">
-                                <div class="card-header">Amende et Retenus</div>
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="amande" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="amande" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>    
-                                            </div>
-                                        </div>                                    
-                                        <div class="col-md-4">
-                                            <label for="retenu" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="retenu" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="cimr" class=""/>
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <span class="fas fa-money-bill-wave form-control-icon"></span>
-                                                    <field name="cimr" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                                </div>    
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card border-dark mb-3">
-                                <div class="card-header">Liste des emprunts</div>
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <field name="emprunt_lines" nolabel="1">
-                                                        <tree>
-                                                            <field name="emprunt_id" />
-                                                            <field name="emprunt_montant" />
-                                                            <field name="emprunt_balance" />
-                                                            <field name="add" />
-                                                            <field name="montant_payer" />
-                                                            <field name="note" />
-                                                        </tree>
-                                                    </field>
-                                                </div>    
-                                            </div>
-                                        </div>                                    
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card border-dark mb-3">
-                                <div class="card-header">Reste Salaire</div>
-                                <div class="card-body text-dark">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="main">
-                                                <div class="form-group">
-                                                    <field name="payslip_lines" nolabel="1">
-                                                        <tree>
-                                                            <field name="payslip_id" />
-                                                            <field name="period_id" />
-                                                            <field name="net_pay" />
-                                                            <field name="chantier_id"/>
-                                                            <field name="emplacement_chantier_id" />
-                                                            <!-- <field name="vehicle_id" /> -->
-                                                        </tree>
-                                                    </field>
-                                                </div>    
-                                            </div>
-                                        </div>                                    
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </sheet>
+                    <div class="col-12 col-md-8 col-lg-6 mt-3 mt-md-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="alert alert-danger text-center mb-2"><i
+                                    class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                Champs Obligatoire </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">INFORMATION SUR EMPLOYE</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="employee_id" class="" />
+                                                        <i class="fas fa-exclamation-triangle"
+                                                            style="color: #f00000;"></i>
+                                                    </span>
+                                                </div>
+                                                <field name="employee_id" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="cin" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="cin" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="employee_type" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="employee_type" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="profile_paie" class="" />
+                                                        <i class="fas fa-exclamation-triangle"
+                                                            style="color: #f00000;"></i>
+                                                    </span>
+                                                </div>
+                                                <field name="profile_paie" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="contract" class="" />
+                                                        <i class="fas fa-exclamation-triangle"
+                                                            style="color: #f00000;"></i>
+                                                    </span>
+                                                </div>
+                                                <field name="contract" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="chantier_id" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="chantier_id" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="job_id" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="job_id" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="job" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="job" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="date_debut" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="date_debut" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="date_fin" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="date_fin" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="bank" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="bank" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="modePay" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="modePay" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="ordre" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="ordre" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3 justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-3 mt-3 mt-md-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="alert alert-danger text-center mb-2"><i
+                                    class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                Champs Obligatoire </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">DETAILS STC</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <label for="date_start" class="" />
+                                            </span>
+                                        </div>
+                                        <field name="date_start" class="form-control" />
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <label for="salaire" class="" />
+                                            </span>
+                                        </div>
+                                        <field name="salaire" class="form-control" />
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <div class="o_form_label" style="color:red">
+                                                    <field name="type_salaire" class="h6" /> (DH) </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <label for="salaire_jour" class="" />
+                                            </span>
+                                        </div>
+                                        <field name="salaire_jour" class="form-control" />
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <div class="o_form_label o_form_label_readonly">DH</div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <label for="last_period_days" class="" />
+                                            </span>
+                                        </div>
+                                        <field name="last_period_days" class="form-control" />
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <label for="motifs" class="" />
+                                            </span>
+                                        </div>
+                                        <field name="motifs" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-md-8 col-lg-3 mt-3 mt-md-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="alert alert-danger text-center mb-2"><i
+                                    class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                Champs Obligatoire </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">INDEMNITES CONGES</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="jr_conge" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="jr_conge" class="form-control" />
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <div class="o_form_label"> 
+                                                            <field name="jr_conge_m" class="h6" />
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="nombre_dimanche_a_payer" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="nombre_dimanche_a_payer" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="jr_dim" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="jr_dim" class="form-control" />
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <div class="o_form_label"> 
+                                                            <field name="montant_dim" class="h6" />
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-8 col-lg-3 mt-3 mt-md-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="alert alert-danger text-center mb-2"><i
+                                    class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                Champs Obligatoire </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">FRAIS ET DEPENSES</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="frais_depense" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="frais_depense" class="form-control" />
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <div
+                                                            class="o_form_label o_form_label_readonly">
+                                                            DH</div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="frais_route" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="frais_route" class="form-control" />
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <div
+                                                            class="o_form_label o_form_label_readonly">
+                                                            DH</div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-3 mt-3 mt-md-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="alert alert-danger text-center mb-2"><i
+                                    class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                Champs Obligatoire </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">PREAVIS</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="preavis_retenu" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="preavis_retenu" class="form-control" />
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <div class="o_form_label" style="color:red">
+                                                            - <field name="preavis_retenu_m"
+                                                                class="h6" />
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="preavis_ajouter" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="preavis_ajouter" class="form-control" />
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <div class="o_form_label"
+                                                            style="color:green"> + <field
+                                                                name="preavis_ajouter_m" class="h6" />
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-8 col-lg-3 mt-3 mt-md-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="alert alert-danger text-center mb-2"><i
+                                    class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                Champs Obligatoire </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">PRIME ET LICENCIEMENT</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="prime" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="prime" class="form-control" />
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <div
+                                                            class="o_form_label o_form_label_readonly">
+                                                            DH</div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="licenciement" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="licenciement" class="form-control" />
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <div
+                                                            class="o_form_label o_form_label_readonly">
+                                                            DH</div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="cimr" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="cimr" class="form-control" />
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <div
+                                                            class="o_form_label o_form_label_readonly">
+                                                            DH</div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-8 col-lg-3 mt-3 mt-md-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="alert alert-danger text-center mb-2"><i
+                                    class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                Champs Obligatoire </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">AMANDES ET RETENU</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="amande" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="amande" class="form-control" />
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <div
+                                                            class="o_form_label o_form_label_readonly">
+                                                            DH</div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="retenu" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="retenu" class="form-control" />
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <div
+                                                            class="o_form_label o_form_label_readonly">
+                                                            DH</div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <label for="frais_route" class="" />
+                                                    </span>
+                                                </div>
+                                                <field name="frais_route" class="form-control" />
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <div
+                                                            class="o_form_label o_form_label_readonly">
+                                                            DH</div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3 justify-content-center">
+                    <div class="col-12 col-md-10 col-lg-8 mt-3 mt-md-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">LISTE DES SALAIRES RESTANTS</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text"><small class="text-muted">Montant Total (DH): </small><strong style="color:green">+ <field name="sum_salaire" /></strong></h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <field name="payslip_lines" nolabel="1" create="false">
+                                        <tree editable="bottom">
+                                            <field name="payslip_id" force_save="1" />
+                                            <field name="period_id" />
+                                            <field name="net_pay" />
+                                            <field name="add" />
+                                            <field name="chantier_id" />
+                                            <field name="emplacement_chantier_id" />
+                                            <field name="vehicle_id" />
+                                            <field name="state" widget="badge" 
+                                                    decoration-muted="state == 'draft'" 
+                                                    decoration-info="state == 'cal'" 
+                                                    decoration-danger="state in ('blocked','annulee')" 
+                                                    decoration-warning="state == 'validee'"
+                                                    decoration-success="state == 'done'"
+                                            />
+                                        </tree>
+                                    </field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-10 col-lg-8 mt-3 mt-md-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">LISTE DES PRELEVEMENT ET CREDITS</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text"><small class="text-muted">Montant Total (DH): </small><strong style="color:red">- <field name="sum_prelevement" /></strong></h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <field name="deduction_lines" nolabel="1" create="false">
+                                        <tree editable="bottom">
+                                            <field name="prelevement_id" force_save="1" />
+                                            <field name="prelevement_montant" />
+                                            <field name="prelevement_reste" />
+                                            <field name="add" />
+                                            <field name="montant_payer" />
+                                            <field name="note" />
+                                            <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-danger="state == 'annulee'" decoration-success="state == 'validee'"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-10 col-lg-8 mt-3 mt-md-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">LISTE DES PRIMES</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text"><small class="text-muted">Montant Total (DH): </small><strong style="color:green">+ <field name="sum_prime" /></strong> </h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <field name="addition_lines" nolabel="1" create="false">
+                                        <tree editable="bottom">
+                                            <field name="prime_id" force_save="1" />
+                                            <field name="prime_montant" />
+                                            <field name="prime_reste" />
+                                            <field name="add" />
+                                            <field name="montant_payer" />
+                                            <field name="note" />
+                                            <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-danger="state == 'annulee'" decoration-success="state == 'validee'"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row my-3 justify-content-center">
+                    <div class="col-12 col-md-10 col-lg-8 mt-3 mt-md-3">
+                        <div class="bg-white shadow p-3 mt-3">
+                            <div class="col-12">
+                                <div class="card my-3">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-text">Note</h6>
+                                    </div>
+                                    <div class="card-body text-dark">
+                                        <field name="notes" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="activity_ids" widget="mail_activity" />
+                    <field name="message_ids" widget="mail_thread" />
                 </div>
             </form>
         </field>
@@ -525,12 +791,12 @@
         <field name="model">hr.stc</field>
         <field name="arch" type="xml">
             <search>
-                <field name="employee_id"/>
-                <field name="cin"/>
-                <field name="chantier"/>
+                <field name="employee_id" />
+                <field name="cin" />
+                <field name="chantier" />
                 <searchpanel>
-                    <field name="chantier" icon="fa-city" enable_counters="1" select="multi"/>
-                    <field name="employee_type" icon="fa-money" enable_counters="1" select="multi"/>
+                    <field name="chantier" icon="fa-city" enable_counters="1" select="multi" />
+                    <field name="employee_type" icon="fa-money" enable_counters="1" select="multi" />
                 </searchpanel>
             </search>
         </field>

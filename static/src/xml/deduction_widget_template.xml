@@ -22,7 +22,7 @@
                             </div>
                             <div class="row justify-content-center ">
                                 <div t-attf-class="col-12 plan-price text-center mt-4">
-                                    +<span class="text-custom font-weight-normal mb-0 h1" t-esc="prelevement.amount" /><span>DH</span>
+                                    <span class="font-weight-normal mb-0 h1" style="color:red">-</span><span class="font-weight-normal mb-0 h1" t-esc="prelevement.amount" style="color:red"/><span>DH</span>
                                 </div>
                             </div>
                             <div t-if="prelevement.note" class="price-features mt-2 text-center">

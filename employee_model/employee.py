@@ -1,6 +1,6 @@
 from odoo import fields, models, api
 from odoo.osv import expression
-from datetime import date
+from datetime import date,datetime
 from dateutil.relativedelta import relativedelta
 from lxml import etree
 from odoo.exceptions import ValidationError
@@ -495,7 +495,6 @@ class hr_employee(models.Model):
         else:
             self.having_contrat = 0
 
-   
     def ajouter_contrat(self):
         view = self.env.ref('hr_management.contrats_nouveaux_view_form')
         return {

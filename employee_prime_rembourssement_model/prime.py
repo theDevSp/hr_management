@@ -25,7 +25,7 @@ class prime(models.Model):
     montant_total_prime = fields.Float("Montant",required=True)
     echeance = fields.Float("Échéance",required=True)
     montant_paye = fields.Float("Montant payé",readonly=True)
-    reste_a_paye = fields.Float("Montant reste à payer",readonly=True, compute="_compute_reste_a_payer")
+    reste_a_paye = fields.Float("Montant reste à payer",readonly=True, compute="_compute_reste_a_payer",store=True)
     state  = fields.Selection([
         ("draft","Brouillon"),
         ("validee","Validée"),
@@ -159,8 +159,7 @@ class prime(models.Model):
         if self.addition_deduction == "prime":
             for rec in paiement_lines:
                 self.env["hr.paiement.ligne"].create(rec)
-       
-       
+                
     def to_draft(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
             if self.state not in {'draft','validee'} :
@@ -180,30 +179,23 @@ class prime(models.Model):
 
     def to_validee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
-            if self.state not in {'validee','annulee','cloture_paye','cloture'} :
-                self.state = 'validee'
-            else:
-                raise ValidationError("Erreur, Cette action n'est pas autorisée.")
+            self.state = 'validee'
         else:
             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
 
     def to_annulee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
-            if self.state not in {'annulee','cloture_paye','cloture'} :
-                self.state = 'annulee'
-            else:
-                raise ValidationError("Erreur, Cette action n'est pas autorisée.")
+            self.state = 'annulee'
         else:
             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
 
 
     def to_cloturer_payer(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
-            if self.state not in {'draft','annulee','cloture_paye','cloture'} :
-                if self.state == "validee":
-                    for ligne in self.paiement_prime_ids:
-                        if ligne.state == "non_paye":
-                            ligne.state = "paye"
+            if self.state == "validee":
+                for ligne in self.paiement_prime_ids:
+                    if ligne.state == "non_paye":
+                        ligne.state = "paye"
                 self.state = 'cloture_paye'
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
@@ -213,11 +205,10 @@ class prime(models.Model):
 
     def to_cloturer(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
-            if self.state not in {'draft','annulee','cloture_paye','cloture'} :
-                if self.state == "validee":
-                    for ligne in self.paiement_prime_ids:
-                        if ligne.state == "non_paye":
-                            ligne.state = "annule"
+            if self.state == "validee":
+                for ligne in self.paiement_prime_ids:
+                    if ligne.state == "non_paye":
+                        ligne.state = "annule"
                 self.state = 'cloture'
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")

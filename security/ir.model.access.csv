@@ -182,12 +182,19 @@ hr_payslip_stc_controle_gestion,hr_payslip_stc,model_hr_payslip_stc,group_contro
 hr_payslip_stc_pointeur,hr_payslip_stc,model_hr_payslip_stc,group_pointeur,0,0,0,0
 hr_payslip_stc_cnss_juridique,hr_payslip_stc,model_hr_payslip_stc,group_cnss_juridique,1,0,0,0
 
-hr_loan_list_admin_paie,hr_loan_list_admin,model_loan_list,group_admin_paie,1,1,1,1
-hr_loan_list_agent_paie,hr_loan_list,model_loan_list,group_agent_paie,1,1,1,0
-hr_loan_list_service_analytique,hr_loan_list,model_loan_list,group_service_analytique,1,0,0,0
-hr_loan_list_controle_gestion,hr_loan_list,model_loan_list,group_controle_gestion,1,0,0,0
-hr_loan_list_pointeur,hr_loan_list,model_loan_list,group_pointeur,0,0,0,0
-hr_loan_list_cnss_juridique,hr_loan_list,model_loan_list,group_cnss_juridique,1,0,0,0
+hr_addition_list_admin_paie,hr_loan_list_admin,model_addition_list,group_admin_paie,1,1,1,1
+hr_addition_list_agent_paie,hr_loan_list,model_addition_list,group_agent_paie,1,1,1,0
+hr_addition_list_service_analytique,hr_loan_list,model_addition_list,group_service_analytique,1,0,0,0
+hr_addition_list_controle_gestion,hr_loan_list,model_addition_list,group_controle_gestion,1,0,0,0
+hr_addition_list_pointeur,hr_loan_list,model_addition_list,group_pointeur,0,0,0,0
+hr_addition_list_cnss_juridique,hr_loan_list,model_addition_list,group_cnss_juridique,1,0,0,0
+
+hr_deduction_list_admin_paie,hr_loan_list_admin,model_deduction_list,group_admin_paie,1,1,1,1
+hr_deduction_list_agent_paie,hr_loan_list,model_deduction_list,group_agent_paie,1,1,1,0
+hr_deduction_list_service_analytique,hr_loan_list,model_deduction_list,group_service_analytique,1,0,0,0
+hr_deduction_list_controle_gestion,hr_loan_list,model_deduction_list,group_controle_gestion,1,0,0,0
+hr_deduction_list_pointeur,hr_loan_list,model_deduction_list,group_pointeur,0,0,0,0
+hr_deduction_list_cnss_juridique,hr_loan_list,model_deduction_list,group_cnss_juridique,1,0,0,0
 
 hr_jr_travaille_par_chantier_admin_paie,hr_jr_travaille_par_chantier_admin,model_jr_travaille_par_chantier,group_admin_paie,1,1,1,1
 hr_jr_travaille_par_chantier_agent_paie,hr_jr_travaille_par_chantier,model_jr_travaille_par_chantier,group_agent_paie,1,0,0,0

@@ -90,7 +90,7 @@ class prelevement(models.Model):
             raise ValidationError("Probléme d'échéance, Le systéme ne peut pas lancer le calcule à cause d'une erreur au niveau de l'échéance.")
             
     def compute_alimenter_paiement_prelevement(self,nbr_periodes):
-        print("inside compute prelevement")
+        
         for rec in self:
             query = """
                     SELECT id from account_month_period
@@ -197,29 +197,22 @@ class prelevement(models.Model):
 
     def to_validee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
-            if self.state not in {'validee','annulee','cloture_paye','cloture'} :
-                self.state = 'validee'
-            else:
-                raise ValidationError("Erreur, Cette action n'est pas autorisée.")
+            self.state = 'validee'
         else:
             raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
 
     def to_annulee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
-            if self.state not in {'annulee','cloture_paye','cloture'} :
-                self.state = 'annulee'
-            else:
-                raise ValidationError("Erreur, Cette action n'est pas autorisée.")
+            self.state = 'annulee'
         else:
             raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
 
     def to_cloturer_payer(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
-            if self.state not in {'draft','annulee','cloture_paye','cloture'} :
-                if self.state == "validee":
-                    for ligne in self.paiement_prelevement_ids:
-                        if ligne.state == "non_paye":
-                            ligne.state = "paye"
+            if self.state == "validee":
+                for ligne in self.paiement_prelevement_ids:
+                    if ligne.state == "non_paye":
+                        ligne.state = "paye"
                 self.state = 'cloture_paye'
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
@@ -228,14 +221,13 @@ class prelevement(models.Model):
 
     def to_cloturer(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
-            if self.state not in {'draft','annulee','cloture_paye','cloture'} :
-                if self.state == "validee":
-                    for ligne in self.paiement_prelevement_ids:
-                        if ligne.state == "non_paye":
-                            ligne.state = "annule"
+            if self.state == "validee":
+                for ligne in self.paiement_prelevement_ids:
+                    if ligne.state == "non_paye":
+                        ligne.state = "annule"
                 self.state = 'cloture'
             else:
                 raise ValidationError("Erreur, Cette action n'est pas autorisée.")
         else:
             raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
-     
+    

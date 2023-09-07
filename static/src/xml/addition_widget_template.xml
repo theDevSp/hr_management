@@ -18,15 +18,17 @@
                             <div class="pricing-name text-center">
                                 <h4 class="mb-0"><span t-esc="prime.prime.label"/></h4>
                             </div>
-                            <div class="pricing-name text-center">
-                                <h4 class="mb-0"><span t-esc="prime.chantier"/></h4>
-                            </div>
+                            <t t-if="prime.chantier">     
+                                <div class="pricing-name text-center">
+                                    <h4 class="mb-0"><span t-esc="prime.chantier"/></h4>
+                                </div>
+                            </t>
                             <div class="price-features mt-1 text-center">
                                 <p><span t-esc="prime.period"/></p>
                             </div>
                             <div class="row justify-content-center ">
                                 <div t-attf-class="{{ prime.prime.pay_rate == 'j' ? 'col-2' : 'col-12' }} plan-price text-center mt-4">
-                                    +<span class="text-custom font-weight-normal mb-0 h1" t-esc="prime.amount" /><span>DH</span>
+                                    <span class="text-custom font-weight-normal mb-0 h1">+</span><span class="text-custom font-weight-normal mb-0 h1" t-esc="prime.amount" /><span>DH</span>
                                 </div>
                                 <t t-if="prime.prime.pay_rate == 'j' and this.state.parent_state === 'draft' and !prime.is_cal">
                                     <div class="col-5 plan-price text-center mt-4 pl-1 d-flex align-items-center">
