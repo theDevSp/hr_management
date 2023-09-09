@@ -20,6 +20,7 @@ class allocations(models.Model):
         ('stc',"STC"),
         ('indemnite_conge',"Indemnité de congé"),
         ('compensation',"Compensation de salaire"),
+        ('regularisation',"Régularisation"),
         ],"Catégorie", required=True
     )
     nbr_jour = fields.Float("Nombre de jours")
