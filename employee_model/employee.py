@@ -269,7 +269,7 @@ class hr_employee(models.Model):
                 query = """
                     SELECT SUM(nbr_jour)
                     FROM hr_allocations
-                    WHERE categorie in ('bonus','conge_annuel','indemnite_conge','compensation','stc') 
+                    WHERE categorie != 'dimanche_travaille'
                     AND employee_id = %s AND period_id >= %s
                     AND state = 'approuvee'
                 """ % (rec.id,period_debut_contrat.id)

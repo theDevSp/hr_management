@@ -59,14 +59,6 @@ class prelevement(models.Model):
                     raise ValidationError("Erreur, Vous avez au moins une période payée, vous devez régler la situation.")
                 ligne.unlink()
 
-        if vals.get("state") and vals["state"] == "validee":
-            for ligne in self.paiement_prelevement_ids:
-                if ligne.state == "paye":
-                    raise ValidationError("Erreur, Vous avez au moins une période payée, vous devez régler la situation.")
-                ligne.unlink()
-
-            self.compute_prelevement()
-
         if vals.get("state") and vals["state"] == "annulee":
             for ligne in self.paiement_prelevement_ids:
                 if ligne.state == "paye":
@@ -198,6 +190,10 @@ class prelevement(models.Model):
     def to_validee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
             self.state = 'validee'
+            for ligne in self.paiement_prelevement_ids:
+                ligne.unlink()
+
+            self.compute_prelevement()
         else:
             raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
 

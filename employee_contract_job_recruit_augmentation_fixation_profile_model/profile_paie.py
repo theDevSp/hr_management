@@ -37,12 +37,14 @@ class profilepaie(models.Model):
     plafonner_bonus = fields.Boolean("Plafonner le bonus", default=True)
     avoir_conge = fields.Boolean("Peut avoir un congé", default=True)
     payed_holidays = fields.Boolean("Jours Férié Remboursser", default=True)
+    saved_holidays = fields.Boolean("Jours Férié Conserver", default=True)
     justification = fields.Boolean("Détails travaux obligé", default=True)
+    jo = fields.Boolean("Calculer les jours ouvrables", default=True)
     period_id = fields.Many2one("account.month.period", string = "Période")
     periodicity = fields.Selection(
         [("q", "Quinzainier"),
-         ("m", "mensuel")],
-         string="Périodicité", required=True, default="q"
+            ("m", "mensuel")],
+            string="Périodicité", required=True, default="q"
     )
 
     @api.constrains('nbre_heure_worked_par_jour')
@@ -66,7 +68,6 @@ class profilepaie(models.Model):
     def _onchange_definition_nbre_jour_worked_par_mois(self):
         today = date.today()
         nbr_days = monthrange(today.year, today.month)[1]
-        print(nbr_days)
         self.nbre_jour_worked_par_mois = nbr_days if self.definition_nbre_jour_worked_par_mois == 'jr_mois' else 26
 
     @api.model

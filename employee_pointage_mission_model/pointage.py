@@ -160,7 +160,7 @@ class hr_rapport_pointage(models.Model):
     
     quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine")
 
-    state = fields.Selection([('draft',u'Brouillon'),('working',u'Traitement En Cours'),('compute',u"Mois Calculé"),('valide',u"Validé"),('done',u"Clôturé"),('cancel','Annulé')],u"Etat Pointage",default='draft',tracking=True)
+    state = fields.Selection([('draft',u'Brouillon'),('working',u'Traitement En Cours'),('compute',u"Rapport Calculé"),('valide',u"Validé"),('done',u"Clôturé"),('cancel','Annulé')],u"Etat Pointage",default='draft',tracking=True)
 
     count_nbr_holiday_days = fields.Float("Jours Congés",readonly=True,compute="_compute_total_holidays")
     count_nbr_ferier_days = fields.Float("Jours Fériés",readonly=True,compute="_compute_days_conge_absence_abondon")

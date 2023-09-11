@@ -243,6 +243,13 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="alert alert-danger text-center" role="alert">
+                                                    Le panier des jours fériés est déjà inclus dans le panier de congés.
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div> 
                                 </div> 
                             </div>   

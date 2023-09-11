@@ -104,19 +104,16 @@ class prime(models.Model):
             for ligne in self.paiement_prime_ids:
                 if ligne.state == "paye":
                     raise ValidationError("Erreur, vous ne pouvez pas faire ce traitement.")
+                
         if vals.get("montant_paye") and vals["montant_paye"] > self.montant_total_prime:
             raise ValidationError("Le montant payé doit être inférieur du montant et strictement supérieur à 0.")
+        
         if vals.get("state") and vals["state"] == "draft" and self.state == "annulee":
             for ligne in self.paiement_prime_ids:
                 if ligne.state == "paye":
                     raise ValidationError("Erreur, Vous avez au moins une période payée, vous devez régler la situation.")
                 ligne.unlink()
-        if vals.get("state") and vals["state"] == "validee":
-            for ligne in self.paiement_prime_ids:
-                if ligne.state == "paye":
-                    raise ValidationError("Erreur, Vous avez au moins une période payée, vous devez régler la situation.")
-                ligne.unlink()
-            self.compute_prime()
+    
         if vals.get("state") and vals["state"] == "annulee":
             for ligne in self.paiement_prime_ids:
                 if ligne.state == "paye":
@@ -180,6 +177,9 @@ class prime(models.Model):
     def to_validee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
             self.state = 'validee'
+            for ligne in self.paiement_prime_ids:
+                ligne.unlink()
+            self.compute_prime()
         else:
             raise ValidationError("Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut.")
 

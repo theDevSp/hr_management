@@ -43,6 +43,8 @@ class contrats(models.Model):
     avoir_conge_related = fields.Boolean(related="pp_personnel_id_many2one.avoir_conge", readonly=False)
     payed_holidays_related = fields.Boolean(related="pp_personnel_id_many2one.payed_holidays", readonly=False)
     justification_related = fields.Boolean(related="pp_personnel_id_many2one.justification", readonly=False)
+    saved_holidays_related = fields.Boolean(related="pp_personnel_id_many2one.saved_holidays", readonly=False)
+    jo_related = fields.Boolean(related="pp_personnel_id_many2one.jo", readonly=False)
     period_id_related = fields.Many2one(related="pp_personnel_id_many2one.period_id", readonly=False)
     salaire_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_jour", readonly=True)
     salaire_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_demi_jour", readonly=True)
@@ -137,6 +139,10 @@ class contrats(models.Model):
                 "completer_salaire": self.profile_paie_id.completer_salaire,    
                 "plafonner_bonus": self.profile_paie_id.plafonner_bonus,    
                 "avoir_conge": self.profile_paie_id.avoir_conge,    
+                "payed_holidays":self.profile_paie_id.payed_holidays,
+                "saved_holidays":self.profile_paie_id.saved_holidays,
+                "justification":self.profile_paie_id.justification,
+                "jo":self.profile_paie_id.jo,
                 "period_id": self.profile_paie_id.period_id.id,    
                 "salaire_mois": self.salaire_actuel,
                 "contract_id": self.id,

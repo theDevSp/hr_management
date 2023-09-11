@@ -35,6 +35,7 @@ class fiche_paie(models.Model):
         ("draft","Brouillon"),
         ("validee","Validée"),
         ("cal","Calculée"),
+        ("approuved","Clôturé"),
         ("done","Payée"),
         ("annulee","Annulée"),
         ("blocked","Bloquée"),

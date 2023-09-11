@@ -239,7 +239,7 @@ class hr_stc(models.Model):
                 for line in addition.prime_id.paiement_prime_ids.filtered(lambda ln: ln.state == 'non_paye'):  
                     line.write({
                         'state':'annule', 
-                        'observations':'Régelemnt de payement STC N° %s'%(self.name),
+                        'observations':'Régelement de payement STC N° %s'%(self.name),
                         'stc_id' : self.id
                     })
 
@@ -247,7 +247,7 @@ class hr_stc(models.Model):
                     'prime_id' : addition.prime_id.id,
                     'period_id':current_period.id,
                     'montant_a_payer' : addition.montant_payer,
-                    'observations' : addition.note or '' + ' '+ 'Régelemnt de payement STC N° %s'%(self.name),
+                    'observations' : addition.note or '' + ' '+ 'Régelement de payement STC N° %s'%(self.name),
                     'stc_id' : self.id
                 }
                 self.env['hr.paiement.ligne'].create(reglement_line).write({
@@ -261,14 +261,14 @@ class hr_stc(models.Model):
                 for line in deduction.prelevement_id.paiement_prelevement_ids.filtered(lambda ln: ln.state == 'non_paye'):  
                     line.write({
                         'state':'annule', 
-                        'observations':'Régelemnt de payement STC N° %s'%(self.name),
+                        'observations':'Régelement de payement STC N° %s'%(self.name),
                         'stc_id' : self.id
                     })
                 reglement_line = {
                     'prelevement_id' : deduction.prelevement_id.id,
                     'period_id':current_period.id,
                     'montant_a_payer' : deduction.montant_payer,
-                    'observations' : deduction.note or '' + ' '+ 'Régelemnt de payement STC N° %s'%(self.name),
+                    'observations' : deduction.note or '' + ' '+ 'Régelement de payement STC N° %s'%(self.name),
                     'stc_id' : self.id
                     }
                 self.env['hr.paiement.prelevement'].create(reglement_line).write({
@@ -278,7 +278,7 @@ class hr_stc(models.Model):
             for payslip in self.payslip_lines:
                 payslip.payslip_id.to_done()
                 payslip.payslip_id.write({
-                    'notes':'Régelemnt de payement STC N° %s'%(self.name),
+                    'notes':'Régelement de payement STC N° %s'%(self.name),
                     'stc_id':self.id
                     })
             """
@@ -306,8 +306,10 @@ class hr_stc(models.Model):
                         'observations':'',
                         'stc_id' : False
                     })
-                for line in addition.prime_id.paiement_prime_ids.filtered(lambda ln: ln.state == 'paye' and ln.stc_id == self.id):  
-                    line.unlink()
+                addition.prime_id.paiement_prime_ids[len(addition.prime_id.paiement_prime_ids) - 1].write({
+                        'state':'non_paye'
+                    })
+                addition.prime_id.paiement_prime_ids[len(addition.prime_id.paiement_prime_ids) - 1].unlink()
             
             for deduction in self.deduction_lines:        
                 deduction.prelevement_id.write({
@@ -319,8 +321,10 @@ class hr_stc(models.Model):
                         'observations':'',
                         'stc_id' : False
                     })
-                for line in deduction.prelevement_id.paiement_prelevement_ids.filtered(lambda ln: ln.state == 'paye' and ln.stc_id == self.id):  
-                    line.unlink()
+                deduction.prelevement_id.paiement_prelevement_ids[len(deduction.prelevement_id.paiement_prelevement_ids) - 1].write({
+                        'state':'non_paye'
+                    })
+                deduction.prelevement_id.paiement_prelevement_ids[len(deduction.prelevement_id.paiement_prelevement_ids) - 1].unlink()
 
             for payslip in self.payslip_lines:
                 payslip.payslip_id.unblock()
