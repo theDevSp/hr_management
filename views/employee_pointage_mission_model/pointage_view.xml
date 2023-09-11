@@ -8,6 +8,7 @@
             <tree class="table">
                 <field name="name"/>
                 <field name="employee_id"/>
+                <field name="type_emp"/>
                 <field name="period_id" /> 
                 <field name="chantier_id"/>
                 <field name="vehicle_id"/> 
