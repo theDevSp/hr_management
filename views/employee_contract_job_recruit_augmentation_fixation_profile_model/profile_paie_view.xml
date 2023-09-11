@@ -88,7 +88,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="justification" class=""/>
+                                            <label for="saved_holidays" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <field name="saved_holidays" widget="boolean_toggle"/>
@@ -96,7 +96,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="justification" class=""/>
+                                            <label for="jo" class=""/>
                                             <div class="main">
                                                 <div class="form-group">
                                                     <field name="jo" widget="boolean_toggle"/>
