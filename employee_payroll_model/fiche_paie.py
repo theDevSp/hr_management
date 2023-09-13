@@ -71,6 +71,9 @@ class fiche_paie(models.Model):
 
     notes = fields.Html('Notes')
 
+    net_paye_archive = fields.Float('Net à Payer')
+    new = fields.Boolean('field_name',default=False)
+
     @api.model
     def create(self, vals):
         today = datetime.now()
