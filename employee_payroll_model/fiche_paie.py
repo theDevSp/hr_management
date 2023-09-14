@@ -174,6 +174,7 @@ class fiche_paie(models.Model):
             self.contract_id = self.employee_id.contract_id
 
     def _compute_affich_bonus_jour(self):
+        
         for record in self:
             worked_time = 0
             base_time = 0
@@ -183,19 +184,21 @@ class fiche_paie(models.Model):
             type_profile = profile_paie_p.type_profile
             code_profile = profile_paie_p.definition_nbre_jour_worked_par_mois
             worked_days_per_month = profile_paie_p.nbre_jour_worked_par_mois if code_profile == 'nbr_saisie' else record.period_id.get_number_of_days_per_month()
+            record.affich_bonus_jour = 0
             
-            if type_profile == 'j':
-                worked_time = record.nbr_jour_travaille
-                base_time = profile_paie_p.nbre_jour_worked_par_mois if code_profile == 'nbr_saisie' else 30
-            elif type_profile == 'h':
-                worked_time = record.nbr_heure_travaille
-                base_time = profile_paie_p.nbre_heure_worked_par_jour * worked_days_per_month
-            res = worked_time / base_time * 1.5
+            if profile_paie_p:
+                if type_profile == 'j':
+                    worked_time = record.nbr_jour_travaille
+                    base_time = profile_paie_p.nbre_jour_worked_par_mois if code_profile == 'nbr_saisie' else 30
+                elif type_profile == 'h':
+                    worked_time = record.nbr_heure_travaille
+                    base_time = profile_paie_p.nbre_heure_worked_par_jour * worked_days_per_month
+                res = worked_time / base_time * 1.5
 
-            if profile_paie_p.periodicity == "m":
-                record.affich_bonus_jour = min(res, 1.5)
-            else:
-                record.affich_bonus_jour = min(res,0.75)  
+                if profile_paie_p.periodicity == "m":
+                    record.affich_bonus_jour = min(res, 1.5)
+                else:
+                    record.affich_bonus_jour = min(res,0.75)  
 
 
     @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','addition','deduction')
