@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from . import controllers,hrPointageControllers,hrCongesControllers
+from . import controllers,hrPointageControllers,hrCongesControllers,hrStcControllers
