@@ -87,7 +87,7 @@ class hr_employee(models.Model):
     type_contrat = fields.Many2one(related="contract_id.contract_type",string='Type du contrat', required=False)
     wage = fields.Monetary(related="contract_id.wage",string='Salaire de base', required=False, tracking=True, currency_field = "currency_f")
     salaire_actuel = fields.Float(related="contract_id.salaire_actuel",string='Salaire Actuel', required=False, tracking=True)
-    pp_personnel_id_many2one = fields.Many2one(related="contract_id.pp_personnel_id_many2one",string='Profile de paie', store=True)
+    pp_personnel_id_many2one = fields.Many2one(related="contract_id.pp_personnel_id_many2one",string='Profile de paie')
     periodicity_related = fields.Selection(related="contract_id.periodicity_related",string='Périodicité')
 
     name_profile_related = fields.Char(related="pp_personnel_id_many2one.name", readonly=True)
