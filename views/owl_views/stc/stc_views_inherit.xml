@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="stc_form_view_inherit" model="ir.ui.view">
+            <field name="name">stc.form.view.inherit</field>
+            <field name="model">hr.stc</field>
+            <field name="inherit_id" ref="hr_management.view_stc_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="js_class">stc_single_report</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="stc_list_view_inherit" model="ir.ui.view">
+            <field name="name">stc.list.view.inherit</field>
+            <field name="model">hr.stc</field>
+            <field name="inherit_id" ref="hr_management.stc_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="js_class">stc_many_report</attribute>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+    
+</odoo>
