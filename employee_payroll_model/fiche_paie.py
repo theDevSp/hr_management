@@ -72,7 +72,7 @@ class fiche_paie(models.Model):
     notes = fields.Html('Notes')
 
     net_paye_archive = fields.Float('Net à Payer')
-    new = fields.Boolean('field_name',default=False)
+    new_help = fields.Boolean('field_name',default=False)
 
     @api.model
     def create(self, vals):
@@ -97,42 +97,32 @@ class fiche_paie(models.Model):
 
     @api.depends('employee_id','period_id','contract_id')
     def _compute_salaire_jour(self):
-        """for rec in self:
+        for rec in self:
             rec.salaire_jour = rec.contract_id.pp_personnel_id_many2one.get_wage_per_day(rec.period_id)
-        """
-        self.salaire_jour = 0
 
     @api.depends('employee_id','period_id','contract_id')
     def _compute_salaire_demi_jour(self):
-        """for rec in self:
+        for rec in self:
             rec.salaire_demi_jour = rec.contract_id.pp_personnel_id_many2one.get_wage_per_half_day(rec.period_id)
-        """
-        self.salaire_demi_jour = 0
-
+    
     @api.depends('employee_id','period_id','contract_id')
     def _compute_salaire_heure(self):
-        """for rec in self:
+        for rec in self:
             rec.salaire_heure = rec.contract_id.pp_personnel_id_many2one.get_wage_per_hour(rec.period_id)
-        """
-        self.salaire_heure = 0
-
+    
     @api.depends('employee_id','period_id','contract_id')
     def _compute_panier(self):
-        """for rec in self:
+        for rec in self:
             contract_period = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start)
             rec.affich_jour_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period) if rec.employee_id and rec.period_id else 0
-        """
-        self.affich_jour_conge = 0
-
+    
     @api.depends('employee_id','period_id','contract_id')
     def _compute_panier_dimanche(self):
-        """for rec in self:
+        for rec in self:
             contract_period = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start)
             rec.affich_jour_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period) if rec.employee_id and rec.period_id else 0
             rec.affich_jour_dimmanche_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period,True) if rec.employee_id and rec.period_id else 0
-        """
-        self.affich_jour_conge = 0
-        self.affich_jour_dimmanche_conge = 0
+    
     @api.depends('cal_state')
     def _compute_total_addition(self):
         for rec in self:

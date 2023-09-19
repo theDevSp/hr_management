@@ -258,8 +258,8 @@
                                             </div>
                                             <field name="affich_bonus_jour" class="form-control text-center"/>
                                         </div>
-                                        <field name="new" invisible="1"/>
-                                        <div class="input-group mb-3" attrs="{'invisible': [('new', '=', True)]}">
+                                        <field name="new_help" invisible="1"/>
+                                        <div class="input-group mb-3" attrs="{'invisible': [('new_help', '=', True)]}">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" ><label for="net_pay" class=""/></span>
                                             </div>
@@ -268,7 +268,7 @@
                                                 <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
                                             </div>
                                         </div>
-                                        <div class="input-group mb-3" attrs="{'invisible': [('new', '=', False)]}">
+                                        <div class="input-group mb-3" attrs="{'invisible': [('new_help', '=', False)]}">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" ><label for="net_paye_archive" class=""/></span>
                                             </div>
