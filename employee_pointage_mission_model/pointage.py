@@ -135,7 +135,7 @@ class hr_rapport_pointage(models.Model):
     fonction = fields.Char(related='employee_id.job',string="Fonction",readonly=True)
     job_id = fields.Many2one(related='employee_id.job_id',string="Poste occupé",readonly=True)
 
-    chantier_id = fields.Many2one("fleet.vehicle.chantier",u"Dernier Chantier",readonly=True)
+    chantier_id = fields.Many2one("fleet.vehicle.chantier",u"Dernier Chantier",readonly=True,context={'display_name':1})
     periodicite = fields.Selection(related='chantier_id.periodicite',readonly=True)
     grant_modification = fields.Boolean(related='chantier_id.grant_modification',readonly=True)
 
