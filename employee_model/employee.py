@@ -38,7 +38,6 @@ class hr_employee(models.Model):
     phone3 = fields.Char(u"Tél. Portable 3")
     working_years = fields.Char(compute='_compute_working_years',string="Ancienneté")
     currency_f = fields.Many2one('res.currency', string='Currency')
-    chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier")
     
     wage_jour = fields.Float(string='Salaire Journalier')
     state_employee_wtf = fields.Selection([("new","Nouveau Embauche"),("transfert","Transfert"),("active","Active"),("stc","STC")],u"Situation Employé",index=True, copy=False, default='new', tracking=True)

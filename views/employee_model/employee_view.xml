@@ -666,7 +666,7 @@
                             <div class="card bg-light my-3">
                                 <div class="card-body">
                                     <field name="blacklist_histo" nolabel="1">
-                                        <tree class="table" create="false" edit="false">
+                                        <tree create="false" edit="false">
                                             <field name="responsable_id"/>
                                             <field name="directeur_id"/>
                                             <field name="chantier_id"/>

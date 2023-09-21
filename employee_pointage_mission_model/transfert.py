@@ -47,11 +47,10 @@ class hr_employee_transfert(models.Model):
             res.append(result[0])
                 
         return [('id', 'in',res)]
- 
+
     def get_employee_domain(self):
         pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
 
-                   
         res =  []
         query = ""
 
