@@ -485,10 +485,10 @@
                 <field name="chantier_id"/>
                 <field name="resource_calendar_id"/>
                 <searchpanel>
-                    <field name="chantier_id" icon="fa-city" enable_counters="1" select="multi"/>
-                    <field name="company_id" icon="fa-building" enable_counters="1" select="multi"/>
+                    <field name="type_emp" icon="fa-user" enable_counters="1" select="multi"/>
                     <field name="state" icon="fa-file-contract" enable_counters="1" select="multi"/>
                     <field name="contract_type_id" icon="fa-file-contract" enable_counters="1" select="multi"/>
+                    <field name="company_id" icon="fa-building" enable_counters="1" select="multi"/>
                 </searchpanel>
             </search>
         </field>

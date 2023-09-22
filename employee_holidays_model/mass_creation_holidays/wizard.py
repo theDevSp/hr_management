@@ -56,9 +56,10 @@ class mass_holiday_creation_wizard(models.TransientModel):
                 'date_end':self.date_end,
                 'duree_jours':self.env['hr.holidays'].get_duree(self.date_start,self.date_end)
             })
-        print(data_list)
-        print(excluded_list)
-        return
+            
+        for holiday in data_list:
+            self.env['hr.holidays'].create(holiday)
+        return True
 
 class excluded_employee(models.TransientModel):
     _name = 'excluded.employee'
