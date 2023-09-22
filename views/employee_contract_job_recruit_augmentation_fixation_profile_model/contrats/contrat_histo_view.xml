@@ -57,7 +57,7 @@
                         <field name="employee_id"/>
                         <field name="contract_id" invisible="1"/>
                     </h2>
-                    <group>
+
                     <field name="contract_ids" widget="one2many" readonly="0" nolabel="1">
                         <tree string="Current Contracts"
                                 decoration-primary="state == 'open'"
@@ -78,7 +78,7 @@
                             <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'close'" decoration-success="state == 'open'"/>
                         </tree>
                     </field>
-                    </group>
+
                 </sheet>
             </form>
         </field>

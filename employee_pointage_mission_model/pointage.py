@@ -135,14 +135,14 @@ class hr_rapport_pointage(models.Model):
     fonction = fields.Char(related='employee_id.job',string="Fonction",readonly=True)
     job_id = fields.Many2one(related='employee_id.job_id',string="Poste occupé",readonly=True)
 
-    chantier_id = fields.Many2one("fleet.vehicle.chantier",u"Dernier Chantier",readonly=True,context={'display_name':1})
+    chantier_id = fields.Many2one("fleet.vehicle.chantier",u"Dernier Chantier",readonly=True, index=True)
     periodicite = fields.Selection(related='chantier_id.periodicite',readonly=True)
     grant_modification = fields.Boolean(related='chantier_id.grant_modification',readonly=True)
 
     vehicle_id = fields.Many2one("fleet.vehicle",u"Dérnier Code engin",readonly=True)
-    emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement","Dernière Équipe",readonly=True)
+    emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement","Dernière Équipe",readonly=True, index=True)
 
-    period_id = fields.Many2one("account.month.period",u'Période',required=True,readonly=True,domain = _get_period_default)
+    period_id = fields.Many2one("account.month.period",u'Période',required=True,readonly=True,domain = _get_period_default, index=True)
 
     total_h = fields.Float("Heures Travaillées",compute="_compute_hours",readonly=True)
     total_h_bonus = fields.Float("Heures Bonus",compute="_compute_hours",readonly=True)
