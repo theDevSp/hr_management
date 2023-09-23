@@ -144,12 +144,12 @@ class hr_rapport_pointage(models.Model):
 
     period_id = fields.Many2one("account.month.period",u'Période',required=True,readonly=True,domain = _get_period_default, index=True)
 
-    total_h = fields.Float("Heures Travaillées",compute="_compute_hours",readonly=True,store=True)
-    total_h_bonus = fields.Float("Heures Bonus",compute="_compute_hours",readonly=True,store=True)
-    total_h_sup = fields.Float("Heures Supp",compute="_compute_hours",readonly=True,store=True)
-    total_j = fields.Float("Jours Travaillés",readonly=True,compute="_compute_days",store=True)
-    total_h_v = fields.Float("Heures Validées",compute="_compute_hours",readonly=True,store=True)
-    total_j_v = fields.Float("Jours Validés",readonly=True,compute="_compute_days",store=True)
+    total_h = fields.Float("Heures Travaillées",compute="_compute_hours",readonly=True)
+    total_h_bonus = fields.Float("Heures Bonus",compute="_compute_hours",readonly=True)
+    total_h_sup = fields.Float("Heures Supp",compute="_compute_hours",readonly=True)
+    total_j = fields.Float("Jours Travaillés",readonly=True,compute="_compute_days")
+    total_h_v = fields.Float("Heures Validées",compute="_compute_hours",readonly=True)
+    total_j_v = fields.Float("Jours Validés",readonly=True,compute="_compute_days")
 
     note = fields.Text("Observation", states=READONLY_STATES)
 
