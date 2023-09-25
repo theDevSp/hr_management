@@ -32,7 +32,7 @@ class allocations(models.Model):
         default='draft',
         readonly=True
     )
-    period_id = fields.Many2one("account.month.period", string = "Période", required = True)
+    period_id = fields.Many2one("account.month.period", string = "Période")
     stc_id = fields.Many2one("hr.stc", string = "STC", required=False)
 
 
