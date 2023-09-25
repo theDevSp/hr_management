@@ -23,6 +23,17 @@
                 </xpath>
             </field>
         </record>
+
+        <record id="pointage_list_view_inherit2" model="ir.ui.view">
+            <field name="name">pointage.list.view.inherit2</field>
+            <field name="model">hr.rapport.pointage</field>
+            <field name="inherit_id" ref="hr_management.rapport_pointage_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="js_class">report_print_in_modal</attribute>
+                </xpath>
+            </field>
+        </record>
     
     </data>
     
