@@ -61,14 +61,16 @@ class contrats(models.Model):
 
     def _compute_augmentation_montants_valides(self):
         period = self.env['account.month.period'].get_period_from_date(self.date_start) if self.date_start else 0
-        query = """
-                SELECT case when SUM(montant_valide) is null then 0 else SUM(montant_valide) end as sum
-                FROM hr_augmentation 
-                WHERE employee_id = %s AND state='acceptee' AND period_id >= %s 
-            """ % (self.employee_id.id,period.id)
-        self.env.cr.execute(query)
-        res = self.env.cr.dictfetchall()
-        self.tt_montant_a_ajouter = res[0]['sum']
+        self.tt_montant_a_ajouter = 0
+        if period:
+            query = """
+                    SELECT case when SUM(montant_valide) is null then 0 else SUM(montant_valide) end as sum
+                    FROM hr_augmentation 
+                    WHERE employee_id = %s AND state='acceptee' AND period_id >= %s 
+                """ % (self.employee_id.id,period.id)
+            self.env.cr.execute(query)
+            res = self.env.cr.dictfetchall()
+            self.tt_montant_a_ajouter = res[0]['sum']
 
     @api.depends('tt_montant_a_ajouter','wage')
     def _compute_salaire(self):  

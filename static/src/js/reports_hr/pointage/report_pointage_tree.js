@@ -5,18 +5,39 @@ import { listView } from "@web/views/list/list_view";
 import { ListController } from "@web/views/list/list_controller";
 import { useService } from "@web/core/utils/hooks";
 
+const { loadJS, loadCSS } = require('@web/core/assets');
+
+const { onWillStart, useRef } = owl
+
+
+
 import { content_report_pointage_many_salarie } from "./content_report_pointage_many_salarie";
 
 class PointageListController extends ListController {
   setup() {
     super.setup();
+
     this.rpc = useService("rpc");
     this.notification = useService("notification");
-    this.overlay = document.createElement("div");
-    this.spinner = document.createElement("div");
-    this.overlay.className = "overlay";
-    this.spinner.id = "spinner";
-    this.spinner.className = "spinner";
+
+    this.modal = useRef("modalPrint")
+    this.modalClose = useRef("modalClose")
+
+    onWillStart(async () => {
+      this.overlay = document.createElement("div");
+      this.spinner = document.createElement("div");
+      this.overlay.className = "overlay";
+      this.spinner.id = "spinner";
+      this.spinner.className = "spinner";
+
+      await loadJS("/reports_templates/static/src/lib/selectize/selectize.min.js")
+      await loadCSS("/reports_templates/static/src/lib/selectize/selectize.default.min.scss")
+
+      await loadCSS("/reports_templates/static/src/lib/datepicker/datepicker.min.scss")
+      await loadJS("/reports_templates/static/src/lib/datepicker/bootstrap-datepicker.min.js")
+    })
+
+
   }
 
   async print(url) {
@@ -37,6 +58,95 @@ class PointageListController extends ListController {
       this.hideOverlayAndSpinner();
     }
   }
+
+  async modalPrint(data) {
+    showModal(this.modal.el);
+
+    const allChantiers = await this.rpc(`/hr_management/pointage/get_all_chantiers`);
+    const allEquipes = await this.rpc(`/hr_management/pointage/get_all_Equipes`);
+
+    $("#datepicker").datepicker({
+      format: "mm-yyyy",
+      startView: "months",
+      minViewMode: "months"
+    });
+
+    $('#select-chantier').selectize({
+      maxItems: 1,
+      minItems: 1,
+      valueField: 'id',
+      labelField: 'name',
+      searchField: 'name',
+      options: allChantiers,
+      create: false
+    });
+
+    $('#select-quinzine').selectize({
+      maxItems: 1,
+      minItems: 1,
+      valueField: 'id',
+      labelField: 'title',
+      searchField: 'title',
+      options: [],
+      create: false
+    });
+
+    $('#select-type').selectize({
+      maxItems: 1,
+      minItems: 1,
+      valueField: 'id',
+      labelField: 'title',
+      searchField: 'title',
+      options: [
+        { id: 'o', title: 'Ouvrier' },
+        { id: 's', title: 'Salarié' },
+      ],
+      create: false,
+      onChange: (selectedValue) => {
+        const selectQuinzine = $('#select-quinzine')[0].selectize;
+
+        if (selectedValue === 'o') {
+
+          selectQuinzine.clearOptions();
+
+          const existingOption = selectQuinzine.options['q12'];
+          if (existingOption) {
+            delete selectQuinzine.options['q12'];
+          }
+
+          selectQuinzine.addOption([
+            { id: 'q1', title: 'Quinzaine1' },
+            { id: 'q2', title: 'Quinzaine2' }
+          ]);
+          selectQuinzine.refreshOptions();
+          selectQuinzine.clear();
+          selectQuinzine.enable();
+        } else if (selectedValue === 's') {
+
+          selectQuinzine.clearOptions();
+          selectQuinzine.addOption([
+            { id: 'q12', title: 'Quinzaine12' },
+          ]);
+          selectQuinzine.refreshOptions();
+          selectQuinzine.clear();
+          selectQuinzine.setValue('q12');
+          selectQuinzine.disable();
+        }
+      }
+    });
+
+    $('#select-equipe').selectize({
+      maxItems: 1,
+      minItems: 1,
+      valueField: 'id',
+      labelField: 'name',
+      searchField: 'name',
+      options: allEquipes,
+      create: false
+    });
+
+  }
+
 
   showOverlayAndSpinner() {
     this.overlay.style.display = "block";
@@ -92,6 +202,18 @@ class PointageListController extends ListController {
       sticky: true,
     });
   }
+}
+
+const showModal = (el) => {
+  el.style.display = "block"
+  const modalClose1 = document.querySelector("#modalClose1");
+  const modalClose2 = document.querySelector("#modalClose2");
+  modalClose1.addEventListener('click', () => {
+    el.style.display = "none";
+  });
+  modalClose2.addEventListener('click', () => {
+    el.style.display = "none";
+  });
 }
 
 

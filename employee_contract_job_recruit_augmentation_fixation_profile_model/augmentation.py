@@ -178,12 +178,14 @@ class augmentation(models.Model):
         return msg
     
     def get_sum_of_raises_by_period_id(self,employee_id,period_id):
-
-        query = """
-                SELECT case when SUM(montant_valide) is null then 0 else SUM(montant_valide) end as sum
-                FROM hr_augmentation 
-                WHERE employee_id = %s AND state='acceptee' AND period_id >= %s 
-            """ % (employee_id.id,period_id.id)
-        self.env.cr.execute(query)
-        res = self.env.cr.dictfetchall()
-        return res[0]['sum'] or 0
+        result = 0
+        if period_id:
+            query = """
+                    SELECT case when SUM(montant_valide) is null then 0 else SUM(montant_valide) end as sum
+                    FROM hr_augmentation 
+                    WHERE employee_id = %s AND state='acceptee' AND period_id >= %s 
+                """ % (employee_id.id,period_id.id)
+            self.env.cr.execute(query)
+            res = self.env.cr.dictfetchall()
+            result = res[0]['sum']
+        return result
