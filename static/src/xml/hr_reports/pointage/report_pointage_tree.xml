@@ -41,5 +41,79 @@
                 </div>
             </div>
         </xpath>
+
+        <xpath expr="//button[hasclass('o_list_button_add')]" position="after">
+
+            <!-- Button trigger modal -->
+            <button t-if="!nbSelected" type="button" class="ms-2 btn btn-primary" t-on-click="()=>this.modalPrint(model.root.data)">
+                <i class="fa fa-print"></i> Imprimer
+            </button>
+
+            <!-- Modal -->
+            <div t-ref="modalPrint" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <form id="myForm">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                <button id="modalClose1" type="button" class="btn-close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="control-group">
+                                    <label for="select-month">
+                                        <h4>
+                                            <b>Mois :</b>
+                                        </h4>
+                                    </label>
+                                    <input required="True" type="text" class="form-control inputCSS" name="datepicker" id="datepicker" />
+                                </div>
+
+                                <div class="control-group mt-3">
+                                    <label for="select-chantier">
+                                        <h4>
+                                            <b>Chantier :</b>
+                                        </h4>
+                                    </label>
+                                    <select required="True" id="select-chantier" name="chantier" placeholder="Selectionner un Chantier"></select>
+                                </div>
+
+                                <div class="control-group mt-3">
+                                    <label for="select-type">
+                                        <h4>
+                                            <b>Type d'employe :</b>
+                                        </h4>
+                                    </label>
+                                    <select required="True" id="select-type" name="employe_type" placeholder="Type d'employe"></select>
+                                </div>
+
+                                <div class="control-group mt-3">
+                                    <label for="select-quinzine">
+                                        <h4>
+                                            <b>Quinzine :</b>
+                                        </h4>
+                                    </label>
+                                    <select id="select-quinzine" name="quinzine" placeholder="Quinzine"></select>
+                                </div>
+
+                                <div class="control-group mt-3">
+                                    <label for="select-equipe">
+                                        <h4>
+                                            <b>Equipe :</b>
+                                        </h4>
+                                    </label>
+                                    <select id="select-equipe" name="equipe" placeholder="Equipe"></select>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="modalClose2">Close</button>
+                                <button type="submit" class="btn btn-primary">Imprimer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </xpath>
     </t>
 </templates>
