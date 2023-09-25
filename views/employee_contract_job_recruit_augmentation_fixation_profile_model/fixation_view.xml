@@ -209,11 +209,6 @@
                 <field name="fonction"/>
                 <field name="chantier_id"/>
                 <field name="state"/>
-                <searchpanel>
-                    <field name="state" icon="fa-align-center" enable_counters="1" select="multi"/>
-                    <field name="profile" icon="fa-user" enable_counters="1" select="multi"/>
-                    <field name="fonction" icon="fa-user" enable_counters="1" select="multi"/>
-                </searchpanel>
             </search>
         </field>
     </record>
