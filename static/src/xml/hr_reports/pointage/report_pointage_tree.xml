@@ -32,65 +32,69 @@
         <xpath expr="//button[hasclass('o_list_button_add')]" position="after">
 
             <!-- Button trigger modal -->
-            <button t-if="!nbSelected" type="button" class="ms-2 btn btn-primary" t-on-click="()=>this.modalPrint(model.root.data)">
+            <button t-if="!nbSelected" type="button" class="ms-2 btn btn-infos" t-on-click="()=>this.modalPrint(model.root.data)">
                 <i class="fa fa-print"></i> Imprimer
             </button>
 
             <!-- Modal -->
             <div t-ref="modalPrint" class="modal" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-xl">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
                     <div class="modal-content">
                         <form id="myForm">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Impression</h5>
                                 <button id="modalClose1" type="button" class="btn-close"></button>
                             </div>
                             <div class="modal-body">
-
-                                <div class="control-group">
-                                    <label for="select-period">
-                                        <h4>
-                                            <b>Periode :</b>
-                                        </h4>
-                                    </label>
-                                    <select required="True" id="select-period" name="chantier" placeholder="Selectionner un Chantier"></select>
+                                <div class="row justify-content-center">
+                                    <div class="col-8">
+                                        <div class="bg-white shadow p-3">
+                                            <div class="card bg-light my-3">
+                                                <div class="card-body text-center">
+                                                    <h2 class="card-text">Impression Mensuelle</h2>
+                                                </div>
+                                            </div>
+                                            <div class="card bg-light my-3">
+                                                <div class="card-body">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="select-period">Période :</label></span>
+                                                        </div>
+                                                        <select required="True" id="select-period" class="form-control" name="period" placeholder="Selectionner une Période"></select>
+                                                    </div>
+                    
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="select-chantier">Chantier :</label></span>
+                                                        </div>
+                                                        <select required="True" id="select-chantier" class="form-control" name="chantier" placeholder="Selectionner un Chantier"></select>
+                                                    </div>
+                    
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="select-type">Type d'employé :</label></span>
+                                                        </div>
+                                                        <select required="True" id="select-type" class="form-control" name="employe_type" placeholder="Type d'employe"></select>
+                                                    </div>
+                    
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="select-quinzine">Quinzine :</label></span>
+                                                        </div>
+                                                        <select required="True" id="select-quinzine" class="form-control" name="quinzine" placeholder="Quinzine"></select>
+                                                    </div>
+                    
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" ><label for="select-equipe">Equipe :</label></span>
+                                                        </div>
+                                                        <select id="select-equipe" class="form-control" name="equipe" placeholder="Equipe"></select>
+                                                    </div>
+                                                </div> 
+                                            </div> 
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="control-group mt-3">
-                                    <label for="select-chantier">
-                                        <h4>
-                                            <b>Chantier :</b>
-                                        </h4>
-                                    </label>
-                                    <select required="True" id="select-chantier" name="chantier" placeholder="Selectionner un Chantier"></select>
-                                </div>
-
-                                <div class="control-group mt-3">
-                                    <label for="select-type">
-                                        <h4>
-                                            <b>Type d'employe :</b>
-                                        </h4>
-                                    </label>
-                                    <select required="True" id="select-type" name="employe_type" placeholder="Type d'employe"></select>
-                                </div>
-
-                                <div class="control-group mt-3">
-                                    <label for="select-quinzine">
-                                        <h4>
-                                            <b>Quinzine :</b>
-                                        </h4>
-                                    </label>
-                                    <select required="True" id="select-quinzine" name="quinzine" placeholder="Quinzine"></select>
-                                </div>
-
-                                <div class="control-group mt-3">
-                                    <label for="select-equipe">
-                                        <h4>
-                                            <b>Equipe :</b>
-                                        </h4>
-                                    </label>
-                                    <select id="select-equipe" name="equipe" placeholder="Equipe"></select>
-                                </div>
                             </div>
 
                             <div class="modal-footer">

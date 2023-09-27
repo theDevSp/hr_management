@@ -74,7 +74,7 @@ class hr_rapport_pointage(models.Model):
                     count(1) filter (where day_type='3' and h_travailler_v::real > 0) as tferiev,
                     count(1) filter (where day_type='5') as tabsense
                     from hr_rapport_pointage_line where rapport_id = %s;
-                """ % (rapport.id)
+                """ % (rapport._origin.id)
         
             self.env.cr.execute(query)
             res = self.env.cr.dictfetchall()[0]
