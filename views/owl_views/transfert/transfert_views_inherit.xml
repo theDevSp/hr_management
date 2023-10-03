@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="transfert_form_view_inherit" model="ir.ui.view">
+            <field name="name">transfert.form.view.inherit</field>
+            <field name="model">hr.employee.transfert</field>
+            <field name="inherit_id" ref="hr_management.hr_employee_transfert_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="js_class">transfert_single_report</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="transfert_list_view_inherit" model="ir.ui.view">
+            <field name="name">transfert.list.view.inherit</field>
+            <field name="model">hr.employee.transfert</field>
+            <field name="inherit_id" ref="hr_management.hr_employee_transfert_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="js_class">transfert_many_report</attribute>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+    
+</odoo>
