@@ -487,7 +487,8 @@ class hr_employee(models.Model):
             'view_id': view.id,
             'target': 'new',
             'context':{
-                'default_employee_id':self.id
+                'default_employee_id':self.id,
+                'default_employee_type':self.type_emp
             }
         }
     

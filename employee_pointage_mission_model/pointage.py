@@ -32,7 +32,6 @@ class hr_rapport_pointage(models.Model):
     
     @api.depends('rapport_lines')
     def _compute_hours(self):
-        print(self.rapport_lines)
         for rapport in self:
             query = """
                     select sum(h_travailler::real) as tht,
@@ -261,8 +260,6 @@ class hr_rapport_pointage(models.Model):
             else:
                 for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,vals['employee_id'],res.emplacement_chantier_id.id):
                     self.env['hr.rapport.pointage.line'].create(line)
-        else:
-            raise UserError('Rapport déja existe')
 
         return res
     
