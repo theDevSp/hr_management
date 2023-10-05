@@ -53,8 +53,8 @@ class reportPointageController(http.Controller):
     @http.route('/hr_management/get_dashboard_report_pointage_salarie_ouvrier/<int:mois>', type='json', auth='user')
     def get_report_pointage_filtered(self, period_id=None, chantier_id=None, type_employe=None, quinz=None, equipe_id=None):
 
-        chantier_id = 24
-        period_id = 123
+        #chantier_id = chantier_id
+        #period_id = period_id
         #equipe_id = 4
         # quinz = 'quinzaine12'
         #type_employe = "s"

@@ -40,64 +40,62 @@
             <div t-ref="modalPrint" class="modal" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
-                        <form id="myForm" >
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Impression</h5>
-                                <button id="modalClose1" type="button" class="btn-close"></button>
-                            </div>
-                            <div class="modal-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Impression</h5>
+                            <button id="modalClose1" type="button" class="btn-close"></button>
+                        </div>
+                        <div class="modal-body">
 
-                                <div class="control-group">
-                                    <label for="select-period">
-                                        <h4>
-                                            <b>Periode :</b>
-                                        </h4>
-                                    </label>
-                                    <select required="True" id="select-period" name="chantier" placeholder="Selectionner un Chantier"></select>
-                                </div>
-
-                                <div class="control-group mt-3">
-                                    <label for="select-chantier">
-                                        <h4>
-                                            <b>Chantier :</b>
-                                        </h4>
-                                    </label>
-                                    <select required="True" id="select-chantier" name="chantier" placeholder="Selectionner un Chantier"></select>
-                                </div>
-
-                                <div class="control-group mt-3">
-                                    <label for="select-type">
-                                        <h4>
-                                            <b>Type d'employe :</b>
-                                        </h4>
-                                    </label>
-                                    <select required="True" id="select-type" name="employe_type" placeholder="Type d'employe"></select>
-                                </div>
-
-                                <div class="control-group mt-3">
-                                    <label for="select-quinzine">
-                                        <h4>
-                                            <b>Quinzine :</b>
-                                        </h4>
-                                    </label>
-                                    <select required="True" id="select-quinzine" name="quinzine" placeholder="Quinzine"></select>
-                                </div>
-
-                                <div class="control-group mt-3">
-                                    <label for="select-equipe">
-                                        <h4>
-                                            <b>Equipe :</b>
-                                        </h4>
-                                    </label>
-                                    <select id="select-equipe" name="equipe" placeholder="Equipe"></select>
-                                </div>
+                            <div class="control-group">
+                                <label for="select-period">
+                                    <h4>
+                                        <b>Période :</b>
+                                    </h4>
+                                </label>
+                                <select required="True" id="select-period" name="chantier" placeholder="Sélectionner une période"></select>
                             </div>
 
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" id="modalClose2">Close</button>
-                                <button type="submit" class="btn btn-primary" id="modalSubmit">Imprimer</button>
+                            <div class="control-group mt-3">
+                                <label for="select-chantier">
+                                    <h4>
+                                        <b>Chantier :</b>
+                                    </h4>
+                                </label>
+                                <select required="True" id="select-chantier" name="chantier" placeholder="Sélectionner un Chantier"></select>
                             </div>
-                        </form>
+
+                            <div class="control-group mt-3">
+                                <label for="select-type">
+                                    <h4>
+                                        <b>Type de l'employé :</b>
+                                    </h4>
+                                </label>
+                                <select required="True" id="select-type" name="employe_type" placeholder="Sélectionner le Type de l'employé"></select>
+                            </div>
+
+                            <div class="control-group mt-3">
+                                <label for="select-quinzine">
+                                    <h4>
+                                        <b>Quinzine :</b>
+                                    </h4>
+                                </label>
+                                <select required="True" id="select-quinzine" name="quinzine" placeholder="Sélectionner le Quinzine"></select>
+                            </div>
+
+                            <div class="control-group mt-3">
+                                <label for="select-equipe">
+                                    <h4>
+                                        <b>Équipe :</b>
+                                    </h4>
+                                </label>
+                                <select id="select-equipe" name="equipe" placeholder="Sélectionner l'Équipe"></select>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="modalClose2">Close</button>
+                            <button t-on-click="()=>this.verify()" type="button" class="btn btn-primary" id="modalSubmit">Imprimer</button>
+                        </div>
                     </div>
                 </div>
             </div>
