@@ -60,7 +60,8 @@ class hr_rapport_pointage_line(models.Model):
     h_sup = fields.Selection(hours_table_pointeur,"Heures Supplémentaires >> 9",default='0.0', readonly=True)
     j_travaille = fields.Selection([('0', '0'), ('0.5', '0.5'), ('1', '1')],u"Jours Travaillés",default='0', states=READONLY_STATES_RL,tracking=True)
     j_travaille_v = fields.Selection([('0', '0'), ('0.5', '0.5'), ('1', '1'), ('1.5', '1.5'),('2','2')],u"Jours Travaillés Validés",default='0', states=READONLY_STATES_MG,tracking=True)
-    day = fields.Date('Date Jour',readonly=True) 
+    day = fields.Date('Date Jour',readonly=True)
+    h_sup_cal = fields.Float(string="Total Heures Supplementaire", default=0.0)
     day_type = fields.Selection([
                 ('1',u'Jour Ouvrable'),
                 ('2',u"Dimanche"),
@@ -246,6 +247,7 @@ class hr_rapport_pointage_line(models.Model):
             
             self.h_travailler_v = self.h_travailler
             self.h_sup = str(max(float(self.h_travailler) - 9.0,0.0))
+            self.h_sup_cal = float(self.h_travailler) - max(chantier_id_heure_normal,9)
             self.j_travaille = self.employee_id.contract_id.get_hours_per_day(self.h_travailler)
 
         if vals.get('h_travailler_v'):  

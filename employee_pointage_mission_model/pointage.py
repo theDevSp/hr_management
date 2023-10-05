@@ -179,7 +179,7 @@ class hr_rapport_pointage(models.Model):
     q1_state = fields.Selection([('q1_draft',u'En Attente'),('q1_working',u'Q1 Traitement En Cours'),('q1_compute',u"Q1 Calculé"),('q1_valide',u"Q1 Validé"),('q1_done',u"Q1 Clôturé")],u"Première Quinzaine",default="q1_draft")
     q2_state = fields.Selection([('q2_draft',u'En Attente'),('q2_working',u'Q2 Traitement En Cours'),('q2_compute',u"Q2 Calculé"),('q2_valide',u"Q2 Validé"),('q2_done',u"Q2 Clôturé")],u"Deuxième Quinzaine",default="q2_draft")
 
-    type_emp = fields.Selection(related="employee_id.contract_id.type_emp",string=u"Type d'employé", required=False)
+    type_emp = fields.Selection(related="employee_id.contract_id.type_emp",string=u"Type d'employé", required=False,store=True)
 
 
     
