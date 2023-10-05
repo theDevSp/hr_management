@@ -171,54 +171,55 @@ export async function content_report_pointage_salarie(data) {
             table: {
                 widths: [26, 15, 330, 35, 44, 65],
                 body: [
-                    [{
-                        text: 'Jours',
-                        bold: true,
-                        alignment: 'center',
-                        fillColor: '#04aa6d',
-                        color: 'white',
-                        fontSize: 9
-                    },
-                    {
-                        text: 'TH',
-                        bold: true,
-                        alignment: 'center',
-                        fillColor: '#04aa6d',
-                        color: 'white',
-                        fontSize: 9
-                    },
-                    {
-                        text: 'Observation',
-                        bold: true,
-                        alignment: 'center',
-                        fillColor: '#04aa6d',
-                        color: 'white',
-                        fontSize: 9
-                    },
-                    {
-                        text: 'Code',
-                        bold: true,
-                        alignment: 'center',
-                        fillColor: '#04aa6d',
-                        color: 'white',
-                        fontSize: 9
-                    },
-                    {
-                        text: 'Equipe',
-                        bold: true,
-                        alignment: 'center',
-                        fillColor: '#04aa6d',
-                        color: 'white',
-                        fontSize: 9
-                    },
-                    {
-                        text: 'Chantier',
-                        bold: true,
-                        alignment: 'center',
-                        fillColor: '#04aa6d',
-                        color: 'white',
-                        fontSize: 9
-                    }
+                    [
+                        {
+                            text: 'Jours',
+                            bold: true,
+                            alignment: 'center',
+                            fillColor: '#04aa6d',
+                            color: 'white',
+                            fontSize: 9
+                        },
+                        {
+                            text: 'TH',
+                            bold: true,
+                            alignment: 'center',
+                            fillColor: '#04aa6d',
+                            color: 'white',
+                            fontSize: 9
+                        },
+                        {
+                            text: 'Observation',
+                            bold: true,
+                            alignment: 'center',
+                            fillColor: '#04aa6d',
+                            color: 'white',
+                            fontSize: 9
+                        },
+                        {
+                            text: 'Code',
+                            bold: true,
+                            alignment: 'center',
+                            fillColor: '#04aa6d',
+                            color: 'white',
+                            fontSize: 9
+                        },
+                        {
+                            text: 'Equipe',
+                            bold: true,
+                            alignment: 'center',
+                            fillColor: '#04aa6d',
+                            color: 'white',
+                            fontSize: 9
+                        },
+                        {
+                            text: 'Chantier',
+                            bold: true,
+                            alignment: 'center',
+                            fillColor: '#04aa6d',
+                            color: 'white',
+                            fontSize: 9
+                        }
                     ],
                     ...data.employe_dates.dates_lines.map((item) => {
                         const back = item.jour.includes('Dim') ? '#dddddd' : null

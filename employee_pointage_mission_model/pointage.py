@@ -145,13 +145,14 @@ class hr_rapport_pointage(models.Model):
 
     period_id = fields.Many2one("account.month.period",u'Période',required=True,readonly=True,domain = _get_period_default, index=True)
 
+    #--------------------------------------------------
     total_h = fields.Float("Heures Travaillées",compute="_compute_hours",readonly=True,store=True)
     total_h_bonus = fields.Float("Heures Bonus",compute="_compute_hours",readonly=True,store=True)
     total_h_sup = fields.Float("Heures Supp",compute="_compute_hours",readonly=True,store=True)
     total_j = fields.Float("Jours Travaillés",readonly=True,compute="_compute_days",store=True)
     total_h_v = fields.Float("Heures Validées",compute="_compute_hours",readonly=True,store=True)
     total_j_v = fields.Float("Jours Validés",readonly=True,compute="_compute_days",store=True)
-
+    #--------------------------------------------------
     note = fields.Text("Observation", states=READONLY_STATES)
 
     payslip_ids = fields.One2many("hr.payslip",'rapport_id',u'Fiche Paie',readonly=True)
@@ -162,7 +163,7 @@ class hr_rapport_pointage(models.Model):
     quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine")
 
     state = fields.Selection([('draft',u'Brouillon'),('working',u'Traitement En Cours'),('compute',u"Rapport Calculé"),('valide',u"Validé"),('done',u"Clôturé"),('cancel','Annulé')],u"Etat Pointage",default='draft',tracking=True)
-
+    #--------------------------------------------------
     count_nbr_holiday_days = fields.Float("Jours Congés",readonly=True,compute="_compute_total_holidays")
     count_nbr_ferier_days = fields.Float("Jours Fériés",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
     count_nbr_dim_days = fields.Float("Dimanches",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
@@ -171,13 +172,13 @@ class hr_rapport_pointage(models.Model):
     count_nbr_holiday_days_v = fields.Float("Jours Congés",readonly=True,compute="_compute_total_holidays")
     count_nbr_ferier_days_v = fields.Float("Jours Fériés Travaillés",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
     count_nbr_dim_days_v = fields.Float("Dimanches",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
-
+    #--------------------------------------------------
     jom = fields.Float(related='period_id.jom',readonly=True)
 
     q1_state = fields.Selection([('q1_draft',u'En Attente'),('q1_working',u'Q1 Traitement En Cours'),('q1_compute',u"Q1 Calculé"),('q1_valide',u"Q1 Validé"),('q1_done',u"Q1 Clôturé")],u"Première Quinzaine",default="q1_draft")
     q2_state = fields.Selection([('q2_draft',u'En Attente'),('q2_working',u'Q2 Traitement En Cours'),('q2_compute',u"Q2 Calculé"),('q2_valide',u"Q2 Validé"),('q2_done',u"Q2 Clôturé")],u"Deuxième Quinzaine",default="q2_draft")
 
-    type_emp = fields.Selection(related="employee_id.contract_id.type_emp",string=u"Type d'employé", required=False)
+    type_emp = fields.Selection(related="employee_id.contract_id.type_emp",string=u"Type d'employé", required=False,store=True)
 
 
     
