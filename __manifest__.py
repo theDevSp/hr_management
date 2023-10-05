@@ -59,7 +59,8 @@
         'views/employee_pointage_mission_model/rapport_pointage_admin_view.xml',
         'views/employee_pointage_mission_model/transfert_view.xml',
         'views/employee_pointage_mission_model/wizards/add_new_employee_wizard.xml',
-        'views/employee_pointage_mission_model/wizards/create_single_emplyee_reppoart.xml',
+        'views/employee_pointage_mission_model/wizards/create_single_emplyee_repport.xml',
+        'views/employee_pointage_mission_model/wizards/create_mass_repport.xml',
         'employee_holidays_model/validation_wizard/wizard_view.xml',
         #'employee_holidays_model/mass_creation_holidays/wizard_view.xml',
 

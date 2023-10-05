@@ -5,7 +5,9 @@
         <field name="name">Tableaux de Bords</field>
         <field name="tag">hr_management.action_main_dashboard</field>
     </record>
+
 <!--
     <menuitem id="menu_hr_main_dashboard" name="Tableaux de Bords" action="action_hr_main_dashboard" parent="hr_management_base_menu" sequence="0"/>
     -->
+
 </odoo>

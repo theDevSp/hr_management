@@ -96,7 +96,7 @@
     </record>
 
     <record id="mass_holidays_creation_action" model="ir.actions.act_window">
-        <field name="name">Open wizard</field>
+        <field name="name">Congé Pour Arrét de chantier</field>
         <field name="res_model">mass.holiday.creation.wizard</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="mass_holidays_creation_view_form"/>
