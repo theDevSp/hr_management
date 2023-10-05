@@ -178,6 +178,7 @@ class PointageListController extends ListController {
 
                         if (data.status === 204) {
                             this.showNotification("Aucune donnée disponible !", "warning");
+                            framework.unblockUI();
                             return;
                         }
                         else {
