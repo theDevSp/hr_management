@@ -63,12 +63,20 @@ class hr_employee_add_transit(models.TransientModel):
     employee_type = fields.Selection([("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé",required=True)
     period_id = fields.Many2one("account.month.period",u'Période',required=True,domain = _get_ab_default)
     date_start = fields.Date('Date Début',required=True)
+    quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine",default='quinzaine1')
     contract_type = fields.Many2one('hr.contract.type', string='Type Contrat')
     
     @api.onchange('date_start')
     def _onchange_date_start(self):
         if self.date_start:
             self.period_id = self.env['account.month.period'].get_period_from_date(str(self.date_start))
+    
+    @api.onchange('employee_type')
+    def _onchange_employee_type(self):
+        if self.employee_type == 's':
+            self.quinzaine = 'quinzaine12'
+        else:
+            self.quinzaine = 'quinzaine1'
     
     def create_new_employee(self):
 

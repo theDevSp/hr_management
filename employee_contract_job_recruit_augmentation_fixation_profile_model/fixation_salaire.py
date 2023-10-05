@@ -14,8 +14,8 @@ class fixation_salaire(models.Model):
     employee_id = fields.Many2one("hr.employee",string="Employé",required=True)
     cin = fields.Char(related='employee_id.cin',string="N° CIN",readonly=True)
     cnss = fields.Char(related='employee_id.cnss',string="N° CNSS",readonly=True)
-    fonction = fields.Many2one(related='employee_id.job_id',string="Fonction",readonly=True)
-    profile  = fields.Many2one(related="employee_id.contract_id.pp_personnel_id_many2one",string='Profile de paie',readonly=True)
+    fonction = fields.Many2one(related='employee_id.job_id',string="Fonction",readonly=True,store=True)
+    profile  = fields.Many2one(related="employee_id.contract_id.pp_personnel_id_many2one",string='Profile de paie',readonly=True,store=True)
     date_embauche = fields.Date(related="employee_id.contract_id.date_start",string='Date Début',readonly=True)
     chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Chantier d'affectation")
     embaucher_par  = fields.Many2one(related='employee_id.embaucher_par',string="Embauché Par",readonly=True)
@@ -26,7 +26,7 @@ class fixation_salaire(models.Model):
     officiel_wage_letters = fields.Char("Salaire Validé en Lettre", readonly=True)
     period_id = fields.Many2one("account.month.period",u'Période',required=True)
     date = fields.Date('Date Fixation', default=datetime.today())
-    obs = fields.Char("Observation")
+    obs = fields.Text("Observation")
     propose = fields.Boolean('Afficher Salaire validé',default=True)
     state = fields.Selection([
         ('draft',u'Nouvelle Fixation'),

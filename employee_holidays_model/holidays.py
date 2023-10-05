@@ -12,16 +12,31 @@ class holidays(models.Model):
     _description = "Holidays hr_management"
     _inherit = ['mail.thread','mail.activity.mixin']
 
+    def _get_chantier_domain(self):
+        pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
+        
+        res = []
+        if pointeur :
+            for user_chantier in self.env.user.chantier_responsable_ids:
+                res.append(user_chantier.id)
+        else:
+            for chantier in self.env['fleet.vehicle.chantier'].search([('type_chantier','in',('Chantier','Depot','Poste'))]):
+                res.append(chantier.id)
+        
+        return [('id', 'in',res)] 
+
     name = fields.Char("Libellé",default="Congés")
     employee_id = fields.Many2one("hr.employee",string="Employé",required=True)
-    chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Chantier",required=True) 
+    chantier_id = fields.Many2one('fleet.vehicle.chantier',domain=_get_chantier_domain,string="Chantier",required=True) 
     motif = fields.Selection([
         ('maladie','Maladie'),
         ('deces',"Décès"),
         ('nv_ne','Nouveau né'),
         ('mariage','Mariage'),
         ('conge_annuel','Congé annuel'),
-        ('arret','Arrét Aid'),
+        ('arret_mawlid','Arrét Aid Al Maoulid'),
+        ('arret_fitr','Arrét Aid Al Fitr'),
+        ('arret_adha','Arrét Aid Al Adha'),
         ],"Motif", required=True
     )
         
@@ -123,15 +138,15 @@ class holidays(models.Model):
         
     @api.model
     def create(self, vals):
-        if vals["demi_jour"]:
+        if "demi_jour" in vals:
             vals["duree_heures"] = 4
             vals["duree_jours"] = 0.5
-        if not vals["demi_jour"] and not vals["heure_perso"] and vals["duree_jours"] > 0:
+        if "demi_jour" not in vals and  "heure_perso" not in vals and vals["duree_jours"] > 0:
             date_difference = self.get_duree(vals["date_start"],vals["date_end"])
             vals["duree_jours"] = date_difference
 
         if self.holidays_validation(vals["employee_id"],vals["date_start"],vals["date_end"]):
-            raise ValidationError("Vous ne pouvez pas avoir 2 demandes de congés qui se chevauchent dans la même journée.")
+            raise ValidationError("Erreur congé pour %s. Vous ne pouvez pas avoir 2 demandes de congés qui se chevauchent dans la même journée."%(self.env['hr.employee'].browse(vals["employee_id"]).name))
         
         return super(holidays, self).create(vals)
 

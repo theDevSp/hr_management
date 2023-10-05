@@ -666,7 +666,7 @@
                             <div class="card bg-light my-3">
                                 <div class="card-body">
                                     <field name="blacklist_histo" nolabel="1">
-                                        <tree class="table" create="false" edit="false">
+                                        <tree create="false" edit="false">
                                             <field name="responsable_id"/>
                                             <field name="directeur_id"/>
                                             <field name="chantier_id"/>
@@ -706,7 +706,6 @@
                 <field name="emplacement_chantier_id"/>
                 <field name="state_employee_wtf"/>
                 <searchpanel>
-                    <field name="chantier_id" icon="fa-city" enable_counters="1" select="multi"/>
                     <field name="emplacement_chantier_id" icon="fa-users" enable_counters="1" select="multi"/>
                     <field name="type_emp" icon="fa-money" enable_counters="1" select="multi"/>
                     <field name="state_employee_wtf" icon="fa-align-center" enable_counters="1" select="multi"/>

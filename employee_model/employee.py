@@ -38,7 +38,6 @@ class hr_employee(models.Model):
     phone3 = fields.Char(u"Tél. Portable 3")
     working_years = fields.Char(compute='_compute_working_years',string="Ancienneté")
     currency_f = fields.Many2one('res.currency', string='Currency')
-    chantier_id  = fields.Many2one("fleet.vehicle.chantier",u"Chantier")
     
     wage_jour = fields.Float(string='Salaire Journalier')
     state_employee_wtf = fields.Selection([("new","Nouveau Embauche"),("transfert","Transfert"),("active","Active"),("stc","STC")],u"Situation Employé",index=True, copy=False, default='new', tracking=True)
@@ -87,7 +86,7 @@ class hr_employee(models.Model):
     type_contrat = fields.Many2one(related="contract_id.contract_type",string='Type du contrat', required=False)
     wage = fields.Monetary(related="contract_id.wage",string='Salaire de base', required=False, tracking=True, currency_field = "currency_f")
     salaire_actuel = fields.Float(related="contract_id.salaire_actuel",string='Salaire Actuel', required=False, tracking=True)
-    pp_personnel_id_many2one = fields.Many2one(related="contract_id.pp_personnel_id_many2one",string='Profile de paie', store=True)
+    pp_personnel_id_many2one = fields.Many2one(related="contract_id.pp_personnel_id_many2one",string='Profile de paie')
     periodicity_related = fields.Selection(related="contract_id.periodicity_related",string='Périodicité')
 
     name_profile_related = fields.Char(related="pp_personnel_id_many2one.name", readonly=True)
@@ -488,7 +487,8 @@ class hr_employee(models.Model):
             'view_id': view.id,
             'target': 'new',
             'context':{
-                'default_employee_id':self.id
+                'default_employee_id':self.id,
+                'default_employee_type':self.type_emp
             }
         }
     

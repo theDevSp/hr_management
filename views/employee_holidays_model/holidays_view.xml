@@ -227,7 +227,6 @@
                 <field name="employee_id"/>
                 <field name="chantier_id"/>
                 <searchpanel>
-                    <field name="employee_id" icon="fa-user" enable_counters="1" select="multi"/>
                     <field name="chantier_id" icon="fa-city" enable_counters="1" select="multi"/>
                     <field name="motif" icon="fa-comment" enable_counters="1" select="multi"/>
                     <field name="state" icon="fa-align-center" enable_counters="1" select="multi"/>

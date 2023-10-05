@@ -10,7 +10,7 @@
                 <field name="employee_id"/>
                 <field name="type_emp"/>
                 <field name="period_id" /> 
-                <field name="chantier_id"/>
+                <field name="chantier_id"  />
                 <field name="vehicle_id"/> 
                 <field name="emplacement_chantier_id"/>
                 <field name="total_h" />
@@ -104,12 +104,14 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="periodicite" class=""/></span>
+                                        <!--     
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" ><label for="periodicite" class=""/></span>
+                                                </div>
+                                                <field name="periodicite" class="form-control text-center" options="{'no_create': True,'no_open':True}"/>
                                             </div>
-                                            <field name="periodicite" class="form-control text-center" options="{'no_create': True,'no_open':True}"/>
-                                        </div>
+                                        -->
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" ><label for="quinzaine" class=""/></span>
@@ -384,7 +386,7 @@
                                                                                     hr_management.group_cnss_juridique"/>
                                     <field name="chantier_id" context="{'short': True}" options="{'no_create': True,'no_open': True}"/>
                                     <field name="vehicle_id"  options="{'no_create': True,'no_open': True}" readonly="1" invisible="1"/>
-                                    <field name="vehicle_ids" widget="many2many_tags" optional="hide"/>
+                                    <field name="vehicle_ids" widget="many2many_tags" optional="show"/>
                                     <button name="update_engin_list" type="object" icon="fa-plus-square" />
                                     <field name="emplacement_chantier_id"  options="{'no_create': True,'no_open': True}" string="Équipe"/>
                                     <field name="details" />
@@ -490,4 +492,6 @@
             </form>
         </field>
     </record>
+
+    
 </odoo>

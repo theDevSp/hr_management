@@ -37,8 +37,7 @@ class hr_rapport_pointage_line_engin(models.Model):
         time_table.append((str('%02d' % i)+':30:00',str('%02d' % i)+':30:00'))
         time_table.append((str('%02d' % i)+':45:00',str('%02d' % i)+':45:00'))
 
-    name = fields.Many2one("fleet.vehicle",u"Code engin",domain=_get_engin_domain,required=True)
+    name = fields.Many2one("fleet.vehicle",u"Code engin",required=True)
     rapport_line = fields.Many2one("hr.rapport.pointage.line",string="Lignes Rapport Pointage")
     time_start = fields.Selection(time_table,string="Heure Début",required=True,tracking=True)
     time_end = fields.Selection(time_table,string="Heure Fin",required=True,tracking=True)
-    color = fields.Integer('color')

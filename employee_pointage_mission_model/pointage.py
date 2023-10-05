@@ -29,10 +29,9 @@ class hr_rapport_pointage(models.Model):
         if period_ids :
             domain = [('id', 'in',period_ids)]  
         return domain
-
-
+    
+    @api.depends('rapport_lines')
     def _compute_hours(self):
-
         for rapport in self:
             query = """
                     select sum(h_travailler::real) as tht,
@@ -40,7 +39,7 @@ class hr_rapport_pointage(models.Model):
                             sum(h_sup::real) as ths,
                             sum(h_travailler_v::real) as thtv  
                             from hr_rapport_pointage_line where rapport_id = %s;
-                """   % (rapport.id)
+                """   % (rapport._origin.id)
             self.env.cr.execute(query)
             res = self.env.cr.dictfetchall()[0]
 
@@ -48,13 +47,14 @@ class hr_rapport_pointage(models.Model):
             rapport.total_h_bonus = res['thb'] if res else 0
             rapport.total_h_sup = res['ths'] if res else 0
             rapport.total_h_v = res['thtv'] if res else 0
-        
+
+    @api.depends('rapport_lines')   
     def _compute_days(self):
         for rapport in self:
             query = """
                         select sum(j_travaille::real) as tj,sum(j_travaille_v::real) as tjv 
                         from hr_rapport_pointage_line where rapport_id = %s and day_type = '1';
-                    """   % (rapport.id)
+                    """   % (rapport._origin.id)
         
             self.env.cr.execute(query)
             res = self.env.cr.dictfetchall()[0]
@@ -62,7 +62,7 @@ class hr_rapport_pointage(models.Model):
             rapport.total_j = res['tj'] if res else 0
             rapport.total_j_v = res['tjv'] if res else 0
     
-
+    @api.depends('rapport_lines') 
     def _compute_days_conge_absence_abondon(self):
         for rapport in self:
             query = """
@@ -73,7 +73,7 @@ class hr_rapport_pointage(models.Model):
                     count(1) filter (where day_type='3' and h_travailler_v::real > 0) as tferiev,
                     count(1) filter (where day_type='5') as tabsense
                     from hr_rapport_pointage_line where rapport_id = %s;
-                """ % (rapport.id)
+                """ % (rapport._origin.id)
         
             self.env.cr.execute(query)
             res = self.env.cr.dictfetchall()[0]
@@ -83,6 +83,7 @@ class hr_rapport_pointage(models.Model):
             self.count_nbr_ferier_days_v = res['tferiev'] if res else 0
             self.count_nbr_absense_days = res['tabsense'] if res else 0
     
+    @api.depends('holiday_ids') 
     def _compute_total_holidays(self):
         res = 0
         res2 = 0
@@ -94,7 +95,7 @@ class hr_rapport_pointage(models.Model):
         self.count_nbr_holiday_days_v = res2
 
     def _compute_holidays_liste(self):
-
+        
         date_start = self.rapport_lines[0].day
         date_stop = self.rapport_lines[len(self.rapport_lines)-1].day
 
@@ -113,7 +114,7 @@ class hr_rapport_pointage(models.Model):
                                         ('date_select_half_perso','>=',date_start),
                                         ('date_select_half_perso','<=',date_stop),
                                     ])         
-    
+
     def _compute_transferts_liste(self):
         date_start = self.rapport_lines[0].day
         date_stop = self.rapport_lines[len(self.rapport_lines)-1].day
@@ -135,22 +136,23 @@ class hr_rapport_pointage(models.Model):
     fonction = fields.Char(related='employee_id.job',string="Fonction",readonly=True)
     job_id = fields.Many2one(related='employee_id.job_id',string="Poste occupé",readonly=True)
 
-    chantier_id = fields.Many2one("fleet.vehicle.chantier",u"Dernier Chantier",readonly=True)
+    chantier_id = fields.Many2one("fleet.vehicle.chantier",u"Dernier Chantier",readonly=True, index=True)
     periodicite = fields.Selection(related='chantier_id.periodicite',readonly=True)
     grant_modification = fields.Boolean(related='chantier_id.grant_modification',readonly=True)
 
     vehicle_id = fields.Many2one("fleet.vehicle",u"Dérnier Code engin",readonly=True)
-    emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement","Dernière Équipe",readonly=True)
+    emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement","Dernière Équipe",readonly=True, index=True)
 
-    period_id = fields.Many2one("account.month.period",u'Période',required=True,readonly=True,domain = _get_period_default)
+    period_id = fields.Many2one("account.month.period",u'Période',required=True,readonly=True,domain = _get_period_default, index=True)
 
-    total_h = fields.Float("Heures Travaillées",compute="_compute_hours",readonly=True)
-    total_h_bonus = fields.Float("Heures Bonus",compute="_compute_hours",readonly=True)
-    total_h_sup = fields.Float("Heures Supp",compute="_compute_hours",readonly=True)
-    total_j = fields.Float("Jours Travaillés",readonly=True,compute="_compute_days")
-    total_h_v = fields.Float("Heures Validées",compute="_compute_hours",readonly=True)
-    total_j_v = fields.Float("Jours Validés",readonly=True,compute="_compute_days")
-
+    #--------------------------------------------------
+    total_h = fields.Float("Heures Travaillées",compute="_compute_hours",readonly=True,store=True)
+    total_h_bonus = fields.Float("Heures Bonus",compute="_compute_hours",readonly=True,store=True)
+    total_h_sup = fields.Float("Heures Supp",compute="_compute_hours",readonly=True,store=True)
+    total_j = fields.Float("Jours Travaillés",readonly=True,compute="_compute_days",store=True)
+    total_h_v = fields.Float("Heures Validées",compute="_compute_hours",readonly=True,store=True)
+    total_j_v = fields.Float("Jours Validés",readonly=True,compute="_compute_days",store=True)
+    #--------------------------------------------------
     note = fields.Text("Observation", states=READONLY_STATES)
 
     payslip_ids = fields.One2many("hr.payslip",'rapport_id',u'Fiche Paie',readonly=True)
@@ -161,20 +163,17 @@ class hr_rapport_pointage(models.Model):
     quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine")
 
     state = fields.Selection([('draft',u'Brouillon'),('working',u'Traitement En Cours'),('compute',u"Rapport Calculé"),('valide',u"Validé"),('done',u"Clôturé"),('cancel','Annulé')],u"Etat Pointage",default='draft',tracking=True)
-
+    #--------------------------------------------------
     count_nbr_holiday_days = fields.Float("Jours Congés",readonly=True,compute="_compute_total_holidays")
-    count_nbr_ferier_days = fields.Float("Jours Fériés",readonly=True,compute="_compute_days_conge_absence_abondon")
-    count_nbr_dim_days = fields.Float("Dimanches",readonly=True,compute="_compute_days_conge_absence_abondon")
-    count_nbr_absense_days = fields.Float("Absences",readonly=True,compute="_compute_days_conge_absence_abondon")
+    count_nbr_ferier_days = fields.Float("Jours Fériés",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
+    count_nbr_dim_days = fields.Float("Dimanches",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
+    count_nbr_absense_days = fields.Float("Absences",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
 
     count_nbr_holiday_days_v = fields.Float("Jours Congés",readonly=True,compute="_compute_total_holidays")
-    count_nbr_ferier_days_v = fields.Float("Jours Fériés Travaillés",readonly=True,compute="_compute_days_conge_absence_abondon")
-    count_nbr_dim_days_v = fields.Float("Dimanches",readonly=True,compute="_compute_days_conge_absence_abondon")
-
-    def _compute_businesdays(self):
-        self.jom = self.period_id.get_business_days_per_month()
-
-    jom = fields.Float("Jours Ouvrable",readonly=True,compute="_compute_businesdays")
+    count_nbr_ferier_days_v = fields.Float("Jours Fériés Travaillés",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
+    count_nbr_dim_days_v = fields.Float("Dimanches",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
+    #--------------------------------------------------
+    jom = fields.Float(related='period_id.jom',readonly=True)
 
     q1_state = fields.Selection([('q1_draft',u'En Attente'),('q1_working',u'Q1 Traitement En Cours'),('q1_compute',u"Q1 Calculé"),('q1_valide',u"Q1 Validé"),('q1_done',u"Q1 Clôturé")],u"Première Quinzaine",default="q1_draft")
     q2_state = fields.Selection([('q2_draft',u'En Attente'),('q2_working',u'Q2 Traitement En Cours'),('q2_compute',u"Q2 Calculé"),('q2_valide',u"Q2 Validé"),('q2_done',u"Q2 Clôturé")],u"Deuxième Quinzaine",default="q2_draft")
@@ -262,8 +261,6 @@ class hr_rapport_pointage(models.Model):
             else:
                 for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,vals['employee_id'],res.emplacement_chantier_id.id):
                     self.env['hr.rapport.pointage.line'].create(line)
-        else:
-            raise UserError('Rapport déja existe')
 
         return res
     
