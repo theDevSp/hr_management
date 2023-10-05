@@ -6,7 +6,7 @@ import { ListController } from "@web/views/list/list_controller";
 import { useService } from "@web/core/utils/hooks";
 
 const { loadJS, loadCSS } = require('@web/core/assets');
-const { onWillStart, useRef } = owl
+const { onWillStart, useRef, onMounted } = owl
 
 import { portrait_header } from "@reports_templates/js/headers";
 import { horizontal_header } from "@reports_templates/js/horizontal_header"
@@ -24,21 +24,22 @@ class PointageListController extends ListController {
         this.modal = useRef("modalPrint")
         this.modalClose = useRef("modalClose")
 
-        this.modalIframe = useRef("iframemodalPrint")
-
         this.http = this.env.services.http
         this.notification = this.env.services.notification;
 
         onWillStart(async () => {
             await loadJS("/reports_templates/static/src/lib/selectize/selectize.min.js")
             await loadCSS("/reports_templates/static/src/lib/selectize/selectize.default.min.scss")
+        })
 
-            await loadCSS("/reports_templates/static/src/lib/datepicker/datepicker.min.scss")
-            await loadJS("/reports_templates/static/src/lib/datepicker/bootstrap-datepicker.min.js")
+        onMounted(() => {
+
+
+
         })
     }
 
-    async modalPrint(data) {
+    async modalPrint() {
         showModal(this.modal.el);
 
         const allChantiers = await this.rpc(`/hr_management/pointage/get_all_chantiers`);
@@ -140,9 +141,12 @@ class PointageListController extends ListController {
             create: false
         });
 
-        $('#myForm').on('submit', (event) => {
-            event.preventDefault();
+        $("#myForm").on('submit', function (e) {
+            e.preventDefault();
+            submit()
+        });
 
+        const submit = async () => {
             var framework = require('web.framework');
 
             framework.blockUI();
@@ -169,8 +173,8 @@ class PointageListController extends ListController {
                     }
                 })
                     .then((data) => {
+
                         clearSelectizeInputs();
-                        framework.unblockUI();
 
                         if (data.status === 204) {
                             this.showNotification("Aucune donnée disponible !", "warning");
@@ -181,7 +185,7 @@ class PointageListController extends ListController {
 
                                 const pdfContent = []
 
-                                res.forEach(async (emp, index) => {
+                                res.forEach((emp, index) => {
                                     const finalemp = emp
                                     content_report_pointage_salarie(finalemp).then(content => {
                                         pdfContent.push(content)
@@ -303,14 +307,9 @@ class PointageListController extends ListController {
                                     }
                                 };
 
-                                pdfMake.createPdf(pdfDefinition).open();
-
-                                //const pdfDocGenerator = pdfMake.createPdf(pdfDefinition);
-                                //const dataUrl = await pdfDocGenerator.getDataUrl();
-                                //const targetElement = document.querySelector("#iframeContainerModal");
-                                //targetElement.setAttribute("src", await pdfDocGenerator.getDataUrl());
-                                //showModalIframe(this.modalIframe.el);
-
+                                framework.unblockUI();
+                                const pdf = await pdfMake.createPdf(pdfDefinition);
+                                return pdf.open()
                             });
                         }
                     })
@@ -323,7 +322,7 @@ class PointageListController extends ListController {
             }
             else if ($('#select-type').val() === 'o') {
 
-                fetch(
+                const response = await fetch(
                     "./hr_management/get_report_pointage_ouvrier/",
                     {
                         method: "POST",
@@ -332,329 +331,153 @@ class PointageListController extends ListController {
                             quinzine: $('#select-quinzine').val(),
                             typeemp: $('#select-type').val(),
                             equipe: $('#select-equipe').val(),
-                            date: $('#select-period').val()
+                            date: $('#select-period').val(),
                         }),
                         headers: {
-                            "Content-type": "application/json; charset=UTF-8"
-                        }
+                            "Content-type": "application/json; charset=UTF-8",
+                        },
                     }
-                )
-                    .then(resp => resp.json())
-                    .then(data => {
+                );
 
-                        clearSelectizeInputs();
-                        framework.unblockUI();
+                if (response.status === 204) {
+                    showNotification("Aucune donnée disponible !", "warning");
+                    framework.unblockUI();
+                    return;
+                }
 
-                        if (data.status === 204) {
-                            this.showNotification("Aucune donnée disponible !", "warning");
-                            return;
+                const data = await response.json();
+                clearSelectizeInputs();
+
+
+                const pdfContent = []
+
+                data.lines.forEach((emp, index) => {
+                    content_report_pointage_ouvrier(emp, data.chantier, data.quinzine, data.periode, data.nbrj_mois).then(content => {
+                        pdfContent.push(content);
+                        if (index !== data.lines.length - 1) {
+                            pdfContent.push({ text: "", pageBreak: "after" });
                         }
-                        else {
+                    });
+                });
 
-                            const pdfContent = []
+                const pdfDefinition = {
+                    compress: false,
+                    permissions: {
+                        printing: 'highResolution',
+                        modifying: false,
+                        copying: false,
+                        annotating: true,
+                        fillingForms: true,
+                        contentAccessibility: true,
+                        documentAssembly: true
+                    },
+                    info: {
+                        title: "Rapport", //`${res.length} STCs`,
+                        author: "BIOUI TRAVAUX",
+                        subject: `Report`
+                    },
+                    pageSize: 'A4',
+                    pageMargins: [13, 110, 13, 135],
+                    header: horizontal_header(),
+                    pageSize: "A4",
+                    pageOrientation: "landscape",
+                    content: pdfContent,
+                    footer: function (currentPage, pageCount) {
 
-                            data.lines.forEach((emp, index) => {
-                                content_report_pointage_ouvrier(emp, data.chantier, data.quinzine, data.periode,data.nbrj_mois).then(content => {
-                                    pdfContent.push(content);
-                                    if (index !== data.lines.length - 1) {
-                                        pdfContent.push({ text: "", pageBreak: "after" });
-                                    }
-                                });
-                            });
+                        return [
 
-                            const pdfDefinition = {
-                                compress: false,
-                                permissions: {
-                                    printing: 'highResolution',
-                                    modifying: false,
-                                    copying: false,
-                                    annotating: true,
-                                    fillingForms: true,
-                                    contentAccessibility: true,
-                                    documentAssembly: true
+                            {
+                                margin: [13, 5, 13, 0],
+                                layout: {
+                                    hLineColor: 'gray',
+                                    vLineColor: 'gray'
                                 },
-                                info: {
-                                    title: "Rapport", //`${res.length} STCs`,
-                                    author: "BIOUI TRAVAUX",
-                                    subject: `Report`
-                                },
-                                pageSize: 'A4',
-                                pageMargins: [13, 110, 13, 135],
-                                header: horizontal_header(),
-                                pageSize: "A4",
-                                pageOrientation: "landscape",
-                                content: pdfContent,
-                                footer: function (currentPage, pageCount) {
-
-                                    return [
-
-                                        {
-                                            margin: [13, 5, 13, 0],
-                                            layout: {
-                                                hLineColor: 'gray',
-                                                vLineColor: 'gray'
-                                            },
-                                            table: {
-                                                widths: ['*', '*', '*', '*'],
-                                                headerRows: 1,
-                                                body: [
-                                                    [{
-                                                        text: 'Intéressé(e)',
-                                                        bold: true,
-                                                        fontSize: 10,
-                                                        alignment: 'center',
-                                                        fillColor: '#04aa6d',
-                                                        color: 'white',
-                                                        margin: [0, 5]
-                                                    }, {
-                                                        text: 'Pointeur',
-                                                        fontSize: 10,
-                                                        bold: true,
-                                                        alignment: 'center',
-                                                        fillColor: '#04aa6d',
-                                                        color: 'white',
-                                                        margin: [0, 5]
-                                                    }, {
-                                                        text: 'Chef de Projet',
-                                                        fontSize: 10,
-                                                        bold: true,
-                                                        alignment: 'center',
-                                                        fillColor: '#04aa6d',
-                                                        color: 'white',
-                                                        margin: [0, 5]
-                                                    }, {
-                                                        text: 'Directeur Technique',
-                                                        fontSize: 10,
-                                                        bold: true,
-                                                        alignment: 'center',
-                                                        fillColor: '#04aa6d',
-                                                        color: 'white',
-                                                        margin: [0, 5]
-                                                    },],
-                                                    [{
-                                                        text: '',
-                                                        fontSize: 9,
-                                                        bold: true,
-                                                        margin: [0, 35],
-                                                    }, {
-                                                        text: '',
-                                                        fontSize: 9,
-                                                        bold: true
-                                                    }, {
-                                                        text: '',
-                                                        fontSize: 9,
-                                                        bold: true
-                                                    }, {
-                                                        text: '',
-                                                        fontSize: 9,
-                                                        bold: true
-                                                    }]
-                                                ]
-                                            }
-                                        },
-
-                                        {
-                                            margin: [0, 5, 0, 0],
-                                            columns: [{
-                                                text: `${currentPage}/${pageCount}`,
-                                                alignment: 'center',
-                                                fontSize: 7,
-                                                margin: [150, 0, 0, 0]
-                                            }, {
-                                                text: `Imprimer le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`,
-                                                fontSize: 7,
-                                                alignment: 'right',
-                                                bold: true,
-                                                margin: [0, 0, 12, 0],
-                                                width: 130
-                                            }]
-                                        }
-
-
+                                table: {
+                                    widths: ['*', '*', '*', '*'],
+                                    headerRows: 1,
+                                    body: [
+                                        [{
+                                            text: 'Intéressé(e)',
+                                            bold: true,
+                                            fontSize: 10,
+                                            alignment: 'center',
+                                            fillColor: '#04aa6d',
+                                            color: 'white',
+                                            margin: [0, 5]
+                                        }, {
+                                            text: 'Pointeur',
+                                            fontSize: 10,
+                                            bold: true,
+                                            alignment: 'center',
+                                            fillColor: '#04aa6d',
+                                            color: 'white',
+                                            margin: [0, 5]
+                                        }, {
+                                            text: 'Chef de Projet',
+                                            fontSize: 10,
+                                            bold: true,
+                                            alignment: 'center',
+                                            fillColor: '#04aa6d',
+                                            color: 'white',
+                                            margin: [0, 5]
+                                        }, {
+                                            text: 'Directeur Technique',
+                                            fontSize: 10,
+                                            bold: true,
+                                            alignment: 'center',
+                                            fillColor: '#04aa6d',
+                                            color: 'white',
+                                            margin: [0, 5]
+                                        },],
+                                        [{
+                                            text: '',
+                                            fontSize: 9,
+                                            bold: true,
+                                            margin: [0, 35],
+                                        }, {
+                                            text: '',
+                                            fontSize: 9,
+                                            bold: true
+                                        }, {
+                                            text: '',
+                                            fontSize: 9,
+                                            bold: true
+                                        }, {
+                                            text: '',
+                                            fontSize: 9,
+                                            bold: true
+                                        }]
                                     ]
                                 }
-                            };
+                            },
 
-                            return pdfMake.createPdf(pdfDefinition).open();
+                            {
+                                margin: [0, 5, 0, 0],
+                                columns: [{
+                                    text: `${currentPage}/${pageCount}`,
+                                    alignment: 'center',
+                                    fontSize: 7,
+                                    margin: [150, 0, 0, 0]
+                                }, {
+                                    text: `Imprimer le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`,
+                                    fontSize: 7,
+                                    alignment: 'right',
+                                    bold: true,
+                                    margin: [0, 0, 12, 0],
+                                    width: 130
+                                }]
+                            }
 
-                        }
 
-                    })
-                    .catch(error => {
-                        console.log("error")
-                        framework.unblockUI();
-                        this.showNotification("Erreur d'impression ! Merci de réessayer !", "danger");
-                    });
-
-                /*fetch("./hr_management/get_report_pointage_ouvrier/", {
-                    method: "POST",
-                    body: JSON.stringify({
-                        chantier: $('#select-chantier').val(),
-                        quinzine: $('#select-quinzine').val(),
-                        typeemp: $('#select-type').val(),
-                        equipe: $('#select-equipe').val(),
-                        date: $('#select-period').val()
-                    }),
-                    headers: {
-                        "Content-type": "application/json; charset=UTF-8"
+                        ]
                     }
-                })
-                    .then((data) => {
-                        clearSelectizeInputs();
-                        framework.unblockUI();
+                };
 
-                        if (data.status === 204) {
-                            this.showNotification("Aucune donnée disponible !", "warning");
-                            return;
-                        }
-                        else {
-                            data.json().then(async res => {
-
-                                for (const emp of res) {
-                                    console.log(emp);
-                                    // content_report_pointage_salarie(emp);
-                                }
-
-                                const pdfContent = []
-
-                                return
-
-                                res.forEach(async (emp, index) => {
-                                    const finalemp = emp
-                                    content_report_pointage_salarie(finalemp).then(content => {
-                                        pdfContent.push(content)
-                                        if (index !== res.length - 1) {
-                                            pdfContent.push({ text: "", pageBreak: "after" });
-                                        }
-                                    })
-
-                                });
-
-                                const pdfDefinition = {
-                                    compress: false,
-                                    permissions: {
-                                        printing: 'highResolution',
-                                        modifying: false,
-                                        copying: false,
-                                        annotating: true,
-                                        fillingForms: true,
-                                        contentAccessibility: true,
-                                        documentAssembly: true
-                                    },
-                                    info: {
-                                        title: "Rapport", //`${res.length} STCs`,
-                                        author: "BIOUI TRAVAUX",
-                                        subject: `Report`
-                                    },
-                                    pageSize: 'A4',
-                                    pageMargins: [13, 110, 13, 135],
-                                    header: horizontal_header(),
-                                    pageSize: "A4",
-                                    pageOrientation: "landscape",
-                                    content: pdfContent,
-                                    footer: function (currentPage, pageCount) {
-
-                                        return [
-
-                                            {
-                                                margin: [13, 5, 13, 0],
-                                                layout: {
-                                                    hLineColor: 'gray',
-                                                    vLineColor: 'gray'
-                                                },
-                                                table: {
-                                                    widths: ['*', '*', '*', '*'],
-                                                    headerRows: 1,
-                                                    body: [
-                                                        [{
-                                                            text: 'Intéressé(e)',
-                                                            bold: true,
-                                                            fontSize: 10,
-                                                            alignment: 'center',
-                                                            fillColor: '#04aa6d',
-                                                            color: 'white',
-                                                            margin: [0, 5]
-                                                        }, {
-                                                            text: 'Pointeur',
-                                                            fontSize: 10,
-                                                            bold: true,
-                                                            alignment: 'center',
-                                                            fillColor: '#04aa6d',
-                                                            color: 'white',
-                                                            margin: [0, 5]
-                                                        }, {
-                                                            text: 'Chef de Projet',
-                                                            fontSize: 10,
-                                                            bold: true,
-                                                            alignment: 'center',
-                                                            fillColor: '#04aa6d',
-                                                            color: 'white',
-                                                            margin: [0, 5]
-                                                        }, {
-                                                            text: 'Directeur Technique',
-                                                            fontSize: 10,
-                                                            bold: true,
-                                                            alignment: 'center',
-                                                            fillColor: '#04aa6d',
-                                                            color: 'white',
-                                                            margin: [0, 5]
-                                                        },],
-                                                        [{
-                                                            text: '',
-                                                            fontSize: 9,
-                                                            bold: true,
-                                                            margin: [0, 35],
-                                                        }, {
-                                                            text: '',
-                                                            fontSize: 9,
-                                                            bold: true
-                                                        }, {
-                                                            text: '',
-                                                            fontSize: 9,
-                                                            bold: true
-                                                        }, {
-                                                            text: '',
-                                                            fontSize: 9,
-                                                            bold: true
-                                                        }]
-                                                    ]
-                                                }
-                                            },
-
-                                            {
-                                                margin: [0, 5, 0, 0],
-                                                columns: [{
-                                                    text: `${currentPage}/${pageCount}`,
-                                                    alignment: 'center',
-                                                    fontSize: 7,
-                                                    margin: [150, 0, 0, 0]
-                                                }, {
-                                                    text: `Imprimer le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`,
-                                                    fontSize: 7,
-                                                    alignment: 'right',
-                                                    bold: true,
-                                                    margin: [0, 0, 12, 0],
-                                                    width: 130
-                                                }]
-                                            }
-
-
-                                        ]
-                                    }
-                                };
-
-                                pdfMake.createPdf(pdfDefinition).open();
-
-                            });
-                        }
-                    })
-                    .catch((error) => {
-                        console.log("error")
-                        framework.unblockUI();
-                        this.showNotification("Erreur d'impression ! Merci de réessayer !", "danger");
-                    });*/
+                framework.unblockUI();
+                const pdf = await pdfMake.createPdf(pdfDefinition);
+                return pdf.open()
             }
-        });
+        };
     }
 
     showNotification(message, typeNotification) {
@@ -663,9 +486,6 @@ class PointageListController extends ListController {
             type: typeNotification, // info, warning, danger, success
         });
     }
-
-
-
 }
 
 const clearSelectizeInputs = () => {
@@ -690,19 +510,6 @@ const showModal = (el) => {
 const hideModal = (el) => {
     el.style.display = "none"
 }
-
-const showModalIframe = (el) => {
-    el.style.display = "block"
-    const modalClose1 = document.querySelector("#modalIframeClose");
-    modalClose1.addEventListener('click', () => {
-        el.style.display = "none";
-    });
-}
-
-const hideModalIframe = (el) => {
-    el.style.display = "none"
-}
-
 
 export const PointageListView = {
     ...listView,

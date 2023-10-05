@@ -44,8 +44,8 @@ class TransfertListController extends ListController {
             allData.push(...transfers);
 
         } catch (error) {
-            console.error("Error fetching transfers:", error);
-            throw error;
+            return alert('Une erreur est survenue, veuillez réessayer !');
+            framework.blockUI();
         }
 
         if (allData) {
@@ -56,6 +56,7 @@ class TransfertListController extends ListController {
                 }
             });
         } else {
+            framework.blockUI();
             return alert('Une erreur est survenue, veuillez réessayer !');
         }
 
@@ -220,6 +221,7 @@ class TransfertListController extends ListController {
             framework.unblockUI();
         }
         else {
+            framework.blockUI();
             return alert('Une erreur est survenue, veuillez réessayer !');
         }
     }

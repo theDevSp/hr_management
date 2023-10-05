@@ -169,8 +169,8 @@ class printReportPointageController(http.Controller):
         equipe_id = post.get("equipe")
         type_employe = post.get("typeemp")
 
-        period_id = int(period_id)
-        chantier_id = int(chantier_id)
+        #period_id = int(period_id)
+        #chantier_id = int(chantier_id)
 
         domains = [('period_id', '=', 129),  # period 129
                    ('chantier_id', '=', 483)]  # chantier_id 483
@@ -179,7 +179,7 @@ class printReportPointageController(http.Controller):
             domains.append(('quinzaine', '=', quinz))
 
         if equipe_id:
-            equipe_id = int(equipe_id)
+            #equipe_id = int(equipe_id)
             domains.append(('emplacement_chantier_id', '=', equipe_id))
 
         if type_employe:
@@ -204,20 +204,22 @@ class printReportPointageController(http.Controller):
                     dates_lines = []
                     for re_line in re.rapport_lines:
                         dates_lines.append({
-                            'jour': re_line.name or "Null",
-                            'th': re_line.h_travailler or "Null",
-                            'observation': re_line.details or "Null"
+                            'jour': re_line.name or "",
+                            'th': re_line.h_travailler or "",
+                            'sup': re_line.h_sup_cal,
+                            'observation': re_line.details or "",
+                            'date': re_line.day
                         })
                         
                     data_entry = {
-                        'employe_name': re.employee_id.name or "Null",
-                        'employe_cin': re.cin or "Null",
-                        'employe_fonction': re.job_id.name or "Null",
-                        'employe_totalheure': re.total_h or "Null",
-                        'employe_type': re.type_emp or "Null",
+                        'employe_name': re.employee_id.name or "",
+                        'employe_cin': re.cin or "",
+                        'employe_fonction': re.job_id.name or "",
+                        'employe_totalheure': re.total_h or "",
+                        'employe_type': re.type_emp or "",
                         'employe_dates': {
                             'dates_lines': dates_lines
-                        }
+                        },
                     }
                     obj["data"].append(data_entry)
                 
@@ -313,3 +315,4 @@ class printReportPointageController(http.Controller):
             return http.request.make_json_response(data=finalDataList, status=200)
         else:
             return http.request.make_json_response(data={'message': 'No data found'}, status=204)
+

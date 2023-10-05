@@ -40,7 +40,7 @@
             <div t-ref="modalPrint" class="modal" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
-                        <form id="myForm">
+                        <form id="myForm" >
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLongTitle">Impression</h5>
                                 <button id="modalClose1" type="button" class="btn-close"></button>

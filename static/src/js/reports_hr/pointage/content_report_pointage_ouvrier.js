@@ -21,27 +21,100 @@ export async function content_report_pointage_ouvrier(data, chantier, quinz, per
         alignment: 'center'
     }));
 
+    const linges = [];
+    const sup_lignes = [];
 
-    const allData = [];
-
-    for (let i = 0; i < nbr; i++) {
-        const dataa = [];
-
-        for (let i = 0; i <= (nbr+3); i++) {
-            const row = {
-                text: '11.0',
+    data.data.map(arr => {
+        const row = [
+            {
+                text: arr.employe_cin,
                 fontSize: 8,
                 color: 'black',
                 margin: [0, 3],
                 alignment: 'center'
-            };
-            dataa.push(row);
-        }
-        allData.push(dataa);
-    }
-    
-    console.log(allData)
-    
+            },
+            {
+                text: arr.employe_name,
+                fontSize: 8,
+                color: 'black',
+                margin: [0, 3],
+                alignment: 'center'
+            },
+            {
+                text: arr.employe_fonction,
+                fontSize: 8,
+                color: 'black',
+                margin: [0, 3],
+                alignment: 'center'
+            },
+            ...arr.employe_dates.dates_lines.map(ligne => {
+                if (ligne.sup !== 0) {
+                    sup_lignes.push([
+                        {
+                            text: ligne.date,
+                            fontSize: 8,
+                            color: 'black',
+                            margin: [0, 2],
+                            alignment: 'center'
+                        },
+                        {
+                            text: arr.employe_cin,
+                            fontSize: 8,
+                            color: 'black',
+                            margin: [0, 1.5],
+                            alignment: 'center'
+                        },
+                        {
+                            text: arr.employe_name,
+                            fontSize: 8,
+                            color: 'black',
+                            margin: [0, 1.5],
+                            alignment: 'center'
+                        },
+                        {
+                            text: arr.employe_fonction,
+                            fontSize: 8,
+                            color: 'black',
+                            margin: [0, 1.5],
+                            alignment: 'center'
+                        },
+                        {
+                            text: ligne.sup,
+                            fontSize: 8,
+                            color: 'black',
+                            margin: [0, 1.5],
+                            alignment: 'center'
+                        },
+                        {
+                            text: ligne.observation,
+                            fontSize: 8,
+                            color: 'black',
+                            margin: [0, 1.5],
+                            alignment: 'center'
+                        },
+
+                    ])
+                }
+                return {
+                    text: ligne.th,
+                    fontSize: 8,
+                    color: 'black',
+                    margin: [0, 3],
+                    alignment: 'center'
+                }
+            }),
+            {
+                text: arr.employe_totalheure,
+                fontSize: 8,
+                color: 'black',
+                margin: [0, 3],
+                alignment: 'center'
+            },
+        ];
+
+        linges.push(row); // Add the row to the linges array
+    });
+
 
     const content = [{
 
@@ -214,14 +287,85 @@ export async function content_report_pointage_ouvrier(data, chantier, quinz, per
                         alignment: 'center'
                     }
                 ],
-                ...allData.map((array) => array)
-                
-                
+                ...linges.map((array) => array),
             ]
         }
-    }
+    },
+    sup_lignes.length > 0 ? { text: "", pageBreak: "after" } : {},
+    sup_lignes.length > 0 ? {
 
+        layout: {
+            hLineColor: 'gray',
+            vLineColor: 'gray'
+        },
+        table: {
+            headerRows: 1,
+            widths: [50, 50, 200, 70, 50, 343],
+            dontBreakRows: true,
+            body: [
+                [{
 
+                    text: 'DATE',
+                    bold: true,
+                    fontSize: 10,
+                    fillColor: '#04aa6d',
+                    color: 'white',
+                    margin: [0, 5],
+                    alignment: 'center',
+                },
+                {
+                    text: 'CIN',
+                    bold: true,
+                    fontSize: 10,
+                    fillColor: '#04aa6d',
+                    color: 'white',
+                    margin: [0, 5],
+                    alignment: 'center',
+                    width: 1050,
+                },
+                {
+                    text: 'NOM COMPLET',
+                    bold: true,
+                    fontSize: 10,
+                    fillColor: '#04aa6d',
+                    color: 'white',
+                    margin: [0, 5],
+                    alignment: 'center',
+                    width: 1000,
+                },
+                {
+                    text: 'FONCTION',
+                    bold: true,
+                    fontSize: 10,
+                    fillColor: '#04aa6d',
+                    color: 'white',
+                    margin: [0, 5],
+                    alignment: 'center'
+                },
+                {
+                    text: 'SUPP',
+                    bold: true,
+                    fontSize: 10,
+                    fillColor: '#04aa6d',
+                    color: 'white',
+                    margin: [0, 5],
+                    alignment: 'center'
+                },
+                {
+                    text: 'JUSTIFICATION',
+                    bold: true,
+                    fontSize: 10,
+                    fillColor: '#04aa6d',
+                    color: 'white',
+                    margin: [0, 5],
+                    alignment: 'center'
+                },
+                ],
+                ...sup_lignes.map((array) => array),
+            ],
+        }
+
+    } :  {}
 
 
     ]
