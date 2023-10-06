@@ -32,57 +32,64 @@ class hr_rapport_pointage(models.Model):
     
     @api.depends('rapport_lines')
     def _compute_hours(self):
-        for rapport in self:
-            query = """
-                    select sum(h_travailler::real) as tht,
-                            sum(h_bonus::real) as thb,
-                            sum(h_sup::real) as ths,
-                            sum(h_travailler_v::real) as thtv  
-                            from hr_rapport_pointage_line where rapport_id = %s;
-                """   % (rapport._origin.id)
-            self.env.cr.execute(query)
-            res = self.env.cr.dictfetchall()[0]
+        if self._origin:
+            for rapport in self:
+                query = """
+                        select sum(h_travailler::real) as tht,
+                                sum(h_bonus::real) as thb,
+                                sum(h_sup::real) as ths,
+                                sum(h_travailler_v::real) as thtv  
+                                from hr_rapport_pointage_line where rapport_id = %s;
+                    """   % (rapport._origin.id)
+                
+                self.env.cr.execute(query)
+                res = self.env.cr.dictfetchall()[0]
 
-            rapport.total_h = res['tht'] if res else 0
-            rapport.total_h_bonus = res['thb'] if res else 0
-            rapport.total_h_sup = res['ths'] if res else 0
-            rapport.total_h_v = res['thtv'] if res else 0
+                rapport.total_h = res['tht'] if res else 0
+                rapport.total_h_bonus = res['thb'] if res else 0
+                rapport.total_h_sup = res['ths'] if res else 0
+                rapport.total_h_v = res['thtv'] if res else 0
+                
 
     @api.depends('rapport_lines')   
     def _compute_days(self):
-        for rapport in self:
-            query = """
-                        select sum(j_travaille::real) as tj,sum(j_travaille_v::real) as tjv 
-                        from hr_rapport_pointage_line where rapport_id = %s and day_type = '1';
-                    """   % (rapport._origin.id)
-        
-            self.env.cr.execute(query)
-            res = self.env.cr.dictfetchall()[0]
+        if self._origin:
+            for rapport in self:
+                query = """
+                            select sum(j_travaille::real) as tj,sum(j_travaille_v::real) as tjv 
+                            from hr_rapport_pointage_line where rapport_id = %s and day_type = '1';
+                        """   % (rapport._origin.id)
+            
+                self.env.cr.execute(query)
+                res = self.env.cr.dictfetchall()[0]
 
-            rapport.total_j = res['tj'] if res else 0
-            rapport.total_j_v = res['tjv'] if res else 0
+                rapport.total_j = res['tj'] if res else 0
+                rapport.total_j_v = res['tjv'] if res else 0
     
+
     @api.depends('rapport_lines') 
     def _compute_days_conge_absence_abondon(self):
-        for rapport in self:
-            query = """
-                    select 
-                    count(1) filter (where day_type='2' and h_travailler::real > 0) as tdim,
-                    count(1) filter (where day_type='2' and h_travailler_v::real > 0) as tdimv,
-                    count(1) filter (where day_type='3') as tferie,
-                    count(1) filter (where day_type='3' and h_travailler_v::real > 0) as tferiev,
-                    count(1) filter (where day_type='5') as tabsense
-                    from hr_rapport_pointage_line where rapport_id = %s;
-                """ % (rapport._origin.id)
-        
-            self.env.cr.execute(query)
-            res = self.env.cr.dictfetchall()[0]
-            self.count_nbr_dim_days = res['tdim'] if res else 0
-            self.count_nbr_ferier_days = res['tferie'] if res else 0
-            self.count_nbr_dim_days_v = res['tdimv'] if res else 0
-            self.count_nbr_ferier_days_v = res['tferiev'] if res else 0
-            self.count_nbr_absense_days = res['tabsense'] if res else 0
+        if self._origin:
+            for rapport in self:
+                query = """
+                        select 
+                        count(1) filter (where day_type='2' and h_travailler::real > 0) as tdim,
+                        count(1) filter (where day_type='2' and h_travailler_v::real > 0) as tdimv,
+                        count(1) filter (where day_type='3') as tferie,
+                        count(1) filter (where day_type='3' and h_travailler_v::real > 0) as tferiev,
+                        count(1) filter (where day_type='5') as tabsense
+                        from hr_rapport_pointage_line where rapport_id = %s;
+                    """ % (rapport._origin.id)
+            
+                self.env.cr.execute(query)
+                res = self.env.cr.dictfetchall()[0]
+                self.count_nbr_dim_days = res['tdim'] if res else 0
+                self.count_nbr_ferier_days = res['tferie'] if res else 0
+                self.count_nbr_dim_days_v = res['tdimv'] if res else 0
+                self.count_nbr_ferier_days_v = res['tferiev'] if res else 0
+                self.count_nbr_absense_days = res['tabsense'] if res else 0
     
+
     @api.depends('holiday_ids') 
     def _compute_total_holidays(self):
         res = 0
@@ -93,6 +100,7 @@ class hr_rapport_pointage(models.Model):
             res2 += holiday.nbr_jour_compenser
         self.count_nbr_holiday_days = res
         self.count_nbr_holiday_days_v = res2
+
 
     def _compute_holidays_liste(self):
         
