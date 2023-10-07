@@ -9,8 +9,6 @@ const { loadJS, loadCSS } = require('@web/core/assets');
 
 const { onWillStart, useRef } = owl
 
-
-
 import { content_report_pointage_many_salarie } from "./content_report_pointage_many_salarie";
 
 class PointageListController extends ListController {
@@ -32,6 +30,10 @@ class PointageListController extends ListController {
     })
 
 
+  }
+
+  test(url) {
+    console.log("test")
   }
 
   async print(url) {

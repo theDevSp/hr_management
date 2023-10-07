@@ -138,6 +138,10 @@ class PointageListController extends ListController {
 
     }
 
+    test(){
+        console.log("modal print")
+    }
+
     verify() {
         const fields = [
             { element: $('#select-chantier'), message: 'Chantier' },
