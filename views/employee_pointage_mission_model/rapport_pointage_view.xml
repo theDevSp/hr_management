@@ -431,6 +431,8 @@
         </field>
     </record>
 
+    
+
     <record id="rapport_pointage_tree" model="ir.ui.view">
         <field name="name">rapport.pointage.tree</field>
         <field name="model">hr.rapport.pointage</field>
@@ -448,33 +450,14 @@
                 <field name="total_h_v" />
                 <field name="total_j_v" />
                 <field name="state"/>
+                <field name="context">{
+                    'search_default_group_by_public_market_id':1,
+                    'search_default_group_by_period_id':1,
+                    'search_default_group_by_emplacement_chantier_id':1,
+                    'search_default_group_by_quinzaine':1
+                }</field>
             </tree>
         </field>
-    </record>
-
-    <record id="menu_view_pointage_salarie_tree" model="ir.actions.act_window">
-        <field name="name">Rapport Pointage</field>
-        <field name="res_model">hr.rapport.pointage</field>
-        <field name="view_mode">tree,form</field>
-        <field name="context">{
-                "search_default_group_by_public_market_id":1,
-                "search_default_group_by_period_id":1,
-                "search_default_group_by_emplacement_chantier_id":1,
-                }
-        </field>
-        <field name="domain">[('employee_id.employee_type','=','employee1')]</field>
-    </record>
-    <record id="menu_view_pointage_ouvrier_tree" model="ir.actions.act_window">
-        <field name="name">Rapport Pointage</field>
-        <field name="res_model">hr.rapport.pointage</field>
-        <field name="view_mode">tree,form</field>
-        <field name="context">{
-                "search_default_group_by_public_market_id":1,
-                "search_default_group_by_period_id":1,
-                "search_default_group_by_emplacement_chantier_id":1,
-                "search_default_group_by_quinzaine":1
-            }</field>
-        <field name="domain">[('employee_id.employee_type','=','employee2')]</field>
     </record>
 
     <record id="menu_view_employee_transfert_tree" model="ir.actions.act_window">
@@ -549,28 +532,7 @@
         </field>
     </record> -->
 
-    <record id="view_bce_filter" model="ir.ui.view">
-        <field name="name">hr.rapport.pointage.select</field>
-        <field name="model">hr.rapport.pointage</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="name" />
-                <field name="employee_id" />
-                <field name="chantier_id" />
-                <!-- <field name="vehicle_id" /> -->
-                <field name="emplacement_chantier_id" />
-                <field name="rapport_lines" string="Code Engin" filter_domain="[('rapport_lines.vehicle_ids.name','ilike',self)]" />
-                <group expand="0" string="Group By">
-                    <filter name="group_by_public_market_id" string="Chantier" context="{'group_by':'chantier_id'}" />
-                    <filter name="group_by_period_id" string="Période" context="{'group_by':'period_id'}" />
-                    <filter name="group_by_public_market_name" string="Employée" context="{'group_by':'employee_id'}" />
-                    <filter name="group_by_emplacement_chantier_id" string="Equipe" context="{'group_by':'emplacement_chantier_id'}" />
-                    <filter name="group_by_quinzaine" string="Quinzaine" context="{'group_by':'quinzaine'}" />
-                    <filter name="group_by_state" string="Statut" context="{'group_by':'state'}" />
-                </group>
-            </search>
-        </field>
-    </record>
+    
 
     
 

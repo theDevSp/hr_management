@@ -26,47 +26,130 @@
         <field name="priority" eval="25"/>
         <field name="arch" type="xml">
             <form>
-                <header>    
+                <header>
                     <button name="action_draft" states="cancel" string="Mettre en brouillon" type="object" class="oe_highlight" />
                     <button name="action_validation" states="draft" string="Valider" type="object" class="oe_highlight" />
                     <button name="action_done" states="valide" string="Arriver" type="object" class="oe_highlight" />
                     <button name="action_cancel" states="draft,valide,done" string="Annuler" type="object" class="oe_highlight" />
                     <field name="state" widget="statusbar"/>
                 </header>
-                <sheet>
-                    <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
-                        <h1>
-                            <field name="name"/>
-                        </h1>
-                        <label for="employee_id" class="oe_edit_only"/>
-                        <h1>
-                            <field name="employee_id" options="{'no_create': True,'no_open': True}"/>
-                        </h1>
+
+                <div class="bg-white shadow p-3 col-6" style="margin: auto; width: 70%; padding: 10px;">
+                    <div class="alert alert-danger text-center mb-2">
+                        <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> Champs Obligatoire </div>
+                    <div class="card bg-light my-3">
+                        <div class="card-body text-center mt-2">
+                            <h1>
+                                Transfert <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
                     </div>
 
-                    <group>
-                        <field name="date_transfert"/>
-                        <field name="date_arriver"/>
-                    </group>
-                    
-                    <group string="Affectation" col="6">
-                        <field name="chantier_id_source" options="{'no_create': True,'no_open': True}" placeholder="Chantier Source" nolabel="1"/>
-                        <field name="vehicle_id_source" options="{'no_create': True,'no_open': True}" placeholder="Code Engin Source" nolabel="1"/>
-                        <field name="emplacement_chantier_id_source" options="{'no_create': True,'no_open': True}" placeholder="Equipe Source" nolabel="1"/> 
-                    </group>
-                    <group string="Destination" col="6">
-                        <field name="chantier_id_destiation" options="{'no_create': True,'no_open': True}" domain ="[('type_chantier','in',('Chantier','Depot','Poste'))]" placeholder="Chantier Destination" nolabel="1"/>
-                        <field name="vehicle_id_destiation" options="{'no_create': True,'no_open': True}" placeholder="Code Engin Destination" nolabel="1"/>
-                        <field name="emplacement_chantier_id_destiation" options="{'no_create': True,'no_open': True}" placeholder="Equipe Destination" nolabel="1"/> 
-                    </group>
-                    
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="message_ids" widget="mail_thread"/>
+                    <div class="card bg-light my-3">
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <label for="employee_id" class=""/>
+                                        <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                    </span>
+                                </div>
+                                <field name="employee_id" class="form-control" options="{'no_create': True,'no_open': True}"/>
+                            </div>
+
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <label for="date_transfert" class=""/>
+                                        <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                    </span>
+                                </div>
+                                <field name="date_transfert" class="form-control" options="{'no_create': True,'no_open': True}"/>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <label for="date_arriver" class=""/>
+                                        <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                    </span>
+                                </div>
+                                <field name="date_arriver" class="form-control" options="{'no_create': True,'no_open': True}"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-light my-3">
+                        <div class="card-body text-center">
+                            <h2 class="card-text">AFFECTATION</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <label for="chantier_id_source" class=""/>
+                                        <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                    </span>
+                                </div>
+                                <field name="chantier_id_source" class="form-control" options="{'no_create': True,'no_open': True}" placeholder="Chantier Source" nolabel="1"/>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <label for="vehicle_id_source" class=""/>
+                                    </span>
+                                </div>
+                                <field name="vehicle_id_source" class="form-control" options="{'no_create': True,'no_open': True}" placeholder="Code Engin Source" nolabel="1"/>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <label for="emplacement_chantier_id_source" class=""/>
+                                    </span>
+                                </div>
+                                <field name="emplacement_chantier_id_source" class="form-control" options="{'no_create': True,'no_open': True}" placeholder="Equipe Destination" nolabel="1"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-light my-3">
+                        <div class="card-body text-center">
+                            <h2 class="card-text">DESTINATION</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <label for="chantier_id_destiation" class=""/>
+                                        <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                    </span>
+                                </div>
+                                <field name="chantier_id_destiation" class="form-control" options="{'no_create': True,'no_open': True}" domain ="[('type_chantier','in',('Chantier','Depot','Poste'))]" placeholder="Chantier Destination" nolabel="1"/>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <label for="vehicle_id_destiation" class=""/>
+                                    </span>
+                                </div>
+                                <field name="vehicle_id_destiation" class="form-control" options="{'no_create': True,'no_open': True}" placeholder="Code Engin Destination" nolabel="1"/>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <label for="emplacement_chantier_id_destiation" class=""/>
+                                    </span>
+                                </div>
+                                <field name="emplacement_chantier_id_destiation" class="form-control" options="{'no_create': True,'no_open': True}" placeholder="Equipe Destination" nolabel="1"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
         </field>
     </record>
 

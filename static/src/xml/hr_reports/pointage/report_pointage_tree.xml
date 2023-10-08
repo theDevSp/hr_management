@@ -3,16 +3,16 @@
     <t t-name="owl.hrPointageListView.Buttons" t-inherit="web.ListView.Buttons" owl="1">
         <xpath expr="//button[hasclass('o_list_button_add')]" position="after">
             <div class="dropdown">
-                <button t-if="nbSelected" class="custom ms-2 btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-print"></i>
+                <button t-if="nbSelected" class="ms-2 btn btn-outline-info" type="button" t-on-click="()=>this.test()">
+                    <i class="fa fa-print"></i> Imprimer
                 </button>
-                <ul class="dropdown-menu">
+                <!--<ul class="dropdown-menu">
                     <li>
                         <a t-on-click="()=>this.print(model.root.data)" class="dropdown-item">
                             Imprimer
                         </a>
                     </li>
-                </ul>
+                </ul>-->
             </div>
 
             <div id="iframemodal" class="modal" tabindex="-1" role="dialog">
@@ -32,7 +32,7 @@
         <xpath expr="//button[hasclass('o_list_button_add')]" position="after">
 
             <!-- Button trigger modal -->
-            <button t-if="!nbSelected" type="button" class="ms-2 btn btn-primary" t-on-click="()=>this.modalPrint(model.root.data)">
+            <button t-if="!nbSelected" type="button" class="ms-2 btn btn-outline-info" t-on-click="()=>this.modalPrint(model.root.data)">
                 <i class="fa fa-print"></i> Imprimer
             </button>
             
