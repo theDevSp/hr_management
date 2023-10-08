@@ -386,7 +386,7 @@
                                                                                     hr_management.group_cnss_juridique"/>
                                     <field name="chantier_id" context="{'short': True}" options="{'no_create': True,'no_open': True}"/>
                                     <field name="vehicle_id"  options="{'no_create': True,'no_open': True}" readonly="1" invisible="1"/>
-                                    <field name="vehicle_ids" widget="many2many_tags" optional="show"/>
+                                    <field name="vehicle_ids" widget="many2many_tags" optional="show" readonly="1"/>
                                     <button name="update_engin_list" type="object" icon="fa-plus-square" />
                                     <field name="emplacement_chantier_id"  options="{'no_create': True,'no_open': True}" string="Équipe"/>
                                     <field name="details" />

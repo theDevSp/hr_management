@@ -62,7 +62,7 @@
         'views/employee_pointage_mission_model/wizards/create_single_emplyee_repport.xml',
         'views/employee_pointage_mission_model/wizards/create_mass_repport.xml',
         'employee_holidays_model/validation_wizard/wizard_view.xml',
-        #'employee_holidays_model/mass_creation_holidays/wizard_view.xml',
+        'employee_holidays_model/mass_creation_holidays/wizard_view.xml',
 
         'reports/responsable_template.xml',
         'reports/employee_template.xml',

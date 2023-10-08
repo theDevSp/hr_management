@@ -244,6 +244,7 @@ class hr_rapport_pointage(models.Model):
     @api.model
     def create(self,vals):
 
+        res = True
         employee_id = self.env['hr.employee'].browse(vals['employee_id'])
         vals['name'] = self.env['ir.sequence'].next_by_code('hr.rapport.pointage.sequence')
         if not vals.get('chantier_id'):
@@ -252,12 +253,11 @@ class hr_rapport_pointage(models.Model):
         vals['vehicle_id'] = employee_id.vehicle_id.id if employee_id.vehicle_id else False
         
         if_exist = self.env['hr.rapport.pointage'].search_count([('period_id', '=', vals['period_id']),('employee_id', '=', vals['employee_id']),('quinzaine','=',vals['quinzaine'])])
+        if if_exist == 0:
+            res = super(hr_rapport_pointage,self).create(vals)
         
-        
-        res = super(hr_rapport_pointage,self).create(vals)
-        if not if_exist:
             
-            if res.chantier_id.periodicite == '1' and res.employee_id.type_emp == 'o':
+            if res.employee_id.type_emp == 'o':
                 if res.quinzaine == 'quinzaine1':
                     for line in self._prepare_rapport_pointage_lines(res.period_id,res.id,vals['employee_id'],res.emplacement_chantier_id.id):
                         if line['day'].date() <= self.get_half_month_day(res.period_id):
