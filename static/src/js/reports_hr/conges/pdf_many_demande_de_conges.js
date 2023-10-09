@@ -4,115 +4,216 @@ import { listView } from "@web/views/list/list_view";
 import { ListController } from "@web/views/list/list_controller";
 import { useService } from "@web/core/utils/hooks";
 
-import { content_many_demande_de_conges } from "./content_many_demande_de_conges"
 import { portrait_header } from "@reports_templates/js/headers";
+import { content_demande_de_conges } from "./content_demande_de_conges";
 
 class CongesListController extends ListController {
 
     setup() {
         super.setup();
         this.rpc = useService("rpc");
-        this.overlay = document.createElement("div");
-        this.spinner = document.createElement("div");
-        this.overlay.className = "overlay";
-        this.spinner.id = "spinner";
-        this.spinner.className = "spinner";
     }
 
     async printConges(url) {
+
+        var framework = require('web.framework');
+        framework.blockUI();
+
         try {
-            this.showOverlayAndSpinner();
 
             const congesIds = this.model.root.selection.map((rec) => rec.resId);
 
             if (congesIds.length === 0) {
-                console.error("Error in selection");
+                alert("Error in selection");
                 return;
             }
 
-            const data = await this.getData(congesIds);
-            const pdfDefinitions = await this.getPDFDefinitions(data);
 
-            const pdfDefinition = {
-                info: {
-                    title: `${this.model.root.selection.length} Demandes de Congés`,
-                    author: "BIOUI TRAVAUX",
-                    subject: "Demandes De Congés",
-                },
-                pageMargins: [12, 120, 12, 20],
-                header: portrait_header(),
-                pageSize: "A4",
-                pageOrientation: "portrait",
-                content: pdfDefinitions,
-                footer: (currentPage, pageCount) => ({
-                    text: `${currentPage.toString()} of ${pageCount}`,
-                    alignment: "center",
-                    fontSize: 7,
-                }),
-            };
+            const allData = [];
+            const contents = []
 
-            const pdfDocGenerator = pdfMake.createPdf(pdfDefinition);
-            const dataUrl = await pdfDocGenerator.getDataUrl();
-            const targetElement = document.querySelector("#iframeContainer");
-            targetElement.setAttribute("src", dataUrl);
-            this.showModal();
+            try {
+                const conges = await Promise.all(congesIds.map(async (id) => {
+                    const res = await this.rpc(`/hr_management/get_conges_details/${id}`);
+                    return res;
+                }));
+
+                allData.push(...conges);
+
+            } catch (error) {
+                return alert('Une erreur est survenue, veuillez réessayer !');
+            }
+
+            if (allData) {
+                allData.map((conge, index) => {
+                    contents.push(content_demande_de_conges(conge[0]));
+                    if (index !== allData.length - 1) {
+                        contents.push({ text: "", pageBreak: "after" });
+                    }
+                });
+            } else {
+                framework.blockUI();
+                return alert('Une erreur est survenue, veuillez réessayer !');
+            }
+
+            if (contents) {
+                const pdfDefinition = {
+                    compress: false,
+                    permissions: {
+                        printing: 'highResolution',
+                        modifying: false,
+                        copying: false,
+                        annotating: true,
+                        fillingForms: true,
+                        contentAccessibility: true,
+                        documentAssembly: true
+                    },
+                    info: {
+                        title: `Demandes des Congés de ${allData.length} employeurs.`,
+                        author: "BIOUI TRAVAUX",
+                        subject: `Demandes des Congés.`
+                    },
+                    pageMargins: [12, 120, 12, 180],
+                    header: portrait_header(),
+                    pageSize: "A4",
+                    pageOrientation: "portrait",
+                    content: contents,
+                    footer: function (currentPage, pageCount, pageSize) {
+
+                        return [
+                            {
+                                margin: [12, 0, 12, 0],
+                                layout: {
+                                    hLineColor: 'gray',
+                                    vLineColor: 'gray'
+                                },
+                                table: {
+                                    widths: ['*'],
+                                    body: [
+                                        [{
+                                            margin: [8, 8],
+                                            text: 'Signatures :',
+                                            bold: true,
+                                            fontSize: 11,
+                                            fillColor: '#04aa6d',
+                                            color: 'white',
+                                            border: [1, true, 0, true],
+                                            alignment: 'center'
+                                        }
+                                        ]
+                                    ]
+                                },
+
+                            },
+                            {
+                                margin: [12, 5, 12, 0],
+                                layout: {
+                                    hLineColor: 'gray',
+                                    vLineColor: 'gray'
+                                },
+                                table: {
+                                    widths: ['*', '*', '*', '*'],
+                                    heights: [10, 10],
+                                    headerRows: 1,
+                                    body: [
+                                        [{
+                                            text: 'Intéressé(e)',
+                                            bold: true,
+                                            fontSize: 10,
+                                            alignment: 'center',
+                                            fillColor: '#04aa6d',
+                                            color: 'white',
+                                            margin: [0, 5]
+                                        },
+                                        {
+                                            text: 'Pointeur',
+                                            fontSize: 9,
+                                            bold: true,
+                                            alignment: 'center',
+                                            fillColor: '#04aa6d',
+                                            color: 'white',
+                                            margin: [0, 5]
+                                        },
+                                        {
+                                            text: 'Chef de Projet',
+                                            fontSize: 9,
+                                            bold: true,
+                                            alignment: 'center',
+                                            fillColor: '#04aa6d',
+                                            color: 'white',
+                                            margin: [0, 5]
+                                        },
+                                        {
+                                            text: 'Directeur Technique',
+                                            fontSize: 9,
+                                            bold: true,
+                                            alignment: 'center',
+                                            fillColor: '#04aa6d',
+                                            color: 'white',
+                                            margin: [0, 5]
+                                        },
+                                        ],
+                                        [{
+                                            text: '',
+                                            fontSize: 9,
+                                            bold: true,
+                                            margin: [0, 40],
+                                            //padding: [0, 20]
+                                        },
+                                        {
+                                            text: '',
+                                            fontSize: 9,
+                                            bold: true
+                                        },
+                                        {
+                                            text: '',
+                                            fontSize: 9,
+                                            bold: true
+                                        },
+                                        {
+                                            text: '',
+                                            fontSize: 9,
+                                            bold: true
+                                        }
+                                        ]
+                                    ]
+                                }
+                            },
+                            {
+                                margin: [0, 5, 0, 0],
+                                columns: [{
+                                    text: `${currentPage}/${pageCount}`,
+                                    alignment: 'center',
+                                    fontSize: 7,
+                                    margin: [150, 0, 0, 0]
+                                }, {
+                                    text: `Imprimer le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`,
+                                    fontSize: 7,
+                                    alignment: 'right',
+                                    bold: true,
+                                    margin: [0, 0, 12, 0],
+                                    width: 130
+                                }]
+                            }
+
+                        ]
+
+                    }
+                };
+
+                pdfMake.createPdf(pdfDefinition).open();
+                framework.unblockUI();
+            }
+            else {
+                framework.blockUI();
+                return alert('Une erreur est survenue, veuillez réessayer !');
+            }
         } catch (error) {
             console.error("Error:", error);
+            alert('Une erreur est survenue, veuillez réessayer !');
         } finally {
-            this.hideOverlayAndSpinner();
+
         }
-    }
-
-    showOverlayAndSpinner() {
-        this.overlay.style.display = "block";
-        this.spinner.style.display = "block";
-        document.body.appendChild(this.overlay);
-        document.body.appendChild(this.spinner);
-    }
-
-    hideOverlayAndSpinner() {
-        this.overlay.style.display = "none";
-        this.spinner.style.display = "none";
-        document.body.removeChild(this.overlay);
-        document.body.removeChild(this.spinner);
-    }
-
-    showModal() {
-        const iframeModal = document.querySelector("#iframemodal");
-        if (iframeModal) {
-            iframeModal.style.display = "block";
-            const modalClose = document.querySelector("#modalClose");
-            if (modalClose) {
-                modalClose.addEventListener("click", () => {
-                    iframeModal.style.display = "none";
-                    const targetElement = document.querySelector("#iframeContainer");
-                    targetElement.removeAttribute("src");
-                });
-            }
-        }
-    }
-
-    async getData(ids) {
-        const data = await Promise.all(
-            ids.map(async (id) => {
-                const res = await this.rpc(`/hr_management/get_conges_details/${id}`);
-                return res ? res[0] : null;
-            })
-        );
-        return data.filter((item) => item !== null);
-    }
-
-    async getPDFDefinitions(data) {
-        const pageDefinitions = [];
-        for (let index = 0; index < data.length; index++) {
-            const conge = data[index];
-            const pdfContent = content_many_demande_de_conges(conge, index + 1, data.length);
-            pageDefinitions.push(pdfContent);
-            if (index !== data.length - 1) {
-                pageDefinitions.push({ text: "", pageBreak: "after" });
-            }
-        }
-        return pageDefinitions;
     }
 }
 

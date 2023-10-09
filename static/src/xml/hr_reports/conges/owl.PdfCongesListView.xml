@@ -3,16 +3,19 @@
     <t t-name="owl.PdfCongesListView.Buttons" t-inherit="web.ListView.Buttons" owl="1">
         <xpath expr="//button[hasclass('o_list_button_add')]" position="after">
             <div class="dropdown">
-                <button t-if="nbSelected" class="custom ms-2 btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <!--<button t-if="nbSelected" class="custom ms-2 btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa fa-print"></i>
+                </button>-->
+                <button t-if="nbSelected" class="ms-2 btn btn-outline-info" type="button" t-on-click="()=>this.printConges(model.root.data)">
+                    <i class="fa fa-print"></i> Imprimer
                 </button>
-                <ul class="dropdown-menu">
+                <!--<ul class="dropdown-menu">
                     <li>
                         <a t-on-click="()=>this.printConges(model.root.data)" class="dropdown-item">
                             Imprimer les Demandes de Congé
                         </a>
                     </li>
-                </ul>
+                </ul>-->
             </div>
 
             <div id="iframemodal" class="modal" tabindex="-1" role="dialog">
