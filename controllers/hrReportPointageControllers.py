@@ -117,7 +117,7 @@ class printReportPointageController(http.Controller):
                 dates_lines = []
 
                 for re_line in re.rapport_lines:
-                    code = "Null"
+                    code = ""
                     vehicle_ids_len = len(re_line.vehicle_ids)
 
                     if vehicle_ids_len > 1:
