@@ -327,23 +327,24 @@ class hr_rapport_pointage(models.Model):
         )
 
         result = {}
-        for hold in holidays:
-            remplacant = (' - Remplacer par : %s - %s')%(hold.remplacant_employee_id.cin,hold.remplacant_employee_id.name) if hold.remplacant_employee_id else ''
-            motif_holiday = dict(hold.fields_get(allfields=['motif'])['motif']['selection'])[hold.motif]
-            if hold.demi_jour:
-                result[hold.date_select_half_perso.strftime("%m%d%Y")] = {
-                    'day_type': '4',
-                    'details' : motif_holiday+remplacant,
-                    'chantier_id': hold.chantier_id.id ,
-                    'emplacement_chantier_id': self.emplacement_chantier_id.id
-                }
-            else:
-                for single_date in self.env['account.month.period'].daterange(hold.date_start,hold.date_end):
-                    result[single_date.strftime("%m%d%Y")] = {
+        if holidays:
+            for hold in holidays:
+                remplacant = (' - Remplacer par : %s - %s')%(hold.remplacant_employee_id.cin,hold.remplacant_employee_id.name) if hold.remplacant_employee_id else ''
+                motif_holiday = dict(hold.fields_get(allfields=['motif'])['motif']['selection'])[hold.motif]
+                if hold.demi_jour:
+                    result[hold.date_select_half_perso.strftime("%m%d%Y")] = {
                         'day_type': '4',
                         'details' : motif_holiday+remplacant,
-                        'chantier_id': hold.chantier_id.id 
+                        'chantier_id': hold.chantier_id.id ,
+                        'emplacement_chantier_id': self.emplacement_chantier_id.id
                     }
+                else:
+                    for single_date in self.env['account.month.period'].daterange(hold.date_start,hold.date_end):
+                        result[single_date.strftime("%m%d%Y")] = {
+                            'day_type': '4',
+                            'details' : motif_holiday+remplacant,
+                            'chantier_id': hold.chantier_id.id 
+                        }
             
         return result
     
@@ -359,13 +360,13 @@ class hr_rapport_pointage(models.Model):
                         ('date_end', '>=', period_id.date_start),
                         ('date_end', '<=', period_id.date_stop),],
         )
-
-        for jf in jour_feries:
-            for single_date in self.env['account.month.period'].daterange(jf.date_start,jf.date_end):
-                    result[single_date.strftime("%m%d%Y")] = {
-                        'day_type': '3',
-                        'details' : jf.name
-                    }
+        if jour_feries:
+            for jf in jour_feries:
+                for single_date in self.env['account.month.period'].daterange(jf.date_start,jf.date_end):
+                        result[single_date.strftime("%m%d%Y")] = {
+                            'day_type': '3',
+                            'details' : jf.name
+                        }
 
         return result    
     
