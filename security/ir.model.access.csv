@@ -207,7 +207,7 @@ hr_pointage_admin_paie,hr_pointage_admin,model_hr_rapport_pointage,group_admin_p
 hr_pointage_agent_paie,hr_pointage,model_hr_rapport_pointage,group_agent_paie,1,1,1,0
 hr_pointage_service_analytique,hr_pointage,model_hr_rapport_pointage,group_service_analytique,1,0,0,0
 hr_pointage_controle_gestion,hr_pointage,model_hr_rapport_pointage,group_controle_gestion,1,0,0,0
-hr_pointage_pointeur,hr_pointage,model_hr_rapport_pointage,group_pointeur,1,1,0,0
+hr_pointage_pointeur,hr_pointage,model_hr_rapport_pointage,group_pointeur,1,1,1,0
 hr_pointage_cnss_juridique,hr_pointage,model_hr_rapport_pointage,group_cnss_juridique,1,0,0,0
 
 hr_pointage_line_admin_paie,hr_pointage_line_admin,model_hr_rapport_pointage_line,group_admin_paie,1,1,1,1
