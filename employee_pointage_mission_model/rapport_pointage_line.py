@@ -229,9 +229,6 @@ class hr_rapport_pointage_line(models.Model):
 
 
         chantier_id_heure_normal = self.get_normal_heur(self.day,self.chantier_id) if self.chantier_id else 0
-
-        if not self.employee_id.contract_id.job_id and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
-            raise ValidationError("Erreur, Veuillez ajouter un titre du poste pour Mr/Mme %s" % (self.employee_id.name))
         
         condition1 = float(self.h_travailler) > max(chantier_id_heure_normal,9)
         condition2 = not self.details and pointeur
