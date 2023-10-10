@@ -11,16 +11,14 @@ class PointageFormController extends FormController {
   setup() {
     super.setup();
     this.rpc = useService("rpc");
-    this.overlay = document.createElement("div");
-    this.spinner = document.createElement("div");
-    this.overlay.className = "overlay";
-    this.spinner.id = "spinner";
-    this.spinner.className = "spinner";
   }
 
   async print(url) {
+
+    var framework = require('web.framework');
+    framework.blockUI();
+
     try {
-      this.showOverlayAndSpinner();
 
       const res = await this.rpc(`/hr_management/get_report_pointage_salarie_ouvrier/${this.model.root.data.id}`);
       const data = res[0];
@@ -51,24 +49,12 @@ class PointageFormController extends FormController {
       this.showModal();
 
     } catch (error) {
-      console.error("Error:", error);
+      console.log(error);
+      framework.unblockUI();
+      this.showNotification("Erreur d'impression ! Merci de réessayer !", "danger");
     } finally {
-      this.hideOverlayAndSpinner();
+      framework.unblockUI();
     }
-  }
-
-  showOverlayAndSpinner() {
-    this.overlay.style.display = "block";
-    this.spinner.style.display = "block";
-    document.body.appendChild(this.overlay);
-    document.body.appendChild(this.spinner);
-  }
-
-  hideOverlayAndSpinner() {
-    this.overlay.style.display = "none";
-    this.spinner.style.display = "none";
-    document.body.removeChild(this.overlay);
-    document.body.removeChild(this.spinner);
   }
 
   showModal() {

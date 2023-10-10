@@ -224,13 +224,6 @@ export function content_report_pointage_one_ouvrier(data, pageNumber, totalPages
                 margin: [0, 0.8]
             },
             {
-                text: obj.chantier,
-                alignment: 'center',
-                fillColor: back,
-                fontSize: 7,
-                margin: [0, 0.8]
-            },
-            {
                 text: obj.code,
                 alignment: 'center',
                 fillColor: back,
@@ -239,6 +232,13 @@ export function content_report_pointage_one_ouvrier(data, pageNumber, totalPages
             },
             {
                 text: obj.equipe,
+                alignment: 'center',
+                fillColor: back,
+                fontSize: 7,
+                margin: [0, 0.8]
+            },
+            {
+                text: obj.chantier.substring(0, 10) + "...",
                 alignment: 'center',
                 fillColor: back,
                 fontSize: 7,

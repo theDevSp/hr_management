@@ -718,10 +718,6 @@ const hideModal = (el) => {
     el.style.display = "none"
 }
 
-const test = (pdf) => {
-
-}
-
 export const PointageListView = {
     ...listView,
     Controller: PointageListController,
