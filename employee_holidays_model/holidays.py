@@ -138,13 +138,7 @@ class holidays(models.Model):
         
     @api.model
     def create(self, vals):
-        if vals["demi_jour"]:
-            vals["duree_heures"] = 4
-            vals["duree_jours"] = 0.5
-        if not vals["demi_jour"] and  not vals["heure_perso"] and vals["duree_jours"] > 0:
-            date_difference = self.get_duree(vals["date_start"],vals["date_end"])
-            vals["duree_jours"] = date_difference
-
+        
         if self.holidays_validation(vals["employee_id"],vals["date_start"],vals["date_end"]):
             raise ValidationError("Erreur congé pour %s. Vous ne pouvez pas avoir 2 demandes de congés qui se chevauchent dans la même journée."%(self.env['hr.employee'].browse(vals["employee_id"]).name))
         
