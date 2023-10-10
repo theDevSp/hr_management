@@ -30,8 +30,6 @@ class TransfertListController extends ListController {
         var framework = require('web.framework');
         framework.blockUI();
 
-        console.log(data)
-
         const allData = [];
         const contents = []
 
@@ -45,7 +43,6 @@ class TransfertListController extends ListController {
 
         } catch (error) {
             return alert('Une erreur est survenue, veuillez réessayer !');
-            framework.blockUI();
         }
 
         if (allData) {

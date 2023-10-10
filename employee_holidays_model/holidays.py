@@ -138,10 +138,10 @@ class holidays(models.Model):
         
     @api.model
     def create(self, vals):
-        if "demi_jour" in vals:
+        if vals["demi_jour"]:
             vals["duree_heures"] = 4
             vals["duree_jours"] = 0.5
-        if "demi_jour" not in vals and  "heure_perso" not in vals and vals["duree_jours"] > 0:
+        if not vals["demi_jour"] and  not vals["heure_perso"] and vals["duree_jours"] > 0:
             date_difference = self.get_duree(vals["date_start"],vals["date_end"])
             vals["duree_jours"] = date_difference
 

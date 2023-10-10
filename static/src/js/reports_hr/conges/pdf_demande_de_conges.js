@@ -11,59 +11,180 @@ class CongesFormController extends FormController {
   setup() {
     super.setup();
     this.rpc = useService("rpc");
-    this.overlay = document.createElement("div");
-    this.spinner = document.createElement("div");
-    this.overlay.className = "overlay";
-    this.spinner.id = "spinner";
-    this.spinner.className = "spinner";
   }
 
   async printConges(url) {
+
+    var framework = require('web.framework');
+    framework.blockUI();
+    
+
     try {
-      this.showOverlayAndSpinner();
 
       const res = await this.rpc(`/hr_management/get_conges_details/${url.id}`);
       const data = res[0];
 
-      const res_data = content_demande_de_conges(data)
+      const content = await content_demande_de_conges(data)
 
       const pdfDefinition = {
-        info: res_data.info,
-        pageMargins: [12, 120, 12, 345],
+        info: {
+          title: `Demande de Congés : ${data.Conges_Employe_Name}`,
+          author: "BIOUI TRAVAUX",
+          subject: `Demande De Congés`
+        },
+        pageMargins: [12, 120, 12, 180],
         header: portrait_header(),
         pageSize: "A4",
         pageOrientation: "portrait",
-        content: res_data.content,
-        footer: res_data.footer
+        compress: false,
+        permissions: {
+          printing: 'highResolution',
+          modifying: false,
+          copying: false,
+          annotating: false,
+          fillingForms: true,
+          contentAccessibility: true,
+          documentAssembly: true
+        },
+        content: content,
+        footer: function (currentPage, pageCount, pageSize) {
+
+          return [
+            {
+              margin: [12, 0, 12, 0],
+              layout: {
+                hLineColor: 'gray',
+                vLineColor: 'gray'
+              },
+              table: {
+                widths: ['*'],
+                body: [
+                  [{
+                    margin: [8, 8],
+                    text: 'Signatures :',
+                    bold: true,
+                    fontSize: 11,
+                    fillColor: '#04aa6d',
+                    color: 'white',
+                    border: [1, true, 0, true],
+                    alignment: 'center'
+                  }
+                  ]
+                ]
+              },
+
+            },
+            {
+              margin: [12, 5, 12, 0],
+              layout: {
+                hLineColor: 'gray',
+                vLineColor: 'gray'
+              },
+              table: {
+                widths: ['*', '*', '*', '*'],
+                heights: [10, 10],
+                headerRows: 1,
+                body: [
+                  [{
+                    text: 'Intéressé(e)',
+                    bold: true,
+                    fontSize: 10,
+                    alignment: 'center',
+                    fillColor: '#04aa6d',
+                    color: 'white',
+                    margin: [0, 5]
+                  },
+                  {
+                    text: 'Pointeur',
+                    fontSize: 9,
+                    bold: true,
+                    alignment: 'center',
+                    fillColor: '#04aa6d',
+                    color: 'white',
+                    margin: [0, 5]
+                  },
+                  {
+                    text: 'Chef de Projet',
+                    fontSize: 9,
+                    bold: true,
+                    alignment: 'center',
+                    fillColor: '#04aa6d',
+                    color: 'white',
+                    margin: [0, 5]
+                  },
+                  {
+                    text: 'Directeur Technique',
+                    fontSize: 9,
+                    bold: true,
+                    alignment: 'center',
+                    fillColor: '#04aa6d',
+                    color: 'white',
+                    margin: [0, 5]
+                  },
+                  ],
+                  [{
+                    text: '',
+                    fontSize: 9,
+                    bold: true,
+                    margin: [0, 40],
+                    //padding: [0, 20]
+                  },
+                  {
+                    text: '',
+                    fontSize: 9,
+                    bold: true
+                  },
+                  {
+                    text: '',
+                    fontSize: 9,
+                    bold: true
+                  },
+                  {
+                    text: '',
+                    fontSize: 9,
+                    bold: true
+                  }
+                  ]
+                ]
+              }
+            },
+            {
+              margin: [0, 5, 0, 0],
+              columns: [{
+                text: `${currentPage}/${pageCount}`,
+                alignment: 'center',
+                fontSize: 7,
+                margin: [150, 0, 0, 0]
+              }, {
+                text: `Imprimer le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`,
+                fontSize: 7,
+                alignment: 'right',
+                bold: true,
+                margin: [0, 0, 12, 0],
+                width: 130
+              }]
+            }
+
+          ]
+
+        }
       };
 
       const pdfDocGenerator = pdfMake.createPdf(pdfDefinition);
       const dataUrl = await pdfDocGenerator.getDataUrl();
       const targetElement = document.querySelector("#iframeContainer");
       targetElement.setAttribute("src", dataUrl);
-      this.showModal();
+      await this.showModal();
     } catch (error) {
       console.error("Error:", error);
+      alert("Une erreur s'est produite. Veuillez réessayer.");
+      framework.unblockUI();
     } finally {
-      this.hideOverlayAndSpinner();
+      framework.unblockUI();
     }
   }
 
-  showOverlayAndSpinner() {
-    this.overlay.style.display = "block";
-    this.spinner.style.display = "block";
-    document.body.appendChild(this.overlay);
-    document.body.appendChild(this.spinner);
-  }
-
-  hideOverlayAndSpinner() {
-    this.overlay.style.display = "none";
-    this.spinner.style.display = "none";
-    document.body.removeChild(this.overlay);
-    document.body.removeChild(this.spinner);
-  }
-
-  showModal() {
+  async showModal() {
     const iframeModal = document.querySelector("#iframemodal");
     if (iframeModal) {
       iframeModal.style.display = "block";
