@@ -119,7 +119,7 @@ class hr_employee_transfert(models.Model):
 
     def update_corresponding_lines(self,day_type,type_condition):
         date_start = self.env['account.month.period'].get_period_from_date(self.date_transfert).date_start
-        lines = self.env['hr.rapport.pointage.line'].search([
+        lines = self.env['hr.rapport.pointage.line'].sudo().search([
                 ('employee_id','=',self.employee_id.id),
                 ('day','>=',date_start),
                 ('day','<=',self.date_transfert),
@@ -132,7 +132,7 @@ class hr_employee_transfert(models.Model):
                 'details' : 'Transfert vers %s'%self.chantier_id_destiation.simplified_name if type_condition == '1' else False,
                 'chantier_id': self.chantier_id_destiation.id if type_condition == '1' else False
             })
-            lines[len(lines) - 1].rapport_id.write({
+            lines[len(lines) - 1].rapport_id.sudo().write({
                 'chantier_id': self.chantier_id_destiation.id if type_condition == '1' else self.chantier_id_source
             })
             new_state = 'working' if type_condition == '1' else 'draft'

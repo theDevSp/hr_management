@@ -137,6 +137,7 @@ class hr_employee_add_transit(models.TransientModel):
                 'view_type': 'form',
                 'view_mode': 'tree,form',
                 'res_model': 'hr.employee',
+                'domain':[('id','=',res.id)],
                 'views': [(view.id, 'tree'),(form.id,'form')],
                 'target': 'current'
             }
