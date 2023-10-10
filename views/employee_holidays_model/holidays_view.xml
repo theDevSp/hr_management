@@ -103,13 +103,13 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" ><label for="demi_jour" class=""/></span>
                                                     </div>
-                                                    <field name="demi_jour" widget="boolean_toggle" class="form-control" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    <field name="demi_jour" force_save="1" widget="boolean_toggle" class="form-control" attrs="{'readonly':[('state','!=','draft')]}"/>
                                                 </div>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" ><label for="heure_perso" class=""/></span>
                                                     </div>
-                                                    <field name="heure_perso" widget="boolean_toggle" class="form-control" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                    <field name="heure_perso" force_save="1" widget="boolean_toggle" class="form-control" attrs="{'readonly':[('state','!=','draft')]}"/>
                                                 </div>
                                             </div>
                                             <div class="col-md-8">
@@ -141,7 +141,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><label for="duree_jours" class=""/></span>
                                                             </div>
-                                                            <field name="duree_jours" class="form-control text-center" nolabel="1"/>
+                                                            <field name="duree_jours" force_save="1" class="form-control text-center" nolabel="1"/>
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">Jour(s)</div></span>
                                                             </div>
@@ -154,7 +154,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><label for="date_start" class=""/></span>
                                                             </div>
-                                                            <field name="date_select_half_perso" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                            <field name="date_select_half_perso" force_save="1" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-md-6">
@@ -170,7 +170,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><label for="duree_heures" class=""/></span>
                                                             </div>
-                                                            <field name="duree_heures" class="form-control text-center" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                            <field name="duree_heures" class="form-control text-center" force_save="1" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">Heure(s)</div></span>
                                                             </div>
@@ -183,7 +183,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><label for="date_start" class=""/></span>
                                                             </div>
-                                                            <field name="date_select_half_perso" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                            <field name="date_select_half_perso" force_save="1" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-md-6">
