@@ -141,7 +141,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><label for="duree_jours" class=""/></span>
                                                             </div>
-                                                            <field name="duree_jours" class="form-control text-center" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                            <field name="duree_jours" class="form-control text-center" nolabel="1"/>
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">Jour(s)</div></span>
                                                             </div>

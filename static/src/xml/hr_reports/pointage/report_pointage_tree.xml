@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="owl.hrPointageListView.Buttons" t-inherit="web.ListView.Buttons" owl="1">
-        <xpath expr="//button[hasclass('o_list_button_add')]" position="after">
+        <xpath expr="//div[hasclass('o_list_buttons')]" position="before">
             <div class="dropdown">
                 <button t-if="nbSelected" class="ms-2 btn btn-outline-info" type="button" t-on-click="()=>this.test()">
                     <i class="fa fa-print"></i> Imprimer

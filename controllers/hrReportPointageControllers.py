@@ -172,8 +172,8 @@ class printReportPointageController(http.Controller):
         period_id = int(period_id)
         chantier_id = int(chantier_id)
 
-        domains = [('period_id', '=', period_id),  # period 129
-                   ('chantier_id', '=', chantier_id)]  # chantier_id 483
+        domains = [('period_id', '=', 129),  # period 129
+                   ('chantier_id', '=', 483)]  # chantier_id 483
 
         if quinz:
             domains.append(('quinzaine', '=', quinz))
@@ -187,8 +187,8 @@ class printReportPointageController(http.Controller):
 
         res = http.request.env['hr.rapport.pointage'].search(domains)
 
-        chantier = http.request.env['fleet.vehicle.chantier'].browse(chantier_id) #chantier_id
-        period = http.request.env['account.month.period'].browse(period_id) #period_id
+        chantier = http.request.env['fleet.vehicle.chantier'].browse(483) #chantier_id
+        period = http.request.env['account.month.period'].browse(129) #period_id
 
         if res:
             res = sorted(res, key=lambda re: re.emplacement_chantier_id.name)

@@ -138,7 +138,7 @@ class PointageListController extends ListController {
 
     }
 
-    test(){
+    test() {
         console.log("modal print")
     }
 
@@ -323,9 +323,15 @@ class PointageListController extends ListController {
                                 }
                             };
 
-                            framework.unblockUI();
                             const pdf = await pdfMake.createPdf(pdfDefinition);
-                            return pdf.open();
+                            const blob = await pdf.getBlob();
+                            const url = URL.createObjectURL(blob);
+
+                            const viewer = window.open(url, '_blank');
+                            viewer.onload = () => {
+                                framework.unblockUI();
+                                URL.revokeObjectURL(url);
+                            };
                         } catch (error) {
                             console.log(error);
                             framework.unblockUI();
@@ -364,14 +370,14 @@ class PointageListController extends ListController {
                             const res = await data.json();
                             const pdfContent = [];
 
-                            await Promise.all(res.map(async (emp, index) => {
-                                const content = await content_report_pointage_ouvrier(emp, data.chantier, data.quinzine, data.periode, data.nbrj_mois);
-                                pdfContent.push(content);
-
-                                if (index !== res.length - 1) {
-                                    pdfContent.push({ text: "", pageBreak: "after" });
-                                }
-                            }));
+                            res.lines.forEach((emp, index) => {
+                                content_report_pointage_ouvrier(emp, res.chantier, res.quinzine, res.periode, res.nbrj_mois).then(content => {
+                                    pdfContent.push(content);
+                                    if (index !== res.lines.length - 1) {
+                                        pdfContent.push({ text: "", pageBreak: "after" });
+                                    }
+                                });
+                            });
 
                             const pdfDefinition = {
                                 compress: false,
@@ -486,9 +492,32 @@ class PointageListController extends ListController {
                                 }
                             };
 
-                            framework.unblockUI();
                             const pdf = await pdfMake.createPdf(pdfDefinition);
-                            return pdf.open()
+                            const blob = await pdf.getBlob();
+                            const url = URL.createObjectURL(blob);
+
+                            const viewer = window.open(url, '_blank');
+                            viewer.onload = () => {
+                                framework.unblockUI();
+                                URL.revokeObjectURL(url);
+                            };
+
+                            /*pdf.getBlob((blob) => {
+
+                                console.log(blob)
+                                const url = URL.createObjectURL(blob);
+                                const viewer = window.open(url, '_blank');
+                                viewer.onload = () => {
+                                    URL.revokeObjectURL(url);
+                                };
+                                framework.unblockUI();
+                            });*/
+
+                            /*framework.unblockUI();
+                            const pdf = await pdfMake.createPdf(pdfDefinition);
+                            return pdf.open()*/
+
+
                         } catch (error) {
                             console.log(error);
                             framework.unblockUI();
@@ -687,6 +716,10 @@ const showModal = (el) => {
 
 const hideModal = (el) => {
     el.style.display = "none"
+}
+
+const test = (pdf) => {
+
 }
 
 export const PointageListView = {
