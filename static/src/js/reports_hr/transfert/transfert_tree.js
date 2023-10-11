@@ -91,64 +91,6 @@ class TransfertListController extends ListController {
                                 vLineColor: 'gray'
                             },
                             table: {
-                                widths: ['*', '*', '*', '*'],
-                                headerRows: 1,
-                                body: [
-                                    [{
-                                        text: 'Pointeur du Chantier de Départ',
-                                        bold: true,
-                                        fontSize: 11,
-                                        alignment: 'center',
-                                        fillColor: '#04aa6d',
-                                        color: 'white',
-                                        margin: [0, 5],
-                                        colSpan: 2,
-                                    }, {
-                                        text: ''
-
-                                    }, {
-                                        text: 'Pointeur du Chantier de Destination',
-                                        fontSize: 11,
-                                        bold: true,
-                                        alignment: 'center',
-                                        fillColor: '#04aa6d',
-                                        color: 'white',
-                                        margin: [0, 5],
-                                        colSpan: 2,
-                                    }, {
-                                        text: '',
-
-                                    },],
-                                    [{
-                                        text: '',
-                                        fontSize: 9,
-                                        bold: true,
-                                        margin: [0, 35],
-                                        colSpan: 2,
-                                    }, {
-                                        text: '',
-                                        fontSize: 9,
-                                        bold: true
-                                    }, {
-                                        text: '',
-                                        fontSize: 9,
-                                        bold: true,
-                                        colSpan: 2,
-                                    }, {
-                                        text: '',
-                                        fontSize: 9,
-                                        bold: true
-                                    }]
-                                ]
-                            }
-                        },
-                        {
-                            margin: [12, 5, 12, 0],
-                            layout: {
-                                hLineColor: 'gray',
-                                vLineColor: 'gray'
-                            },
-                            table: {
                                 widths: ['*', '*', '*'],
                                 headerRows: 1,
                                 body: [
@@ -160,36 +102,70 @@ class TransfertListController extends ListController {
                                         fillColor: '#04aa6d',
                                         color: 'white',
                                         margin: [0, 5]
-                                    }, {
-                                        text: 'Chef de Projet',
+                                    },
+                                    {
+                                        text: 'Pointeur Chantier de Départ',
+                                        bold: true,
+                                        fontSize: 11,
+                                        alignment: 'center',
+                                        fillColor: '#04aa6d',
+                                        color: 'white',
+                                        margin: [0, 5]
+
+                                    },
+                                    {
+                                        text: 'Pointeur Chantier de Destination',
                                         fontSize: 11,
                                         bold: true,
                                         alignment: 'center',
                                         fillColor: '#04aa6d',
                                         color: 'white',
-                                        margin: [0, 5]
-                                    }, {
-                                        text: 'Directeur Technique',
-                                        fontSize: 11,
-                                        bold: true,
-                                        alignment: 'center',
-                                        fillColor: '#04aa6d',
-                                        color: 'white',
-                                        margin: [0, 5]
-                                    }],
+                                        margin: [0, 5],
+                                    }
+                                    ],
                                     [{
                                         text: '',
                                         fontSize: 9,
                                         bold: true,
                                         margin: [0, 35],
-                                    }, {
+                                    },
+                                    {
                                         text: '',
                                         fontSize: 9,
                                         bold: true
-                                    }, {
+                                    },
+                                    {
                                         text: '',
                                         fontSize: 9,
-                                        bold: true
+                                        bold: true,
+                                    }
+                                    ]
+                                ]
+                            }
+                        },
+                        {
+                            margin: [125, 5, 12, 0],
+                            layout: {
+                                hLineColor: 'gray',
+                                vLineColor: 'gray'
+                            },
+                            alignment: 'center',
+                            table: {
+                                widths: [350],
+                                headerRows: 1,
+                                body: [
+                                    [{
+                                        text: 'Visa Responsable du Site',
+                                        bold: true,
+                                        fontSize: 11,
+                                        alignment: 'center',
+                                        fillColor: '#04aa6d',
+                                        color: 'white',
+                                        margin: [0, 5],
+                                    }],
+                                    [{
+                                        text: '',
+                                        margin: [0, 35],
                                     }]
                                 ]
                             }
