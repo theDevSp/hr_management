@@ -227,7 +227,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
         last_period_qu2_delimite = datetime.strptime(str(last_period_year)+'-'+str(last_period_month)+'-'+str(calendar.monthrange(last_period_year, last_period_month)[1]), "%Y-%m-%d")
 
         #---------- get liste of excluded employees --------------------
-        exclud_list,result = [],[]
+        exclud_list,result,foreign_list = [],[],[]
         #---------- quainzaine 1 ---------------------------------------
 
         if self.quinzaine == 'quinzaine1' and self.previlege_validation():
@@ -304,6 +304,17 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                                 fields=['employee_id'],
                                 groupby=['employee_id'],
                             )] 
+            """
+            foreign_list = [ln['id'] for ln in self.env['hr.employee'].search_read(
+                                domain=[
+                                    ('id', 'in', res),
+                                    ('chantier_id', '!=', self.chantier_id.id),
+                                    ('type_emp', '=', self.employee_type),
+                                ],
+                                fields=['id']
+                            )] 
+            print(foreign_list)
+            """
             result = filter(lambda ln: ln not in exclud_list, res)
         
         else:
@@ -312,7 +323,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
         if result:
         
             for employee_id in result:
-                self.env['hr.rapport.pointage'].create({
+                self.env['hr.rapport.pointage'].sudo().create({
                     'employee_id':employee_id,
                     'period_id':self.period_id.id,
                     'chantier_id':self.chantier_id.id,
@@ -339,21 +350,21 @@ class hr_filtre_pointage_wizard(models.TransientModel):
         
 
         if self.employee_id.type_emp == 'o' and self.quinzaine == 'quinzaine1':
-            self.env['hr.rapport.pointage'].create({
+            self.env['hr.rapport.pointage'].sudo().create({
                 'employee_id':self.employee_id.id,
                 'period_id':self.period_id.id,
                 'chantier_id':self.chantier_id.id,
                 'quinzaine':'quinzaine1'
                 })
         elif self.employee_id.type_emp == 'o' and self.quinzaine == 'quinzaine2':
-            self.env['hr.rapport.pointage'].create({
+            self.env['hr.rapport.pointage'].sudo().create({
                 'employee_id':self.employee_id.id,
                 'period_id':self.period_id.id,
                 'chantier_id':self.chantier_id.id,
                 'quinzaine':'quinzaine2'
                 })
         else:
-            self.env['hr.rapport.pointage'].create({
+            self.env['hr.rapport.pointage'].sudo().create({
                 'employee_id':self.employee_id.id,
                 'period_id':self.period_id.id,
                 'chantier_id':self.chantier_id.id,

@@ -40,7 +40,6 @@
                     <button name="action_done" states="valide" string="Clôturer" type="object" class="oe_highlight" groups="hr_management.group_controle_gestion,hr_management.group_admin_paie"/>
                     <button name="action_cancel" states="draft,valide,done" string="Annuler" type="object" class="oe_highlight" groups="hr_management.group_admin_paie"/>
                     <button name="create_payslip" string="Payement" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
-                    <button name="group_worked_time" type="object" string="test"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,working,compute,valide,done"/>
                 </header>
                 <div class="container-fliud p-3 my-3 ">
@@ -386,7 +385,7 @@
                                                                                     hr_management.group_cnss_juridique"/>
                                     <field name="chantier_id" context="{'short': True}" options="{'no_create': True,'no_open': True}"/>
                                     <field name="vehicle_id"  options="{'no_create': True,'no_open': True}" readonly="1" invisible="1"/>
-                                    <field name="vehicle_ids" widget="many2many_tags" optional="show"/>
+                                    <field name="vehicle_ids" widget="many2many_tags" optional="show" readonly="1"/>
                                     <button name="update_engin_list" type="object" icon="fa-plus-square" />
                                     <field name="emplacement_chantier_id"  options="{'no_create': True,'no_open': True}" string="Équipe"/>
                                     <field name="details" />

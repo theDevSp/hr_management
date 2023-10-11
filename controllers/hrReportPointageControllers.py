@@ -95,8 +95,8 @@ class printReportPointageController(http.Controller):
         period_id = int(period_id)
         chantier_id = int(chantier_id)
 
-        domains = [('period_id', '=', 129),  # period 129
-                   ('chantier_id', '=', 483)]  # chantier_id 483
+        domains = [('period_id', '=', period_id),  # period 129
+                   ('chantier_id', '=', chantier_id)]  # chantier_id 483
 
         if quinz:
             domains.append(('quinzaine', '=', quinz))
@@ -117,7 +117,7 @@ class printReportPointageController(http.Controller):
                 dates_lines = []
 
                 for re_line in re.rapport_lines:
-                    code = "Null"
+                    code = ""
                     vehicle_ids_len = len(re_line.vehicle_ids)
 
                     if vehicle_ids_len > 1:
@@ -126,25 +126,25 @@ class printReportPointageController(http.Controller):
                         code = re_line.vehicle_ids[-1].name.code
 
                     dates_lines.append({
-                        'jour': re_line.name or "Null",
-                        'th': re_line.h_travailler or "Null",
-                        'chantier': re_line.chantier_id.simplified_name or "Null",
-                        'equipe': re_line.emplacement_chantier_id.abrv or "Null",
-                        'observation': re_line.details or "Null",
+                        'jour': re_line.name or "",
+                        'th': re_line.h_travailler or "",
+                        'chantier': re_line.chantier_id.simplified_name or "",
+                        'equipe': re_line.emplacement_chantier_id.abrv or "",
+                        'observation': re_line.details or "",
                         'code': str(code),
                         # diff
                     })
 
                 data_entry = {
-                    'employe_month': re.period_id.display_name or "Null",
-                    'employe_name': re.employee_id.name or "Null",
-                    'employe_cin': re.cin or "Null",
-                    'employe_fonction': re.job_id.name or "Null",
-                    'employe_chantier': re.chantier_id.name or "Null",
-                    'employe_equipe': re.emplacement_chantier_id.name or "Null",
-                    'employe_engin': re.vehicle_id.code or "Null",
-                    'employe_totalheure': re.total_h or "Null",
-                    'employe_type': re.type_emp or "Null",
+                    'employe_month': re.period_id.display_name or "",
+                    'employe_name': re.employee_id.name or "",
+                    'employe_cin': re.cin or "",
+                    'employe_fonction': re.job_id.name or "",
+                    'employe_chantier': re.chantier_id.name or "",
+                    'employe_equipe': re.emplacement_chantier_id.name or "",
+                    'employe_engin': re.vehicle_id.code or "",
+                    'employe_totalheure': re.total_h or "",
+                    'employe_type': re.type_emp or "",
                     'employe_dates': {
                         'quinzeine': re.quinzaine,
                         'dates_lines': dates_lines,
@@ -172,8 +172,8 @@ class printReportPointageController(http.Controller):
         period_id = int(period_id)
         chantier_id = int(chantier_id)
 
-        domains = [('period_id', '=', 129),  # period 129
-                   ('chantier_id', '=', 483)]  # chantier_id 483
+        domains = [('period_id', '=', period_id),  # period 129
+                   ('chantier_id', '=', chantier_id)]  # chantier_id 483
 
         if quinz:
             domains.append(('quinzaine', '=', quinz))
@@ -187,8 +187,8 @@ class printReportPointageController(http.Controller):
 
         res = http.request.env['hr.rapport.pointage'].search(domains)
 
-        chantier = http.request.env['fleet.vehicle.chantier'].browse(483) #chantier_id
-        period = http.request.env['account.month.period'].browse(129) #period_id
+        chantier = http.request.env['fleet.vehicle.chantier'].browse(chantier_id) #chantier_id
+        period = http.request.env['account.month.period'].browse(period_id) #period_id
 
         if res:
             res = sorted(res, key=lambda re: re.emplacement_chantier_id.name)
@@ -236,83 +236,4 @@ class printReportPointageController(http.Controller):
         else:
             return http.request.make_json_response(data={'message': 'No data found'}, status=204)
 
-        post = json.loads(request.httprequest.data.decode('utf-8'))
-
-        chantier_id = post.get("chantier")
-        period_id = post.get("date")
-        quinz = post.get("quinzine")
-        equipe_id = post.get("equipe")
-        type_employe = post.get("typeemp")
-
-        period_id = int(period_id)
-        chantier_id = int(chantier_id)
-
-        domains = [('period_id', '=', 129),  # period 129
-                   ('chantier_id', '=', 483)]  # chantier_id 483
-
-        if quinz:
-            domains.append(('quinzaine', '=', quinz))
-
-        if equipe_id:
-            equipe_id = int(equipe_id)
-            domains.append(('emplacement_chantier_id', '=', equipe_id))
-
-        if type_employe:
-            domains.append(('type_emp', '=', type_employe))
-
-        res = http.request.env['hr.rapport.pointage'].search(domains)
-
-        chantier = http.request.env['fleet.vehicle.chantier'].browse(
-            chantier_id)
-        period = http.request.env['account.month.period'].browse(period_id)
-
-        if res:
-            finalDataList = []
-
-            # Group data by equipe_id
-            grouped_data = {}
-            for re in res:
-                equipe_name = re.emplacement_chantier_id.name
-                if equipe_name not in grouped_data:
-                    grouped_data[equipe_name] = []
-
-            print(grouped_data.items())
-
-            for equipe_id, equipe_data in grouped_data.items():
-                equipe_final_data = {
-                    "chantier": chantier.name,
-                    "periode": period.code,
-                    "equipe": equipe_data[0].employee_id.job_id.name,
-                    "quinz": 'Première Quinzaine' if quinz == 'quinzaine1' else 'Deuxième Quinzaine',
-                    "data": []
-                }
-
-                for re in equipe_data:
-                    dates_lines = []
-
-                    for re_line in re.rapport_lines:
-                        dates_lines.append({
-                            'jour': re_line.name or "Null",
-                            'th': re_line.h_travailler or "Null",
-                            'observation': re_line.details or "Null"
-                        })
-
-                    data_entry = {
-                        'employe_name': re.employee_id.name or "Null",
-                        'employe_cin': re.cin or "Null",
-                        'employe_fonction': re.job_id.name or "Null",
-                        'employe_totalheure': re.total_h or "Null",
-                        'employe_type': re.type_emp or "Null",
-                        'employe_dates': {
-                            'dates_lines': dates_lines
-                        }
-                    }
-
-                    equipe_final_data["data"].append(data_entry)
-
-                finalDataList.append(equipe_final_data)
-
-            return http.request.make_json_response(data=finalDataList, status=200)
-        else:
-            return http.request.make_json_response(data={'message': 'No data found'}, status=204)
 
