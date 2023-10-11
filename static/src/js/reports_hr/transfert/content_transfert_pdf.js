@@ -86,14 +86,14 @@ export function transfert_pdf_content(data) {
                             }
                         ],
                         [{
-                                text: 'N° CNSS :',
+                                text: 'Fonction :',
                                 fontSize: 9,
                                 border: [1, 0, 0, 1],
                                 margin: [15, 6, 0, 8],
                                 alignment: 'right',
                             },
                             {
-                                text: data.transfert_employe_cnss,
+                                text: data.transfert_employe_fonction,
                                 fontSize: 9,
                                 border: [0, 0, 1, 1],
                                 margin: [0, 6, 0, 8],
