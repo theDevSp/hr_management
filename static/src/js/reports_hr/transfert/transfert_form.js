@@ -1,4 +1,5 @@
 /** @odoo-module */
+
 import { registry } from "@web/core/registry";
 import { formView } from "@web/views/form/form_view";
 import { FormController } from "@web/views/form/form_controller";
@@ -15,6 +16,8 @@ class TransfertFormController extends FormController {
         this.rpc = useService("rpc");
         this.modal = useRef("iframemodal")
         this.modalIframe = useRef("iframeContainer")
+
+        console.warn("this is a transfert component Form")
     }
 
     async print(data) {
@@ -210,9 +213,7 @@ const hideModal = (el) => {
     el.style.display = "none"
 }
 
-
-
-TransfertFormController.template = "owl.StcTransfertView";
+TransfertFormController.template = "owl.FormTransfertView";
 
 export const TransfertFormView = {
     ...formView,

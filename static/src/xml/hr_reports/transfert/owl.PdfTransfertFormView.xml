@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="owl.StcTransfertView" t-inherit="web.FormView" owl="1">
-        <xpath expr="//button[hasclass('o_form_button_create')]" position="after">
+    <t t-name="owl.FormTransfertView" t-inherit="web.FormView" owl="1">
+        <xpath expr="//button[hasclass('o_form_button_create')]" position="before">
+            
             <div class="dropdown">
                 <button class="print-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa fa-print" style="color: #ffffff;"></i>

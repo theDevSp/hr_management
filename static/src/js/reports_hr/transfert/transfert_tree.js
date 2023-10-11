@@ -23,6 +23,8 @@ class TransfertListController extends ListController {
         this.modal = useRef("modalPrint")
         this.modalClose = useRef("modalClose")
 
+        console.warn("this is a transfert component")
+
     }
 
     async printTransferts(data) {
@@ -214,8 +216,15 @@ class TransfertListController extends ListController {
                 }
             };
 
-            pdfMake.createPdf(pdfDefinition).open();
-            framework.unblockUI();
+            const pdf = await pdfMake.createPdf(pdfDefinition);
+            const blob = await pdf.getBlob();
+            const url = URL.createObjectURL(blob);
+
+            const viewer = window.open(url, '_blank');
+            viewer.onload = () => {
+                framework.unblockUI();
+                URL.revokeObjectURL(url);
+            };
         }
         else {
             framework.blockUI();
