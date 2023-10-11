@@ -339,12 +339,13 @@ class hr_rapport_pointage(models.Model):
                         'emplacement_chantier_id': self.emplacement_chantier_id.id
                     }
                 else:
-                    for single_date in self.env['account.month.period'].daterange(hold.date_start,hold.date_end):
-                        result[single_date.strftime("%m%d%Y")] = {
-                            'day_type': '4',
-                            'details' : motif_holiday+remplacant,
-                            'chantier_id': hold.chantier_id.id 
-                        }
+                    if (hold.date_start and hold.date_end) or (hold.date_start and hold.demi_jour):
+                        for single_date in self.env['account.month.period'].daterange(hold.date_start,hold.date_end if not hold.demi_jour else hold.date_start):
+                            result[single_date.strftime("%m%d%Y")] = {
+                                'day_type': '4',
+                                'details' : motif_holiday+remplacant,
+                                'chantier_id': hold.chantier_id.id 
+                            }
             
         return result
     
