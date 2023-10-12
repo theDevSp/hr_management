@@ -21,7 +21,9 @@ class hrCongesControllers(http.Controller):
                 'Conges_Motif': res.motif,
                 'Conges_Date_Start': res.date_start,
                 'Conges_Date_End': res.date_end,
-                'Conges_Nbr_Jours': res.duree_jours
+                'Conges_Nbr_Jours': res.duree_jours,
+                'Conges_Demijour': res.demi_jour,
+                'Conges_Demijour_Date_Start': res.date_select_half_perso
             })
 
             return data

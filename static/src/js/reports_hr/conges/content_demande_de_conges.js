@@ -2,6 +2,135 @@
 
 export function content_demande_de_conges(data) {
 
+    let table;
+
+    if (data.Conges_Demijour !== false && data.Conges_Demijour_Date_Start !== false){
+        table = {
+            margin: [ 0, 8, 0, 0],
+            layout: {
+                hLineColor: 'gray',
+                vLineColor: 'gray'
+            },
+            table: {
+                widths: ['*', '*', '*'],
+                body: [
+                    [{
+                            text: '',
+                            margin: [8, 5],
+                            bold: true,
+                            fontSize: 10,
+                            fillColor: '#04aa6d',
+                            color: 'white',
+                            alignment:'center'
+                        },
+                        {
+                            text: 'DATE DÉBUT :',
+                            fontSize: 10,
+                            bold: true,
+                            alignment: 'center',
+                            fillColor: '#04aa6d',
+                            color: 'white',
+                            margin: [8, 5],
+                        },
+                        {
+                            text: 'NBR JOURS :',
+                            fontSize: 10,
+                            bold: true,
+                            alignment: 'center',
+                            fillColor: '#04aa6d',
+                            color: 'white',
+                            margin: [8, 5],
+                        }
+                    ],
+                    [
+                        {
+                            text: 'Autorisation Demi-journée',
+                            margin: [5, 10],
+                            fontSize: 13,
+                            alignment: 'center',
+                        },
+                        {
+                            text: data.Conges_Demijour_Date_Start,
+                            fontSize: 14,
+                            margin: [5, 10],
+                            alignment: 'center'
+                        },
+                        {
+                            text: data.Conges_Nbr_Jours,
+                            fontSize: 14,
+                            alignment: 'center',
+                            margin: [5, 10],
+                        }
+                    ]
+                ]
+            },
+            
+        }
+    }
+    else {
+        table = {
+            margin: [0, 8, 0, 0],
+            layout: {
+                hLineColor: 'gray',
+                vLineColor: 'gray'
+            },
+            table: {
+                widths: ['*', '*', '*'],
+                body: [
+                    [{
+                        text: 'DATE DEBUT :',
+                        margin: [8, 5],
+                        bold: true,
+                        fontSize: 10,
+                        fillColor: '#04aa6d',
+                        color: 'white',
+                        alignment: 'center'
+                    },
+                    {
+                        text: 'DATE FIN :',
+                        fontSize: 10,
+                        bold: true,
+                        alignment: 'center',
+                        fillColor: '#04aa6d',
+                        color: 'white',
+                        margin: [8, 5],
+                    },
+                    {
+                        text: 'NBR JOURS :',
+                        fontSize: 10,
+                        bold: true,
+                        alignment: 'center',
+                        fillColor: '#04aa6d',
+                        color: 'white',
+                        margin: [8, 5],
+                    }
+                    ],
+                    [
+                        {
+                            text: data.Conges_Date_Start,
+                            margin: [5, 10],
+                            fontSize: 14,
+                            alignment: 'center',
+                        },
+                        {
+                            text: data.Conges_Date_End,
+                            fontSize: 14,
+                            margin: [5, 10],
+                            alignment: 'center'
+                        },
+                        {
+                            text: data.Conges_Nbr_Jours,
+                            fontSize: 14,
+                            alignment: 'center',
+                            margin: [5, 10],
+                        }
+                    ]
+                ]
+            },
+
+        }
+    }
+
     const con =  [
 
         {
@@ -183,7 +312,7 @@ export function content_demande_de_conges(data) {
                                 },
                                 {
                                     text: data.Conges_Motif.toUpperCase(),
-                                    fontSize: 8,
+                                    fontSize: 10,
                                 }
                             ]
                         },
@@ -196,67 +325,8 @@ export function content_demande_de_conges(data) {
             }
 
         },
-        {
-            margin: [0, 8, 0, 0],
-            layout: {
-                hLineColor: 'gray',
-                vLineColor: 'gray'
-            },
-            table: {
-                widths: ['*', '*', '*'],
-                body: [
-                    [{
-                        text: 'DATE DEBUT :',
-                        margin: [8, 5],
-                        bold: true,
-                        fontSize: 10,
-                        fillColor: '#04aa6d',
-                        color: 'white',
-                        alignment: 'center'
-                    },
-                    {
-                        text: 'DATE FIN :',
-                        fontSize: 10,
-                        bold: true,
-                        alignment: 'center',
-                        fillColor: '#04aa6d',
-                        color: 'white',
-                        margin: [8, 5],
-                    },
-                    {
-                        text: 'NBR JOURS :',
-                        fontSize: 10,
-                        bold: true,
-                        alignment: 'center',
-                        fillColor: '#04aa6d',
-                        color: 'white',
-                        margin: [8, 5],
-                    }
-                    ],
-                    [
-                        {
-                            text: data.Conges_Date_Start,
-                            margin: [5, 10],
-                            fontSize: 10,
-                            alignment: 'center',
-                        },
-                        {
-                            text: data.Conges_Date_End,
-                            fontSize: 10,
-                            margin: [5, 10],
-                            alignment: 'center'
-                        },
-                        {
-                            text: data.Conges_Nbr_Jours,
-                            fontSize: 10,
-                            alignment: 'center',
-                            margin: [5, 10],
-                        }
-                    ]
-                ]
-            },
-
-        }
+        table
+        
     ]
     
     return con
