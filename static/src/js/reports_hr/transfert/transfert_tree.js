@@ -23,8 +23,6 @@ class TransfertListController extends ListController {
         this.modal = useRef("modalPrint")
         this.modalClose = useRef("modalClose")
 
-        console.warn("this is a transfert component")
-
     }
 
     async printTransferts(data) {
@@ -199,7 +197,13 @@ class TransfertListController extends ListController {
             const viewer = window.open(url, '_blank');
             viewer.onload = () => {
                 framework.unblockUI();
-                URL.revokeObjectURL(url);
+                const checkWindowInterval = setInterval(() => {
+                    if (viewer.closed) {
+                        clearInterval(checkWindowInterval);
+                        URL.revokeObjectURL(url);
+                    }
+                }, 1000);
+
             };
         }
         else {

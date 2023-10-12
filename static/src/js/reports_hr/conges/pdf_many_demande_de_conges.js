@@ -201,8 +201,21 @@ class CongesListController extends ListController {
                     }
                 };
 
-                pdfMake.createPdf(pdfDefinition).open();
-                framework.unblockUI();
+                const pdf = await pdfMake.createPdf(pdfDefinition);
+                const blob = await pdf.getBlob();
+                const url = URL.createObjectURL(blob);
+
+                const viewer = window.open(url, '_blank');
+                viewer.onload = () => {
+                    framework.unblockUI();
+                    const checkWindowInterval = setInterval(() => {
+                        if (viewer.closed) {
+                            clearInterval(checkWindowInterval);
+                            URL.revokeObjectURL(url);
+                        }
+                    }, 1000);
+
+                };
             }
             else {
                 framework.blockUI();
