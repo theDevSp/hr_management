@@ -430,7 +430,13 @@ class PointageListController extends ListController {
                             const viewer = window.open(url, '_blank');
                             viewer.onload = () => {
                                 framework.unblockUI();
-                                URL.revokeObjectURL(url);
+                                const checkWindowInterval = setInterval(() => {
+                                    if (viewer.closed) {
+                                        clearInterval(checkWindowInterval);
+                                        URL.revokeObjectURL(url);
+                                    }
+                                }, 1000);
+                                
                             };
                         } catch (error) {
                             console.log(error);
