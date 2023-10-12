@@ -11,6 +11,7 @@ class PointageFormController extends FormController {
   setup() {
     super.setup();
     this.rpc = useService("rpc");
+    this.notification = this.env.services.notification;
   }
 
   async print(url) {
@@ -33,13 +34,43 @@ class PointageFormController extends FormController {
 
       const pdfDefinition = {
         info: pdfMetaData,
-        pageMargins: [12, 115, 10, 8],
+        pageMargins: [12, 110, 12, 27],
+        compress: false,
+        permissions: {
+          printing: 'highResolution',
+          modifying: false,
+          copying: false,
+          annotating: false,
+          fillingForms: true,
+          contentAccessibility: true,
+          documentAssembly: true
+        },
         header: portrait_header(),
         pageSize: "A4",
         pageOrientation: "portrait",
         content: data.typeEmployee === 's' ?
-          content_report_pointage_one_salarie(data, len, len) :
-          content_report_pointage_one_ouvrier(data, len, len),
+          await content_report_pointage_one_salarie(data) :
+          await content_report_pointage_one_ouvrier(data),
+        footer: function (currentPage, pageCount) {
+          return [
+            {
+              margin: [0, 5, 0, 0],
+              columns: [{
+                text: `${currentPage}/${pageCount}`,
+                alignment: 'center',
+                fontSize: 7,
+                margin: [150, 0, 0, 0]
+              }, {
+                text: `Imprimé le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`,
+                fontSize: 7,
+                alignment: 'right',
+                bold: true,
+                margin: [0, 0, 13, 0],
+                width: 130
+              }]
+            }
+          ]
+        }
       };
 
       const pdfDocGenerator = pdfMake.createPdf(pdfDefinition);
@@ -70,6 +101,12 @@ class PointageFormController extends FormController {
         });
       }
     }
+  }
+  showNotification(message, typeNotification) {
+    this.notification.add(message, {
+      title: "Notification Service",
+      type: typeNotification, // info, warning, danger, success
+    });
   }
 }
 
