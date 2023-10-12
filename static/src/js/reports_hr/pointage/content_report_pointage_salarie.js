@@ -231,7 +231,7 @@ export async function content_report_pointage_salarie(data) {
                 margin: [0, 0.8]
             },
             {
-                text: limitText(obj.equipe,15),
+                text: limitText(obj.equipe,11),
                 alignment: 'center',
                 fillColor: back,
                 fontSize: 7,

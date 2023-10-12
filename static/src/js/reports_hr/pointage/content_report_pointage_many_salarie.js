@@ -1,5 +1,7 @@
 /** @odoo-module */
 
+/*
+
 import { content_report_pointage_one_salarie } from "./content_report_pointage_one_salarie";
 import { portrait_header } from "@reports_templates/js/headers";
 
@@ -104,4 +106,4 @@ export async function content_report_pointage_many_salarie(data) {
 }
 
 
-
+*/
