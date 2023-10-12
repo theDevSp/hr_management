@@ -217,14 +217,14 @@ export async function content_report_pointage_salarie(data) {
                 margin: [0, 0.8]
             },
             {
-                text: limitText(obj.observation,78),
+                text: limitText(obj.observation,68),
                 alignment: 'center',
                 fillColor: back,
                 fontSize: 7,
                 margin: [0, 0.8]
             },
             {
-                text: limitText(obj.code,14),
+                text: limitText(obj.code,13),
                 alignment: 'center',
                 fillColor: back,
                 fontSize: 7,
@@ -238,7 +238,7 @@ export async function content_report_pointage_salarie(data) {
                 margin: [0, 0.8]
             },
             {
-                text: limitText(obj.chantier,20),
+                text: limitText(obj.chantier,18),
                 alignment: 'center',
                 fillColor: back,
                 fontSize: 7,
