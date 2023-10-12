@@ -125,6 +125,16 @@ class hr_employee_transfert(models.Model):
                 ('day','<=',self.date_transfert),
                 ('day_type','=',type_condition)
                 ])
+
+        self.employee_id.sudo().write({
+            'vehicle_id':self.vehicle_id_destiation.id if type_condition == '1' else self.vehicle_id_source.id
+            })
+        self.employee_id.sudo().write({
+            'emplacement_chantier_id':self.emplacement_chantier_id_destiation.id if type_condition == '1' else self.emplacement_chantier_id_source.id
+            }) 
+        self.employee_id.sudo().write({
+            'chantier_id':self.chantier_id_destiation.id if type_condition == '1' else self.chantier_id_source.id
+            })
         
         if lines:
             lines[len(lines) - 1].write({
