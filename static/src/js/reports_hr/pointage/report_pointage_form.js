@@ -11,16 +11,15 @@ class PointageFormController extends FormController {
   setup() {
     super.setup();
     this.rpc = useService("rpc");
-    this.overlay = document.createElement("div");
-    this.spinner = document.createElement("div");
-    this.overlay.className = "overlay";
-    this.spinner.id = "spinner";
-    this.spinner.className = "spinner";
+    this.notification = this.env.services.notification;
   }
 
   async print(url) {
+
+    var framework = require('web.framework');
+    framework.blockUI();
+
     try {
-      this.showOverlayAndSpinner();
 
       const res = await this.rpc(`/hr_management/get_report_pointage_salarie_ouvrier/${this.model.root.data.id}`);
       const data = res[0];
@@ -35,13 +34,43 @@ class PointageFormController extends FormController {
 
       const pdfDefinition = {
         info: pdfMetaData,
-        pageMargins: [12, 115, 10, 8],
+        pageMargins: [12, 110, 12, 27],
+        compress: false,
+        permissions: {
+          printing: 'highResolution',
+          modifying: false,
+          copying: false,
+          annotating: false,
+          fillingForms: true,
+          contentAccessibility: true,
+          documentAssembly: true
+        },
         header: portrait_header(),
         pageSize: "A4",
         pageOrientation: "portrait",
         content: data.typeEmployee === 's' ?
-          content_report_pointage_one_salarie(data, len, len) :
-          content_report_pointage_one_ouvrier(data, len, len),
+          await content_report_pointage_one_salarie(data) :
+          await content_report_pointage_one_ouvrier(data),
+        footer: function (currentPage, pageCount) {
+          return [
+            {
+              margin: [0, 5, 0, 0],
+              columns: [{
+                text: `${currentPage}/${pageCount}`,
+                alignment: 'center',
+                fontSize: 7,
+                margin: [150, 0, 0, 0]
+              }, {
+                text: `Imprimé le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`,
+                fontSize: 7,
+                alignment: 'right',
+                bold: true,
+                margin: [0, 0, 13, 0],
+                width: 130
+              }]
+            }
+          ]
+        }
       };
 
       const pdfDocGenerator = pdfMake.createPdf(pdfDefinition);
@@ -51,24 +80,12 @@ class PointageFormController extends FormController {
       this.showModal();
 
     } catch (error) {
-      console.error("Error:", error);
+      console.log(error);
+      framework.unblockUI();
+      this.showNotification("Erreur d'impression ! Merci de réessayer !", "danger");
     } finally {
-      this.hideOverlayAndSpinner();
+      framework.unblockUI();
     }
-  }
-
-  showOverlayAndSpinner() {
-    this.overlay.style.display = "block";
-    this.spinner.style.display = "block";
-    document.body.appendChild(this.overlay);
-    document.body.appendChild(this.spinner);
-  }
-
-  hideOverlayAndSpinner() {
-    this.overlay.style.display = "none";
-    this.spinner.style.display = "none";
-    document.body.removeChild(this.overlay);
-    document.body.removeChild(this.spinner);
   }
 
   showModal() {
@@ -84,6 +101,12 @@ class PointageFormController extends FormController {
         });
       }
     }
+  }
+  showNotification(message, typeNotification) {
+    this.notification.add(message, {
+      title: "Notification Service",
+      type: typeNotification, // info, warning, danger, success
+    });
   }
 }
 

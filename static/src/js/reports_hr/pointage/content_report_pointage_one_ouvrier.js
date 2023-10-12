@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-export function content_report_pointage_one_ouvrier(data, pageNumber, totalPages) {
+export async function content_report_pointage_one_ouvrier(data) {
 
     const pdfInformation = [
         [
@@ -10,7 +10,7 @@ export function content_report_pointage_one_ouvrier(data, pageNumber, totalPages
                 text: [
                     'RAPPORT POINTAGE N°:\n',
                     {
-                        text: data.report_num,
+                        text: limitText(data.report_num,60),
                         bold: true,
                         fontSize: 12,
 
@@ -35,7 +35,7 @@ export function content_report_pointage_one_ouvrier(data, pageNumber, totalPages
 
             },
             {
-                text: data.nometpnom,
+                text: limitText(data.nometpnom,60),
                 border: [false, true, 1, false],
                 margin: [0, 8, 0, 0],
                 bold: true,
@@ -54,7 +54,7 @@ export function content_report_pointage_one_ouvrier(data, pageNumber, totalPages
                 fillColor: "#f1f2f3"
             },
             {
-                text: data.cin,
+                text: limitText(data.cin,67),
                 border: [false, false, 1, false],
                 bold: true,
                 fontSize: 9,
@@ -71,7 +71,7 @@ export function content_report_pointage_one_ouvrier(data, pageNumber, totalPages
                 fillColor: "#f1f2f3"
             },
             {
-                text: data.fonction,
+                text: limitText(data.fonction,60),
                 border: [false, false, 1, false],
                 bold: true,
                 fontSize: 9,
@@ -104,7 +104,7 @@ export function content_report_pointage_one_ouvrier(data, pageNumber, totalPages
             fillColor: "#f1f2f3"
         },
         {
-            text: data.dChantier,
+            text: limitText(data.dChantier,60),
             border: [false, false, 1, false],
             bold: true,
             fontSize: 9,
@@ -140,7 +140,7 @@ export function content_report_pointage_one_ouvrier(data, pageNumber, totalPages
 
             },
             {
-                text: data.dEngin,
+                text: limitText(data.dEngin,60),
                 border: [false, false, 1, 1],
                 bold: true,
                 fontSize: 9,
@@ -217,28 +217,28 @@ export function content_report_pointage_one_ouvrier(data, pageNumber, totalPages
                 margin: [0, 0.8]
             },
             {
-                text: obj.observation,
+                text: limitText(obj.observation,78),
                 alignment: 'center',
                 fillColor: back,
                 fontSize: 7,
                 margin: [0, 0.8]
             },
             {
-                text: obj.chantier,
+                text: limitText(obj.code,14),
                 alignment: 'center',
                 fillColor: back,
                 fontSize: 7,
                 margin: [0, 0.8]
             },
             {
-                text: obj.code,
+                text: limitText(obj.equipe,15),
                 alignment: 'center',
                 fillColor: back,
                 fontSize: 7,
                 margin: [0, 0.8]
             },
             {
-                text: obj.equipe,
+                text: limitText(obj.chantier,20),
                 alignment: 'center',
                 fillColor: back,
                 fontSize: 7,
@@ -250,14 +250,13 @@ export function content_report_pointage_one_ouvrier(data, pageNumber, totalPages
     });
 
     const footerTable = {
-        margin: [0, 20, 2, 0],
+        margin: [0, 5, 0, 0],
         layout: {
             hLineColor: 'gray',
             vLineColor: 'gray'
         },
         table: {
-            widths: [100, '*', '*', '*'],
-            heights: [10, 85],
+            widths: [124, 135, 135, 139],
             headerRows: 1,
             body: [
                 [{
@@ -268,117 +267,95 @@ export function content_report_pointage_one_ouvrier(data, pageNumber, totalPages
                     fillColor: '#04aa6d',
                     color: 'white',
                     margin: [0, 5]
-                },
-                {
-                    text: 'Visa Responsable',
-                    fontSize: 9,
+                }, {
+                    text: 'Responsable',
+                    fontSize: 10,
                     bold: true,
                     alignment: 'center',
                     fillColor: '#04aa6d',
                     color: 'white',
                     margin: [0, 5]
-                },
-                {
-                    text: 'Visa Conducteur / Chef Chantier',
-                    fontSize: 9,
+                }, {
+                    text: 'Conducteur/Chef de Projet',
+                    fontSize: 10,
                     bold: true,
                     alignment: 'center',
                     fillColor: '#04aa6d',
                     color: 'white',
                     margin: [0, 5]
-                },
-                {
-                    text: 'Visa Pointeur',
-                    fontSize: 9,
+                }, {
+                    text: 'Pointeur',
+                    fontSize: 10,
                     bold: true,
                     alignment: 'center',
                     fillColor: '#04aa6d',
                     color: 'white',
                     margin: [0, 5]
-                },
-                ],
+                },],
                 [{
-                    text: data.totalheure,
-                    fontSize: 19,
-                    bold: true,
+                    text: (data && data.totalheure !== '' && data.totaljours !== '') ? `${data.totalheure}H / ${data.totaljours}J` : `0H / 0J`,
+                    fontSize: 17,
                     alignment: 'center',
+                    bold: true,
                     margin: [0, 30],
-                    //padding: [0, 20]conso
-                },
-                {
+                }, {
                     text: '',
                     fontSize: 9,
                     bold: true
-                },
-                {
+                }, {
                     text: '',
                     fontSize: 9,
                     bold: true
-                },
-                {
+                }, {
                     text: '',
                     fontSize: 9,
                     bold: true
-                }
-                ]
+                }]
             ]
         }
     }
 
-    const def = {
 
-        content: [{
-            table: {
-                widths: [150, 0, 90, 293],
-                body: pdfInformation
-            },
-            layout: {
-                defaultBorder: false,
-                hLineColor: 'gray',
-                vLineColor: 'gray'
-            }
+    const content = [{
+        table: {
+            widths: [150, 0, 90, 293],
+            body: pdfInformation
         },
+        layout: {
+            defaultBorder: false,
+            hLineColor: 'gray',
+            vLineColor: 'gray'
+        }
+    },
 
-        {
-            margin: [0, 15, 0, 0],
-            layout: {
-                hLineColor: 'gray',
-                vLineColor: 'gray'
-            },
-            table: {
-                widths: [26, 15, 330, 35, 44, 65],
-                body: [
-                    tableHeader,
-                    ...tableRow.map((array) => array)
-                ]
-            }
+    {
+        margin: [0, 5, 0, 0],
+        layout: {
+            hLineColor: 'gray',
+            vLineColor: 'gray'
         },
-
-        footerTable,
-        {
-            alignment: 'justify',
-            margin: [10, 185],
-                columns: [
-                {
-                    text: `Page ${pageNumber} of ${totalPages}`,
-                    fontSize: 7,
-                    alignment: 'right',
-                    bold: true,
-                    margin: [0, 2, 2, 0]
-                },
-                {
-                    text: `Imprimer le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`,
-                    fontSize: 7,
-                    margin: [0, 2, 2, 0],
-                    alignment: 'right',
-                    bold: true,
-                }
+        table: {
+            widths: [26, 15, 290, 52, 52, 80],
+            body: [
+                tableHeader,
+                ...tableRow.map((array) => array)
             ]
         }
+    },
+
+        footerTable
+
+    ]
 
 
-        ]
+    return content
+}
+
+
+function limitText(text, maxLength) {
+    if (text.length <= maxLength) {
+        return text.replace(/\n/g, " ");
+    } else {
+        return text.slice(0, maxLength - 3).replace(/\n/g, " ") + '...';
     }
-
-    return def.content
 }

@@ -25,7 +25,7 @@ class PointageListController extends ListController {
 
         this.http = this.env.services.http
         this.notification = this.env.services.notification;
-        
+
         onWillStart(async () => {
             await loadJS("/reports_templates/static/src/lib/selectize/selectize.min.js")
             await loadCSS("/reports_templates/static/src/lib/selectize/selectize.default.min.css")
@@ -138,10 +138,6 @@ class PointageListController extends ListController {
 
     }
 
-    test() {
-        console.log("modal print")
-    }
-
     verify() {
         const fields = [
             { element: $('#select-chantier'), message: 'Chantier' },
@@ -164,8 +160,6 @@ class PointageListController extends ListController {
             this.submit();
         }
     }
-
-
 
     async submit() {
         var framework = require('web.framework');
@@ -223,84 +217,17 @@ class PointageListController extends ListController {
                                     documentAssembly: true
                                 },
                                 info: {
-                                    title: "Rapport", //`${res.length} STCs`,
+                                    title: "Les Rapports",
                                     author: "BIOUI TRAVAUX",
-                                    subject: `Report`
+                                    subject: `Les Rapports de Pointages`
                                 },
-                                pageMargins: [12, 110, 12, 135],
+                                pageMargins: [12, 110, 12, 27],
                                 header: portrait_header(),
                                 pageSize: "A4",
                                 pageOrientation: "portrait",
                                 content: pdfContent,
                                 footer: function (currentPage, pageCount) {
-
                                     return [
-
-                                        {
-                                            margin: [12, 5, 12, 0],
-                                            layout: {
-                                                hLineColor: 'gray',
-                                                vLineColor: 'gray'
-                                            },
-                                            table: {
-                                                widths: ['*', '*', '*', '*'],
-                                                headerRows: 1,
-                                                body: [
-                                                    [{
-                                                        text: 'Intéressé(e)',
-                                                        bold: true,
-                                                        fontSize: 10,
-                                                        alignment: 'center',
-                                                        fillColor: '#04aa6d',
-                                                        color: 'white',
-                                                        margin: [0, 5]
-                                                    }, {
-                                                        text: 'Pointeur',
-                                                        fontSize: 10,
-                                                        bold: true,
-                                                        alignment: 'center',
-                                                        fillColor: '#04aa6d',
-                                                        color: 'white',
-                                                        margin: [0, 5]
-                                                    }, {
-                                                        text: 'Chef de Projet',
-                                                        fontSize: 10,
-                                                        bold: true,
-                                                        alignment: 'center',
-                                                        fillColor: '#04aa6d',
-                                                        color: 'white',
-                                                        margin: [0, 5]
-                                                    }, {
-                                                        text: 'Directeur Technique',
-                                                        fontSize: 10,
-                                                        bold: true,
-                                                        alignment: 'center',
-                                                        fillColor: '#04aa6d',
-                                                        color: 'white',
-                                                        margin: [0, 5]
-                                                    },],
-                                                    [{
-                                                        text: '',
-                                                        fontSize: 9,
-                                                        bold: true,
-                                                        margin: [0, 35],
-                                                    }, {
-                                                        text: '',
-                                                        fontSize: 9,
-                                                        bold: true
-                                                    }, {
-                                                        text: '',
-                                                        fontSize: 9,
-                                                        bold: true
-                                                    }, {
-                                                        text: '',
-                                                        fontSize: 9,
-                                                        bold: true
-                                                    }]
-                                                ]
-                                            }
-                                        },
-
                                         {
                                             margin: [0, 5, 0, 0],
                                             columns: [{
@@ -309,16 +236,14 @@ class PointageListController extends ListController {
                                                 fontSize: 7,
                                                 margin: [150, 0, 0, 0]
                                             }, {
-                                                text: `Imprimer le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`,
+                                                text: `Imprimé le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`,
                                                 fontSize: 7,
                                                 alignment: 'right',
                                                 bold: true,
-                                                margin: [0, 0, 12, 0],
+                                                margin: [0, 0, 13, 0],
                                                 width: 130
                                             }]
                                         }
-
-
                                     ]
                                 }
                             };
@@ -330,7 +255,13 @@ class PointageListController extends ListController {
                             const viewer = window.open(url, '_blank');
                             viewer.onload = () => {
                                 framework.unblockUI();
-                                URL.revokeObjectURL(url);
+                                const checkWindowInterval = setInterval(() => {
+                                    if (viewer.closed) {
+                                        clearInterval(checkWindowInterval);
+                                        URL.revokeObjectURL(url);
+                                    }
+                                }, 1000);
+                                
                             };
                         } catch (error) {
                             console.log(error);
@@ -501,23 +432,6 @@ class PointageListController extends ListController {
                                 framework.unblockUI();
                                 URL.revokeObjectURL(url);
                             };
-
-                            /*pdf.getBlob((blob) => {
-
-                                console.log(blob)
-                                const url = URL.createObjectURL(blob);
-                                const viewer = window.open(url, '_blank');
-                                viewer.onload = () => {
-                                    URL.revokeObjectURL(url);
-                                };
-                                framework.unblockUI();
-                            });*/
-
-                            /*framework.unblockUI();
-                            const pdf = await pdfMake.createPdf(pdfDefinition);
-                            return pdf.open()*/
-
-
                         } catch (error) {
                             console.log(error);
                             framework.unblockUI();
@@ -530,160 +444,6 @@ class PointageListController extends ListController {
                     framework.unblockUI();
                     this.showNotification("Erreur d'impression ! Merci de réessayer !", "danger");
                 });
-
-            /*const response = await fetch(
-                "",
-                {
-                    method: "POST",
-                    body: JSON.stringify({
-                        chantier: $('#select-chantier').val(),
-                        quinzine: $('#select-quinzine').val(),
-                        typeemp: $('#select-type').val(),
-                        equipe: $('#select-equipe').val(),
-                        date: $('#select-period').val(),
-                    }),
-                    headers: {
-                        "Content-type": "application/json; charset=UTF-8",
-                    },
-                }
-            );
-
-            if (response.status === 204) {
-                this.showNotification("Aucune donnée disponible !", "warning");
-                clearSelectizeInputs();
-                framework.unblockUI();
-                return;
-            }
-
-            clearSelectizeInputs();
-            const data = await response.json();
-            const pdfContent = []
-
-            data.lines.forEach((emp, index) => {
-                content_report_pointage_ouvrier(emp, data.chantier, data.quinzine, data.periode, data.nbrj_mois).then(content => {
-                    pdfContent.push(content);
-                    if (index !== data.lines.length - 1) {
-                        pdfContent.push({ text: "", pageBreak: "after" });
-                    }
-                });
-            });
-
-            const pdfDefinition = {
-                compress: false,
-                permissions: {
-                    printing: 'highResolution',
-                    modifying: false,
-                    copying: false,
-                    annotating: true,
-                    fillingForms: true,
-                    contentAccessibility: true,
-                    documentAssembly: true
-                },
-                info: {
-                    title: "Rapport", //`${res.length} STCs`,
-                    author: "BIOUI TRAVAUX",
-                    subject: `Report`
-                },
-                pageSize: 'A4',
-                pageMargins: [13, 110, 13, 135],
-                header: horizontal_header(),
-                pageSize: "A4",
-                pageOrientation: "landscape",
-                content: pdfContent,
-                footer: function (currentPage, pageCount) {
-
-                    return [
-
-                        {
-                            margin: [13, 5, 13, 0],
-                            layout: {
-                                hLineColor: 'gray',
-                                vLineColor: 'gray'
-                            },
-                            table: {
-                                widths: ['*', '*', '*', '*'],
-                                headerRows: 1,
-                                body: [
-                                    [{
-                                        text: 'Intéressé(e)',
-                                        bold: true,
-                                        fontSize: 10,
-                                        alignment: 'center',
-                                        fillColor: '#04aa6d',
-                                        color: 'white',
-                                        margin: [0, 5]
-                                    }, {
-                                        text: 'Pointeur',
-                                        fontSize: 10,
-                                        bold: true,
-                                        alignment: 'center',
-                                        fillColor: '#04aa6d',
-                                        color: 'white',
-                                        margin: [0, 5]
-                                    }, {
-                                        text: 'Chef de Projet',
-                                        fontSize: 10,
-                                        bold: true,
-                                        alignment: 'center',
-                                        fillColor: '#04aa6d',
-                                        color: 'white',
-                                        margin: [0, 5]
-                                    }, {
-                                        text: 'Directeur Technique',
-                                        fontSize: 10,
-                                        bold: true,
-                                        alignment: 'center',
-                                        fillColor: '#04aa6d',
-                                        color: 'white',
-                                        margin: [0, 5]
-                                    },],
-                                    [{
-                                        text: '',
-                                        fontSize: 9,
-                                        bold: true,
-                                        margin: [0, 35],
-                                    }, {
-                                        text: '',
-                                        fontSize: 9,
-                                        bold: true
-                                    }, {
-                                        text: '',
-                                        fontSize: 9,
-                                        bold: true
-                                    }, {
-                                        text: '',
-                                        fontSize: 9,
-                                        bold: true
-                                    }]
-                                ]
-                            }
-                        },
-
-                        {
-                            margin: [0, 5, 0, 0],
-                            columns: [{
-                                text: `${currentPage}/${pageCount}`,
-                                alignment: 'center',
-                                fontSize: 7,
-                                margin: [150, 0, 0, 0]
-                            }, {
-                                text: `Imprimer le ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`,
-                                fontSize: 7,
-                                alignment: 'right',
-                                bold: true,
-                                margin: [0, 0, 12, 0],
-                                width: 130
-                            }]
-                        }
-
-
-                    ]
-                }
-            };
-
-            framework.unblockUI();
-            const pdf = await pdfMake.createPdf(pdfDefinition);
-            return pdf.open()*/
         }
     };
 
@@ -716,10 +476,6 @@ const showModal = (el) => {
 
 const hideModal = (el) => {
     el.style.display = "none"
-}
-
-const test = (pdf) => {
-
 }
 
 export const PointageListView = {

@@ -1,7 +1,8 @@
 from odoo import http
 from odoo.http import request
 
-import requests,calendar
+import requests
+import calendar
 from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
 import json
@@ -13,6 +14,7 @@ class printReportPointageController(http.Controller):
     def get_all_chantiers(self):
 
         chantier_records = http.request.env['fleet.vehicle.chantier'].search([
+            ('type_chantier', '!=', 'CG')
         ])
 
         data = []
@@ -144,6 +146,7 @@ class printReportPointageController(http.Controller):
                     'employe_equipe': re.emplacement_chantier_id.name or "",
                     'employe_engin': re.vehicle_id.code or "",
                     'employe_totalheure': re.total_h or "",
+                    'employe_totaljours': re.total_j or "",
                     'employe_type': re.type_emp or "",
                     'employe_dates': {
                         'quinzeine': re.quinzaine,
@@ -187,8 +190,10 @@ class printReportPointageController(http.Controller):
 
         res = http.request.env['hr.rapport.pointage'].search(domains)
 
-        chantier = http.request.env['fleet.vehicle.chantier'].browse(chantier_id) #chantier_id
-        period = http.request.env['account.month.period'].browse(period_id) #period_id
+        chantier = http.request.env['fleet.vehicle.chantier'].browse(
+            chantier_id)  # chantier_id
+        period = http.request.env['account.month.period'].browse(
+            period_id)  # period_id
 
         if res:
             res = sorted(res, key=lambda re: re.emplacement_chantier_id.name)
@@ -199,7 +204,7 @@ class printReportPointageController(http.Controller):
                     "equipe": group_key.upper(),
                     "data": []
                 }
-        
+
                 for re in group:
                     dates_lines = []
                     for re_line in re.rapport_lines:
@@ -210,21 +215,22 @@ class printReportPointageController(http.Controller):
                             'observation': re_line.details or "",
                             'date': re_line.day
                         })
-                        
+
                     data_entry = {
                         'employe_name': re.employee_id.name or "",
                         'employe_cin': re.cin or "",
                         'employe_fonction': re.job_id.name or "",
                         'employe_totalheure': re.total_h or "",
+                        'employe_totaljours': re.total_j or "",
                         'employe_type': re.type_emp or "",
                         'employe_dates': {
                             'dates_lines': dates_lines
                         },
                     }
                     obj["data"].append(data_entry)
-                
+
                 final.append(obj)
-            
+
             return http.request.make_json_response(data={
                 "chantier": chantier.name.upper(),
                 "periode": period.name.upper(),
@@ -235,5 +241,3 @@ class printReportPointageController(http.Controller):
 
         else:
             return http.request.make_json_response(data={'message': 'No data found'}, status=204)
-
-

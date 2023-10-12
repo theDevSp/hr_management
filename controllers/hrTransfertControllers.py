@@ -17,9 +17,9 @@ class transfertController(http.Controller):
                 'transfert_num': data.name,
                 'transfert_employe_name': data.employee_id.name.upper(),
                 'transfert_employe_cin': data.employee_id.cin.upper().strip(),
-                'transfert_employe_cnss': data.employee_id.cnss,
-                'transfert_chantier_depart': data.chantier_id_source.simplified_name.upper(),
-                'transfert_chantier_dest':data.chantier_id_destiation.name.upper(),
+                'transfert_employe_fonction': data.employee_id.job.upper(),
+                'transfert_chantier_depart': data.chantier_id_source.code+" - "+data.chantier_id_source.simplified_name.upper(),
+                'transfert_chantier_dest': data.chantier_id_destiation.code+" - "+data.chantier_id_destiation.simplified_name.upper(),
                 'transfert_date_depart':data.date_transfert,
             }
         except:

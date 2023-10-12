@@ -86,14 +86,14 @@ export function transfert_pdf_content(data) {
                             }
                         ],
                         [{
-                                text: 'N° CNSS :',
+                                text: 'Fonction :',
                                 fontSize: 9,
                                 border: [1, 0, 0, 1],
                                 margin: [15, 6, 0, 8],
                                 alignment: 'right',
                             },
                             {
-                                text: data.transfert_employe_cnss,
+                                text: data.transfert_employe_fonction,
                                 fontSize: 9,
                                 border: [0, 0, 1, 1],
                                 margin: [0, 6, 0, 8],
@@ -139,7 +139,7 @@ export function transfert_pdf_content(data) {
                                 alignment: 'right',
                             },
                             {
-                                text: data.transfert_chantier_depart,
+                                text: limitText(data.transfert_chantier_depart,53),
                                 fontSize: 9,
                                 border: [0, 1, 1, 0],
                                 margin: [0, 8, 0, 0],
@@ -169,7 +169,7 @@ export function transfert_pdf_content(data) {
                                 alignment: 'right',
                             },
                             {
-                                text: data.transfert_chantier_dest,
+                                text: limitText(data.transfert_chantier_dest,53),
                                 fontSize: 9,
                                 border: [0, 0, 1, 1],
                                 margin: [0, 6, 0, 8],
@@ -312,4 +312,13 @@ export function transfert_pdf_content(data) {
 
 
 
+}
+
+
+function limitText(text, maxLength) {
+    if (text.length <= maxLength) {
+        return text;
+    } else {
+        return text.slice(0, maxLength - 3) + '...';
+    }
 }
