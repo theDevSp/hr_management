@@ -11,16 +11,12 @@ class StcFormController extends FormController {
     setup() {
         super.setup();
         this.rpc = useService("rpc");
-        this.overlay = document.createElement("div");
-        this.spinner = document.createElement("div");
-        this.overlay.className = "overlay";
-        this.spinner.id = "spinner";
-        this.spinner.className = "spinner";
     }
 
     async print(data) {
+        var framework = require('web.framework');
+        framework.blockUI();
         try {
-            this.showOverlayAndSpinner();
 
             const res = await this.rpc(`/hr_management/get_stc/${data.id}`);
             let res_content = null;
@@ -28,6 +24,7 @@ class StcFormController extends FormController {
             if (res && res.stc_employee_bank) {
                 res_content = stc_pdf_content(res);
             } else {
+                framework.blockUI();
                 return alert('Une erreur est survenue, veuillez réessayer !');
             }
 
@@ -42,7 +39,7 @@ class StcFormController extends FormController {
                 pageSize: "A4",
                 pageOrientation: "portrait",
                 content: res_content,
-                footer: function (currentPage, pageCount) { 
+                footer: function (currentPage, pageCount) {
                     return [
                         {
                             margin: [12, 5, 12, 0],
@@ -133,25 +130,14 @@ class StcFormController extends FormController {
             const targetElement = document.querySelector("#iframeContainer");
             targetElement.setAttribute("src", dataUrl);
             this.showModal();
+            
         } catch (error) {
             console.error("Error:", error);
+            alert("Une erreur s'est produite. Veuillez réessayer.");
+            framework.unblockUI();
         } finally {
-            this.hideOverlayAndSpinner();
+            framework.unblockUI();
         }
-    }
-
-    showOverlayAndSpinner() {
-        this.overlay.style.display = "block";
-        this.spinner.style.display = "block";
-        document.body.appendChild(this.overlay);
-        document.body.appendChild(this.spinner);
-    }
-
-    hideOverlayAndSpinner() {
-        this.overlay.style.display = "none";
-        this.spinner.style.display = "none";
-        document.body.removeChild(this.overlay);
-        document.body.removeChild(this.spinner);
     }
 
     showModal() {
