@@ -206,7 +206,7 @@ class printReportPointageController(http.Controller):
 
                 for re in group:
                     dates_lines = []
-                    sup = 0
+                    
                     for re_line in re.rapport_lines:
 
                         """report_line.details and 'gardien' not in report_line.employee_id.job_id.name.lower() and 
@@ -214,10 +214,12 @@ class printReportPointageController(http.Controller):
 									float(report_line.h_travailler) > 0 and report_line.day_type == 2)"""
 
                         h_tr = float(re_line.h_travailler)
-                        if ('gardien' not in re_line.employee_id.job_id.name.lower()) and ((re_line.day_type == '1' and re_line.h_sup_cal > 0.0) or (re_line.day_type in ['2', '3'] and h_tr > 0.0)):
-                            sup = re_line.h_sup_cal
-                        else:
-                            sup = 0
+                        sup = 0
+                        if ('gardien' not in re_line.employee_id.job_id.name.lower()):
+                            if (re_line.day_type == '1' and re_line.h_sup_cal > 0):
+                                sup = re_line.h_sup_cal
+                            if (re_line.day_type in ('2','3') and h_tr > 0):
+                                sup = h_tr
 
                                 
                         dates_lines.append({
