@@ -48,7 +48,7 @@ export async function content_report_pointage_ouvrier(data, chantier, quinz, per
                 alignment: 'center'
             },
             ...arr.employe_dates.dates_lines.map(ligne => {
-                if (ligne.sup !== 0) {
+                if (ligne.sup > 0.0) {
                     sup_lignes.push([
                         {
                             text: ligne.date,

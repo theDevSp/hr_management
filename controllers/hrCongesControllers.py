@@ -16,12 +16,14 @@ class hrCongesControllers(http.Controller):
             data.append({
                 'Conges_Employe_Name': res.employee_id.name,
                 'Conges_Employe_CIN': res.employee_id.cin,
-                'Conges_Employe_Chantier': res.chantier_id.name,
+                'Conges_Employe_Chantier': res.chantier_id.code+" - "+res.chantier_id.simplified_name.upper(),
                 'Conges_Employe_Fonction': res.employee_id.job,
                 'Conges_Motif': res.motif,
                 'Conges_Date_Start': res.date_start,
                 'Conges_Date_End': res.date_end,
-                'Conges_Nbr_Jours': res.duree_jours
+                'Conges_Nbr_Jours': res.duree_jours,
+                'Conges_Demijour': res.demi_jour,
+                'Conges_Demijour_Date_Start': res.date_select_half_perso
             })
 
             return data
