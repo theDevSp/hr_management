@@ -249,7 +249,6 @@ class hr_rapport_pointage_line(models.Model):
             
             self.h_travailler_v = self.h_travailler
             self.h_sup = str(max(float(self.h_travailler) - 9.0,0.0))
-            #self.h_sup_cal = float(self.h_travailler) - max(chantier_id_heure_normal,9) if self.day_type == '1' else float(self.h_travailler)
             self.j_travaille = self.employee_id.contract_id.get_hours_per_day(self.h_travailler)
 
         if vals.get('h_travailler_v'):  
