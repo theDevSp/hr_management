@@ -128,9 +128,7 @@
             'hr_management/static/src/xml/*.xml',
             'hr_management/static/src/xml/**/*.xml',
             'hr_management/static/src/css/*.scss',
-            'hr_management/static/src/css/**/*.scss',
-            'hr_management/static/src/js/reports_hr/transfert/transfert_form.js'
-            #'hr_management/static/src/xml/hr_reports/transfert/owl.PdfTransfertFormView.xml'
+            'hr_management/static/src/css/**/*.scss'
         ],
         'web.report_assets_pdf': [
             'hr_management/static/src/report_css/*.scss',  

@@ -241,10 +241,14 @@ class hr_rapport_pointage_line(models.Model):
             raise ValidationError("Erreur, Veuillez justifier les heures supplémentaires pour la journée %s" % (self.name))
             
         if vals.get('h_travailler'):
+
+            if self.employee_id.job_id.name.lower() != 'gardien':
+                self.h_sup_cal = float(self.h_travailler) - max(chantier_id_heure_normal,9) if self.day_type == '1' else float(self.h_travailler)
+            else :
+                self.h_sup_cal = 0
             
             self.h_travailler_v = self.h_travailler
             self.h_sup = str(max(float(self.h_travailler) - 9.0,0.0))
-            self.h_sup_cal = float(self.h_travailler) - max(chantier_id_heure_normal,9)
             self.j_travaille = self.employee_id.contract_id.get_hours_per_day(self.h_travailler)
 
         if vals.get('h_travailler_v'):  

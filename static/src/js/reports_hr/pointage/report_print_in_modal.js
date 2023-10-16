@@ -261,7 +261,7 @@ class PointageListController extends ListController {
                                         URL.revokeObjectURL(url);
                                     }
                                 }, 1000);
-                                
+
                             };
                         } catch (error) {
                             console.log(error);
@@ -347,7 +347,7 @@ class PointageListController extends ListController {
                                                 headerRows: 1,
                                                 body: [
                                                     [{
-                                                        text: 'Intéressé(e)',
+                                                        text: 'Visa Reponsable',
                                                         bold: true,
                                                         fontSize: 10,
                                                         alignment: 'center',
@@ -355,7 +355,7 @@ class PointageListController extends ListController {
                                                         color: 'white',
                                                         margin: [0, 5]
                                                     }, {
-                                                        text: 'Pointeur',
+                                                        text: 'Visa Conducteur/Chef Chantier',
                                                         fontSize: 10,
                                                         bold: true,
                                                         alignment: 'center',
@@ -363,7 +363,7 @@ class PointageListController extends ListController {
                                                         color: 'white',
                                                         margin: [0, 5]
                                                     }, {
-                                                        text: 'Chef de Projet',
+                                                        text: 'Visa Pointeur',
                                                         fontSize: 10,
                                                         bold: true,
                                                         alignment: 'center',
@@ -371,7 +371,7 @@ class PointageListController extends ListController {
                                                         color: 'white',
                                                         margin: [0, 5]
                                                     }, {
-                                                        text: 'Directeur Technique',
+                                                        text: 'Visa Contrôle',
                                                         fontSize: 10,
                                                         bold: true,
                                                         alignment: 'center',
@@ -436,7 +436,7 @@ class PointageListController extends ListController {
                                         URL.revokeObjectURL(url);
                                     }
                                 }, 1000);
-                                
+
                             };
                         } catch (error) {
                             console.log(error);
