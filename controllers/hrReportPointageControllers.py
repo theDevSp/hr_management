@@ -218,7 +218,7 @@ class printReportPointageController(http.Controller):
                             if (re_line.day_type == '1' and re_line.h_sup_cal > 0):
                                 sup = re_line.h_sup_cal
                             elif (re_line.day_type == '2' and h_tr > 0):
-                                sup = h_tr
+                                sup = float(re_line.day_type)
                         else:
                             sup = 0.0
 
