@@ -25,6 +25,7 @@ class CongesListController extends ListController {
 
             if (congesIds.length === 0) {
                 alert("Error in selection");
+                framework.unblockUI();
                 return;
             }
 
@@ -41,6 +42,7 @@ class CongesListController extends ListController {
                 allData.push(...conges);
 
             } catch (error) {
+                framework.unblockUI();
                 return alert('Une erreur est survenue, veuillez réessayer !');
             }
 
@@ -52,7 +54,7 @@ class CongesListController extends ListController {
                     }
                 });
             } else {
-                framework.blockUI();
+                framework.unblockUI();
                 return alert('Une erreur est survenue, veuillez réessayer !');
             }
 
@@ -218,11 +220,12 @@ class CongesListController extends ListController {
                 };
             }
             else {
-                framework.blockUI();
+                framework.unblockUI();
                 return alert('Une erreur est survenue, veuillez réessayer !');
             }
         } catch (error) {
             console.error("Error:", error);
+            framework.unblockUI();
             alert('Une erreur est survenue, veuillez réessayer !');
         } finally {
 

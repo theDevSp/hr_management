@@ -1,6 +1,7 @@
 from odoo import http
 from odoo.exceptions import UserError
 from odoo.http import request, Controller, route
+from odoo.tools import html2plaintext
 
 
 class stcController(http.Controller):
@@ -51,7 +52,7 @@ class stcController(http.Controller):
                 'stc_cotisation_cimr': "{:.2f}".format(stc_record.cimr) if stc_record.cimr not in [False, True, 0, ""] else "",
                 'stc_prelevement': "{:.2f}".format(stc_record.retenu) if stc_record.retenu not in [False, True, 0, ""] else "",
                 'stc_prelevement_credit': "{:.2f}".format(stc_record.sum_prelevement) if stc_record.sum_prelevement not in [False, True, 0, ""] else "",
-                'stc_notes': stc_record.notes if stc_record.notes not in [False, True, 0, ""] else "",
+                'stc_notes': html2plaintext(stc_record.notes) if stc_record.notes not in [False, True, 0, ""] else "",
                 'stc_montant_apayer': round(stc_record.montant_total) if stc_record.montant_total not in [False, True, 0, ""] else "",
                 'stc_montant_valider': round(stc_record.valide_salaire) if stc_record.valide_salaire not in [False, True, 0, ""] else "",
             }
