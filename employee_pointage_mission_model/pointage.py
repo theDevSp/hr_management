@@ -30,76 +30,84 @@ class hr_rapport_pointage(models.Model):
             domain = [('id', 'in',period_ids)]  
         return domain
     
-    @api.depends('rapport_lines')
-    def _compute_hours(self):
-        if self._origin:
-            for rapport in self:
-                query = """
-                        select sum(h_travailler::real) as tht,
-                                sum(h_bonus::real) as thb,
-                                sum(h_sup::real) as ths,
-                                sum(h_travailler_v::real) as thtv  
-                                from hr_rapport_pointage_line where rapport_id = %s;
-                    """   % (rapport._origin.id)
-                
-                self.env.cr.execute(query)
-                res = self.env.cr.dictfetchall()[0]
+    @api.depends('rapport_lines.h_travailler')
+    def _compute_total_h(self):
+        for rapport in self:
 
-                rapport.total_h = res['tht'] if res else 0
-                rapport.total_h_bonus = res['thb'] if res else 0
-                rapport.total_h_sup = res['ths'] if res else 0
-                rapport.total_h_v = res['thtv'] if res else 0
-                
+            rapport.total_h = sum(float(line.h_travailler) for line in rapport.rapport_lines)
+    
+    @api.depends('rapport_lines.h_bonus')
+    def _compute_total_h_bonus(self):
 
-    @api.depends('rapport_lines')   
-    def _compute_days(self):
-        if self._origin:
-            for rapport in self:
-                query = """
-                            select sum(j_travaille::real) as tj,sum(j_travaille_v::real) as tjv 
-                            from hr_rapport_pointage_line where rapport_id = %s and day_type = '1';
-                        """   % (rapport._origin.id)
-            
-                self.env.cr.execute(query)
-                res = self.env.cr.dictfetchall()[0]
+        for rapport in self:
+            rapport.total_h_bonus = sum(float(line.h_bonus) for line in rapport.rapport_lines)
+    
+    @api.depends('rapport_lines.h_sup')
+    def _compute_total_h_sup(self):
+        
+        for rapport in self:
+            rapport.total_h_sup = sum(float(line.h_sup) for line in rapport.rapport_lines)
+    
+    @api.depends('rapport_lines.h_travailler_v')
+    def _compute_total_h_v(self):
 
-                rapport.total_j = res['tj'] if res else 0
-                rapport.total_j_v = res['tjv'] if res else 0
+        for rapport in self:
+            rapport.total_h_v = sum(float(line.h_travailler_v) for line in rapport.rapport_lines)          
+
+    @api.depends('rapport_lines.j_travaille')   
+    def _compute_total_j(self):
+
+        for rapport in self:
+            rapport.total_j = sum(float(line.j_travaille) for line in rapport.rapport_lines) 
+    
+    @api.depends('rapport_lines.j_travaille_v')   
+    def _compute_total_j_v(self):
+        
+        for rapport in self:
+            rapport.total_j_v = sum(float(line.j_travaille_v) for line in rapport.rapport_lines) 
     
 
-    @api.depends('rapport_lines') 
-    def _compute_days_conge_absence_abondon(self):
-        if self._origin:
-            for rapport in self:
-                query = """
-                        select 
-                        count(1) filter (where day_type='2' and h_travailler::real > 0) as tdim,
-                        count(1) filter (where day_type='2' and h_travailler_v::real > 0) as tdimv,
-                        count(1) filter (where day_type='3') as tferie,
-                        count(1) filter (where day_type='3' and h_travailler_v::real > 0) as tferiev,
-                        count(1) filter (where day_type='5') as tabsense
-                        from hr_rapport_pointage_line where rapport_id = %s;
-                    """ % (rapport._origin.id)
-            
-                self.env.cr.execute(query)
-                res = self.env.cr.dictfetchall()[0]
-                self.count_nbr_dim_days = res['tdim'] if res else 0
-                self.count_nbr_ferier_days = res['tferie'] if res else 0
-                self.count_nbr_dim_days_v = res['tdimv'] if res else 0
-                self.count_nbr_ferier_days_v = res['tferiev'] if res else 0
-                self.count_nbr_absense_days = res['tabsense'] if res else 0
-    
+    @api.depends('rapport_lines.j_travaille','rapport_lines.day_type') 
+    def _compute_sundays(self):
 
-    @api.depends('holiday_ids') 
+        for rapport in self:
+            rapport.count_nbr_dim_days = sum(float(line.j_travaille) for line in rapport.rapport_lines.filtered(lambda ln: ln.day_type == '2' and float(ln.h_travailler) > 0))
+    
+    @api.depends('rapport_lines.j_travaille','rapport_lines.day_type') 
+    def _compute_jour_ferie(self):
+        
+        for rapport in self:
+            rapport.count_nbr_ferier_days = sum(float(line.j_travaille) for line in rapport.rapport_lines.filtered(lambda ln: ln.day_type == '3'))
+
+    @api.depends('rapport_lines.j_travaille','rapport_lines.day_type','rapport_lines.h_travailler_v') 
+    def _compute_sundays_valide(self):
+        
+        for rapport in self:
+            rapport.count_nbr_dim_days_v = sum(float(line.j_travaille_v) for line in rapport.rapport_lines.filtered(lambda ln: ln.day_type == '2' and float(ln.h_travailler_v) > 0))  
+
+    @api.depends('rapport_lines.j_travaille','rapport_lines.day_type','rapport_lines.h_travailler_v') 
+    def _compute_jour_ferier_valide(self):
+        
+        for rapport in self:
+            rapport.count_nbr_ferier_days_v = sum(float(line.j_travaille_v) for line in rapport.rapport_lines.filtered(lambda ln: ln.day_type == '3' and float(ln.h_travailler_v) > 0))
+    
+    @api.depends('rapport_lines.j_travaille','rapport_lines.day_type') 
+    def _compute_days_absence(self):
+        
+        for rapport in self:
+            rapport.count_nbr_absense_days = sum(float(line.j_travaille) for line in rapport.rapport_lines.filtered(lambda ln: ln.day_type == '5')) 
+
+    @api.depends('holiday_ids.duree_jours') 
     def _compute_total_holidays(self):
-        res = 0
-        res2 = 0
 
-        for holiday in self.holiday_ids:
-            res += holiday.duree_jours
-            res2 += holiday.nbr_jour_compenser
-        self.count_nbr_holiday_days = res
-        self.count_nbr_holiday_days_v = res2
+        for rapport in self:
+            rapport.count_nbr_holiday_days = sum(float(line.duree_jours) for line in rapport.holiday_ids)
+
+    @api.depends('holiday_ids.nbr_jour_compenser') 
+    def _compute_total_holidays_valide(self):
+
+        for rapport in self:
+            rapport.count_nbr_holiday_days_v = sum(float(line.nbr_jour_compenser) for line in rapport.holiday_ids) 
 
 
     def _compute_holidays_liste(self):
@@ -154,12 +162,12 @@ class hr_rapport_pointage(models.Model):
     period_id = fields.Many2one("account.month.period",u'Période',required=True,readonly=True,domain = _get_period_default, index=True)
 
     #--------------------------------------------------
-    total_h = fields.Float("Heures Travaillées",compute="_compute_hours",readonly=True,store=True)
-    total_h_bonus = fields.Float("Heures Bonus",compute="_compute_hours",readonly=True,store=True)
-    total_h_sup = fields.Float("Heures Supp",compute="_compute_hours",readonly=True,store=True)
-    total_j = fields.Float("Jours Travaillés",readonly=True,compute="_compute_days",store=True)
-    total_h_v = fields.Float("Heures Validées",compute="_compute_hours",readonly=True,store=True)
-    total_j_v = fields.Float("Jours Validés",readonly=True,compute="_compute_days",store=True)
+    total_h = fields.Float("Heures Travaillées",compute="_compute_total_h",readonly=True,store=True)
+    total_h_bonus = fields.Float("Heures Bonus",compute="_compute_total_h_bonus",readonly=True,store=True)
+    total_h_sup = fields.Float("Heures Supp",compute="_compute_total_h_sup",readonly=True,store=True)
+    total_j = fields.Float("Jours Travaillés",readonly=True,compute="_compute_total_j",store=True)
+    total_h_v = fields.Float("Heures Validées",compute="_compute_total_h_v",readonly=True,store=True)
+    total_j_v = fields.Float("Jours Validés",readonly=True,compute="_compute_total_j_v",store=True)
     #--------------------------------------------------
     note = fields.Text("Observation", states=READONLY_STATES)
 
@@ -173,13 +181,13 @@ class hr_rapport_pointage(models.Model):
     state = fields.Selection([('draft',u'Brouillon'),('working',u'Traitement En Cours'),('compute',u"Rapport Calculé"),('valide',u"Validé"),('done',u"Clôturé"),('cancel','Annulé')],u"Etat Pointage",default='draft',tracking=True)
     #--------------------------------------------------
     count_nbr_holiday_days = fields.Float("Jours Congés",readonly=True,compute="_compute_total_holidays")
-    count_nbr_ferier_days = fields.Float("Jours Fériés",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
-    count_nbr_dim_days = fields.Float("Dimanches",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
-    count_nbr_absense_days = fields.Float("Absences",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
+    count_nbr_ferier_days = fields.Float("Jours Fériés",readonly=True,compute="_compute_jour_ferie",store=True)
+    count_nbr_dim_days = fields.Float("Dimanches",readonly=True,compute="_compute_sundays",store=True)
+    count_nbr_absense_days = fields.Float("Absences",readonly=True,compute="_compute_days_absence",store=True)
 
-    count_nbr_holiday_days_v = fields.Float("Jours Congés",readonly=True,compute="_compute_total_holidays")
-    count_nbr_ferier_days_v = fields.Float("Jours Fériés Travaillés",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
-    count_nbr_dim_days_v = fields.Float("Dimanches",readonly=True,compute="_compute_days_conge_absence_abondon",store=True)
+    count_nbr_holiday_days_v = fields.Float("Jours Congés",readonly=True,compute="_compute_total_holidays_valide")
+    count_nbr_ferier_days_v = fields.Float("Jours Fériés Travaillés",readonly=True,compute="_compute_jour_ferier_valide",store=True)
+    count_nbr_dim_days_v = fields.Float("Dimanches",readonly=True,compute="_compute_sundays_valide",store=True)
     #--------------------------------------------------
     jom = fields.Float(related='period_id.jom',readonly=True)
 
