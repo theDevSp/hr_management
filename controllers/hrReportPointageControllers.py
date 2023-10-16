@@ -220,7 +220,7 @@ class printReportPointageController(http.Controller):
 			    elif (re_line.day_type in ('2', '3') and h_tr > 0.0):
 				sup = h_tr
                         else:
-                            sup = 0
+                            sup = 0.0
 
                                 
                         dates_lines.append({
