@@ -386,119 +386,119 @@ export async function content_fiche_de_paie(data, chantier, period, quinz, type)
                                             text: tab.employe_name,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_cin,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 1.4],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_fonction,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_code_engin,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_date_embauche,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_panier_cp,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_profile_de_paie,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_bank,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_salaire_de_base,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_jours_heure,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: '741.0',
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_total,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_deduction,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_cotisation,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_sad,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_prime_ftor,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
                                         {
                                             text: tab.employe_nap,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         },
 
@@ -506,7 +506,7 @@ export async function content_fiche_de_paie(data, chantier, period, quinz, type)
                                             text: tab.observation,
                                             fontSize: 8,
                                             color: 'black',
-                                            margin: [0, 0.1],
+                                            margin: [0, 4],
                                             alignment: 'center'
                                         }
                                     ]
