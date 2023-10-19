@@ -112,7 +112,9 @@
         'views/owl_views/conges/conges_views_inherit.xml',
         'views/owl_views/stc/stc_views_inherit.xml',
         'views/owl_views/transfert/transfert_views_inherit.xml',
-        'views/owl_views/fiche_de_paie/fiche_de_paie_views_inherit.xml'
+        'views/owl_views/fiche_de_paie/fiche_de_paie_views_inherit.xml',
+        'views/owl_views/fixation/fixation_salaire_views_inherit.xml'
+        
 
 ],
 
