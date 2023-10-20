@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<data>
+    <record id="fixation_sal_list_view_inherit" model="ir.ui.view">
+        <field name="name">fixation.sal.list.view.inherit</field>
+        <field name="model">hr.fixation.salaire</field>
+        <field name="inherit_id" ref="hr_management.fixation_salaire_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class">fixation_sal_list_view</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fixation_sal_form_view_inherit" model="ir.ui.view">
+        <field name="name">fixation.sal.form.view.inherit</field>
+        <field name="model">hr.fixation.salaire</field>
+        <field name="inherit_id" ref="hr_management.fixation_salaire_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="js_class">fixation_sal_form_view</attribute>
+            </xpath>
+        </field>
+    </record>
+</data>
+</odoo>

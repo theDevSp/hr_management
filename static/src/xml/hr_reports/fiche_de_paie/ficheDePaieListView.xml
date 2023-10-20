@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="owl.ficheDePaieListView.Buttons" t-inherit="web.ListView.Buttons" owl="1">
+        <xpath expr="//button[hasclass('o_list_button_add')]" position="after">
+
+            <button t-on-click="()=>this.modalPrint()" t-if="!nbSelected" class="ms-2 btn btn-outline-info" type="button">
+                <i class="fa fa-print"></i> Imprimer
+            </button>
+
+            <div t-ref="modalPrint" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button id="modalClose1" type="button" class="btn-close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row justify-content-center">
+                                <div class="col-8">
+                                    <div class="bg-white shadow p-3">
+                                        <div class="card bg-light my-3">
+                                            <div class="card-body text-center">
+                                                <h2 class="card-text">Fiche de Paie - Impression Mensuelle</h2>
+                                            </div>
+                                        </div>
+                                        <div class="card bg-light my-3">
+                                            <div class="card-body">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <label for="select-period">Période :</label>
+                                                        </span>
+                                                    </div>
+                                                    <select required="True" id="select-period" class="form-control" name="period" placeholder="Sélectionner une Période"></select>
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <label for="select-chantier">Chantier :</label>
+                                                        </span>
+                                                    </div>
+                                                    <select required="True" id="select-chantier" class="form-control" name="chantier" placeholder="Sélectionner un Chantier"></select>
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <label for="select-type">Type d'employé :</label>
+                                                        </span>
+                                                    </div>
+                                                    <select required="True" id="select-type" class="form-control" name="employe_type" placeholder="Sélectionner le Type de l'employé"></select>
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <label for="select-quinzine">Quinzine :</label>
+                                                        </span>
+                                                    </div>
+                                                    <select required="True" id="select-quinzine" class="form-control" name="quinzine" placeholder="Sélectionner le Quinzine"></select>
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <label for="select-equipe">Équipe :</label>
+                                                        </span>
+                                                    </div>
+                                                    <select id="select-equipe" class="form-control" name="equipe" placeholder="Sélectionner l'Équipe"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="modalClose2">Close</button>
+                            <button t-on-click="()=>this.verify()" type="button" class="btn btn-primary" id="modalSubmit">Imprimer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </xpath>
+    </t>
+</templates>

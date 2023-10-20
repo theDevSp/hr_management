@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="owl.fixationSalListView.Buttons" t-inherit="web.ListView.Buttons" owl="1">
+        <xpath expr="//button[hasclass('o_list_button_add')]" position="after">
+            <div class="dropdown">
+                <button t-if="nbSelected" class="ms-2 btn btn-outline-info" type="button" t-on-click="()=>this.printAllFixationSal(this.model.root.selection)">
+                    <i class="fa fa-print"></i> Imprimer
+                </button>
+            </div>            
+        </xpath>
+    </t>
+</templates>
