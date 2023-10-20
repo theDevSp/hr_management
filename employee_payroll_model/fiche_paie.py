@@ -52,6 +52,12 @@ class fiche_paie(models.Model):
     affich_jour_ferier = fields.Float(related="rapport_id.count_nbr_ferier_days",string="JF Travailés")
     affich_conge = fields.Float(related="rapport_id.count_nbr_holiday_days",string="Congé Payée")
     affich_jour_absence = fields.Float(related="rapport_id.count_nbr_absense_days",string="Absence")
+
+    autoriz_cp = fields.Boolean('Compléter le Salaire')
+    autoriz_zero_cp = fields.Boolean('Compléter avec Panier < 0')
+    overrid_bonus = fields.Boolean('Dépassement bonus')
+
+    cp_number = fields.Float('Nombre Jours Compensation',compute="_compute_cp_number",store=True,readonly=True)
     
     addition = fields.Float('Total Avantage',compute="_compute_total_addition",store=True)
     deduction = fields.Float('Total Déduction',compute="_compute_total_deduction",store=True)
@@ -74,6 +80,8 @@ class fiche_paie(models.Model):
     net_paye_archive = fields.Float('Net à Payer')
     new_help = fields.Boolean('field_name',default=False)
 
+    jom = fields.Float(related='period_id.jom',readonly=True)
+
     @api.model
     def create(self, vals):
         today = datetime.now()
@@ -83,7 +91,16 @@ class fiche_paie(models.Model):
         vals['name'] =  str(fiche_paie_sequence) + '/' + str(month) + '/' + str(year)   
         self.payroll_validation(vals['contract_id'],vals['period_id'])  
         self.unique_payroll_validation(vals['employee_id'],vals['period_id'],vals['quinzaine'])   
-        return super(fiche_paie, self).create(vals)
+
+        res = super(fiche_paie, self).create(vals)
+
+        last_paied_period = self.env[self._name].search_read([('employee_id','>=',res.employee_id.id),('id','<',res.id)],['notes'],limit=1, order='id desc')
+        print(res,last_paied_period[0])
+        res.write({
+            'notes': res.notes + '\n' + last_paied_period[0]['notes'] if res.notes else last_paied_period[0]['notes']
+        })
+        
+        return res
 
     def write(self, vals):
         res = super(fiche_paie, self).write(vals)
@@ -95,6 +112,15 @@ class fiche_paie(models.Model):
         
         return res
 
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','autoriz_cp','autoriz_zero_cp')
+    def _compute_cp_number(self):
+        print(self.employee_result())
+        for rec in self:
+            if rec.autoriz_cp:
+                rec.cp_number = min(rec.employee_result()['j_comp'],self.employee_id.panier_conge) if rec.employee_result() else 0
+            elif rec.autoriz_zero_cp:
+                rec.cp_number = rec.employee_result()['j_comp'] if rec.employee_result() else 0
+    
     @api.depends('employee_id','period_id','contract_id')
     def _compute_salaire_jour(self):
         for rec in self:
@@ -172,6 +198,8 @@ class fiche_paie(models.Model):
     def get_contract_actif(self):
         if self.employee_id:
             self.contract_id = self.employee_id.contract_id
+            self.autoriz_cp = self.employee_id.completer_salaire_related
+    
 
     def _compute_affich_bonus_jour(self):
         
@@ -339,6 +367,35 @@ class fiche_paie(models.Model):
             'view_id': view.id,
         }
 
+    def employee_result(self):
+
+        if self.contract_id and self.period_id:
+
+            type_emp = self.contract_id.type_emp
+            type_profile = self.contract_id.type_profile_related
+            jom = self.period_id.jom # jour ouvrable par mois
+            joe = self.contract_id.nbre_jour_worked_par_mois_related if self.contract_id.definition_nbre_jour_worked_par_mois_related == 'nbr_saisie' else self.period_id.get_number_of_days_per_month() # jour ouvrable sur lesquels le salaire de base de l'employé est définis
+            default_day_2_add = joe - jom  if self.contract_id.definition_nbre_jour_worked_par_mois_related == 'nbr_saisie' else 0 # jour de réguralisation pour les mois exceptionnels (24-25-27)
+            hnt = joe * self.contract_id.nbre_heure_worked_par_jour_related # heure de travail sur lesquelles le salaire de base de l'employé est définis
+            hntj = self.contract_id.nbre_heure_worked_par_jour_related # heure de travail sur lesquelles le salaire de base de l'employé est définis
+            jot = self.nbr_jour_travaille + default_day_2_add # jour travaillé par le salarié + la régularisation
+            ht = self.nbr_heure_travaille # heure travaillées par le salarié
+            h_comp = hnt - ht # heure de compensation de salaire
+            ht_equi_days = h_comp / hntj if hntj > 0 else 0 
+            j_comp = joe - jot if type_profile == 'j' else ht_equi_days # jour/heure de compensation de salaire
+
+            return {
+                'type_emp':type_emp,
+                'type_profile':type_profile,
+                'jnt':joe,
+                'jt':jot,
+                'hnt':hnt,
+                'ht':ht,
+                'j_comp':j_comp,
+                'default_day_2_add':default_day_2_add
+            }
+        
+        return False
 
 class days_per_addition(models.Model):
     

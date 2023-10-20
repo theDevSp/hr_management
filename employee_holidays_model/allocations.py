@@ -89,6 +89,6 @@ class allocations(models.Model):
                 WHERE categorie %s 'dimanche_travaille' 
                 AND employee_id = %s AND period_id <= %s and period_id >= %s
                 AND state = 'approuvee'
-            """ % ('=' if is_dimanche else '!=',employee_id.id,period_actuel_id.id,period_debut_contrat_id.id)
+            """ % ('=' if is_dimanche else '!=',employee_id.id,period_actuel_id.id,period_debut_contrat_id.id if period_debut_contrat_id else 7)
         self.env.cr.execute(query)
         return self.env.cr.fetchall()[0][0]

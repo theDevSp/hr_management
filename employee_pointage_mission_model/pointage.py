@@ -545,7 +545,7 @@ class hr_rapport_pointage(models.Model):
         comp_jf = resume['j_comp'] - resume['jf']
         
         return {
-            'handeled_days':min(resume['j_comp'],resume['jf']),
+            'handeled_days':min(resume['j_comp'],resume['jf']), # nombre de jour compenser ou jour ferie restant
             'j_r_comp' : comp_jf if comp_jf > 0 else 0, # régler avec dimanche travaillé ou congé justifier (condition > 0)
             'jf_alloacation' : -comp_jf if comp_jf < 0 else 0 # allocation panier jour férier (condition > 0)
         }
@@ -558,7 +558,7 @@ class hr_rapport_pointage(models.Model):
 
         handeled_days,handeled_sun_days,j_alloaction = 0,0,0
 
-        if comp_jd > 0:
+        if comp_jd > 0: # 
             handeled_days = resume['jc']
             j_alloaction = max(0,-jd_jc_used)
 
@@ -570,9 +570,11 @@ class hr_rapport_pointage(models.Model):
             j_alloaction = max(0,resume['jd'] - handeled_days)
 
         return {
-            'handeled_days' : handeled_days,
-            'handeled_sun_days' : handeled_sun_days,
-            'jd_alloaction' : j_alloaction # allocation panier dimanche (condition > 0)
+            'handeled_days_jf' : self.handle_jf_for_daily_worker()['handeled_days'], # C.P jf
+            'handeled_days' : handeled_days, # C.P
+            'handeled_sun_days' : handeled_sun_days, # C.P par Dimanche
+            'jd_alloaction' : j_alloaction, # allocation panier dimanche (condition > 0)
+            'jf_alloaction' : self.handle_jf_for_daily_worker()['jf_alloacation'] # allocation panier jour ferier (condition > 0)
         }
     
     def handle_hours_needed_for_hourly_worker(self):
@@ -587,5 +589,6 @@ class hr_rapport_pointage(models.Model):
             
         return {
             'panier_jour_ferier':jf_paied,
-            'default_allocation' : j_default_allocation,
+            'default_allocation' : j_default_allocation, # allocation panier par defaut pour les salarie horaire
+            'j_allocation':j_allocation # a;llocation panier si > 0
         }

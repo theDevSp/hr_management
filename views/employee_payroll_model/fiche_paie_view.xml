@@ -272,7 +272,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" ><label for="net_paye_archive" class=""/></span>
                                             </div>
-                                            <field name="net_paye_archive" class="form-control text-center"/>
+                                            <field name="net_paye_archive" class="form-control text-center" readonly="1"/>
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
                                             </div>
@@ -281,9 +281,52 @@
                                 </div> 
                             </div>
                         </div>
+                        
+                    </div>
+                    <div class="col-12 col-md-8 col-lg-3">
+                        <div class="col- mt-3 justify-content-center">
+                            <field name="type_profile_related" invisible="1"/>
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">COMPENSATION SALAIRE</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="autoriz_cp" class=""/></span>
+                                            </div>
+                                            <field name="autoriz_cp" widget="boolean_toggle" class="form-control text-center"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="autoriz_zero_cp" class=""/></span>
+                                            </div>
+                                            <field name="autoriz_zero_cp" widget="boolean_toggle" class="form-control text-center"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="overrid_bonus" class=""/></span>
+                                            </div>
+                                            <field name="overrid_bonus" widget="boolean_toggle" class="form-control text-center"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="cp_number" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="cp_number" class="form-control text-center"/>
+                                        </div>
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-12 col-md-8 col-lg-3">
                         <div class="col- mt-3 justify-content-center">
                             <div class="bg-white shadow p-3">
-                                <div class="alert alert-danger text-center mb-2"><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> Champs Obligatoire </div>
                                 <div class="card bg-light my-3">
                                     <div class="card-body">   
                                         <ul class="list-group">
@@ -397,12 +440,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-8 col-lg-6">
-                        <div class="row mt-3 mt-md-0 justify-content-center">
+                </div>
+                <div class="row mt-3 justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-5">
+                        <div class="row mt-3 justify-content-center">
                             <div class="col-12">
                                 <field name="addition" class="d-block" widget="addition_payement"/>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-12 col-md-8 col-lg-5">
                         <div class="row mt-3 justify-content-center">
                             <div class="col-12">
                                 <field name="deduction" class="d-block" widget="deduction_payement"/>    

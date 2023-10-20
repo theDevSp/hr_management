@@ -112,9 +112,9 @@ class contrats(models.Model):
         res = self.env.cr.dictfetchall()[0]
         if(res['count']==0):
             
-            today = datetime.now()
-            year = today.year
-            month = '{:02d}'.format(today.month)
+            ref_date = datetime.strptime(vals['date_start'],"%Y-%m-%d")
+            year = ref_date.year
+            month = '{:02d}'.format(ref_date.month)
             contract_sequence = self.env['ir.sequence'].next_by_code('hr.contract.sequence')
             vals['name'] = vals['type_emp'] + '-' + str(month) + '/' + str(year) + '/' + str(contract_sequence)
         else:
