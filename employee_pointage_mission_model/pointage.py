@@ -185,9 +185,9 @@ class hr_rapport_pointage(models.Model):
     count_nbr_dim_days = fields.Float("Dimanches",readonly=True,compute="_compute_sundays",store=True)
     count_nbr_absense_days = fields.Float("Absences",readonly=True,compute="_compute_days_absence",store=True)
 
-    count_nbr_holiday_days_v = fields.Float("Jours Congés",readonly=True,compute="_compute_total_holidays_valide")
+    count_nbr_holiday_days_v = fields.Float("Jours Congés Validés",readonly=True,compute="_compute_total_holidays_valide")
     count_nbr_ferier_days_v = fields.Float("Jours Fériés Travaillés",readonly=True,compute="_compute_jour_ferier_valide",store=True)
-    count_nbr_dim_days_v = fields.Float("Dimanches",readonly=True,compute="_compute_sundays_valide",store=True)
+    count_nbr_dim_days_v = fields.Float("Dimanches Validés",readonly=True,compute="_compute_sundays_valide",store=True)
     #--------------------------------------------------
     jom = fields.Float(related='period_id.jom',readonly=True)
 
@@ -499,8 +499,7 @@ class hr_rapport_pointage(models.Model):
             else:
                 data[key]['j'] = float(line.j_travaille_v)
                 
-        
-        print(data)
+
 
     def rapport_result(self):
         contract = self.employee_id.contract_id # contrat par defaut

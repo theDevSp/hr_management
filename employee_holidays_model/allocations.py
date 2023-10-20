@@ -34,6 +34,7 @@ class allocations(models.Model):
     )
     period_id = fields.Many2one("account.month.period", string = "Période")
     stc_id = fields.Many2one("hr.stc", string = "STC", required=False)
+    payslip_id = fields.Many2one("hr.payslip", string = "Fiche de Paie", required=False)
 
 
     @api.model

@@ -35,8 +35,8 @@ class fiche_paie(models.Model):
         ("draft","Brouillon"),
         ("validee","Validée"),
         ("cal","Calculée"),
-        ("approuved","Clôturé"),
         ("done","Payée"),
+        ("approuved","Clôturé"),
         ("annulee","Annulée"),
         ("blocked","Bloquée"),
         ],"Status", 
@@ -48,16 +48,16 @@ class fiche_paie(models.Model):
     affich_bonus_jour = fields.Float("Bonus jour", compute="_compute_affich_bonus_jour", readonly=True)
     affich_jour_conge = fields.Float("Panier congé", compute="_compute_panier", readonly=True, store=True)
     affich_jour_dimanche_conge = fields.Float("Panier dimanche", compute="_compute_panier", readonly=True, store=True)
-    affich_jour_dimanche = fields.Float(related="rapport_id.count_nbr_dim_days",string="Dimanches Travailés")
+    affich_jour_dimanche = fields.Float(related="rapport_id.count_nbr_dim_days_v",string="Dimanches Travailés")
     affich_jour_ferier = fields.Float(related="rapport_id.count_nbr_ferier_days",string="JF Travailés")
     affich_conge = fields.Float(related="rapport_id.count_nbr_holiday_days",string="Congé Payée")
     affich_jour_absence = fields.Float(related="rapport_id.count_nbr_absense_days",string="Absence")
 
     autoriz_cp = fields.Boolean('Compléter le Salaire')
-    autoriz_zero_cp = fields.Boolean('Compléter avec Panier < 0')
+    autoriz_zero_cp = fields.Boolean('Compléter avec Panier <= 0')
     overrid_bonus = fields.Boolean('Dépassement bonus')
 
-    cp_number = fields.Float('Nombre Jours Compensation',compute="_compute_cp_number",store=True,readonly=True)
+    cp_number = fields.Float('Nombre Jours Compensation',compute="_compute_cp_number",store=True)
     
     addition = fields.Float('Total Avantage',compute="_compute_total_addition",store=True)
     deduction = fields.Float('Total Déduction',compute="_compute_total_deduction",store=True)
@@ -95,7 +95,7 @@ class fiche_paie(models.Model):
         res = super(fiche_paie, self).create(vals)
 
         last_paied_period = self.env[self._name].search_read([('employee_id','>=',res.employee_id.id),('id','<',res.id)],['notes'],limit=1, order='id desc')
-        print(res,last_paied_period[0])
+
         res.write({
             'notes': res.notes + '\n' + last_paied_period[0]['notes'] if res.notes else last_paied_period[0]['notes']
         })
@@ -114,12 +114,13 @@ class fiche_paie(models.Model):
 
     @api.depends('nbr_jour_travaille','nbr_heure_travaille','autoriz_cp','autoriz_zero_cp')
     def _compute_cp_number(self):
-        print(self.employee_result())
         for rec in self:
             if rec.autoriz_cp:
                 rec.cp_number = min(rec.employee_result()['j_comp'],self.employee_id.panier_conge) if rec.employee_result() else 0
             elif rec.autoriz_zero_cp:
                 rec.cp_number = rec.employee_result()['j_comp'] if rec.employee_result() else 0
+            else:
+                rec.cp_number = 0
     
     @api.depends('employee_id','period_id','contract_id')
     def _compute_salaire_jour(self):
@@ -171,7 +172,7 @@ class fiche_paie(models.Model):
                     WHERE pt.type_payement = 'j' and pt.type_addition = 'perio' and (p.employee_id = %s or p.employee_id is null) 
                     and p.state = 'validee' and p.first_period_id = %s and dp.payroll_id = %s
                     
-                """ %(rec.employee_id.id,rec.period_id.id,rec.employee_id.id,rec.period_id.id,rec.id)
+                """ %(rec.employee_id.id,rec.period_id.id,rec.employee_id.id,rec.period_id.id,rec._origin.id)
                 rec.env.cr.execute(query)
                 for prime in rec.env.cr.dictfetchall():
                     if rec.employee_id.get_working_years_in_days(prime['date_start']) >= prime['condition']:
@@ -224,9 +225,9 @@ class fiche_paie(models.Model):
                 res = worked_time / base_time * 1.5
 
                 if profile_paie_p.periodicity == "m":
-                    record.affich_bonus_jour = min(res, 1.5)
+                    record.affich_bonus_jour = min(res, 1.5) if not record.overrid_bonus else res
                 else:
-                    record.affich_bonus_jour = min(res,0.75)  
+                    record.affich_bonus_jour = min(res,0.75) if not record.overrid_bonus else res  
 
 
     @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','addition','deduction')
@@ -259,6 +260,7 @@ class fiche_paie(models.Model):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
             if self.state == 'cal' :
                 self.state = 'done'
+                self.add_bonus()
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -272,6 +274,7 @@ class fiche_paie(models.Model):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
             if self.state == 'cal' :
                 self.state = 'validee'
+                self.delete_bonus()
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -300,6 +303,7 @@ class fiche_paie(models.Model):
             if self.state not in {'annulee'} :
                 self.state = 'annulee'
                 self.date_validation = ""
+                self.delete_bonus()
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -313,6 +317,7 @@ class fiche_paie(models.Model):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
             if self.state in {'cal','done'} :
                 self.state = 'blocked'
+                self.delete_bonus()
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -396,6 +401,23 @@ class fiche_paie(models.Model):
             }
         
         return False
+
+    def add_bonus(self):
+        if self.cp_number > 0:
+            self.env['hr.allocations'].sudo().create({
+                'name':'paiement du mois %s'%self.period_id.name,
+                'employee_id':self.employee_id.id,
+                'categorie':'bonus',
+                'nbr_jour':self.cp_number,
+                'state':'approuvee',
+                'period_id':self.period_id.id,
+                'payslip_id':self.id,
+            })
+    
+    def delete_bonus(self):
+
+        for bonus in self.env['hr.allocations'].sudo().search([('payslip_id','=',self.id)]):
+            bonus.sudo().unlink()
 
 class days_per_addition(models.Model):
     

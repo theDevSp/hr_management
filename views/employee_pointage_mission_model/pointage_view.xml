@@ -218,7 +218,7 @@
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0" groups="hr_management.group_pointeur">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
                                                 <div class="row w-100 h-100 m-0">
                                                     <div class="col-8 p-2">
                                                         <label for="count_nbr_holiday_days"/>
@@ -258,7 +258,7 @@
                                                     </div>
                                                 </div>
                                             </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0" groups="hr_management.group_pointeur">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
                                                 <div class="row w-100 h-100 m-0">
                                                     <div class="col-8 p-2">
                                                         <label for="count_nbr_dim_days"/>

@@ -39,7 +39,8 @@ class profilepaie(models.Model):
     payed_holidays = fields.Boolean("Jours Férié Remboursser", default=True)
     saved_holidays = fields.Boolean("Jours Férié Conserver", default=True)
     justification = fields.Boolean("Détails travaux obligé", default=True)
-    jo = fields.Boolean("Calculer les jours ouvrables", default=True)
+    jo = fields.Boolean("Calculer les jours ouvrables", default=False)
+    autoriz_zero_cp = fields.Boolean('Compléter avec Panier <= 0')
     period_id = fields.Many2one("account.month.period", string = "Période")
     periodicity = fields.Selection(
         [("q", "Quinzainier"),

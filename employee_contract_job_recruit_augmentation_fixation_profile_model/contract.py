@@ -45,6 +45,7 @@ class contrats(models.Model):
     justification_related = fields.Boolean(related="pp_personnel_id_many2one.justification", readonly=False)
     saved_holidays_related = fields.Boolean(related="pp_personnel_id_many2one.saved_holidays", readonly=False)
     jo_related = fields.Boolean(related="pp_personnel_id_many2one.jo", readonly=False)
+    autoriz_zero_cp_related = fields.Boolean(related="pp_personnel_id_many2one.autoriz_zero_cp", readonly=False)
     period_id_related = fields.Many2one(related="pp_personnel_id_many2one.period_id", readonly=False)
     salaire_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_jour", readonly=True)
     salaire_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_demi_jour", readonly=True)
