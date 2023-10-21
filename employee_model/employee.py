@@ -99,6 +99,11 @@ class hr_employee(models.Model):
     completer_salaire_related = fields.Boolean(related="pp_personnel_id_many2one.completer_salaire", readonly=True)
     plafonner_bonus_related = fields.Boolean(related="pp_personnel_id_many2one.plafonner_bonus", readonly=True)
     avoir_conge_related = fields.Boolean(related="pp_personnel_id_many2one.avoir_conge", readonly=True)
+    payed_holidays_related = fields.Boolean(related="pp_personnel_id_many2one.payed_holidays", readonly=False)
+    justification_related = fields.Boolean(related="pp_personnel_id_many2one.justification", readonly=False)
+    saved_holidays_related = fields.Boolean(related="pp_personnel_id_many2one.saved_holidays", readonly=False)
+    jo_related = fields.Boolean(related="pp_personnel_id_many2one.jo", readonly=False)
+    autoriz_zero_cp_related = fields.Boolean(related="pp_personnel_id_many2one.autoriz_zero_cp", readonly=False)
     period_id_related = fields.Many2one(related="pp_personnel_id_many2one.period_id", readonly=True)
     salaire_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_jour", readonly=True)
     salaire_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_demi_jour", readonly=True)
@@ -317,89 +322,113 @@ class hr_employee(models.Model):
 
 
     def all_contracts(self):
+
+        tree_id = self.env.ref('hr_management.contrats_nouveaux_tree').id
+        form_id = self.env.ref('hr_management.contrats_nouveaux_view_form').id
+
         return {
             'name': 'Les contrats de ' + self.name,
             'res_model':'hr.contract',
-            
-            'view_mode': 'list',
-            'views': [[False, 'list'], [False, 'form']],
+            'view_mode': 'list,form',
+            'views': [(tree_id, 'tree'),(form_id,'form')],
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id)],
             }
     
     def all_augmentations(self):
+
+        tree_id = self.env.ref('hr_management.augmentation_par_employee_tree_view').id
+        form_id = self.env.ref('hr_management.augmentation_formulaire').id
+
         return {
             'name': 'Les augmentations de ' + self.name,
             'res_model':'hr.augmentation',
-            
-            'view_mode': 'list',
-            'view_id': self.env.ref('hr_management.augmentation_par_employee_tree_view').id,
+            'view_mode': 'list,form',
+            'views': [(tree_id, 'tree'),(form_id,'form')],
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id)],
             }
     
     def all_primes(self):
+
+        tree_id = self.env.ref('hr_management.prime_par_employee_tree_view').id
+        form_id = self.env.ref('hr_management.prime_view_form').id
+
         return {
             'name': 'Les primes de ' + self.name,
             'res_model':'hr.prime',
-            
-            'view_mode': 'list',
-            'view_id': self.env.ref('hr_management.prime_par_employee_tree_view').id,
+            'view_mode': 'list,form',
+            'views': [(tree_id, 'tree'),(form_id,'form')],
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id)],
             }
     
     def all_prelevements(self):
+
+        tree_id = self.env.ref('hr_management.prelevement_par_employee_tree_view').id
+        form_id = self.env.ref('hr_management.prelevement_view_form').id
+
         return {
             'name': 'Les prélèvements de ' + self.name,
             'res_model':'hr.prelevement',
-            
-            'view_mode': 'list',
-            'view_id': self.env.ref('hr_management.prelevement_par_employee_tree_view').id,
+            'view_mode': 'list,form',
+            'views': [(tree_id, 'tree'),(form_id,'form')],
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id),('is_credit', "!=", 'True')],
             }
 
     def all_credits(self):
+
+        tree_id = self.env.ref('hr_management.credit_par_employee_tree_view').id
+        form_id = self.env.ref('hr_management.credit_view_form').id
+
         return {
             'name': 'Les crédits de ' + self.name,
             'res_model':'hr.prelevement',
-            
-            'view_mode': 'list',
-            'view_id': self.env.ref('hr_management.credit_par_employee_tree_view').id,
+            'view_mode': 'list,form',
+            'views': [(tree_id, 'tree'),(form_id,'form')],
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id),('is_credit', "=", 'True')],
             }
 
     def all_conges(self):
+
+        tree_id = self.env.ref('hr_management.holidays_par_employee_tree').id
+        form_id = self.env.ref('hr_management.holidays_formulaire').id
+
         return {
             'name': 'Les congés de ' + self.name,
             'res_model':'hr.holidays',
-            
-            'view_mode': 'list',
-            'view_id': self.env.ref('hr_management.holidays_par_employee_tree').id,
+            'view_mode': 'list,form',
+            'views': [(tree_id, 'tree'),(form_id,'form')],
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id)],
             }
     
 
     def all_fiche_paie(self):
+
+        tree_id = self.env.ref('hr_management.fiche_paie_par_employee_tree').id
+        form_id = self.env.ref('hr_management.fiche_paie_formulaire').id
+
         return {
             'name': 'Les fiches de paie de ' + self.name,
             'res_model':'hr.payslip',
-            
-            'view_mode': 'list',
-            'view_id': self.env.ref('hr_management.fiche_paie_par_employee_tree').id,
+            'view_mode': 'list,form',
+            'views': [(tree_id, 'tree'),(form_id,'form')],
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id)],
             }
 
     def all_stc(self):
+        tree_id = self.env.ref('hr_management.stc_par_employee_tree_view').id
+        form_id = self.env.ref('hr_management.view_stc_form').id
+
         return {
             'name': 'Les STC de ' + self.name,
             'res_model':'hr.stc',
-            'view_mode': 'list',
-            'view_id': self.env.ref('hr_management.stc_par_employee_tree_view').id,
+            'view_mode': 'list,form',
+            'views': [(tree_id, 'tree'),(form_id,'form')],
             'type':'ir.actions.act_window',
             'domain': [('employee_id', '=', self.id)],
             }
