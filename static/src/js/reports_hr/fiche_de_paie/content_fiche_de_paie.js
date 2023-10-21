@@ -212,7 +212,7 @@ export async function content_fiche_de_paie(data, chantier, period, quinz, type)
                     table:
                     {
                         headerRows: 1,
-                        widths: [120, 35, 80, 50, 60, 35, 50, 60, 50, 50, 30, 39, 30, 30, 35, 30, 35, '*'],
+                        widths: [120,50,80,50,45,35,50,60,50,40,30,39,30,30,35,30,35,'*'],
                         dontBreakRows: true,
                         body:
                             [
