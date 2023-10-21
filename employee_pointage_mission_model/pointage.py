@@ -412,7 +412,7 @@ class hr_rapport_pointage(models.Model):
     def is_pointeur(self):
         return self.env['res.users'].has_group("hr_management.group_pointeur")
 
-    def create_payslip(self):
+    def create_update_payslip(self):
         view = self.env.ref('hr_management.fiche_paie_formulaire')
 
         data = {
@@ -429,18 +429,26 @@ class hr_rapport_pointage(models.Model):
             'nbr_jour_travaille':self.total_j_v,
             'nbr_heure_travaille':self.total_h_v
         }
-        created_payroll = self.env['hr.payslip'].create(data)
+        
+        if not self.payslip_ids:
+            created_payroll = self.env['hr.payslip'].create(data)
 
-        return {
-            'name': ("Fiche de paie %s crée" % created_payroll.name),
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'hr.payslip',
-            'res_id': created_payroll.id,
-            'views': [(view.id, 'form')],
-            'view_id': view.id,
-        }
+            return {
+                'name': ("Fiche de paie %s crée" % created_payroll.name),
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'hr.payslip',
+                'res_id': created_payroll.id,
+                'views': [(view.id, 'form')],
+                'view_id': view.id,
+            }
+        else:
+            self.payslip_ids[0].write({
+                'nbr_jour_travaille':self.total_j_v,
+                'nbr_heure_travaille':self.total_h_v
+            })
+
 
     def action_validation(self):
         self.write({'state': 'valide'})
