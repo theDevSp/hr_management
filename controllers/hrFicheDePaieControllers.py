@@ -68,15 +68,21 @@ class HrFicheDePaieController(http.Controller):
                         cotisation = 0
 
                     if grp.employee_id.type_profile_related == 'j':
+                        total = grp.salaire_jour * grp.nbr_jour_travaille
                         jours_heure = grp.nbr_jour_travaille
                     elif grp.employee_id.type_profile_related == 'h':
+                        total = grp.salaire_heure * grp.nbr_heure_travaille
                         jours_heure = grp.nbr_heure_travaille
                     else:
                         jours_heure = 0
+                        total = 0
 
-                    total = grp.salaire_heure * jours_heure
-                    salaire_sad = total - (cotisation + grp.deduction)
-                    salaire_nap = salaire_sad + grp.addition
+                    if grp.type_fiche == 'stc' and grp.state == 'blocked':
+                        salaire_sad = 0
+                        salaire_nap = 0
+                    else:
+                        salaire_sad = total - (cotisation + grp.deduction)
+                        salaire_nap = salaire_sad + grp.addition
 
                     data_entry = {
                         'ref': grp.name or "",
@@ -86,7 +92,7 @@ class HrFicheDePaieController(http.Controller):
                         'employe_type': grp.type_emp or "",
                         'employe_code_engin': grp.employee_id.vehicle_id.code or "",
                         'employe_date_embauche': grp.employee_id.date_start.strftime("%d-%m-%Y") if grp.employee_id.date_start else "",
-                        'employe_panier_cp': grp.employee_id.panier_conge or 0,
+                        'employe_panier_cp': grp.cp_number or 0,
                         'employe_profile_de_paie': grp.employee_id.name_profile_related or "",
                         'employe_bank': grp.employee_id.bank.name or "",
                         'employe_salaire_de_base': grp.salaire_actuel or 0,
