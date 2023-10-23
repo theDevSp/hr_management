@@ -238,6 +238,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                                     ('state', 'in', ('valide','approuved')),
                                     ('date_fait', '>=', last_period_qu1_delimite),
                                     ('date_fait', '<=', now),
+                                    ('type_declaration','in',('6','7'))
                                 ],
                                 fields=['employee_id'],
                                 groupby=['employee_id'],
@@ -264,6 +265,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                                     ('state', 'in', ('valide','approuved')),
                                     ('date_fait', '>=', quinzaine1_first_day),
                                     ('date_fait', '<=', now),
+                                    ('type_declaration','in',('6','7'))
                                 ],
                                 fields=['employee_id'],
                                 groupby=['employee_id'],
@@ -290,6 +292,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                                     ('state', 'in', ('valide','approuved')),
                                     ('date_fait', '>=', quinzaine1_first_day),
                                     ('date_fait', '<=', now),
+                                    ('type_declaration','in',('6','7'))
                                 ],
                                 fields=['employee_id'],
                                 groupby=['employee_id'],

@@ -45,6 +45,7 @@ class contrats(models.Model):
     justification_related = fields.Boolean(related="pp_personnel_id_many2one.justification", readonly=False)
     saved_holidays_related = fields.Boolean(related="pp_personnel_id_many2one.saved_holidays", readonly=False)
     jo_related = fields.Boolean(related="pp_personnel_id_many2one.jo", readonly=False)
+    autoriz_zero_cp_related = fields.Boolean(related="pp_personnel_id_many2one.autoriz_zero_cp", readonly=False)
     period_id_related = fields.Many2one(related="pp_personnel_id_many2one.period_id", readonly=False)
     salaire_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_jour", readonly=True)
     salaire_demi_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_demi_jour", readonly=True)
@@ -112,9 +113,9 @@ class contrats(models.Model):
         res = self.env.cr.dictfetchall()[0]
         if(res['count']==0):
             
-            today = datetime.now()
-            year = today.year
-            month = '{:02d}'.format(today.month)
+            ref_date = datetime.strptime(vals['date_start'],"%Y-%m-%d")
+            year = ref_date.year
+            month = '{:02d}'.format(ref_date.month)
             contract_sequence = self.env['ir.sequence'].next_by_code('hr.contract.sequence')
             vals['name'] = vals['type_emp'] + '-' + str(month) + '/' + str(year) + '/' + str(contract_sequence)
         else:

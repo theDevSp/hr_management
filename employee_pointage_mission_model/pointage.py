@@ -185,9 +185,9 @@ class hr_rapport_pointage(models.Model):
     count_nbr_dim_days = fields.Float("Dimanches",readonly=True,compute="_compute_sundays",store=True)
     count_nbr_absense_days = fields.Float("Absences",readonly=True,compute="_compute_days_absence",store=True)
 
-    count_nbr_holiday_days_v = fields.Float("Jours Congés",readonly=True,compute="_compute_total_holidays_valide")
+    count_nbr_holiday_days_v = fields.Float("Jours Congés Validés",readonly=True,compute="_compute_total_holidays_valide")
     count_nbr_ferier_days_v = fields.Float("Jours Fériés Travaillés",readonly=True,compute="_compute_jour_ferier_valide",store=True)
-    count_nbr_dim_days_v = fields.Float("Dimanches",readonly=True,compute="_compute_sundays_valide",store=True)
+    count_nbr_dim_days_v = fields.Float("Dimanches Validés",readonly=True,compute="_compute_sundays_valide",store=True)
     #--------------------------------------------------
     jom = fields.Float(related='period_id.jom',readonly=True)
 
@@ -412,7 +412,7 @@ class hr_rapport_pointage(models.Model):
     def is_pointeur(self):
         return self.env['res.users'].has_group("hr_management.group_pointeur")
 
-    def create_payslip(self):
+    def create_update_payslip(self):
         view = self.env.ref('hr_management.fiche_paie_formulaire')
 
         data = {
@@ -429,18 +429,26 @@ class hr_rapport_pointage(models.Model):
             'nbr_jour_travaille':self.total_j_v,
             'nbr_heure_travaille':self.total_h_v
         }
-        created_payroll = self.env['hr.payslip'].create(data)
+        
+        if not self.payslip_ids:
+            created_payroll = self.env['hr.payslip'].create(data)
 
-        return {
-            'name': ("Fiche de paie %s crée" % created_payroll.name),
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'hr.payslip',
-            'res_id': created_payroll.id,
-            'views': [(view.id, 'form')],
-            'view_id': view.id,
-        }
+            return {
+                'name': ("Fiche de paie %s crée" % created_payroll.name),
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'hr.payslip',
+                'res_id': created_payroll.id,
+                'views': [(view.id, 'form')],
+                'view_id': view.id,
+            }
+        else:
+            self.payslip_ids[0].write({
+                'nbr_jour_travaille':self.total_j_v,
+                'nbr_heure_travaille':self.total_h_v
+            })
+
 
     def action_validation(self):
         self.write({'state': 'valide'})
@@ -499,8 +507,7 @@ class hr_rapport_pointage(models.Model):
             else:
                 data[key]['j'] = float(line.j_travaille_v)
                 
-        
-        print(data)
+
 
     def rapport_result(self):
         contract = self.employee_id.contract_id # contrat par defaut
@@ -545,7 +552,7 @@ class hr_rapport_pointage(models.Model):
         comp_jf = resume['j_comp'] - resume['jf']
         
         return {
-            'handeled_days':min(resume['j_comp'],resume['jf']),
+            'handeled_days':min(resume['j_comp'],resume['jf']), # nombre de jour compenser ou jour ferie restant
             'j_r_comp' : comp_jf if comp_jf > 0 else 0, # régler avec dimanche travaillé ou congé justifier (condition > 0)
             'jf_alloacation' : -comp_jf if comp_jf < 0 else 0 # allocation panier jour férier (condition > 0)
         }
@@ -558,7 +565,7 @@ class hr_rapport_pointage(models.Model):
 
         handeled_days,handeled_sun_days,j_alloaction = 0,0,0
 
-        if comp_jd > 0:
+        if comp_jd > 0: # 
             handeled_days = resume['jc']
             j_alloaction = max(0,-jd_jc_used)
 
@@ -570,9 +577,11 @@ class hr_rapport_pointage(models.Model):
             j_alloaction = max(0,resume['jd'] - handeled_days)
 
         return {
-            'handeled_days' : handeled_days,
-            'handeled_sun_days' : handeled_sun_days,
-            'jd_alloaction' : j_alloaction # allocation panier dimanche (condition > 0)
+            'handeled_days_jf' : self.handle_jf_for_daily_worker()['handeled_days'], # C.P jf
+            'handeled_days' : handeled_days, # C.P
+            'handeled_sun_days' : handeled_sun_days, # C.P par Dimanche
+            'jd_alloaction' : j_alloaction, # allocation panier dimanche (condition > 0)
+            'jf_alloaction' : self.handle_jf_for_daily_worker()['jf_alloacation'] # allocation panier jour ferier (condition > 0)
         }
     
     def handle_hours_needed_for_hourly_worker(self):
@@ -587,5 +596,6 @@ class hr_rapport_pointage(models.Model):
             
         return {
             'panier_jour_ferier':jf_paied,
-            'default_allocation' : j_default_allocation,
+            'default_allocation' : j_default_allocation, # allocation panier par defaut pour les salarie horaire
+            'j_allocation':j_allocation # a;llocation panier si > 0
         }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="fichepaie_list_view_inherit" model="ir.ui.view">
+            <field name="name">fichepaie.list.view.inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_management.fiche_paie_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="js_class">fichepaie_report</attribute>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+    
+</odoo>
