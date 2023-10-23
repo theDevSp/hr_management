@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api,_
 from odoo.exceptions import ValidationError
 from datetime import datetime
 from datetime import date
@@ -32,7 +32,21 @@ class employee_rib(models.Model):
             else:
                 if len(self.name) < 24 or  len(self.name)>24:
                     raise ValidationError("Erreur, Le numéro de RIB doit avoir 24 caractères.")
-            
+    
+    def to_enable(self):
+        self.employee_id.write({'rib_number':self.id})
+        title = _("Succès")
+        message = _("Le RIB a été activé avec succès pour cet employé")
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': title,
+                'message': message,
+                'sticky': False,
+            }
+        }
+                    
     
 
 

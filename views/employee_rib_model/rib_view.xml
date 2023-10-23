@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+
+
     <record id="rib_tree" model="ir.ui.view">
         <field name="name">RIB</field>
         <field name="model">employee.rib</field>
@@ -20,6 +23,9 @@
         <field name="model">employee.rib</field>
         <field name="arch" type="xml">
             <form>
+                <header class="bar-box-shadow mb-4">
+                    <button name="to_enable" class="btn btn-primary" string="Activer" type="object" icon="fa-sticky-note-o"/>
+                </header>
                 <sheet>
                     <div class="bg-white shadow p-3">
                         <div class="card bg-light my-3">
