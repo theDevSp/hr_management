@@ -92,11 +92,7 @@ class profilepaiepersonnel(models.Model):
                 res = record.get_wage_per_day(period=period) / record.nbre_heure_worked_par_jour
             else:
                 res = record.get_contract_wage_after_raise()
-<<<<<<< HEAD
         return  res
-=======
-        return res
->>>>>>> 8a638096bff3c508d3b1d1ea4a0a42f9a15c5bea
 
     def get_contract_wage_after_raise(self):
         
