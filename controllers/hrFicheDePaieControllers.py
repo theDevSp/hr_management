@@ -98,7 +98,7 @@ class HrFicheDePaieController(http.Controller):
                         'employe_salaire_de_base': f"{grp.salaire_actuel:.2f}" or 0,
                         'employe_deduction': f"{grp.deduction:.2f}" or 0,
                         'employe_cotisation': f"{cotisation:.2f}" or 0,
-                        'employe_jours_heure': f"{jours_heure:.2f}" or 0,
+                        'employe_jours_heure': jours_heure or 0,
                         'employe_cp': f"{grp.cp_number:.2f}" or 0,
                         'employe_total': f"{total:.2f}" or 0,
                         'employe_prime_ftor': f"{grp.addition:.2f}"or 0,
