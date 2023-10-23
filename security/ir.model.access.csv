@@ -270,3 +270,10 @@ mass_holiday_creation_wizard_pointeur,mass_holiday_creation_wizard,model_mass_ho
 
 excluded_employee_admin_paie,excluded_employee_admin,model_excluded_employee,group_admin_paie,1,1,1,1
 excluded_employee_pointeur,excluded_employee,model_excluded_employee,group_pointeur,1,1,1,1
+
+employee_rib_admin_paie,employee_rib_admin,model_employee_rib,group_admin_paie,1,1,1,1
+employee_rib_agent_paie,employee_rib_agent,model_employee_rib,group_agent_paie,1,1,1,1
+employee_rib_service_analytique,employee_rib_service,model_employee_rib,group_service_analytique,1,0,0,0
+employee_rib_controle_gestion,employee_rib_controle,model_employee_rib,group_controle_gestion,1,0,0,0
+employee_rib_pointeur,employee_rib_pointeur,model_employee_rib,group_pointeur,1,0,0,0
+employee_rib_cnss_juridique,employee_rib_cnss_juridique,model_employee_rib,group_cnss_juridique,1,0,0,0

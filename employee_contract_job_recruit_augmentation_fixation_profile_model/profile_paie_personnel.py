@@ -77,13 +77,13 @@ class profilepaiepersonnel(models.Model):
                 else:
                     res = contract_wage * record.nbre_heure_worked_par_jour
 
-        return round(res, 2)
+        return res
     
     def get_wage_per_half_day(self,period=False):
         res = 0
         for record in self: 
             res = record.get_wage_per_hour(period=period) * record.nbre_heure_worked_par_demi_jour
-        return round(res, 2)
+        return res
     
     def get_wage_per_hour(self,period=False):
         res = 0
@@ -92,7 +92,7 @@ class profilepaiepersonnel(models.Model):
                 res = record.get_wage_per_day(period=period) / record.nbre_heure_worked_par_jour
             else:
                 res = record.get_contract_wage_after_raise()
-        return round(res, 2)
+        return  res
 
     def get_contract_wage_after_raise(self):
         

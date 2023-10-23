@@ -77,7 +77,7 @@ class HrFicheDePaieController(http.Controller):
                         jours_heure = 0
                         total = 0
 
-                    if grp.type_fiche == 'stc' and grp.state == 'blocked':
+                    if grp.type_fiche == 'stc' or grp.state == 'blocked':
                         salaire_sad = 0
                         salaire_nap = 0
                     else:

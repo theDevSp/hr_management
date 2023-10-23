@@ -254,7 +254,7 @@
                                 </div> 
                             </div>   
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 my-3 my-md-0">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 my-3">
                             <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">
                                     <div class="card-body text-center">
@@ -509,6 +509,51 @@
                                     </div> 
                                 </div> 
                             </div>
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">INFORMATION BANQUAIRE</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">            
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="rib_number" class=""/></span>
+                                                    </div>
+                                                    <field name="rib_number" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="bank_related" class=""/></span>
+                                                    </div>
+                                                    <field name="bank_related" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="ville_bank_related" class=""/></span>
+                                                    </div>
+                                                    <field name="ville_bank_related" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="bank_agence_related" class=""/></span>
+                                                    </div>
+                                                    <field name="bank_agence_related" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div> 
+                            </div> 
                         </div>
                     
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">

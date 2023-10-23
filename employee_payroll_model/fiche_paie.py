@@ -200,6 +200,7 @@ class fiche_paie(models.Model):
         if self.employee_id:
             self.contract_id = self.employee_id.contract_id
             self.autoriz_cp = self.employee_id.completer_salaire_related
+            self.autoriz_zero_cp = self.employee_id.autoriz_zero_cp_related
     
 
     def _compute_affich_bonus_jour(self):
@@ -412,7 +413,7 @@ class fiche_paie(models.Model):
                 'state':'approuvee',
                 'period_id':self.period_id.id,
                 'payslip_id':self.id,
-            })
+            }) 
     
     def delete_bonus(self):
 
