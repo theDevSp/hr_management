@@ -20,7 +20,7 @@ class hr_employee(models.Model):
     bank_agence = fields.Char(u"Agence")
     adress_personnel = fields.Char(u'Adresse personnel')
     bank_account = fields.Char(u'N° RIB', size=24)
-    rib_number = fields.Many2one("employee.rib",u'N° RIB')
+    rib_number = fields.Many2one("employee.rib",u'N° RIB',domain="[('employee_id', '=', id)]")
     bank_related = fields.Many2one(related='rib_number.bank')
     ville_bank_related = fields.Many2one(related='rib_number.ville_bank')
     bank_agence_related = fields.Char(related='rib_number.bank_agence')

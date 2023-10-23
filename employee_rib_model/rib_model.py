@@ -19,6 +19,11 @@ class employee_rib(models.Model):
 
     employee_id = fields.Many2one("hr.employee",u"Employée", ondelete='cascade')
 
+    _sql_constraints = [
+		('code_uniq', 'UNIQUE(name)', 'Ce N° RIB déjà existe.'),
+	]
+
+
     @api.constrains('name')
     def _check_RIB(self):
         if self.name:
@@ -27,5 +32,8 @@ class employee_rib(models.Model):
             else:
                 if len(self.name) < 24 or  len(self.name)>24:
                     raise ValidationError("Erreur, Le numéro de RIB doit avoir 24 caractères.")
+            
+    
+
 
     
