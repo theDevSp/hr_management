@@ -69,10 +69,10 @@ class HrFicheDePaieController(http.Controller):
 
                     if grp.employee_id.type_profile_related == 'j':
                         total = grp.salaire_jour * grp.nbr_jour_travaille
-                        jours_heure = grp.nbr_jour_travaille
+                        jours_heure = str(grp.nbr_jour_travaille) + 'J'
                     elif grp.employee_id.type_profile_related == 'h':
                         total = grp.salaire_heure * grp.nbr_heure_travaille
-                        jours_heure = grp.nbr_heure_travaille
+                        jours_heure = str(grp.nbr_heure_travaille) + 'H'
                     else:
                         jours_heure = 0
                         total = 0
@@ -92,36 +92,37 @@ class HrFicheDePaieController(http.Controller):
                         'employe_type': grp.type_emp or "",
                         'employe_code_engin': grp.employee_id.vehicle_id.code or "",
                         'employe_date_embauche': grp.employee_id.date_start.strftime("%d-%m-%Y") if grp.employee_id.date_start else "",
-                        'employe_panier_cp': grp.cp_number or 0,
+                        'employe_panier_cp': f"{grp.affich_jour_conge:.2f}" or 0,
                         'employe_profile_de_paie': grp.employee_id.name_profile_related or "",
                         'employe_bank': grp.employee_id.bank.name or "",
-                        'employe_salaire_de_base': grp.salaire_actuel or 0,
-                        'employe_deduction': grp.deduction or 0,
-                        'employe_cotisation': cotisation or 0,
+                        'employe_salaire_de_base': f"{grp.salaire_actuel:.2f}" or 0,
+                        'employe_deduction': f"{grp.deduction:.2f}" or 0,
+                        'employe_cotisation': f"{cotisation:.2f}" or 0,
                         'employe_jours_heure': jours_heure or 0,
-                        'employe_total': total or 0,
-                        'employe_prime_ftor': grp.addition or 0,
-                        'employe_sad': salaire_sad or 0,
-                        'employe_nap': salaire_nap or 0,
+                        'employe_cp': f"{grp.cp_number:.2f}" or 0,
+                        'employe_total': f"{total:.2f}" or 0,
+                        'employe_prime_ftor': f"{grp.addition:.2f}"or 0,
+                        'employe_sad': f"{salaire_sad:.2f}" or 0,
+                        'employe_nap': f"{salaire_nap:.2f}" or 0,
                         'observation': "" if html2plaintext(grp.notes) == 'False' else html2plaintext(grp.notes)
                     }
 
-                    total_employe_total += data_entry['employe_total']
-                    total_employe_deduction += data_entry['employe_deduction']
-                    total_employe_cotisation += data_entry['employe_cotisation']
-                    total_employe_sad += data_entry['employe_sad']
-                    total_employe_nap += data_entry['employe_nap']
-                    total_employe_addition += data_entry['employe_prime_ftor']
+                    total_employe_total += float(data_entry['employe_total'])
+                    total_employe_deduction += float(data_entry['employe_deduction'])
+                    total_employe_cotisation += float(data_entry['employe_cotisation'])
+                    total_employe_sad += float(data_entry['employe_sad'])
+                    total_employe_nap += float(data_entry['employe_nap'])
+                    total_employe_addition += float(data_entry['employe_prime_ftor'])
 
                     obj["data"].append(data_entry)
                 
 
-                obj["total_employe_total"] = total_employe_total
-                obj["total_employe_deduction"] = total_employe_deduction
-                obj["total_employe_cotisation"] = total_employe_cotisation
-                obj["total_employe_sad"] = total_employe_sad
-                obj["total_employe_nap"] = total_employe_nap
-                obj["total_employe_addition"] = total_employe_addition
+                obj["total_employe_total"] = f"{total_employe_total:.2f}"
+                obj["total_employe_deduction"] = f"{total_employe_deduction:.2f}"
+                obj["total_employe_cotisation"] = f"{total_employe_cotisation:.2f}"
+                obj["total_employe_sad"] = f"{total_employe_sad:.2f}"
+                obj["total_employe_nap"] = f"{total_employe_nap:.2f}"
+                obj["total_employe_addition"] = f"{total_employe_addition:.2f}"
                 final.append(obj)
 
             

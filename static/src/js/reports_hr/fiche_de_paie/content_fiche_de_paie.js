@@ -453,7 +453,11 @@ export async function content_fiche_de_paie(data, chantier, period, quinz, type)
                                             alignment: 'center'
                                         },
                                         {
+<<<<<<< HEAD
                                             text: tab.employe_panier_cp,
+=======
+                                            text: tab.employe_cp,
+>>>>>>> 8a638096bff3c508d3b1d1ea4a0a42f9a15c5bea
                                             fontSize: 8,
                                             color: 'black',
                                             margin: [0, 4],
