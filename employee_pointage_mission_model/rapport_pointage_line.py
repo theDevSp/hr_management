@@ -212,15 +212,15 @@ class hr_rapport_pointage_line(models.Model):
                 vals.pop(key)
 
         if 'state' not in vals and 'day_type' not in vals:
-            if not self.chantier_id and not vals.get('chantier_id') and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
+            if not self.chantier_id and not vals.get('chantier_id') and pointeur:
                 raise ValidationError(
                         "Erreur, Vous devez spécifier un Chantier."
                     )
-            if not self.emplacement_chantier_id and not vals.get('emplacement_chantier_id')  and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
+            if not self.emplacement_chantier_id and not vals.get('emplacement_chantier_id')  and pointeur:
                 raise ValidationError(
                         "Erreur, Vous devez spécifier un Emplacement sur Chantier."
                     )
-            if not self.details and not vals.get('details')  and self.employee_id.type_emp == 's' and self._uid != SUPERUSER_ID and not self.env.user._is_admin():
+            if not self.details and not vals.get('details')  and self.employee_id.type_emp == 's' and pointeur:
                 raise ValidationError(
                         "Erreur, Vous devez spécifier les détails des travaux."
                     )
