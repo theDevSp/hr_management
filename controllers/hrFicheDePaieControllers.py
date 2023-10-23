@@ -69,10 +69,10 @@ class HrFicheDePaieController(http.Controller):
 
                     if grp.employee_id.type_profile_related == 'j':
                         total = grp.salaire_jour * grp.nbr_jour_travaille
-                        jours_heure = str(grp.nbr_jour_travaille) + 'J'
+                        jours_heure = str(grp.nbr_jour_travaille) + ' J'
                     elif grp.employee_id.type_profile_related == 'h':
                         total = grp.salaire_heure * grp.nbr_heure_travaille
-                        jours_heure = str(grp.nbr_heure_travaille) + 'H'
+                        jours_heure = str(grp.nbr_heure_travaille) + ' H'
                     else:
                         jours_heure = 0
                         total = 0
