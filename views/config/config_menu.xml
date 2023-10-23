@@ -15,6 +15,11 @@
             parent="config_hr_menu"
             sequence="2"/>
         <menuitem
+            id="rib_submenu"
+            name="Compte Banquaire"
+            parent="config_hr_menu"
+            sequence="3"/>
+        <menuitem
             id="general_config_submenu"
             name="Configuration Général"
             parent="config_hr_menu"

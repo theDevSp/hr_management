@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id='rib_action' model='ir.actions.act_window'>
+        <field name="name">rib</field>
+        <field name="res_model">employee.rib</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="C.B Des Employés" id="rib_menu" parent="rib_submenu" action="rib_action" sequence="1" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+
+</odoo>

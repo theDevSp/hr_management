@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rib_tree" model="ir.ui.view">
+        <field name="name">RIB</field>
+        <field name="model">employee.rib</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="employee_id" />
+                <field name="bank" />
+                <field name="ville_bank" />
+                <field name="bank_agence" />
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_rib_form" model="ir.ui.view">
+        <field name="name">RIB Form</field>
+        <field name="model">employee.rib</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="bg-white shadow p-3">
+                        <div class="card bg-light my-3">
+                            <div class="card-body text-center">
+                                <h2 class="card-text">AJOUT D'UN NOUVEAU RIB</h2>
+                            </div>
+                        </div>
+                        <div class="card bg-light my-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="employee_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="employee_id" class="form-control" options="{'no_create': True,'no_open':True}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="name" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="name" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="bank" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="bank" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="ville_bank" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="ville_bank" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="bank_agence" class=""/></span>
+                                            </div>
+                                            <field name="bank_agence" class="form-control text-center"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div> 
+                    </div>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="activity_ids" widget="mail_activity" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="rib_search" model="ir.ui.view">
+        <field name="name">Recherche - RIB</field>
+        <field name="model">employee.rib</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id" />
+                <field name="bank" />
+                <field name="ville_bank" />
+            </search>
+        </field>
+    </record>
+</odoo>

@@ -20,6 +20,10 @@ class hr_employee(models.Model):
     bank_agence = fields.Char(u"Agence")
     adress_personnel = fields.Char(u'Adresse personnel')
     bank_account = fields.Char(u'N° RIB', size=24)
+    rib_number = fields.Many2one("employee.rib",u'N° RIB')
+    bank_related = fields.Many2one(related='rib_number.bank')
+    ville_bank_related = fields.Many2one(related='rib_number.ville_bank')
+    bank_agence_related = fields.Char(related='rib_number.bank_agence')
     job = fields.Char("Fonction")
     cotisation = fields.Boolean("Activer Cotisation-CIMR")
     diplome = fields.Char(u"Diplôme")
@@ -51,14 +55,6 @@ class hr_employee(models.Model):
     blacklist_histo = fields.One2many('hr.blacklist', 'employee_id',readonly=True)
     motif_blacklist = fields.Char("Motif Blacklist", compute = "_compute_motif_blacklist")
 
-    @api.constrains('bank_account')
-    def _check_RIB(self):
-        if self.bank_account:
-            if self.bank_account.isdigit() == False:
-                raise ValidationError("Erreur, Le numéro de RIB doit être de type entier.")
-            else:
-                if len(self.bank_account) < 24 or  len(self.bank_account)>24:
-                    raise ValidationError("Erreur, Le numéro de RIB doit avoir 24 caractères.")
 
     @api.model
     def fields_view_get(self,view_id=None, view_type='tree',toolbar=False, submenu=False):
