@@ -117,12 +117,12 @@ class HrFicheDePaieController(http.Controller):
                     obj["data"].append(data_entry)
                 
 
-                obj["total_employe_total"] = total_employe_total
-                obj["total_employe_deduction"] = total_employe_deduction
-                obj["total_employe_cotisation"] = total_employe_cotisation
-                obj["total_employe_sad"] = total_employe_sad
-                obj["total_employe_nap"] = total_employe_nap
-                obj["total_employe_addition"] = total_employe_addition
+                obj["total_employe_total"] = f"{total_employe_total:.2f}"
+                obj["total_employe_deduction"] = f"{total_employe_deduction:.2f}"
+                obj["total_employe_cotisation"] = f"{total_employe_cotisation:.2f}"
+                obj["total_employe_sad"] = f"{total_employe_sad:.2f}"
+                obj["total_employe_nap"] = f"{total_employe_nap:.2f}"
+                obj["total_employe_addition"] = f"{total_employe_addition:.2f}"
                 final.append(obj)
 
             
