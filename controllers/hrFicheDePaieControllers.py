@@ -95,15 +95,15 @@ class HrFicheDePaieController(http.Controller):
                         'employe_panier_cp': f"{grp.affich_jour_conge:.2f}" or 0,
                         'employe_profile_de_paie': grp.employee_id.name_profile_related or "",
                         'employe_bank': grp.employee_id.bank.name or "",
-                        'employe_salaire_de_base': f"{grp.salaire_actuel:.2f}" or 0,
-                        'employe_deduction': f"{grp.deduction:.2f}" or 0,
-                        'employe_cotisation': f"{cotisation:.2f}" or 0,
+                        'employe_salaire_de_base': f"{grp.salaire_actuel:.0f}" or 0,
+                        'employe_deduction': f"{grp.deduction:.0f}" or 0,
+                        'employe_cotisation': f"{cotisation:.0f}" or 0,
                         'employe_jours_heure': jours_heure or 0,
                         'employe_cp': f"{grp.cp_number:.2f}" or 0,
-                        'employe_total': f"{total:.2f}" or 0,
-                        'employe_prime_ftor': f"{grp.addition:.2f}"or 0,
-                        'employe_sad': f"{salaire_sad:.2f}" or 0,
-                        'employe_nap': f"{salaire_nap:.2f}" or 0,
+                        'employe_total': f"{total:.0f}" or 0,
+                        'employe_prime_ftor': f"{grp.addition:.0f}"or 0,
+                        'employe_sad': f"{salaire_sad:.0f}" or 0,
+                        'employe_nap': f"{salaire_nap:.0f}" or 0,
                         'observation': "" if html2plaintext(grp.notes) == 'False' else html2plaintext(grp.notes)
                     }
 
@@ -117,12 +117,12 @@ class HrFicheDePaieController(http.Controller):
                     obj["data"].append(data_entry)
                 
 
-                obj["total_employe_total"] = f"{total_employe_total:.2f}"
-                obj["total_employe_deduction"] = f"{total_employe_deduction:.2f}"
-                obj["total_employe_cotisation"] = f"{total_employe_cotisation:.2f}"
-                obj["total_employe_sad"] = f"{total_employe_sad:.2f}"
-                obj["total_employe_nap"] = f"{total_employe_nap:.2f}"
-                obj["total_employe_addition"] = f"{total_employe_addition:.2f}"
+                obj["total_employe_total"] = f"{total_employe_total:.0f}"
+                obj["total_employe_deduction"] = f"{total_employe_deduction:.0f}"
+                obj["total_employe_cotisation"] = f"{total_employe_cotisation:.0f}"
+                obj["total_employe_sad"] = f"{total_employe_sad:.0f}"
+                obj["total_employe_nap"] = f"{total_employe_nap:.0f}"
+                obj["total_employe_addition"] = f"{total_employe_addition:.0f}"
                 final.append(obj)
 
             
