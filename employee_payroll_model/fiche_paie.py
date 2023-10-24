@@ -156,7 +156,7 @@ class fiche_paie(models.Model):
     def _compute_total_addition(self):
         for rec in self:
             res = 0
-            if rec.employee_id and rec.period_id and rec.quinzaine != 'quinzaine1' and rec.cal_state:
+            if rec.employee_id and rec.period_id and rec.cal_state:
                 query = """
                     SELECT pl.montant_a_payer as amount,COALESCE(pt.payement_condition,0) as condition,p.date_fait as date_start
                     FROM hr_paiement_ligne pl
