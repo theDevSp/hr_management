@@ -274,7 +274,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
             res = [ln['employee_id'][0] for ln in self.env['hr.rapport.pointage'].read_group(
                                 domain=[
                                     ('chantier_id', '=', self.chantier_id.id),
-                                    ('period_id', '=', self.period_id.id - 1),
+                                    ('period_id', '=', self.period_id.id),
                                     ('type_emp', '=', self.employee_type),
                                 ],
                                 fields=['employee_id'],
