@@ -310,8 +310,7 @@ class hr_rapport_pointage(models.Model):
                 'rapport_id':rapport_id,
                 'employee_id':employee_id,
                 'details' : details,
-                'chantier_id': chantier_id,
-                'emplacement_chantier_id': emplacement_chantier_id
+                'chantier_id': chantier_id
             })
 
         return repport_lines
