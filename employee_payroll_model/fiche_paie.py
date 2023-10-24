@@ -95,10 +95,12 @@ class fiche_paie(models.Model):
         res = super(fiche_paie, self).create(vals)
 
         last_paied_period = self.env[self._name].search_read([('employee_id','>=',res.employee_id.id),('id','<',res.id)],['notes'],limit=1, order='id desc')
+        
+        if last_paied_period:
 
-        res.write({
-            'notes': res.notes + '\n' + last_paied_period[0]['notes'] if res.notes and last_paied_period else last_paied_period[0]['notes']
-        })
+            res.write({
+                'notes': res.notes + '\n' + last_paied_period[0]['notes'] if res.notes else last_paied_period[0]['notes']
+            })
         
         return res
 
