@@ -29,7 +29,7 @@ class hrCongesControllers(http.Controller):
                 'employe_nbr_enfant': res.nombre_enfants if res.nombre_enfants not in [False, True, 0, 0.0, ""] else "-",
                 'employe_num_tele': res.mobile_phone if res.mobile_phone not in [False, True, 0, 0.0, ""] else "-",
                 'employe_type': res.type_emp if res.type_emp not in [False, True, 0, 0.0, ""] else "-",
-                'employe_contract_type': res.contract_id.contract_type if res.contract_id.contract_type not in [False, True, 0, 0.0, ""] else "-",
+                'employe_contract_type': res.contract_id.contract_type.name if res.contract_id.contract_type.name not in [False, True, 0, 0.0, ""] else "-",
                 'employe_salaire': res.contract_id.wage if res.contract_id.wage not in [False, True, 0, 0.0, ""] else "-",
                 'employe_contract_debut': res.contract_id.date_start if res.contract_id.date_start not in [False, True, 0, 0.0, ""] else "-",
                 'employe_contract_fin': res.contract_id.date_end if res.contract_id.date_end not in [False, True, 0, 0.0, ""] else "-",

@@ -211,7 +211,7 @@ export async function content_fiche_employee(data) {
                         border: [1, 1, 0, 0],
                         margin: [15, 5, 0, 0],
                     }, {
-                        text: data.employe_type,
+                        text: data.employe_type == 's' ? "Salarié" : data.employe_type == 'o' ? "Ouvrier" : "-",
                         fontSize: 9,
                         border: [0, 1, 0, 0],
                         margin: [0, 5, 0, 0],
@@ -339,7 +339,6 @@ export async function content_fiche_employee(data) {
                         border: [0, 1, 0, 0],
                         margin: [0, 5, 0, 0],
                         bold: true,
-                        rowSpan: 2
                     }, {
                         text: '',
                         fontSize: 9,
@@ -487,7 +486,7 @@ export async function content_fiche_employee(data) {
                         border: [0, 0, 0, 0],
                         margin: [15, 2, 0, 0],
                     }, {
-                        text: '15.000 DH',
+                        text: data.employe_contract_fin,
                         fontSize: 9,
                         border: [0, 0, 1, 0],
                         margin: [0, 2, 0, 0],
