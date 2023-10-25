@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id='hr_recap_line_pdf_action' model='ir.actions.act_window'>
+        <field name="name">Recap Line PDF</field>
+        <field name="res_model">hr.recap.line.pdf</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Recap Line PDF" id="recap_line_pdf_child_menu" parent="recap_pdf_parent_menu" action="hr_recap_line_pdf_action" sequence="2"/>
+</odoo>

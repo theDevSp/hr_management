@@ -108,6 +108,10 @@
         'views/declaration/declaration_menu.xml',
         'views/declaration/declaration_views.xml',
 
+        'views/recap_pdf/recap_pdf_view.xml',
+        'views/recap_pdf/recap_pdf_menu.xml',
+        'views/recap_pdf/recap_line_pdf_view.xml',
+        
         'views/dashboards/dashboards_menu.xml',
 
         'views/owl_views/report_pointage_views_inherit.xml',
