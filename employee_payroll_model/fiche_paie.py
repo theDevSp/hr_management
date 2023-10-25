@@ -81,6 +81,7 @@ class fiche_paie(models.Model):
     new_help = fields.Boolean('field_name',default=False)
 
     jom = fields.Float(related='period_id.jom',readonly=True)
+    payement_mode_id = fields.Many2one(related='employee_id.rib_number.payement_mode_id')
 
     @api.model
     def create(self, vals):

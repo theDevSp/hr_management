@@ -76,6 +76,14 @@
                                             <field name="bank_agence" class="form-control text-center"/>
                                         </div>
                                     </div>
+                                    <div class="col-12">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="payement_mode_id" class=""/></span>
+                                            </div>
+                                            <field name="payement_mode_id" class="form-control text-center"/>
+                                        </div>
+                                    </div>
                                 </div>
                             </div> 
                         </div> 

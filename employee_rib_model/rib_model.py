@@ -15,6 +15,7 @@ class employee_rib(models.Model):
     bank = fields.Many2one("bank","Banque")
     ville_bank = fields.Many2one("city",u"Ville")
     bank_agence = fields.Char(u"Agence")
+    payement_mode_id = fields.Many2one('payement.mode', string='Mode de paiement',required=True)
 
 
     employee_id = fields.Many2one("hr.employee",u"Employée", ondelete='cascade')
