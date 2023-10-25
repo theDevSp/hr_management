@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="recap_line_pdf_tree" model="ir.ui.view">
+        <field name="name">Les lignes de recap</field>
+        <field name="model">hr.recap.line.pdf</field>
+        <field name="arch" type="xml">
+            <tree string="Recap PDF" multi_edit="1" sample="1" class="table">
+                <field name="chantier_id"/>
+                <field name="emplacement_chantier_id"/>
+                <field name="nombre_effectif"/>
+                <field name="montant_total"/>
+            </tree>
+        </field>
+    </record>
+    <record id="recap_line_pdf_formulaire" model="ir.ui.view">
+        <field name="name">Recap Line Form</field>
+        <field name="model">hr.recap.line.pdf</field>
+        <field name="arch" type="xml">
+            <form>
+                <div class="row mt-3 justify-content-center">
+                    <div class="col-12 col-md-8 mt-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="alert alert-danger text-center mb-2"><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> Champs Obligatoire </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">INFORMATIONS LIGNES DE LA RECAP</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">  
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" ><label for="chantier_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                        </div>
+                                        <field name="chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" ><label for="emplacement_chantier_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                        </div>
+                                        <field name="emplacement_chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" ><label for="nombre_effectif" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                        </div>
+                                        <field name="nombre_effectif" class="form-control"/>
+                                    </div>  
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" ><label for="montant_total" class=""/></span>
+                                        </div>
+                                        <field name="montant_total" class="form-control" />
+                                    </div>
+                                </div> 
+                            </div> 
+                        </div>
+                    </div>   
+                </div>
+                <div class="oe_chatter mt-3">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

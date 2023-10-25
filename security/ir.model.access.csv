@@ -277,3 +277,17 @@ employee_rib_service_analytique,employee_rib_service,model_employee_rib,group_se
 employee_rib_controle_gestion,employee_rib_controle,model_employee_rib,group_controle_gestion,1,0,0,0
 employee_rib_pointeur,employee_rib_pointeur,model_employee_rib,group_pointeur,1,0,0,0
 employee_rib_cnss_juridique,employee_rib_cnss_juridique,model_employee_rib,group_cnss_juridique,1,0,0,0
+
+recap_pdf_admin_paie,recap_pdf_admin,model_hr_recap_pdf,group_admin_paie,1,1,1,1
+recap_pdf_agent_paie,recap_pdf,model_hr_recap_pdf,group_agent_paie,1,1,1,1
+recap_pdf_service_analytique,recap_pdf,model_hr_recap_pdf,group_service_analytique,1,0,0,0
+recap_pdf_controle_gestion,recap_pdf,model_hr_recap_pdf,group_controle_gestion,1,0,0,0
+recap_pdf_pointeur,recap_pdf,model_hr_recap_pdf,group_pointeur,0,0,0,0
+recap_pdf_cnss_juridique,recap_pdf,model_hr_recap_pdf,group_cnss_juridique,1,0,0,0
+
+recap_line_pdf_admin_paie,recap_line_pdf_admin,model_hr_recap_line_pdf,group_admin_paie,1,1,1,1
+recap_line_pdf_agent_paie,recap_line_pdf,model_hr_recap_line_pdf,group_agent_paie,1,1,1,1
+recap_line_pdf_service_analytique,recap_line_pdf,model_hr_recap_line_pdf,group_service_analytique,1,0,0,0
+recap_line_pdf_controle_gestion,recap_line_pdf,model_hr_recap_line_pdf,group_controle_gestion,1,0,0,0
+recap_line_pdf_pointeur,recap_line_pdf,model_hr_recap_line_pdf,group_pointeur,0,0,0,0
+recap_line_pdf_cnss_juridique,recap_line_pdf,model_hr_recap_line_pdf,group_cnss_juridique,1,0,0,0
