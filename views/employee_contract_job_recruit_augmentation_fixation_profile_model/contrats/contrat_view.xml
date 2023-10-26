@@ -29,10 +29,10 @@
         <field name="arch" type="xml">
             <form>
                 <header class="bar-box-shadow mb-4">            
-                    <button name="to_new" string="Nouvelle contrat" type="object" attrs="{'invisible': [('state', 'in', ('draft','close'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                    <button name="to_running" string="Contrat Active" type="object" attrs="{'invisible': [('state', 'in', ('open','close'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                    <button name="to_expired" string="Contrat Expirée" type="object" attrs="{'invisible': [('state', 'in', ('draft','close','cancel'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                    <button name="to_cancelled" string="Contrat Annulée" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'open', 'cancel'))]}" groups ="hr_management.group_admin_paie"/>
+                    <button name="to_new" string="Mettre en brouillon" class="btn btn-secondary" type="object" attrs="{'invisible': [('state', 'in', ('draft','close'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_running" string="Activer Contrat" class="btn btn-success" type="object" attrs="{'invisible': [('state', 'in', ('open','close'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_expired" string="Expirer Contrat" class="btn btn-warning" type="object" attrs="{'invisible': [('state', 'in', ('draft','close','cancel'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_cancelled" string="Annuler Contrat" class="btn btn-danger" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'open', 'cancel'))]}" groups ="hr_management.group_admin_paie"/>
                     <field name="state" widget="statusbar" nolabel="1"/>
                 </header>
                 <div class="container-fliud">
