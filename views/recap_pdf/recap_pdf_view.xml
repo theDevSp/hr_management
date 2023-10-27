@@ -44,16 +44,16 @@
                                         </div>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="quinzaine" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
-                                            </div>
-                                            <field name="quinzaine" class="form-control"/>
-                                        </div>  
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
                                                 <span class="input-group-text" ><label for="type_emp" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                                             </div>
-                                            <field name="type_emp" class="form-control" />
+                                            <field name="type_emp" class="form-control"/>
                                         </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="quinzaine" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="quinzaine" class="form-control" attrs="{'readonly': [('type_emp', '=', 's')]}" force_save="1"/>
+                                        </div>  
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" ><label for="responsable_id" class=""/></span>

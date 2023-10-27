@@ -4,6 +4,8 @@ from datetime import datetime
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
 from math import *
+from dateutil.relativedelta import relativedelta
+
 
 class prime(models.Model):
     _name = "hr.prime"
@@ -130,20 +132,17 @@ class prime(models.Model):
 
     def compute_alimenter_paiement(self,nbr_periodes):
         for rec in self:
-            query = """
-                    SELECT id from account_month_period
-                    WHERE id >= '%s'
-                    LIMIT %s;
-                """  % (rec.first_period_id.id, nbr_periodes)
-            rec.env.cr.execute(query)
-            res = rec.env.cr.fetchall()
+            first_period_date = rec.first_period_id.date_start
+
+            last_period_date = rec.first_period_id.date_start + relativedelta(months=+nbr_periodes)
+
             paiement_lines=[]
             reste = 0
-            for id in res:
+            for period in self.env['account.month.period'].search_read([('date_start','>=',first_period_date),('date_start','<',last_period_date)],['id']):
                 var = rec.montant_total_prime - reste
                 paiement_lines.append(
                     {
-                        "period_id" : id[0],
+                        "period_id" : period['id'],
                         "prime_id" : rec.id,
                         "montant_a_payer" : rec.echeance if (var >= rec.echeance) else var,
                     }
