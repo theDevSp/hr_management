@@ -4,21 +4,24 @@
         <field name="name">Fiche de paie</field>
         <field name="model">hr.payslip</field>
         <field name="arch" type="xml">
-            <tree string="Fiche de paie" multi_edit="1" sample="1">
+            <tree string="Fiche de paie">
                 <field name="name"/>
                 <field name="period_id" optional="hide"/>
                 <field name="date_validation" optional="show"/>
                 <field name="quinzaine" optional="show"/>
                 <field name="employee_id"/>
+                <field name="cin" optional="hide"/>
                 <field name="type_emp" optional="show"/>
                 <field name="job_id" optional="show"/>
                 <field name="chantier_id"/>
                 <field name="emplacement_chantier_id" optional="show"/>
                 <field name="vehicle_id" optional="show"/>
+                <field name="salaire_actuel" optional="hide"/>
+                <field name="addition" optional="hide" string="prime"/>
+                <field name="deduction" optional="hide" string="DED"/>
                 <field name="net_pay"/>
                 <field name="affich_bonus_jour" optional="hide"/>
                 <field name="affich_jour_conge" optional="hide"/>
-                <field name="salaire_actuel" optional="hide"/>
                 <field name="nbr_jour_travaille" optional="hide"/>
                 <field name="nbr_heure_travaille" optional="hide"/>
                 <field name="jr_travaille_par_chantier" optional="hide"/>
@@ -27,7 +30,13 @@
                 <field name="rapport_id" optional="hide"/>
                 
                 <field name="stc_id" optional="hide"/>
-                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
+                <field name="state" widget="badge" 
+                                                    decoration-muted="state == 'draft'" 
+                                                    decoration-info="state == 'cal'" 
+                                                    decoration-danger="state in ('blocked','annulee')" 
+                                                    decoration-warning="state == 'validee'"
+                                                    decoration-success="state == 'done'"
+                                            />
             </tree>
         </field>
     </record>
@@ -36,20 +45,32 @@
         <field name="name">Fiche de paie</field>
         <field name="model">hr.payslip</field>
         <field name="arch" type="xml">
-            <tree string="Fiche de paie" multi_edit="1" sample="1" class="table">
+            <tree string="Fiche de paie">
                 <field name="name"/>
+                <field name="period_id" optional="hide"/>
+                <field name="date_validation" optional="show"/>
+                <field name="quinzaine" optional="show"/>
                 <field name="employee_id"/>
+                <field name="cin" optional="hide"/>
+                <field name="type_emp" optional="show"/>
+                <field name="job_id" optional="show"/>
                 <field name="chantier_id"/>
-                <field name="emplacement_chantier_id"/>
-                <field name="period_id"/>
+                <field name="emplacement_chantier_id" optional="show"/>
+                <field name="vehicle_id" optional="show"/>
+                <field name="salaire_actuel" optional="hide"/>
+                <field name="addition" optional="hide" string="prime"/>
+                <field name="deduction" optional="hide" string="DED"/>
                 <field name="net_pay"/>
-                <field name="nbr_jour_travaille"/>
-                <field name="nbr_heure_travaille"/>
-                <field name="jr_travaille_par_chantier"/>
-                <field name="type_fiche"/>
-                <field name="contract_id"/>
-                <field name="date_validation"/>
-                <field name="stc_id"/>
+                <field name="affich_bonus_jour" optional="hide"/>
+                <field name="affich_jour_conge" optional="hide"/>
+                <field name="nbr_jour_travaille" optional="hide"/>
+                <field name="nbr_heure_travaille" optional="hide"/>
+                <field name="jr_travaille_par_chantier" optional="hide"/>
+                <field name="type_fiche" optional="hide"/>
+                <field name="contract_id" optional="hide"/>
+                <field name="rapport_id" optional="hide"/>
+                
+                <field name="stc_id" optional="hide"/>
                 <field name="state" widget="badge" 
                                                     decoration-muted="state == 'draft'" 
                                                     decoration-info="state == 'cal'" 

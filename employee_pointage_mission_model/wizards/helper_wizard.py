@@ -173,33 +173,6 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                 quinzaine2.append('%02d' % i)
                 i+=1
         return [quinzaine1,quinzaine2]
-
-    """
-    def access_list_rapport_line_by_day(self):
-        res = ''
-        if not self.sous_chantier:
-            raise UserError("Veuillez choisir une équipe")
-        active_ids = self.env.context.get('active_ids')
-        report_ids = self.prepare_lines()
-        
-        if not active_ids :
-            if self.employee_type == 'employee1' :
-                res = self.env['report'].get_action(report_ids, 'nxtm_employee_mngt.report_pointage_salarier_pdf')
-            if self.employee_type == 'employee2':
-                res = self.env['report'].get_action(self, 'nxtm_employee_mngt.report_pointage_ouvrier_pdf')
-        else:
-            record = self.env['hr.rapport.pointage'].browse(active_ids[0])
-            self.period_id = record.period_id
-            self.chantier_id = record.chantier_id
-            self.sous_chantier = record.emplacement_chantier_id
-            self.employee_type = record.employee_id.employee_type
-            if record.employee_id.employee_type == 'employee1':
-                res = self.env['report'].get_action(report_ids, 'nxtm_employee_mngt.report_pointage_salarier_pdf')
-            if record.employee_id.employee_type == 'employee2':
-                res = self.env['report'].get_action(self, 'nxtm_employee_mngt.report_pointage_ouvrier_pdf')
-        
-        return res
-    """
     
     def create_rapports_pointage_mass(self):
 
@@ -209,8 +182,8 @@ class hr_filtre_pointage_wizard(models.TransientModel):
         period_month = self.period_id.date_start.month
         period_year = self.period_id.date_start.year
 
-        last_period_month = self.env['account.month.period'].browse(self.period_id.id - 1).date_start.month
-        last_period_year = self.env['account.month.period'].browse(self.period_id.id - 1).date_start.year
+        last_period_month = period_month - 1 if period_month > 1 else 12
+        last_period_year = period_year if period_month > 1 else period_year - 1
 
         quinzaine1_first_day = datetime.strptime(str(period_year)+'-'+str(period_month)+'-01', "%Y-%m-%d")
         quinzaine1_day_ref = datetime.strptime(str(period_year)+'-'+str(period_month)+'-18', "%Y-%m-%d")
@@ -307,17 +280,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                                 fields=['employee_id'],
                                 groupby=['employee_id'],
                             )] 
-            """
-            foreign_list = [ln['id'] for ln in self.env['hr.employee'].search_read(
-                                domain=[
-                                    ('id', 'in', res),
-                                    ('chantier_id', '!=', self.chantier_id.id),
-                                    ('type_emp', '=', self.employee_type),
-                                ],
-                                fields=['id']
-                            )] 
-            print(foreign_list)
-            """
+
             result = filter(lambda ln: ln not in exclud_list, res)
         
         else:
@@ -337,7 +300,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
         return True
     
     def previlege_validation(self):
-        pointeur = True
+        pointeur = self.env['res.users'].has_group("hr_management.group_pointeur")
         dates = self.verification_dates()
 
         quz1_condition = self.quinzaine == 'quinzaine1' and pointeur and (dates['now'] < dates['quz1_03'] or dates['now'] >= dates['quz1_18'])
@@ -352,29 +315,49 @@ class hr_filtre_pointage_wizard(models.TransientModel):
     def create_rapports_pointage_individuel(self):
         
 
-        if self.employee_id.type_emp == 'o' and self.quinzaine == 'quinzaine1':
+        if self.employee_id.type_emp == 'o' and self.quinzaine == 'quinzaine1' and self.previlege_validation():
             self.env['hr.rapport.pointage'].sudo().create({
                 'employee_id':self.employee_id.id,
                 'period_id':self.period_id.id,
                 'chantier_id':self.chantier_id.id,
                 'quinzaine':'quinzaine1'
                 })
-        elif self.employee_id.type_emp == 'o' and self.quinzaine == 'quinzaine2':
+        elif self.employee_id.type_emp == 'o' and self.quinzaine == 'quinzaine2' and self.previlege_validation():
             self.env['hr.rapport.pointage'].sudo().create({
                 'employee_id':self.employee_id.id,
                 'period_id':self.period_id.id,
                 'chantier_id':self.chantier_id.id,
                 'quinzaine':'quinzaine2'
                 })
-        else:
+        elif self.employee_id.type_emp == 's' and self.quinzaine == 'quinzaine12' and self.previlege_validation():
             self.env['hr.rapport.pointage'].sudo().create({
                 'employee_id':self.employee_id.id,
                 'period_id':self.period_id.id,
                 'chantier_id':self.chantier_id.id,
                 'quinzaine':'quinzaine12'
                 })
+        else:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': ("Erreur de saisie"),
+                    'message': ("Information saisis erronées veuillez réessayer"),
+                    'sticky': False,
+                    'type': 'danger',
+                }
+            }
         
-        return True
+        return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': ("Succés"),
+                    'message': ("Rapport généré avec succé"),
+                    'sticky': False,
+                    'type': 'success',
+                }
+            }
     
     
     def cancel_rapport_creation(self):

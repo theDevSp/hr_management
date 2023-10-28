@@ -96,7 +96,7 @@ class hr_employee_add_transit(models.TransientModel):
         contract_data={
             'employee_id': res.id,
             'job_id':self.job_id.id,
-            'date_start':self.date_start,
+            'date_start':str(self.date_start),
             'contract_type':self.contract_type.id,
             'wage':1,
             'type_emp':self.employee_type

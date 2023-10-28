@@ -17,6 +17,7 @@ class fiche_paie(models.Model):
     contract_id = fields.Many2one("hr.contract", string = "Contrat",required=True)
     type_emp = fields.Selection(related="contract_id.type_emp",string=u"Type d'employé", store=True, readonly=True)
     job_id = fields.Many2one(related="contract_id.job_id", string='Poste', store=True, readonly=True)
+    cin = fields.Char(related="employee_id.cin", string='CIN', readonly=True)
     type_profile_related = fields.Selection(related="contract_id.type_profile_related",string=u"Type du profile", readonly=True)
     chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Dérnier Chantier",required=True)
     vehicle_id = fields.Many2one('fleet.vehicle', string='Dérnier Code Engin')
@@ -95,7 +96,7 @@ class fiche_paie(models.Model):
 
         res = super(fiche_paie, self).create(vals)
 
-        last_paied_period = self.env[self._name].search_read([('employee_id','>=',res.employee_id.id),('id','<',res.id)],['notes'],limit=1, order='id desc')
+        last_paied_period = self.env[self._name].search_read([('employee_id','=',res.employee_id.id),('id','<',res.id)],['notes'],limit=1, order='id desc')
         
         if last_paied_period:
 

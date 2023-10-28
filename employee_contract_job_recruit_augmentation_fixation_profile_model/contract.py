@@ -20,7 +20,7 @@ class contrats(models.Model):
     motif_enbauche  = fields.Selection([("1","Satisfaire un besoin"),("2","Remplacement"),("3","Autre")],u"Motif d'embauche")
     detail_motif = fields.Char('Raison d\'embauche')
 
-    pp_personnel_id_many2one = fields.Many2one('hr.profile.paie.personnel',string = "Profile de paie")
+    pp_personnel_id_many2one = fields.Many2one('hr.profile.paie.personnel',string = "Profile de paie perso")
 
     type_salaire = fields.Selection(
         [  

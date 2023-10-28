@@ -13,7 +13,7 @@ class hrCongesControllers(http.Controller):
         res = http.request.env['hr.employee'].sudo().search(
                 [('id', '=', id)], limit=1)
         data = []
-
+        pointeur = http.request.env['res.users'].has_group("hr_management.group_pointeur")
         if res:
             data.append({
                 'employe_name': res.name if res.name not in [False, True, 0, 0.0, ""] else "-",
@@ -30,10 +30,10 @@ class hrCongesControllers(http.Controller):
                 'employe_num_tele': res.mobile_phone if res.mobile_phone not in [False, True, 0, 0.0, ""] else "-",
                 'employe_type': res.type_emp if res.type_emp not in [False, True, 0, 0.0, ""] else "-",
                 'employe_contract_type': res.contract_id.contract_type.name if res.contract_id.contract_type.name not in [False, True, 0, 0.0, ""] else "-",
-                'employe_salaire': res.contract_id.wage if res.contract_id.wage not in [False, True, 0, 0.0, ""] else "-",
+                'employe_salaire': res.contract_id.wage if res.contract_id.wage not in [False, True, 0, 0.0, ""] and not pointeur else "-",
                 'employe_contract_debut': res.contract_id.date_start if res.contract_id.date_start not in [False, True, 0, 0.0, ""] else "-",
                 'employe_contract_fin': res.contract_id.date_end if res.contract_id.date_end not in [False, True, 0, 0.0, ""] else "-",
-                'employe_profile_paie': res.contract_id.profile_paie_id.display_name if res.contract_id.profile_paie_id.display_name not in [False, True, 0, 0.0, ""] else "-",
+                'employe_profile_paie': res.contract_id.profile_paie_id.display_name if res.contract_id.profile_paie_id.display_name not in [False, True, 0, 0.0, ""] and not pointeur else "-",
                 'employe_periodictite': res.contract_id.periodicity_related if res.contract_id.periodicity_related not in [False, True, 0, 0.0, ""] else "-",
                 'employe_embaucher_par': res.embaucher_par.name if res.embaucher_par.name not in [False, True, 0, 0.0, ""] else "-",
                 'employe_recomander_par': res.recommander_par.name if res.recommander_par.name not in [False, True, 0, 0.0, ""] else "-",
