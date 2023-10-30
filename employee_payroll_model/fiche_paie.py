@@ -12,17 +12,38 @@ class fiche_paie(models.Model):
     _profile_perso_obj = "hr.profile.paie.personnel"
 
     name =  fields.Char("Référence", readonly=True, copy=False)
+
+    #-------------> infos employee
+
     employee_id = fields.Many2one("hr.employee",string="Employé",required=True)
+    employee_name = fields.Char(related="employee_id.name",string=u"Nom et prénon", readonly=True)
+    rib_number = fields.Many2one(related='employee_id.rib_number',string="RIB", readonly=True)
+    payement_mode_id = fields.Many2one(related='employee_id.rib_number.payement_mode_id')
+    cin = fields.Char(related="employee_id.cin", string='CIN', readonly=True)
     working_years = fields.Char(related="employee_id.working_years",string="Ancienneté",readonly=True)
+
+    #-------------> infos employee
+    #-------------> infos contract
+
     contract_id = fields.Many2one("hr.contract", string = "Contrat",required=True)
     type_emp = fields.Selection(related="contract_id.type_emp",string=u"Type d'employé", store=True, readonly=True)
     job_id = fields.Many2one(related="contract_id.job_id", string='Poste', store=True, readonly=True)
-    cin = fields.Char(related="employee_id.cin", string='CIN', readonly=True)
     type_profile_related = fields.Selection(related="contract_id.type_profile_related",string=u"Type du profile", readonly=True)
+    salaire_actuel = fields.Float(related="contract_id.salaire_actuel", string='Salaire Actuel', store=True, readonly=True)
+    date_start = fields.Date(related='contract_id.date_start',string="Date d'embauche", readonly=True)
+
+    #-------------> infos contract
+    #-------------> infos period
+
+    period_id = fields.Many2one("account.month.period", string = "Période", required = True)
+    jom = fields.Float(related='period_id.jom',readonly=True)
+
+
+    #-------------> infos period
+
     chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Dérnier Chantier",required=True)
     vehicle_id = fields.Many2one('fleet.vehicle', string='Dérnier Code Engin')
     emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Dérnière Équipe",required=True)
-    period_id = fields.Many2one("account.month.period", string = "Période", required = True)
     quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine", required = True)
     
     type_fiche = fields.Selection([
@@ -66,7 +87,6 @@ class fiche_paie(models.Model):
     nbr_jour_travaille = fields.Float("Nombre de jours travaillés")
     nbr_heure_travaille = fields.Float("Nombre des heures travaillées")
     date_validation = fields.Date(u'Date de validation', readonly=True)
-    salaire_actuel = fields.Float(related="contract_id.salaire_actuel", string='Salaire Actuel', store=True, readonly=True)
     salaire_jour = fields.Float(compute='_compute_salaire_jour',string="Salaire du jour", readonly=True)
     salaire_demi_jour = fields.Float(compute='_compute_salaire_demi_jour',string="Salaire du demi-jour", readonly=True)
     salaire_heure = fields.Float(compute='_compute_salaire_heure',string="Salaire d'heure", readonly=True)
@@ -81,8 +101,6 @@ class fiche_paie(models.Model):
     net_paye_archive = fields.Float('Net à Payer')
     new_help = fields.Boolean('field_name',default=False)
 
-    jom = fields.Float(related='period_id.jom',readonly=True)
-    payement_mode_id = fields.Many2one(related='employee_id.rib_number.payement_mode_id')
 
     @api.model
     def create(self, vals):
