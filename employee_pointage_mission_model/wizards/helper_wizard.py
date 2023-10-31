@@ -345,6 +345,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                     'message': ("Information saisis erronées veuillez réessayer"),
                     'sticky': False,
                     'type': 'danger',
+                    'next': {'type': 'ir.actions.act_window_close'},
                 }
             }
         
@@ -356,6 +357,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                     'message': ("Rapport généré avec succé"),
                     'sticky': False,
                     'type': 'success',
+                    'next': {'type': 'ir.actions.act_window_close'},
                 }
             }
     
