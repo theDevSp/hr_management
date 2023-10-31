@@ -27,6 +27,7 @@ class fiche_paie(models.Model):
 
     contract_id = fields.Many2one("hr.contract", string = "Contrat",required=True)
     type_emp = fields.Selection(related="contract_id.type_emp",string=u"Type d'employé", store=True, readonly=True)
+    profile_paie_id = fields.Many2one(related="contract_id.profile_paie_id", readonly=True)
     job_id = fields.Many2one(related="contract_id.job_id", string='Poste', store=True, readonly=True)
     type_profile_related = fields.Selection(related="contract_id.type_profile_related",string=u"Type du profile", readonly=True)
     salaire_actuel = fields.Float(related="contract_id.salaire_actuel", string='Salaire Actuel', store=True, readonly=True)
@@ -96,6 +97,7 @@ class fiche_paie(models.Model):
     jr_travaille_par_chantier = fields.One2many("jr.travaille.par.chantier", 'fiche_paie_id',string='Jours travaillés par chantier')
     jr_par_prime = fields.One2many("days.per.addition", 'payroll_id',string='Jours par prime')
 
+    note = fields.Char('Observation')
     notes = fields.Html('Notes')
 
     net_paye_archive = fields.Float('Net à Payer')
