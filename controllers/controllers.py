@@ -6,18 +6,14 @@ class HrManagement(http.Controller):
     @http.route('/hr_management/get_line_paiement/<int:employee_id>/<int:period_id>', type='json', auth='user')
     def get_prime_list(self,employee_id,period_id):
         prime = http.request.env['hr.prime']
+        requested_pariod = http.request.env['account.month.period'].browse(period_id)
         res = []
         
         for line in prime.search([
                     ('state','!=','draft'),
-                    '|',
-                        '&',
-                        ('employee_id','=',employee_id),
-                        ('first_period_id','<=',period_id),
-                        '&',
-                        ('employee_id','=',False),
-                        ('first_period_id','<=',period_id)
-                        ]).paiement_prime_ids.filtered(lambda ln: ln.period_id.id == period_id):
+                ('employee_id','in',(False,employee_id))
+                ]).filtered(lambda ln: ln.first_period_id.date_start <= requested_pariod.date_start).paiement_prime_ids.filtered(lambda ln: ln.period_id.id == period_id):
+            
             res.append({
                 'period': line.period_id.code,
                 'chantier': line.prime_id.chantier_id.simplified_name,
@@ -43,18 +39,13 @@ class HrManagement(http.Controller):
     @http.route('/hr_management/get_line_prelevement/<int:employee_id>/<int:period_id>', type='json', auth='user')
     def reset_prime_table(self,employee_id,period_id):
         prelevement = http.request.env['hr.prelevement']
+        requested_pariod = http.request.env['account.month.period'].browse(period_id)
         res = []
         
         for line in prelevement.search([
-                    ('state','!=','draft'),
-                    '|',
-                        '&',
-                        ('employee_id','=',employee_id),
-                        ('first_period_id','<=',period_id),
-                        '&',
-                        ('employee_id','=',False),
-                        ('first_period_id','<=',period_id)
-                        ]).paiement_prelevement_ids.filtered(lambda ln: ln.period_id.id == period_id):
+                ('state','!=','draft'),
+                ('employee_id','in',(False,employee_id))
+                ]).filtered(lambda ln: ln.first_period_id.date_start <= requested_pariod.date_start).paiement_prelevement_ids.filtered(lambda ln: ln.period_id.id == period_id):
             
             res.append({
                 'period': line.period_id.code,
@@ -149,7 +140,8 @@ class HrManagement(http.Controller):
             }
         elif derniere_ligne.id > prelevement_line_id:
             try:  
-                current_line.annuler_reporter_date_prelevement(derniere_ligne)
+                
+                current_line.annuler_reporter_date_apres_confirmation_prelevement(derniere_ligne)
                 return {
                     'code':200,
                     'msg':'succes'

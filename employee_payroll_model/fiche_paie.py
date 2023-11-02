@@ -116,12 +116,13 @@ class fiche_paie(models.Model):
 
         res = super(fiche_paie, self).create(vals)
 
-        last_paied_period = self.env[self._name].search_read([('employee_id','=',res.employee_id.id),('id','<',res.id)],['notes'],limit=1, order='id desc')
+        last_paied_period = self.env[self._name].search_read([('employee_id','=',res.employee_id.id),('id','<',res.id)],['notes','note'],limit=1, order='id desc')
         
         if last_paied_period:
 
             res.write({
-                'notes': res.notes + '\n' + last_paied_period[0]['notes'] if res.notes else last_paied_period[0]['notes']
+                'notes': res.notes + '\n' + last_paied_period[0]['notes'] if res.notes else last_paied_period[0]['notes'],
+                'note': res.note + '\n' + last_paied_period[0]['note'] if res.note else last_paied_period[0]['note']
             })
         
         return res
@@ -286,6 +287,7 @@ class fiche_paie(models.Model):
             if self.state == 'cal' :
                 self.state = 'done'
                 self.add_bonus()
+                self.accept_payement_addition_deduction()
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -329,6 +331,7 @@ class fiche_paie(models.Model):
                 self.state = 'annulee'
                 self.date_validation = ""
                 self.delete_bonus()
+                self.cancel_payement_addition_deduction()
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -428,21 +431,78 @@ class fiche_paie(models.Model):
         return False
 
     def add_bonus(self):
-        if self.cp_number > 0:
+        if self.affich_bonus_jour > 0:
             self.env['hr.allocations'].sudo().create({
                 'name':'paiement du mois %s'%self.period_id.name,
                 'employee_id':self.employee_id.id,
                 'categorie':'bonus',
+                'nbr_jour':self.affich_bonus_jour,
+                'state':'approuvee',
+                'period_id':self.period_id.id,
+                'payslip_id':self.id,
+            }) 
+
+        if self.cp_number > 0:
+            self.env['hr.allocations'].sudo().create({
+                'name':'paiement du mois %s'%self.period_id.name,
+                'employee_id':self.employee_id.id,
+                'categorie':'compensation',
                 'nbr_jour':self.cp_number,
                 'state':'approuvee',
                 'period_id':self.period_id.id,
                 'payslip_id':self.id,
             }) 
-    
+        """
+        if self.affich_jour_dimanche > 0:
+            self.env['hr.allocations'].sudo().create({
+                'name':'paiement du mois %s'%self.period_id.name,
+                'employee_id':self.employee_id.id,
+                'categorie':'dimanche_travaille',
+                'nbr_jour':self.cp_number,
+                'state':'approuvee',
+                'period_id':self.period_id.id,
+                'payslip_id':self.id,
+            }) 
+        """
+
     def delete_bonus(self):
 
         for bonus in self.env['hr.allocations'].sudo().search([('payslip_id','=',self.id)]):
             bonus.sudo().unlink()
+
+    def accept_payement_addition_deduction(self):
+
+        for prime in self.env['hr.prime'].search([
+                    ('state','=','validee'),
+                ('employee_id','in',(False,self.employee_id.id))
+                ]).filtered(lambda ln: ln.first_period_id.date_start <= self.period_id.date_start):
+            prime.accept_payement(self.period_id)
+        print(self.env['hr.prelevement'].search([
+                    ('state','=','validee'),
+                ('employee_id','in',(False,self.employee_id.id))
+                ]))
+        for prelevement in self.env['hr.prelevement'].search([
+                    ('state','=','validee'),
+                ('employee_id','in',(False,self.employee_id.id))
+                ]).filtered(lambda ln: ln.first_period_id.date_start <= self.period_id.date_start):
+            prelevement.accept_payement(self.period_id)
+
+    def cancel_payement_addition_deduction(self):
+
+        for prime in self.env['hr.prime'].search([
+                    ('state','=','validee'),
+                ('employee_id','in',(False,self.employee_id.id))
+                ]).filtered(lambda ln: ln.first_period_id.date_start <= self.period_id.date_start):
+            prime.cancel_payement(self.period_id)
+        print(self.env['hr.prelevement'].search([
+                    ('state','=','validee'),
+                ('employee_id','in',(False,self.employee_id.id))
+                ]))
+        for prelevement in self.env['hr.prelevement'].search([
+                    ('state','=','validee'),
+                ('employee_id','in',(False,self.employee_id.id))
+                ]).filtered(lambda ln: ln.first_period_id.date_start <= self.period_id.date_start):
+            prelevement.cancel_payement(self.period_id)
 
 class days_per_addition(models.Model):
     

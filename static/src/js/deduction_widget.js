@@ -51,7 +51,7 @@ export class DeductionField extends Component {
         const prelevement_list = []
         const res = []
         try {
-            if (quinzaine != 'quinzaine1' & employee_id & period_id){
+            if (employee_id & period_id){
                 const result = await this.rpc("/hr_management/get_line_prelevement/"+employee_id+"/"+period_id)
                 result['result'].forEach((element) => {
                     prelevement_list.push(element)
@@ -116,7 +116,7 @@ export class DeductionField extends Component {
                     this.props.record.data.employee_id[0],
                     this.props.record.data.period_id[0],
                     this.props.record.data.id).then((res) => {
-                        $('#modal-prime-' + prelevement.prime_id).modal('hide')
+                        $('#modal-prelevement-' + prelevement.prelevement_id).modal('hide')
                         this.showNotification(res) 
                     })
             } else {

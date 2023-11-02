@@ -26,7 +26,7 @@ class prime(models.Model):
 
     montant_total_prime = fields.Float("Montant",required=True)
     echeance = fields.Float("Échéance",required=True)
-    montant_paye = fields.Float("Montant payé",readonly=True)
+    montant_paye = fields.Float("Montant payé",readonly=True, compute="_compute_montant_payer",store=True)
     reste_a_paye = fields.Float("Montant reste à payer",readonly=True, compute="_compute_reste_a_payer",store=True)
     state  = fields.Selection([
         ("draft","Brouillon"),
@@ -47,6 +47,11 @@ class prime(models.Model):
         default="prime",
     )
 
+    @api.depends('montant_total_prime', 'paiement_prime_ids.state')
+    def _compute_montant_payer(self):
+        for rec in self:
+            rec.montant_paye = sum(line.montant_a_payer for line in rec.paiement_prime_ids.filtered(lambda ln: ln.state == 'paye'))
+    
     @api.depends('montant_total_prime', 'montant_paye')
     def _compute_reste_a_payer(self):
         for rec in self:
@@ -128,7 +133,6 @@ class prime(models.Model):
             res = self.montant_total_prime / self.echeance
             nbr_periodes = ceil(res)
             self.compute_alimenter_paiement(nbr_periodes)
-
 
     def compute_alimenter_paiement(self,nbr_periodes):
         for rec in self:
@@ -231,3 +235,17 @@ class prime(models.Model):
         res = self.env.cr.fetchall()
         periode = self.env['account.month.period'].browse(res[0][0]).code
         return periode
+    
+    def accept_payement(self,period_id):
+
+        for ln in self.paiement_prime_ids.filtered(lambda ln: ln.period_id.id == period_id.id and ln.state == "non_paye"):
+            ln.write({
+                'state':'paye'
+            })
+    
+    def cancel_payement(self,period_id):
+
+        for ln in self.paiement_prime_ids.filtered(lambda ln: ln.period_id.id == period_id.id and ln.state == "paye"):
+            ln.write({
+                'state':'non_paye'
+            })
