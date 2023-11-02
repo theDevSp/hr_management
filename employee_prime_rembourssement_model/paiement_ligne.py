@@ -11,6 +11,8 @@ class paiement_ligne(models.Model):
     
     period_id = fields.Many2one("account.month.period", string = "Période")
     prime_id = fields.Many2one("hr.prime", string = "Prime", ondelete="cascade")
+    employee_id = fields.Many2one(related='prime_id.employee_id')
+    type_prime = fields.Many2one(related='prime_id.type_prime')
     montant_a_payer = fields.Float("Échéance")
     state  = fields.Selection([
         ("paye","Payé"),
@@ -25,6 +27,12 @@ class paiement_ligne(models.Model):
 
     def to_annuler(self):
         self.state = "annule"
+
+    def payer(self):
+        self.state = "paye"
+        
+    def unpayer(self):
+        self.state = "non_paye"
 
     @api.model
     def create(self, vals):

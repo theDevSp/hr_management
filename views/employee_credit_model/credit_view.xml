@@ -198,6 +198,8 @@
                                                 <button name="open_wizard_reporte_dates_prelevement" type="object" class="btn btn-outline-info rounded border-0" icon="fa-clock" attrs="{'invisible': [('state', '!=', ('non_paye'))]}"/>
                                                 <button name="annuler_reporter_date_prelevement" type="object" class="btn btn-outline-info rounded border-0" icon="fa-times" attrs="{'invisible': [('state', '!=', ('reportee'))]}"/>
                                                 <field name="observations"/>
+                                                <button name="payer" type="object" class="btn btn-outline-info rounded border-0" icon="fa-check" groups="hr_management.group_admin_paie" attrs="{'invisible': [('state', '!=', 'non_paye')]}"/>
+                                                <button name="unpayer" type="object" class="btn btn-outline-info rounded border-0" icon="fa-close" groups="hr_management.group_admin_paie" attrs="{'invisible': [('state', '!=', 'paye')]}"/>
                                                 <button name="open_wizard_details_prelevement" type="object" class="btn btn-outline-info rounded border-0" icon="fa-eye" groups="hr_management.group_admin_paie"/>
                                             </tree>
                                         </field>

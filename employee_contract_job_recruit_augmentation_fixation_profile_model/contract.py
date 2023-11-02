@@ -53,6 +53,7 @@ class contrats(models.Model):
     periodicity_related = fields.Selection(related="pp_personnel_id_many2one.periodicity", readonly=True)
     contract_type = fields.Many2one('hr.contract.type',string = "Types de contrats")
     current_month = fields.Char("Le mois en cours",compute="_compute_current_month")
+    entreprise_id = fields.Many2one('company', 'Sociétés',default=1)
 
     repartition_salaire_ids = fields.One2many('repartition.salaire', 'contract_id', string='repartition_salaire')
 

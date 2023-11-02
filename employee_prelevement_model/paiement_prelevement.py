@@ -3,6 +3,8 @@
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
 from math import *
+from dateutil.relativedelta import relativedelta
+
 
 class paiement_prelevement(models.Model):
     _name = "hr.paiement.prelevement"
@@ -98,20 +100,15 @@ class paiement_prelevement(models.Model):
 
     def reporter_date_prelevement(self):
         nbr_lignes = len(self.prelevement_id.paiement_prelevement_ids)
-        last_periode = self.prelevement_id.paiement_prelevement_ids[nbr_lignes-1].period_id.id
+        last_periode = self.prelevement_id.paiement_prelevement_ids[nbr_lignes-1].period_id
         last_echeance = self.prelevement_id.paiement_prelevement_ids[nbr_lignes-1].montant_a_payer
-        query_nouvelle_periode = """
-                SELECT id
-                FROM account_month_period
-                WHERE id > %s
-                LIMIT 1;
-            """  % (last_periode)
-        self.env.cr.execute(query_nouvelle_periode)
-        res_2 = self.env.cr.fetchall()
-        nouvelle_periode = res_2[0][0]
-        self.prelevement_id.paiement_prelevement_ids[nbr_lignes-1].montant_a_payer = self.montant_a_payer
+        
+        nouvelle_periode_id = self.env['account.month.period'].search_read([('date_start','=',last_periode.date_start + relativedelta(months=+1))],['id'])
+
+        self.prelevement_id.paiement_prelevement_ids[nbr_lignes-1].write({'montant_a_payer' : self.montant_a_payer})
+
         nouvelle_ligne_qui_est_reportee =  {
-            "period_id" : nouvelle_periode,
+            "period_id" : nouvelle_periode_id[0]['id'],
             "prelevement_id" : self.prelevement_id.id,
             "montant_a_payer" : last_echeance,
             "state": "non_paye",
@@ -125,7 +122,7 @@ class paiement_prelevement(models.Model):
         last_period_non_paye = -1
 
         if derniere_ligne.state == "non_paye":
-            message = "Attention! Voulez vous vraiment annuler de décalage du paiement du \"" + str(self.period_id.code) + "\" ? "
+            message = "Attention! Voulez vous vraiment annuler le décalage du paiement du \"" + str(self.period_id.code) + "\" ? "
             last_line_non_paye = derniere_ligne
         else:
             for ligne in self.prelevement_id.paiement_prelevement_ids:
