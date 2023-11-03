@@ -84,7 +84,9 @@ class fiche_paie(models.Model):
     
     addition = fields.Float('Total Avantage',compute="_compute_total_addition",store=True)
     deduction = fields.Float('Total Déduction',compute="_compute_total_deduction",store=True)
-    net_pay = fields.Float('Net à payer', compute="compute_net_a_payer", readonly=True)
+    total = fields.Float('Total', compute="compute_total", readonly=True,store=True)
+    sad = fields.Float('Total aprés Déduction', compute="compute_sad", readonly=True,store=True)
+    net_pay = fields.Float('Net à payer', compute="compute_net_a_payer", readonly=True,store=True)
     nbr_jour_travaille = fields.Float("Nombre de jours travaillés")
     nbr_heure_travaille = fields.Float("Nombre des heures travaillées")
     date_validation = fields.Date(u'Date de validation', readonly=True)
@@ -103,6 +105,25 @@ class fiche_paie(models.Model):
     net_paye_archive = fields.Float('Net à Payer')
     new_help = fields.Boolean('field_name',default=False)
 
+    @api.onchange('employee_id')
+    def _onchange_employee_id(self):
+        if self.employee_id:
+            self.contract_id = self.employee_id.contract_id
+            self.autoriz_zero_cp = self.contract_id.autoriz_zero_cp_related
+            self.autoriz_cp = self.contract_id.completer_salaire_related
+    
+    @api.onchange('contract_id')
+    def _onchange_contract_id(self):
+        self.autoriz_zero_cp = self.contract_id.autoriz_zero_cp_related if self.contract_id else False
+        self.autoriz_cp = self.contract_id.completer_salaire_related if self.contract_id else False
+
+    @api.onchange('autoriz_cp')
+    def _onchange_autoriz_cp(self):
+        self.autoriz_zero_cp = not self.autoriz_cp
+    
+    @api.onchange('autoriz_zero_cp')
+    def _onchange_autoriz_zero_cp(self):
+        self.autoriz_cp = not self.autoriz_zero_cp
 
     @api.model
     def create(self, vals):
@@ -122,7 +143,7 @@ class fiche_paie(models.Model):
 
             res.write({
                 'notes': res.notes + '\n' + last_paied_period[0]['notes'] if res.notes else last_paied_period[0]['notes'],
-                'note': res.note + '\n' + last_paied_period[0]['note'] if res.note else last_paied_period[0]['note']
+                'note': res.note + '\n' + last_paied_period[0]['note'] if res.note else last_paied_period[0]['note'],
             })
         
         return res
@@ -140,12 +161,23 @@ class fiche_paie(models.Model):
     @api.depends('nbr_jour_travaille','nbr_heure_travaille','autoriz_cp','autoriz_zero_cp')
     def _compute_cp_number(self):
         for rec in self:
-            if rec.autoriz_cp:
-                rec.cp_number = min(rec.employee_result()['j_comp'],self.employee_id.panier_conge) if rec.employee_result() else 0
-            elif rec.autoriz_zero_cp:
-                rec.cp_number = rec.employee_result()['j_comp'] if rec.employee_result() else 0
-            else:
-                rec.cp_number = 0
+            max_worked_days_p = rec.employee_id.contract_id.max_worked_days_p
+            if not max_worked_days_p :
+                if rec.autoriz_cp:
+                    rec.cp_number = min(rec.employee_result()['j_comp'],self.employee_id.panier_conge) if rec.employee_result() else 0
+                elif rec.autoriz_zero_cp:
+                    rec.cp_number = rec.employee_result()['j_comp'] if rec.employee_result() else 0
+                else:
+                    rec.cp_number = 0
+            elif max_worked_days_p and rec.employee_result()['j_comp'] > 0 and rec.employee_result()['default_day_2_add'] > 0:
+                if rec.employee_result()['j_comp'] > rec.employee_result()['default_day_2_add'] :
+                    rec.cp_number = rec.employee_result()['default_day_2_add']
+                if rec.autoriz_cp:
+                    rec.cp_number += min(rec.employee_result()['j_comp']-rec.employee_result()['default_day_2_add'],self.employee_id.panier_conge) if rec.employee_result() else 0
+                elif rec.autoriz_zero_cp:
+                    rec.cp_number += rec.employee_result()['j_comp']-rec.employee_result()['default_day_2_add'] if rec.employee_result() else 0
+                
+
     
     @api.depends('employee_id','period_id','contract_id')
     def _compute_salaire_jour(self):
@@ -172,7 +204,7 @@ class fiche_paie(models.Model):
     def _compute_panier_dimanche(self):
         for rec in self:
             contract_period = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start)
-            rec.affich_jour_dimmanche_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period,True) if rec.employee_id and rec.period_id else 0
+            rec.affich_jour_dimanche_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period,is_dimanche=True) if rec.employee_id and rec.period_id else 0
     
     @api.depends('cal_state')
     def _compute_total_addition(self):
@@ -217,15 +249,7 @@ class fiche_paie(models.Model):
                 """ %(rec.employee_id.id,rec.period_id.id)
                 rec.env.cr.execute(query)
                 res = rec.env.cr.dictfetchall()[0]['tt']
-            rec.deduction = res 
-            
-    @api.onchange('employee_id')
-    def get_contract_actif(self):
-        if self.employee_id:
-            self.contract_id = self.employee_id.contract_id
-            self.autoriz_cp = self.employee_id.completer_salaire_related
-            self.autoriz_zero_cp = self.employee_id.autoriz_zero_cp_related
-    
+            rec.deduction = res     
 
     def _compute_affich_bonus_jour(self):
         
@@ -255,17 +279,31 @@ class fiche_paie(models.Model):
                     record.affich_bonus_jour = min(res,0.75) if not record.overrid_bonus else res  
 
 
-    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','addition','deduction','cp_number')
-    def compute_net_a_payer(self):
-        resultat = 0
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','cp_number')
+    def compute_total(self):
         for rec in self:
             if rec.contract_id:
-                rec.net_pay = rec.nbr_heure_travaille * rec.salaire_heure if rec.type_profile_related == "h" else rec.nbr_jour_travaille * rec.salaire_jour
-                rec.net_pay += rec.cp_number * rec.salaire_jour
-                rec.net_pay +=  (rec.addition - rec.deduction) 
+                rec.total = rec.nbr_heure_travaille * rec.salaire_heure if rec.type_profile_related == "h" else rec.nbr_jour_travaille * rec.salaire_jour
+                rec.total += rec.cp_number * rec.salaire_jour
+            else:
+                rec.total = 0
+
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','deduction','cp_number','employee_id.cotisation','employee_id.montant_cimr')
+    def compute_sad(self):
+        for rec in self:
+            if rec.contract_id:
+                rec.sad = rec.total - rec.deduction
+                rec.sad -= rec.employee_id.montant_cimr if rec.employee_id.cotisation else 0
+            else:
+                rec.sad = 0
+
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','addition','deduction','cp_number')
+    def compute_net_a_payer(self):
+        for rec in self:
+            if rec.contract_id:
+                rec.net_pay = rec.sad + rec.addition
             else:
                 rec.net_pay = 0
-
 
     def to_draft(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
@@ -419,7 +457,7 @@ class fiche_paie(models.Model):
             default_day_2_add = joe - jom  if self.contract_id.definition_nbre_jour_worked_par_mois_related == 'nbr_saisie' else 0 # jour de réguralisation pour les mois exceptionnels (24-25-27)
             hnt = joe * self.contract_id.nbre_heure_worked_par_jour_related # heure de travail sur lesquelles le salaire de base de l'employé est définis
             hntj = self.contract_id.nbre_heure_worked_par_jour_related # heure de travail sur lesquelles le salaire de base de l'employé est définis
-            jot = self.nbr_jour_travaille + default_day_2_add # jour travaillé par le salarié + la régularisation
+            jot = self.nbr_jour_travaille # jour travaillé par le salarié
             ht = self.nbr_heure_travaille # heure travaillées par le salarié
             h_comp = hnt - ht # heure de compensation de salaire
             ht_equi_days = h_comp / hntj if hntj > 0 else 0 
@@ -436,7 +474,10 @@ class fiche_paie(models.Model):
                 'default_day_2_add':default_day_2_add
             }
         
-        return False
+        return {
+            'j_comp':0,
+            'default_day_2_add':0
+        }
 
     def add_bonus(self):
         if self.affich_bonus_jour > 0:
@@ -466,7 +507,7 @@ class fiche_paie(models.Model):
                 'name':'paiement du mois %s'%self.period_id.name,
                 'employee_id':self.employee_id.id,
                 'categorie':'dimanche_travaille',
-                'nbr_jour':self.cp_number,
+                'nbr_jour':self.affich_jour_dimanche,
                 'state':'approuvee',
                 'period_id':self.period_id.id,
                 'payslip_id':self.id,
@@ -485,10 +526,7 @@ class fiche_paie(models.Model):
                 ('employee_id','in',(False,self.employee_id.id))
                 ]).filtered(lambda ln: ln.first_period_id.date_start <= self.period_id.date_start):
             prime.accept_payement(self.period_id)
-        print(self.env['hr.prelevement'].search([
-                    ('state','=','validee'),
-                ('employee_id','in',(False,self.employee_id.id))
-                ]))
+
         for prelevement in self.env['hr.prelevement'].search([
                     ('state','=','validee'),
                 ('employee_id','in',(False,self.employee_id.id))
@@ -502,10 +540,7 @@ class fiche_paie(models.Model):
                 ('employee_id','in',(False,self.employee_id.id))
                 ]).filtered(lambda ln: ln.first_period_id.date_start <= self.period_id.date_start):
             prime.cancel_payement(self.period_id)
-        print(self.env['hr.prelevement'].search([
-                    ('state','=','validee'),
-                ('employee_id','in',(False,self.employee_id.id))
-                ]))
+
         for prelevement in self.env['hr.prelevement'].search([
                     ('state','=','validee'),
                 ('employee_id','in',(False,self.employee_id.id))

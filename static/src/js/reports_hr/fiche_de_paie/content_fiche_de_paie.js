@@ -609,7 +609,7 @@ export async function content_fiche_de_paie(data, chantier, period, quinz, type)
                                         alignment: 'center'
                                     },
                                     {
-                                        text: data.total_employe_deduction,
+                                        text: data.total_employe_cotisation,
                                         fontSize: 10,
                                         color: 'black',
                                         bold: true,
