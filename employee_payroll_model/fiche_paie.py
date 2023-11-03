@@ -262,6 +262,7 @@ class fiche_paie(models.Model):
         for rec in self:
             if rec.contract_id:
                 rec.net_pay = rec.nbr_heure_travaille * rec.salaire_heure if rec.type_profile_related == "h" else rec.nbr_jour_travaille * rec.salaire_jour
+                rec.net_pay += rec.cp_number * rec.salaire_jour
                 rec.net_pay +=  (rec.addition - rec.deduction) 
             else:
                 rec.net_pay = 0
@@ -452,7 +453,7 @@ class fiche_paie(models.Model):
                 'period_id':self.period_id.id,
                 'payslip_id':self.id,
             }) 
-        """
+        
         if self.affich_jour_dimanche > 0:
             self.env['hr.allocations'].sudo().create({
                 'name':'paiement du mois %s'%self.period_id.name,
@@ -463,7 +464,7 @@ class fiche_paie(models.Model):
                 'period_id':self.period_id.id,
                 'payslip_id':self.id,
             }) 
-        """
+        
 
     def delete_bonus(self):
 
