@@ -70,7 +70,7 @@ class fiche_paie(models.Model):
     
     affich_bonus_jour = fields.Float("Bonus jour", compute="_compute_affich_bonus_jour", readonly=True)
     affich_jour_conge = fields.Float("Panier congé", compute="_compute_panier", readonly=True, store=True)
-    affich_jour_dimanche_conge = fields.Float("Panier dimanche", compute="_compute_panier", readonly=True, store=True)
+    affich_jour_dimanche_conge = fields.Float("Panier dimanche", compute="_compute_panier_dimanche", readonly=True, store=True)
     affich_jour_dimanche = fields.Float(related="rapport_id.count_nbr_dim_days_v",string="Dimanches Travailés")
     affich_jour_ferier = fields.Float(related="rapport_id.count_nbr_ferier_days",string="JF Travailés")
     affich_conge = fields.Float(related="rapport_id.count_nbr_holiday_days",string="Congé Payée")
@@ -172,7 +172,6 @@ class fiche_paie(models.Model):
     def _compute_panier_dimanche(self):
         for rec in self:
             contract_period = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start)
-            rec.affich_jour_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period) if rec.employee_id and rec.period_id else 0
             rec.affich_jour_dimmanche_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period,True) if rec.employee_id and rec.period_id else 0
     
     @api.depends('cal_state')
