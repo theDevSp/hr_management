@@ -94,7 +94,7 @@ class HrFicheDePaieController(http.Controller):
                         'employe_date_embauche': grp.employee_id.date_start.strftime("%d-%m-%Y") if grp.employee_id.date_start else "",
                         'employe_panier_cp': f"{grp.affich_jour_conge:.2f}" or 0,
                         'employe_profile_de_paie': grp.employee_id.name_profile_related or "",
-                        'employe_bank': grp.employee_id.bank.name or "",
+                        'employe_bank': grp.employee_id.rib_number.name or "",
                         'employe_salaire_de_base': f"{grp.salaire_actuel:.0f}" or 0,
                         'employe_deduction': f"{grp.deduction:.0f}" or 0,
                         'employe_cotisation': f"{cotisation:.0f}" or 0,
@@ -104,7 +104,7 @@ class HrFicheDePaieController(http.Controller):
                         'employe_prime_ftor': f"{grp.addition:.0f}"or 0,
                         'employe_sad': f"{salaire_sad:.0f}" or 0,
                         'employe_nap': f"{salaire_nap:.0f}" or 0,
-                        'observation': "" if html2plaintext(grp.notes) == 'False' else html2plaintext(grp.notes)
+                        'observation': "" if grp.note == 'False' else grp.notes
                     }
 
                     total_employe_total += float(data_entry['employe_total'])
