@@ -413,7 +413,8 @@ class hr_rapport_pointage(models.Model):
 
     def create_update_payslip(self):
         view = self.env.ref('hr_management.fiche_paie_formulaire')
-        joe = self.employee_id.contract_id.definition_nbre_jour_worked_par_mois_related
+        joe_def = self.employee_id.contract_id.definition_nbre_jour_worked_par_mois_related
+        joe = self.employee_id.contract_id.nbre_jour_worked_par_mois_related
         data = {
             'employee_id':self.employee_id.id,
             'contract_id':self.employee_id.contract_id.id,
@@ -425,7 +426,7 @@ class hr_rapport_pointage(models.Model):
             'emplacement_chantier_id':self.emplacement_chantier_id.id,
             'rapport_id':self.id,
             'quinzaine':self.quinzaine,
-            'nbr_jour_travaille':min(self.total_j_v,joe) if joe == 'nbr_saisie' else self.total_j_v,
+            'nbr_jour_travaille':min(self.total_j_v,joe) if joe_def == 'nbr_saisie' else self.total_j_v,
             'nbr_heure_travaille':self.total_h_v
         }
         
@@ -444,7 +445,7 @@ class hr_rapport_pointage(models.Model):
             }
         else:
             self.payslip_ids[0].write({
-                'nbr_jour_travaille':self.total_j_v,
+                'nbr_jour_travaille':min(self.total_j_v,joe) if joe_def == 'nbr_saisie' else self.total_j_v,
                 'nbr_heure_travaille':self.total_h_v
             })
 
