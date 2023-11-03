@@ -203,6 +203,19 @@ class hr_filtre_pointage_wizard(models.TransientModel):
         exclud_list,result,foreign_list = [],[],[]
         #---------- quainzaine 1 ---------------------------------------
 
+        if self.quinzaine == 'quinzaine12' and  self.employee_type == 'o':
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': ("Erreur de saisie"),
+                    'message': ("Information saisis erronées veuillez réessayer. Pour les ouvriers vous devez choisir soit 1ere ou 2eme quinzaine"),
+                    'sticky': True,
+                    'type': 'danger',
+                    'next': {'type': 'ir.actions.act_window_close'},
+                }
+            }
+
         if self.quinzaine == 'quinzaine1' and self.previlege_validation():
 
             exclud_list = [ln['employee_id'][0] for ln in self.env['declaration.anomalie.employee.sur.chantier'].read_group(

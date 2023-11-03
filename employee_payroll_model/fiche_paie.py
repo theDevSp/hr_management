@@ -256,7 +256,7 @@ class fiche_paie(models.Model):
                     record.affich_bonus_jour = min(res,0.75) if not record.overrid_bonus else res  
 
 
-    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','addition','deduction')
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','addition','deduction','cp_number')
     def compute_net_a_payer(self):
         resultat = 0
         for rec in self:
