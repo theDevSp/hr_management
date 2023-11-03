@@ -303,6 +303,12 @@ class fiche_paie(models.Model):
             if self.state == 'cal' :
                 self.state = 'validee'
                 self.delete_bonus()
+                self.cancel_payement_addition_deduction()
+                joe = self.employee_id.contract_id.definition_nbre_jour_worked_par_mois_related
+                self.write({
+                    'nbr_jour_travaille':min(self.rapport_id.total_j_v,joe) if joe == 'nbr_saisie' else self.rapport_id.total_j_v,
+                    'nbr_heure_travaille':self.rapport_id.total_h_v
+                })
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."

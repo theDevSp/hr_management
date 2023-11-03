@@ -444,7 +444,7 @@ class hr_rapport_pointage(models.Model):
             }
         else:
             self.payslip_ids[0].write({
-                'nbr_jour_travaille':self.total_j_v,
+                'nbr_jour_travaille':min(self.total_j_v,joe) if joe == 'nbr_saisie' else self.total_j_v,
                 'nbr_heure_travaille':self.total_h_v
             })
 
