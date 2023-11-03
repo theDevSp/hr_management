@@ -25,12 +25,13 @@ class hr_employee(models.Model):
     ville_bank_related = fields.Many2one(related='rib_number.ville_bank')
     bank_agence_related = fields.Char(related='rib_number.bank_agence')
     job = fields.Char("Fonction")
-    cotisation = fields.Boolean("Activer Cotisation-CIMR")
     diplome = fields.Char(u"Diplôme")
     obs_embauche  = fields.Char(u"Observation")
     employee_age = fields.Integer(u"Âge",compute="_compute_age")
     date_naissance = fields.Date(u"Date Naissance")
     lieu_naissance = fields.Char(u"Lieu Naissance")
+    
+    cotisation = fields.Boolean("Activer Cotisation-CIMR")
     montant_cimr = fields.Float(u"Montant Cotisation CIMR")
     
     vehicle_id = fields.Many2one("fleet.vehicle",u"Code engin",tracking=True)
@@ -266,18 +267,7 @@ class hr_employee(models.Model):
             rec.panier_conge = 0
             if rec.contract_id:
                 period_debut_contrat = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start) if rec.contract_id else 0
-                if period_debut_contrat:
-                    query = """
-                        SELECT SUM(nbr_jour)
-                        FROM hr_allocations
-                        WHERE categorie != 'dimanche_travaille'
-                        AND employee_id = %s AND period_id >= %s
-                        AND state = 'approuvee'
-                    """ % (rec.id,period_debut_contrat.id)
-                    rec.env.cr.execute(query)
-                    res = rec.env.cr.fetchall()
-                    if len(res) > 0:
-                        rec.panier_conge = res[0][0]
+                rec.panier_conge =  self.env['hr.allocations'].get_sum_allocation(rec,False,period_debut_contrat)
                 
 
     def _compute_panier_jr_ferie(self):
@@ -285,36 +275,16 @@ class hr_employee(models.Model):
             rec.panier_jr_ferie = 0
             if rec.contract_id:
                 period_debut_contrat = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start) if rec.contract_id else 0
-                if period_debut_contrat:
-                    query = """
-                        SELECT SUM(nbr_jour)
-                        FROM hr_allocations
-                        WHERE categorie = 'jour_ferie' 
-                        AND employee_id = %s AND period_id >= %s
-                        AND state = 'approuvee'
-                    """ % (rec.id,period_debut_contrat.id)
-                    rec.env.cr.execute(query)
-                    res = rec.env.cr.fetchall()
-                    if len(res) > 0:
-                        rec.panier_jr_ferie = res[0][0]
+                rec.panier_conge =  self.env['hr.allocations'].get_sum_allocation(rec,False,period_debut_contrat,is_jf = True)
+
 
     def _compute_panier_dimanches(self):
         for rec in self :
             rec.panier_dimanches = 0
             if rec.contract_id:
                 period_debut_contrat = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start) if rec.contract_id else 0
-                if period_debut_contrat:
-                    query = """
-                        SELECT SUM(nbr_jour)
-                        FROM hr_allocations
-                        WHERE categorie = 'dimanche_travaille' 
-                        AND employee_id = %s AND period_id >= %s
-                        AND state = 'approuvee'
-                    """ % (rec.id,period_debut_contrat.id)
-                    rec.env.cr.execute(query)
-                    res = rec.env.cr.fetchall()
-                    if len(res) > 0:
-                        rec.panier_dimanches = res[0][0]
+                rec.panier_conge =  self.env['hr.allocations'].get_sum_allocation(rec,False,period_debut_contrat,is_dimanche = True)
+
 
 
     def all_contracts(self):

@@ -415,6 +415,17 @@ class hr_rapport_pointage(models.Model):
         view = self.env.ref('hr_management.fiche_paie_formulaire')
         joe_def = self.employee_id.contract_id.definition_nbre_jour_worked_par_mois_related
         joe = self.employee_id.contract_id.nbre_jour_worked_par_mois_related
+        max_worked_days_d = self.employee_id.contract_id.max_worked_days_d
+        max_worked_days_p = self.employee_id.contract_id.max_worked_days_p
+        jo_related = self.employee_id.contract_id.jo_related
+        total_jt = self.total_j_v
+
+        if jo_related:
+            total_jt -= self.count_nbr_dim_days_v
+        
+        if max_worked_days_d:
+            total_jt += self.rapport_result()['default_day_2_add']
+
         data = {
             'employee_id':self.employee_id.id,
             'contract_id':self.employee_id.contract_id.id,
@@ -426,8 +437,10 @@ class hr_rapport_pointage(models.Model):
             'emplacement_chantier_id':self.emplacement_chantier_id.id,
             'rapport_id':self.id,
             'quinzaine':self.quinzaine,
-            'nbr_jour_travaille':min(self.total_j_v,joe) if joe_def == 'nbr_saisie' else self.total_j_v,
-            'nbr_heure_travaille':self.total_h_v
+            'nbr_jour_travaille':total_jt,
+            'nbr_heure_travaille':self.total_h_v,
+            'autoriz_cp' :self.employee_id.contract_id.completer_salaire_related,
+            'autoriz_zero_cp' :self.employee_id.contract_id.autoriz_zero_cp_related,
         }
         
         if not self.payslip_ids:
@@ -445,7 +458,7 @@ class hr_rapport_pointage(models.Model):
             }
         else:
             self.payslip_ids[0].write({
-                'nbr_jour_travaille':min(self.total_j_v,joe) if joe_def == 'nbr_saisie' else self.total_j_v,
+                'nbr_jour_travaille':total_jt,
                 'nbr_heure_travaille':self.total_h_v
             })
 

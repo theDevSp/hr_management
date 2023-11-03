@@ -22,6 +22,8 @@
                 <field name="salaire_actuel" optional="hide"/>
                 <field name="addition" optional="hide" string="prime"/>
                 <field name="deduction" optional="hide" string="DED"/>
+                <field name="total" optional="show"/>
+                <field name="sad" optional="show"/>
                 <field name="net_pay" optional="show"/>
                 <field name="affich_bonus_jour" optional="hide"/>
                 <field name="affich_jour_conge" optional="hide"/>
@@ -67,6 +69,8 @@
                 <field name="salaire_actuel" optional="hide"/>
                 <field name="addition" optional="hide" string="prime"/>
                 <field name="deduction" optional="hide" string="DED"/>
+                <field name="total" optional="show"/>
+                <field name="sad" optional="show"/>
                 <field name="net_pay" optional="show"/>
                 <field name="affich_bonus_jour" optional="hide"/>
                 <field name="affich_jour_conge" optional="hide"/>
@@ -130,6 +134,13 @@
                                             <span class="input-group-text" ><label for="period_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                                         </div>
                                         <field name="period_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" >
+                                                <div class="o_form_label" style="color:red">
+                                                    <field name="jom" class="h5"/> J.O
+                                                </div>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -289,13 +300,24 @@
                                             <field name="nbr_heure_travaille" class="form-control text-center" 
                                                     attrs="{'readonly': [('state', '!=', 'draft')],'required': [('type_profile_related', '=', 'm')]}"/>
                                         </div>
-                                        <div class="input-group mb-3">
+                                        <div class="input-group mb-3" attrs="{'invisible': [('new_help', '=', True)]}">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="affich_bonus_jour" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                <span class="input-group-text" ><label for="total" class=""/></span>
                                             </div>
-                                            <field name="affich_bonus_jour" class="form-control text-center"/>
+                                            <field name="total" class="form-control text-center"/>
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
+                                            </div>
                                         </div>
-                                        <field name="new_help" invisible="1"/>
+                                        <div class="input-group mb-3" attrs="{'invisible': [('new_help', '=', True)]}">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="sad" class=""/></span>
+                                            </div>
+                                            <field name="sad" class="form-control text-center"/>
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
+                                            </div>
+                                        </div>
                                         <div class="input-group mb-3" attrs="{'invisible': [('new_help', '=', True)]}">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" ><label for="net_pay" class=""/></span>
@@ -305,6 +327,7 @@
                                                 <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
                                             </div>
                                         </div>
+                                        <field name="new_help" invisible="1"/>
                                         <div class="input-group mb-3" attrs="{'invisible': [('new_help', '=', False)]}">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" ><label for="net_paye_archive" class=""/></span>
@@ -313,6 +336,12 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
                                             </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="affich_bonus_jour" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="affich_bonus_jour" class="form-control text-center"/>
                                         </div>
                                     </div> 
                                 </div> 

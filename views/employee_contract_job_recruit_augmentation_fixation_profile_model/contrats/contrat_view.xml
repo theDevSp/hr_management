@@ -338,6 +338,13 @@
                                                             </div>
                                                             <field name="jo_related" widget="boolean_toggle" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
                                                         </div>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" ><label for="max_worked_days_d" class=""/></span>
+                                                            </div>
+                                                            <field name="max_worked_days_d" widget="boolean_toggle" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                                        </div>
+                                                        
                                                     </div>
                                                     <div class="col-12 col-lg-6">
                                                         <div class="input-group mb-3">
@@ -363,6 +370,12 @@
                                                                 <span class="input-group-text" ><label for="type_profile_related" class=""/></span>
                                                             </div>
                                                             <field name="type_profile_related" class="form-control"/>
+                                                        </div>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" ><label for="max_worked_days_p" class=""/></span>
+                                                            </div>
+                                                            <field name="max_worked_days_p" widget="boolean_toggle" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
                                                         </div>
                                                     </div>
                                                 </div>
