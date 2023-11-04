@@ -469,7 +469,7 @@ class fiche_paie(models.Model):
             jot = self.nbr_jour_travaille # jour travaillé par le salarié
             ht = self.nbr_heure_travaille # heure travaillées par le salarié
             h_comp = hnt - ht # heure de compensation de salaire
-            ht_equi_days = h_comp / hntj if hntj > 0 else 0 
+            ht_equi_days = h_comp / hntj if h_comp > 0 else 0 
             j_comp = joe - jot if type_profile == 'j' else ht_equi_days # jour/heure de compensation de salaire
 
             return {
