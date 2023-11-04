@@ -81,6 +81,7 @@ class fiche_paie(models.Model):
     overrid_bonus = fields.Boolean('Dépassement bonus')
 
     cp_number = fields.Float('Nombre Jours Compensation',compute="_compute_cp_number",store=True)
+    cp_number_regularisation = fields.Float('Régularisation')
     
     addition = fields.Float('Total Avantage',compute="_compute_total_addition",store=True)
     deduction = fields.Float('Total Déduction',compute="_compute_total_deduction",store=True)
@@ -117,13 +118,9 @@ class fiche_paie(models.Model):
         self.autoriz_zero_cp = self.contract_id.autoriz_zero_cp_related if self.contract_id else False
         self.autoriz_cp = self.contract_id.completer_salaire_related if self.contract_id else False
 
-    @api.onchange('autoriz_cp')
-    def _onchange_autoriz_cp(self):
-        self.autoriz_zero_cp = not self.autoriz_cp
-    
-    @api.onchange('autoriz_zero_cp')
-    def _onchange_autoriz_zero_cp(self):
-        self.autoriz_cp = not self.autoriz_zero_cp
+    @api.onchange('cp_number_regularisation')
+    def _onchange_cp_number_regularisation(self):
+        self.cp_number += self.cp_number_regularisation
 
     @api.model
     def create(self, vals):
@@ -163,19 +160,31 @@ class fiche_paie(models.Model):
         for rec in self:
             max_worked_days_p = rec.employee_id.contract_id.max_worked_days_p
             if not max_worked_days_p :
+
                 if rec.autoriz_cp:
                     rec.cp_number = min(rec.employee_result()['j_comp'],self.employee_id.panier_conge) if rec.employee_result() else 0
                 elif rec.autoriz_zero_cp:
                     rec.cp_number = rec.employee_result()['j_comp'] if rec.employee_result() else 0
                 else:
                     rec.cp_number = 0
+
             elif max_worked_days_p and rec.employee_result()['j_comp'] > 0 and rec.employee_result()['default_day_2_add'] > 0:
+
                 if rec.employee_result()['j_comp'] > rec.employee_result()['default_day_2_add'] :
                     rec.cp_number = rec.employee_result()['default_day_2_add']
                 if rec.autoriz_cp:
                     rec.cp_number += min(rec.employee_result()['j_comp']-rec.employee_result()['default_day_2_add'],self.employee_id.panier_conge) if rec.employee_result() else 0
                 elif rec.autoriz_zero_cp:
                     rec.cp_number += rec.employee_result()['j_comp']-rec.employee_result()['default_day_2_add'] if rec.employee_result() else 0
+
+            elif max_worked_days_p and rec.employee_result()['j_comp'] > 0 and rec.employee_result()['default_day_2_add'] == 0:
+
+                if rec.autoriz_cp:
+                    rec.cp_number = min(rec.employee_result()['j_comp'],self.employee_id.panier_conge) if rec.employee_result() else 0
+                elif rec.autoriz_zero_cp:
+                    rec.cp_number += rec.employee_result()['j_comp'] if rec.employee_result() else 0
+            
+            
                 
 
     
