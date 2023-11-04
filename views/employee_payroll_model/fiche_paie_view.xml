@@ -382,7 +382,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" ><label for="cp_number" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                                             </div>
-                                            <field name="cp_number" class="form-control text-center"/>
+                                            <field name="cp_number" class="form-control text-center" force_save="1"/>
                                         </div>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
