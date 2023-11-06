@@ -1,12 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <t t-name="hr_management.main_dashboard" owl="1">
-        <Layout display="display">
+        <Layout>
             <div class="row p-3">
+                <div class="col-6">
 
-                <div class="col col-lg-3">
-                    <ChantierDrop></ChantierDrop>
+                    <div class="card">
+                        <div class="card-header">
+                            Featured
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Special title treatment</h5>
+                                            <p class="card-text">With supporting text below as a
+                                                natural lead-in to additional content.</p>
+                                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card text-white bg-dark mb-3">
+                                        <div class="card-header">Header</div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">Dark card title</h5>
+                                            <p class="card-text">Some quick example text to build on
+                                                the card title and make up the bulk of the card's
+                                                content.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
 
             </div>
         </Layout>

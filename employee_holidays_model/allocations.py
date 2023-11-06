@@ -113,9 +113,11 @@ class allocations(models.Model):
                                         ))
 
         
-        if is_dimanche:
+        if is_dimanche and not is_jf:
             return dimanche_alloc
-        elif is_jf:
+        elif is_jf and not is_dimanche:
             return jf_alloc
-        else:
+        elif not is_dimanche and not is_jf:
             return plus_alloc - minec_alloc
+        else:
+            return 0
