@@ -26,7 +26,7 @@ class hrCongesControllers(http.Controller):
                 'employe_lieu_naissance': res.lieu_naissance if res.lieu_naissance not in [False, True, 0, 0.0, ""] else "-",
                 'employe_genre': res.gender if res.gender not in [False, True, 0, 0.0, ""] else "-",
                 'employe_etat_civil': res.marital if res.marital not in [False, True, 0, 0.0, ""] else "-",
-                'employe_nbr_enfant': res.nombre_enfants if res.nombre_enfants not in [False, True, 0, 0.0, ""] else "-",
+                'employe_nbr_enfant': res.nombre_enfants if res.nombre_enfants not in [False, True, ""] else "-",
                 'employe_num_tele': res.mobile_phone if res.mobile_phone not in [False, True, 0, 0.0, ""] else "-",
                 'employe_type': res.type_emp if res.type_emp not in [False, True, 0, 0.0, ""] else "-",
                 'employe_contract_type': res.contract_id.contract_type.name if res.contract_id.contract_type.name not in [False, True, 0, 0.0, ""] else "-",
@@ -34,7 +34,7 @@ class hrCongesControllers(http.Controller):
                 'employe_contract_debut': res.contract_id.date_start if res.contract_id.date_start not in [False, True, 0, 0.0, ""] else "-",
                 'employe_contract_fin': res.contract_id.date_end if res.contract_id.date_end not in [False, True, 0, 0.0, ""] else "-",
                 'employe_profile_paie': res.contract_id.profile_paie_id.display_name if res.contract_id.profile_paie_id.display_name not in [False, True, 0, 0.0, ""] and not pointeur else "-",
-                'employe_periodictite': res.contract_id.periodicity_related if res.contract_id.periodicity_related not in [False, True, 0, 0.0, ""] else "-",
+                'employe_periodictite':dict(res.fields_get(allfields=['periodicity_related'])['periodicity_related']['selection'])[res.contract_id.periodicity_related].upper()  if res.contract_id.periodicity_related not in [False, True, 0, 0.0, ""] else "-",
                 'employe_embaucher_par': res.embaucher_par.name if res.embaucher_par.name not in [False, True, 0, 0.0, ""] else "-",
                 'employe_recomander_par': res.recommander_par.name if res.recommander_par.name not in [False, True, 0, 0.0, ""] else "-",
                 'employe_motif_embauche': res.motif_enbauche if res.motif_enbauche not in [False, True, 0, 0.0, ""] else "-",
@@ -42,7 +42,7 @@ class hrCongesControllers(http.Controller):
                 'employe_agence': res.rib_number.bank_agence if res.rib_number.bank_agence not in [False, True, 0, 0.0, ""] else "-",
                 'employe_bank': res.rib_number.bank.name if res.rib_number.bank.name not in [False, True, 0, 0.0, ""] else "-",
                 'employe_bank_ville': res.rib_number.ville_bank.name if res.rib_number.ville_bank.name not in [False, True, 0, 0.0, ""] else "-",
-                'employe_mode_paiment': "-"
+                'employe_mode_paiment': res.rib_number.payement_mode_id.name if res.rib_number.payement_mode_id.name not in [False, True, 0, 0.0, ""] else "-",
             })
 
             return data

@@ -552,6 +552,24 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><label for="cotisation" class=""/></span>
+                                                    </div>
+                                                    <field name="cotisation" widget="boolean_toggle" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><label for="montant_cimr" class=""/></span>
+                                                    </div>
+                                                    <field name="montant_cimr" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div> 
                                 </div> 
                             </div> 
