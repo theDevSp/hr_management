@@ -211,7 +211,7 @@ export async function content_fiche_employee(data) {
                         border: [1, 1, 0, 0],
                         margin: [15, 5, 0, 0],
                     }, {
-                        text: data.employe_type == 's' ? "Salarié" : data.employe_type == 'o' ? "Ouvrier" : "-",
+                        text: data.employe_type == 's' ? "SALARIE" : data.employe_type == 'o' ? "OUVRIER" : "-",
                         fontSize: 9,
                         border: [0, 1, 0, 0],
                         margin: [0, 5, 0, 0],

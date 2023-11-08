@@ -45,6 +45,8 @@ class contrats(models.Model):
     justification_related = fields.Boolean(related="pp_personnel_id_many2one.justification", readonly=False)
     saved_holidays_related = fields.Boolean(related="pp_personnel_id_many2one.saved_holidays", readonly=False)
     jo_related = fields.Boolean(related="pp_personnel_id_many2one.jo", readonly=False)
+    max_worked_days_d = fields.Boolean(related="pp_personnel_id_many2one.max_worked_days_d", readonly=False)
+    max_worked_days_p = fields.Boolean(related="pp_personnel_id_many2one.max_worked_days_p", readonly=False)
     autoriz_zero_cp_related = fields.Boolean(related="pp_personnel_id_many2one.autoriz_zero_cp", readonly=False)
     period_id_related = fields.Many2one(related="pp_personnel_id_many2one.period_id", readonly=False)
     salaire_jour_related = fields.Float(related="pp_personnel_id_many2one.salaire_jour", readonly=True)
@@ -53,6 +55,7 @@ class contrats(models.Model):
     periodicity_related = fields.Selection(related="pp_personnel_id_many2one.periodicity", readonly=True)
     contract_type = fields.Many2one('hr.contract.type',string = "Types de contrats")
     current_month = fields.Char("Le mois en cours",compute="_compute_current_month")
+    entreprise_id = fields.Many2one('company', 'Sociétés')
 
     repartition_salaire_ids = fields.One2many('repartition.salaire', 'contract_id', string='repartition_salaire')
 

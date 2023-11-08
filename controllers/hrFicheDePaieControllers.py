@@ -22,8 +22,7 @@ class HrFicheDePaieController(http.Controller):
         period_id = int(period_id)
         chantier_id = int(chantier_id)
 
-        domains = [('period_id', '=', period_id),
-                   ('chantier_id', '=', chantier_id)]
+        domains = [('period_id', '=', period_id),('chantier_id', '=', chantier_id)]
 
         if quinz:
             domains.append(('quinzaine', '=', quinz))
@@ -36,15 +35,12 @@ class HrFicheDePaieController(http.Controller):
             domains.append(('type_emp', '=', type_employe))
 
         payslips = http.request.env['hr.payslip'].search(domains)
-        chantier = http.request.env['fleet.vehicle.chantier'].browse(
-            chantier_id)  # chantier_id
-        period = http.request.env['account.month.period'].browse(
-            period_id)  # period_id
+        chantier = http.request.env['fleet.vehicle.chantier'].browse(chantier_id)  # chantier_id
+        period = http.request.env['account.month.period'].browse(period_id)  # period_id
 
         if payslips:
 
-            res = sorted(
-                payslips, key=lambda re: re.emplacement_chantier_id.name)
+            res = sorted(payslips, key=lambda re: re.emplacement_chantier_id.name)
             final = []
 
             for group_key, group in groupby(res, key=lambda re: re.emplacement_chantier_id.name):
@@ -68,21 +64,20 @@ class HrFicheDePaieController(http.Controller):
                         cotisation = 0
 
                     if grp.employee_id.type_profile_related == 'j':
-                        total = grp.salaire_jour * grp.nbr_jour_travaille
-                        jours_heure = str(grp.nbr_jour_travaille) + 'J'
+                        jours_heure = str(grp.nbr_jour_travaille) + ' J'
                     elif grp.employee_id.type_profile_related == 'h':
-                        total = grp.salaire_heure * grp.nbr_heure_travaille
-                        jours_heure = str(grp.nbr_heure_travaille) + 'H'
+                        jours_heure = str(grp.nbr_heure_travaille) + ' H'
                     else:
                         jours_heure = 0
-                        total = 0
+
+                    total = grp.total
 
                     if grp.type_fiche == 'stc' or grp.state == 'blocked':
                         salaire_sad = 0
                         salaire_nap = 0
                     else:
-                        salaire_sad = total - (cotisation + grp.deduction)
-                        salaire_nap = salaire_sad + grp.addition
+                        salaire_sad = grp.sad
+                        salaire_nap = grp.net_pay
 
                     data_entry = {
                         'ref': grp.name or "",
@@ -94,17 +89,17 @@ class HrFicheDePaieController(http.Controller):
                         'employe_date_embauche': grp.employee_id.date_start.strftime("%d-%m-%Y") if grp.employee_id.date_start else "",
                         'employe_panier_cp': f"{grp.affich_jour_conge:.2f}" or 0,
                         'employe_profile_de_paie': grp.employee_id.name_profile_related or "",
-                        'employe_bank': grp.employee_id.bank.name or "",
+                        'employe_bank': grp.employee_id.rib_number.payement_mode_id.name or "",
                         'employe_salaire_de_base': f"{grp.salaire_actuel:.0f}" or 0,
                         'employe_deduction': f"{grp.deduction:.0f}" or 0,
                         'employe_cotisation': f"{cotisation:.0f}" or 0,
                         'employe_jours_heure': jours_heure or 0,
                         'employe_cp': f"{grp.cp_number:.2f}" or 0,
-                        'employe_total': f"{total:.0f}" or 0,
+                        'employe_total': round(total) or 0,
                         'employe_prime_ftor': f"{grp.addition:.0f}"or 0,
-                        'employe_sad': f"{salaire_sad:.0f}" or 0,
-                        'employe_nap': f"{salaire_nap:.0f}" or 0,
-                        'observation': "" if html2plaintext(grp.notes) == 'False' else html2plaintext(grp.notes)
+                        'employe_sad': round(salaire_sad) or 0,
+                        'employe_nap': round(salaire_nap) or 0,
+                        'observation': grp.note or ""
                     }
 
                     total_employe_total += float(data_entry['employe_total'])
@@ -117,12 +112,12 @@ class HrFicheDePaieController(http.Controller):
                     obj["data"].append(data_entry)
                 
 
-                obj["total_employe_total"] = f"{total_employe_total:.0f}"
-                obj["total_employe_deduction"] = f"{total_employe_deduction:.0f}"
-                obj["total_employe_cotisation"] = f"{total_employe_cotisation:.0f}"
-                obj["total_employe_sad"] = f"{total_employe_sad:.0f}"
-                obj["total_employe_nap"] = f"{total_employe_nap:.0f}"
-                obj["total_employe_addition"] = f"{total_employe_addition:.0f}"
+                obj["total_employe_total"] = total_employe_total
+                obj["total_employe_deduction"] = total_employe_deduction
+                obj["total_employe_cotisation"] = total_employe_cotisation
+                obj["total_employe_sad"] = total_employe_sad
+                obj["total_employe_nap"] = total_employe_nap
+                obj["total_employe_addition"] = total_employe_addition
                 final.append(obj)
 
             

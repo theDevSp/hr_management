@@ -66,6 +66,11 @@ class prelevement(models.Model):
                     raise ValidationError("Erreur, Vous avez au moins une période payée, vous devez régler la situation.")
                 
         return super(prelevement, self).write(vals)
+
+    @api.depends('montant_total_prime', 'paiement_prelevement_ids.state')
+    def _compute_montant_payer(self):
+        for rec in self:
+            rec.montant_paye = sum(line.montant_a_payer for line in rec.paiement_prelevement_ids.filtered(lambda ln: ln.state == 'paye'))
     
     @api.depends('date_fait')
     def _compute_first_period(self):
@@ -79,6 +84,7 @@ class prelevement(models.Model):
             res = self.montant_total_prime / self.echeance
             nbr_periodes = ceil(res)            
             self.compute_alimenter_paiement_prelevement(nbr_periodes)
+            
         else:
             raise ValidationError("Probléme d'échéance, Le systéme ne peut pas lancer le calcule à cause d'une erreur au niveau de l'échéance.")
             
@@ -142,6 +148,7 @@ class prelevement(models.Model):
             self.recuperer_salaire()
         self._compute_montant()
         self._compute_echeance()
+
     def recuperer_salaire(self):
         for record in self:
             period_id = record.recuperer_id_periode(record.date_fait)
@@ -226,3 +233,16 @@ class prelevement(models.Model):
         else:
             raise ValidationError("Erreur, Action autorisée seulement pour les administrateurs et les agents de paie.")
     
+    def accept_payement(self,period_id):
+
+        for ln in self.paiement_prelevement_ids.filtered(lambda ln: ln.period_id.id == period_id.id and ln.state == "non_paye"):
+            ln.write({
+                'state':'paye'
+            })
+    
+    def cancel_payement(self,period_id):
+
+        for ln in self.paiement_prelevement_ids.filtered(lambda ln: ln.period_id.id == period_id.id and ln.state == "paye"):
+            ln.write({
+                'state':'non_paye'
+            })

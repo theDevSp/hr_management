@@ -64,6 +64,15 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
+                                                        <span class="input-group-text" ><label for="entreprise_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                    </div>
+                                                    <field name="entreprise_id" options="{'no_create': True, 'no_open': True}" 
+                                                                            attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
                                                         <span class="input-group-text" ><label for="contract_type" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                                                     </div>
                                                     <field name="contract_type" options="{'no_create': True, 'no_open': True}" 
@@ -329,6 +338,13 @@
                                                             </div>
                                                             <field name="jo_related" widget="boolean_toggle" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
                                                         </div>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" ><label for="max_worked_days_d" class=""/></span>
+                                                            </div>
+                                                            <field name="max_worked_days_d" widget="boolean_toggle" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                                        </div>
+                                                        
                                                     </div>
                                                     <div class="col-12 col-lg-6">
                                                         <div class="input-group mb-3">
@@ -354,6 +370,12 @@
                                                                 <span class="input-group-text" ><label for="type_profile_related" class=""/></span>
                                                             </div>
                                                             <field name="type_profile_related" class="form-control"/>
+                                                        </div>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" ><label for="max_worked_days_p" class=""/></span>
+                                                            </div>
+                                                            <field name="max_worked_days_p" widget="boolean_toggle" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
                                                         </div>
                                                     </div>
                                                 </div>

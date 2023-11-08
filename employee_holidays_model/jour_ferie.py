@@ -10,7 +10,19 @@ class jour_ferie(models.Model):
     _descripion = "Jours feries"
     _inherit = ["mail.thread","mail.activity.mixin"]
 
-    name = fields.Char("Libellé", required = True )
+    name = fields.Selection([
+        ('1', '1er janvier : Nouvel an'),
+        ('2', "11 janvier : Anniversaire de l'Indépendance"),
+        ('3', '30 juillet : Fête du Trône'),
+        ('4', '14 août : Commémoration de l’allégeance de l’oued Eddahab'),
+        ('5', '20 août : Anniversaire de la révolution, du roi et du peuple'),
+        ('6', '6 novembre : Anniversaire de la Marche verte'),
+        ('7', '18 novembre : Fête de l’Indépendance'),
+        ('8', 'فاتح محرم رأس السنة الهجرية'),
+        ('9', 'عيد المولد النبوي الشريف'),
+        ('10', 'عيد الفطر'),
+        ('11', 'عيد الأضحى'),
+    ], string='name',required=True)
     period_id = fields.Many2one("account.month.period", string = "Période", required = True)
     date_start = fields.Date('Date de début',default=fields.Date.today, required = True)
     date_end = fields.Date('Date de fin',default=fields.Date.today, required = True)
@@ -73,7 +85,7 @@ class jour_ferie(models.Model):
         for line in lines:
             line.write({
                 'day_type': day_type,
-                'details' : self.name if type_condition == '1' else False,
+                'details' :dict(self.fields_get(allfields=['name'])['name']['selection'])[self.name] if type_condition == '1' else False,
                 'chantier_id': line.rapport_id.chantier_id.id if type_condition == '1' else False,
                 'emplacement_chantier_id': line.rapport_id.emplacement_chantier_id.id if type_condition == '1' else False
                 })

@@ -12,17 +12,39 @@ class fiche_paie(models.Model):
     _profile_perso_obj = "hr.profile.paie.personnel"
 
     name =  fields.Char("Référence", readonly=True, copy=False)
+
+    #-------------> infos employee
+
     employee_id = fields.Many2one("hr.employee",string="Employé",required=True)
+    employee_name = fields.Char(related="employee_id.name",string=u"Nom et prénon", readonly=True)
+    rib_number = fields.Many2one(related='employee_id.rib_number',string="RIB", readonly=True)
+    payement_mode_id = fields.Many2one(related='employee_id.rib_number.payement_mode_id')
+    cin = fields.Char(related="employee_id.cin", string='CIN', readonly=True)
     working_years = fields.Char(related="employee_id.working_years",string="Ancienneté",readonly=True)
+
+    #-------------> infos employee
+    #-------------> infos contract
+
     contract_id = fields.Many2one("hr.contract", string = "Contrat",required=True)
     type_emp = fields.Selection(related="contract_id.type_emp",string=u"Type d'employé", store=True, readonly=True)
+    profile_paie_id = fields.Many2one(related="contract_id.profile_paie_id", readonly=True)
     job_id = fields.Many2one(related="contract_id.job_id", string='Poste', store=True, readonly=True)
-    cin = fields.Char(related="employee_id.cin", string='CIN', readonly=True)
     type_profile_related = fields.Selection(related="contract_id.type_profile_related",string=u"Type du profile", readonly=True)
+    salaire_actuel = fields.Float(related="contract_id.salaire_actuel", string='Salaire Actuel', store=True, readonly=True)
+    date_start = fields.Date(related='contract_id.date_start',string="Date d'embauche", readonly=True)
+
+    #-------------> infos contract
+    #-------------> infos period
+
+    period_id = fields.Many2one("account.month.period", string = "Période", required = True)
+    jom = fields.Float(related='period_id.jom',readonly=True)
+
+
+    #-------------> infos period
+
     chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Dérnier Chantier",required=True)
     vehicle_id = fields.Many2one('fleet.vehicle', string='Dérnier Code Engin')
     emplacement_chantier_id = fields.Many2one("fleet.vehicle.chantier.emplacement",u"Dérnière Équipe",required=True)
-    period_id = fields.Many2one("account.month.period", string = "Période", required = True)
     quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine", required = True)
     
     type_fiche = fields.Selection([
@@ -48,7 +70,7 @@ class fiche_paie(models.Model):
     
     affich_bonus_jour = fields.Float("Bonus jour", compute="_compute_affich_bonus_jour", readonly=True)
     affich_jour_conge = fields.Float("Panier congé", compute="_compute_panier", readonly=True, store=True)
-    affich_jour_dimanche_conge = fields.Float("Panier dimanche", compute="_compute_panier", readonly=True, store=True)
+    affich_jour_dimanche_conge = fields.Float("Panier dimanche", compute="_compute_panier_dimanche", readonly=True, store=True)
     affich_jour_dimanche = fields.Float(related="rapport_id.count_nbr_dim_days_v",string="Dimanches Travailés")
     affich_jour_ferier = fields.Float(related="rapport_id.count_nbr_ferier_days",string="JF Travailés")
     affich_conge = fields.Float(related="rapport_id.count_nbr_holiday_days",string="Congé Payée")
@@ -59,14 +81,16 @@ class fiche_paie(models.Model):
     overrid_bonus = fields.Boolean('Dépassement bonus')
 
     cp_number = fields.Float('Nombre Jours Compensation',compute="_compute_cp_number",store=True)
+    cp_number_regularisation = fields.Float('Régularisation')
     
     addition = fields.Float('Total Avantage',compute="_compute_total_addition",store=True)
     deduction = fields.Float('Total Déduction',compute="_compute_total_deduction",store=True)
-    net_pay = fields.Float('Net à payer', compute="compute_net_a_payer", readonly=True)
+    total = fields.Float('Total', compute="compute_total", readonly=True,store=True)
+    sad = fields.Float('Total aprés Déduction', compute="compute_sad", readonly=True,store=True)
+    net_pay = fields.Float('Net à payer', compute="compute_net_a_payer", readonly=True,store=True)
     nbr_jour_travaille = fields.Float("Nombre de jours travaillés")
     nbr_heure_travaille = fields.Float("Nombre des heures travaillées")
     date_validation = fields.Date(u'Date de validation', readonly=True)
-    salaire_actuel = fields.Float(related="contract_id.salaire_actuel", string='Salaire Actuel', store=True, readonly=True)
     salaire_jour = fields.Float(compute='_compute_salaire_jour',string="Salaire du jour", readonly=True)
     salaire_demi_jour = fields.Float(compute='_compute_salaire_demi_jour',string="Salaire du demi-jour", readonly=True)
     salaire_heure = fields.Float(compute='_compute_salaire_heure',string="Salaire d'heure", readonly=True)
@@ -76,13 +100,27 @@ class fiche_paie(models.Model):
     jr_travaille_par_chantier = fields.One2many("jr.travaille.par.chantier", 'fiche_paie_id',string='Jours travaillés par chantier')
     jr_par_prime = fields.One2many("days.per.addition", 'payroll_id',string='Jours par prime')
 
+    note = fields.Char('Observation')
     notes = fields.Html('Notes')
 
     net_paye_archive = fields.Float('Net à Payer')
     new_help = fields.Boolean('field_name',default=False)
 
-    jom = fields.Float(related='period_id.jom',readonly=True)
-    payement_mode_id = fields.Many2one(related='employee_id.rib_number.payement_mode_id')
+    @api.onchange('employee_id')
+    def _onchange_employee_id(self):
+        if self.employee_id:
+            self.contract_id = self.employee_id.contract_id
+            self.autoriz_zero_cp = self.contract_id.autoriz_zero_cp_related
+            self.autoriz_cp = self.contract_id.completer_salaire_related
+    
+    @api.onchange('contract_id')
+    def _onchange_contract_id(self):
+        self.autoriz_zero_cp = self.contract_id.autoriz_zero_cp_related if self.contract_id else False
+        self.autoriz_cp = self.contract_id.completer_salaire_related if self.contract_id else False
+
+    @api.onchange('cp_number_regularisation')
+    def _onchange_cp_number_regularisation(self):
+        self.cp_number += self.cp_number_regularisation
 
     @api.model
     def create(self, vals):
@@ -96,12 +134,13 @@ class fiche_paie(models.Model):
 
         res = super(fiche_paie, self).create(vals)
 
-        last_paied_period = self.env[self._name].search_read([('employee_id','=',res.employee_id.id),('id','<',res.id)],['notes'],limit=1, order='id desc')
+        last_paied_period = self.env[self._name].search_read([('employee_id','=',res.employee_id.id),('id','<',res.id)],['notes','note'],limit=1, order='id desc')
         
         if last_paied_period:
 
             res.write({
-                'notes': res.notes + '\n' + last_paied_period[0]['notes'] if res.notes else last_paied_period[0]['notes']
+                'notes': res.notes + '\n' + last_paied_period[0]['notes'] if res.notes else last_paied_period[0]['notes'],
+                'note': res.note + '\n' + last_paied_period[0]['note'] if res.note else last_paied_period[0]['note'],
             })
         
         return res
@@ -119,12 +158,35 @@ class fiche_paie(models.Model):
     @api.depends('nbr_jour_travaille','nbr_heure_travaille','autoriz_cp','autoriz_zero_cp')
     def _compute_cp_number(self):
         for rec in self:
-            if rec.autoriz_cp:
-                rec.cp_number = min(rec.employee_result()['j_comp'],self.employee_id.panier_conge) if rec.employee_result() else 0
-            elif rec.autoriz_zero_cp:
-                rec.cp_number = rec.employee_result()['j_comp'] if rec.employee_result() else 0
-            else:
-                rec.cp_number = 0
+            max_worked_days_p = rec.employee_id.contract_id.max_worked_days_p
+            if not max_worked_days_p :
+
+                if rec.autoriz_cp:
+                    rec.cp_number = min(rec.employee_result()['j_comp'],self.employee_id.panier_conge) if rec.employee_result() else 0
+                elif rec.autoriz_zero_cp:
+                    rec.cp_number = rec.employee_result()['j_comp'] if rec.employee_result() else 0
+                else:
+                    rec.cp_number = 0
+
+            elif max_worked_days_p and rec.employee_result()['j_comp'] > 0 and rec.employee_result()['default_day_2_add'] > 0:
+
+                if rec.employee_result()['j_comp'] > rec.employee_result()['default_day_2_add'] :
+                    rec.cp_number = rec.employee_result()['default_day_2_add']
+                if rec.autoriz_cp:
+                    rec.cp_number += min(rec.employee_result()['j_comp']-rec.employee_result()['default_day_2_add'],self.employee_id.panier_conge) if rec.employee_result() else 0
+                elif rec.autoriz_zero_cp:
+                    rec.cp_number += rec.employee_result()['j_comp']-rec.employee_result()['default_day_2_add'] if rec.employee_result() else 0
+
+            elif max_worked_days_p and rec.employee_result()['j_comp'] > 0 and rec.employee_result()['default_day_2_add'] == 0:
+
+                if rec.autoriz_cp:
+                    rec.cp_number = min(rec.employee_result()['j_comp'],self.employee_id.panier_conge) if rec.employee_result() else 0
+                elif rec.autoriz_zero_cp:
+                    rec.cp_number += rec.employee_result()['j_comp'] if rec.employee_result() else 0
+            
+            
+                
+
     
     @api.depends('employee_id','period_id','contract_id')
     def _compute_salaire_jour(self):
@@ -151,8 +213,7 @@ class fiche_paie(models.Model):
     def _compute_panier_dimanche(self):
         for rec in self:
             contract_period = self.env['account.month.period'].get_period_from_date(rec.contract_id.date_start)
-            rec.affich_jour_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period) if rec.employee_id and rec.period_id else 0
-            rec.affich_jour_dimmanche_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period,True) if rec.employee_id and rec.period_id else 0
+            rec.affich_jour_dimanche_conge = self.env['hr.allocations'].get_sum_allocation(rec.employee_id,rec.period_id,contract_period,is_dimanche=True) if rec.employee_id and rec.period_id else 0
     
     @api.depends('cal_state')
     def _compute_total_addition(self):
@@ -197,15 +258,7 @@ class fiche_paie(models.Model):
                 """ %(rec.employee_id.id,rec.period_id.id)
                 rec.env.cr.execute(query)
                 res = rec.env.cr.dictfetchall()[0]['tt']
-            rec.deduction = res 
-            
-    @api.onchange('employee_id')
-    def get_contract_actif(self):
-        if self.employee_id:
-            self.contract_id = self.employee_id.contract_id
-            self.autoriz_cp = self.employee_id.completer_salaire_related
-            self.autoriz_zero_cp = self.employee_id.autoriz_zero_cp_related
-    
+            rec.deduction = res     
 
     def _compute_affich_bonus_jour(self):
         
@@ -235,16 +288,31 @@ class fiche_paie(models.Model):
                     record.affich_bonus_jour = min(res,0.75) if not record.overrid_bonus else res  
 
 
-    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','addition','deduction')
-    def compute_net_a_payer(self):
-        resultat = 0
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','cp_number')
+    def compute_total(self):
         for rec in self:
             if rec.contract_id:
-                rec.net_pay = rec.nbr_heure_travaille * rec.salaire_heure if rec.type_profile_related == "h" else rec.nbr_jour_travaille * rec.salaire_jour
-                rec.net_pay +=  (rec.addition - rec.deduction) 
+                rec.total = rec.nbr_heure_travaille * rec.salaire_heure if rec.type_profile_related == "h" else rec.nbr_jour_travaille * rec.salaire_jour
+                rec.total += rec.cp_number * rec.salaire_jour
+            else:
+                rec.total = 0
+
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','deduction','cp_number','employee_id.cotisation','employee_id.montant_cimr')
+    def compute_sad(self):
+        for rec in self:
+            if rec.contract_id:
+                rec.sad = rec.total - rec.deduction
+                rec.sad -= rec.employee_id.montant_cimr if rec.employee_id.cotisation else 0
+            else:
+                rec.sad = 0
+
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','addition','deduction','cp_number')
+    def compute_net_a_payer(self):
+        for rec in self:
+            if rec.contract_id:
+                rec.net_pay = rec.sad + rec.addition
             else:
                 rec.net_pay = 0
-
 
     def to_draft(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') :
@@ -266,6 +334,7 @@ class fiche_paie(models.Model):
             if self.state == 'cal' :
                 self.state = 'done'
                 self.add_bonus()
+                self.accept_payement_addition_deduction()
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -280,6 +349,14 @@ class fiche_paie(models.Model):
             if self.state == 'cal' :
                 self.state = 'validee'
                 self.delete_bonus()
+                self.cancel_payement_addition_deduction()
+                joe_def = self.employee_id.contract_id.definition_nbre_jour_worked_par_mois_related
+                joe = self.employee_id.contract_id.nbre_jour_worked_par_mois_related
+                if self.rapport_id:
+                    self.write({
+                        'nbr_jour_travaille':min(self.rapport_id.total_j_v,joe) if joe_def == 'nbr_saisie' else self.rapport_id.total_j_v,
+                        'nbr_heure_travaille':self.rapport_id.total_h_v
+                    })
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -309,6 +386,7 @@ class fiche_paie(models.Model):
                 self.state = 'annulee'
                 self.date_validation = ""
                 self.delete_bonus()
+                self.cancel_payement_addition_deduction()
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -388,10 +466,10 @@ class fiche_paie(models.Model):
             default_day_2_add = joe - jom  if self.contract_id.definition_nbre_jour_worked_par_mois_related == 'nbr_saisie' else 0 # jour de réguralisation pour les mois exceptionnels (24-25-27)
             hnt = joe * self.contract_id.nbre_heure_worked_par_jour_related # heure de travail sur lesquelles le salaire de base de l'employé est définis
             hntj = self.contract_id.nbre_heure_worked_par_jour_related # heure de travail sur lesquelles le salaire de base de l'employé est définis
-            jot = self.nbr_jour_travaille + default_day_2_add # jour travaillé par le salarié + la régularisation
+            jot = self.nbr_jour_travaille # jour travaillé par le salarié
             ht = self.nbr_heure_travaille # heure travaillées par le salarié
             h_comp = hnt - ht # heure de compensation de salaire
-            ht_equi_days = h_comp / hntj if hntj > 0 else 0 
+            ht_equi_days = h_comp / hntj if h_comp > 0 else 0 
             j_comp = joe - jot if type_profile == 'j' else ht_equi_days # jour/heure de compensation de salaire
 
             return {
@@ -405,24 +483,78 @@ class fiche_paie(models.Model):
                 'default_day_2_add':default_day_2_add
             }
         
-        return False
+        return {
+            'j_comp':0,
+            'default_day_2_add':0
+        }
 
     def add_bonus(self):
-        if self.cp_number > 0:
+        if self.affich_bonus_jour > 0:
             self.env['hr.allocations'].sudo().create({
                 'name':'paiement du mois %s'%self.period_id.name,
                 'employee_id':self.employee_id.id,
                 'categorie':'bonus',
+                'nbr_jour':self.affich_bonus_jour,
+                'state':'approuvee',
+                'period_id':self.period_id.id,
+                'payslip_id':self.id,
+            }) 
+
+        if self.cp_number > 0:
+            self.env['hr.allocations'].sudo().create({
+                'name':'paiement du mois %s'%self.period_id.name,
+                'employee_id':self.employee_id.id,
+                'categorie':'compensation',
                 'nbr_jour':self.cp_number,
                 'state':'approuvee',
                 'period_id':self.period_id.id,
                 'payslip_id':self.id,
             }) 
-    
+        
+        if self.affich_jour_dimanche > 0:
+            self.env['hr.allocations'].sudo().create({
+                'name':'paiement du mois %s'%self.period_id.name,
+                'employee_id':self.employee_id.id,
+                'categorie':'dimanche_travaille',
+                'nbr_jour':self.affich_jour_dimanche,
+                'state':'approuvee',
+                'period_id':self.period_id.id,
+                'payslip_id':self.id,
+            }) 
+        
+
     def delete_bonus(self):
 
         for bonus in self.env['hr.allocations'].sudo().search([('payslip_id','=',self.id)]):
             bonus.sudo().unlink()
+
+    def accept_payement_addition_deduction(self):
+
+        for prime in self.env['hr.prime'].search([
+                    ('state','=','validee'),
+                ('employee_id','in',(False,self.employee_id.id))
+                ]).filtered(lambda ln: ln.first_period_id.date_start <= self.period_id.date_start):
+            prime.accept_payement(self.period_id)
+
+        for prelevement in self.env['hr.prelevement'].search([
+                    ('state','=','validee'),
+                ('employee_id','in',(False,self.employee_id.id))
+                ]).filtered(lambda ln: ln.first_period_id.date_start <= self.period_id.date_start):
+            prelevement.accept_payement(self.period_id)
+
+    def cancel_payement_addition_deduction(self):
+
+        for prime in self.env['hr.prime'].search([
+                    ('state','=','validee'),
+                ('employee_id','in',(False,self.employee_id.id))
+                ]).filtered(lambda ln: ln.first_period_id.date_start <= self.period_id.date_start):
+            prime.cancel_payement(self.period_id)
+
+        for prelevement in self.env['hr.prelevement'].search([
+                    ('state','=','validee'),
+                ('employee_id','in',(False,self.employee_id.id))
+                ]).filtered(lambda ln: ln.first_period_id.date_start <= self.period_id.date_start):
+            prelevement.cancel_payement(self.period_id)
 
 class days_per_addition(models.Model):
     

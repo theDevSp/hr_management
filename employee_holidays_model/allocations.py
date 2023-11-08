@@ -4,6 +4,7 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from datetime import datetime
 from datetime import date
+from dateutil.relativedelta import relativedelta
 
 class allocations(models.Model):
     _name = "hr.allocations"
@@ -83,13 +84,40 @@ class allocations(models.Model):
                     "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
                 )
 
-    def get_sum_allocation(self,employee_id,period_actuel_id,period_debut_contrat_id,is_dimanche=False):
-        query = """
-                SELECT SUM(nbr_jour)
-                FROM hr_allocations
-                WHERE categorie %s 'dimanche_travaille' 
-                AND employee_id = %s AND period_id <= %s and period_id >= %s
-                AND state = 'approuvee'
-            """ % ('=' if is_dimanche else '!=',employee_id.id,period_actuel_id.id,period_debut_contrat_id.id if period_debut_contrat_id else 7)
-        self.env.cr.execute(query)
-        return self.env.cr.fetchall()[0][0]
+    def get_sum_allocation(self,employee_id,period_actuel_id,period_debut_contrat_id,is_dimanche=False,is_jf=False):
+
+        allocations_list = self.env['hr.allocations'].search([('employee_id','=',employee_id.id)])
+
+        date_start = period_debut_contrat_id.date_start if period_debut_contrat_id else datetime.strptime('1900-01-01', '%Y-%m-%d').date()
+        date_end = period_actuel_id.date_start if period_actuel_id else (datetime.now() + relativedelta(months=+1)).date()
+
+        plus_alloc = sum(line.nbr_jour for line in allocations_list.filtered(
+                                        lambda ln: ln.categorie in ('bonus','regularisation') 
+                                                and ln.period_id.date_start < date_end
+                                                and ln.period_id.date_start >= date_start
+                                        ))
+        minec_alloc = sum(line.nbr_jour for line in allocations_list.filtered(
+                                        lambda ln: ln.categorie not in ('bonus','regularisation','dimanche_travaille','jour_ferie') 
+                                                and ln.period_id.date_start < date_end
+                                                and ln.period_id.date_start >= date_start
+                                        ))
+        dimanche_alloc = sum(line.nbr_jour for line in allocations_list.filtered(
+                                        lambda ln: ln.categorie in ('dimanche_travaille') 
+                                                and ln.period_id.date_start < date_end
+                                                and ln.period_id.date_start >= date_start
+                                        ))
+        jf_alloc = sum(line.nbr_jour for line in allocations_list.filtered(
+                                        lambda ln: ln.categorie in ('jour_ferie') 
+                                                and ln.period_id.date_start < date_end
+                                                and ln.period_id.date_start >= date_start
+                                        ))
+
+        
+        if is_dimanche and not is_jf:
+            return dimanche_alloc
+        elif is_jf and not is_dimanche:
+            return jf_alloc
+        elif not is_dimanche and not is_jf:
+            return plus_alloc - minec_alloc
+        else:
+            return 0

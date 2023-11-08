@@ -71,12 +71,12 @@
         <field name="model">hr.employee</field>
         <field name="arch" type="xml">
             <form>
-                <header class="bar-box-shadow mb-4" groups ="hr_management.group_admin_paie,hr_management.group_agent_paie">
+                <header class="bar-box-shadow mb-4">
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button name="to_active" string="Active" class="btn btn-success" icon="fa-check-circle" type="object"/>
-                        <button name="to_new" class="btn btn-primary" string="Nouveau Embauche" type="object"/>
-                        <button name="to_stc" class="btn btn-danger" icon="fa-sign-out-alt" string="STC" type="object"/>
-                        <button name="creatiion_individuel_rapport_pointage" string="Générer un rapport" class="btn btn-success" icon="fa-folder-plus" type="object" groups="hr_management.group_admin_paie"/>
+                        <button name="to_active" string="Active" class="btn btn-success" icon="fa-check-circle" type="object" groups ="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+                        <button name="to_new" class="btn btn-primary" string="Nouveau Embauche" type="object" groups ="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+                        <button name="to_stc" class="btn btn-danger" icon="fa-sign-out-alt" string="STC" type="object" groups ="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+                        <button name="creatiion_individuel_rapport_pointage" string="Générer un rapport" class="btn btn-success" icon="fa-folder-plus" type="object" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_pointeur"/>
                         <button name="open_wizard" string="Add to black list" class="btn btn-dark" icon="fa-ban" attrs="{'invisible': [('black_list', '=', True)]}" type="object" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                         <button name="open_wizard" string="Remove from black list" class="btn btn-success" icon="fa-check-circle" attrs="{'invisible': [('black_list', '=', False)]}" type="object" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                     </div>
@@ -549,6 +549,24 @@
                                                         <span class="input-group-text" ><label for="bank_agence_related" class=""/></span>
                                                     </div>
                                                     <field name="bank_agence_related" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><label for="cotisation" class=""/></span>
+                                                    </div>
+                                                    <field name="cotisation" widget="boolean_toggle" class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><label for="montant_cimr" class=""/></span>
+                                                    </div>
+                                                    <field name="montant_cimr" class="form-control"/>
                                                 </div>
                                             </div>
                                         </div>
