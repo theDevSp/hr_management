@@ -9,7 +9,7 @@
 
             <div t-ref="modalPrint" class="modal" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-md modal-dialog-centered">
-                    <div class="modal-content" style="height:50vh !important">
+                    <div class="modal-content" style="height:65vh !important">
                         <div class="modal-header">
                             <h2 class="card-text">Fiche de Paie - Impression Mensuelle</h2>
                             <button id="modalClose1" type="button" class="btn-close"></button>
