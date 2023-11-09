@@ -28,8 +28,8 @@ class hrFixationSalaireControllers(http.Controller):
                 'employe_rec_par': res.recommander_par.name if res.recommander_par else "",
                 'employe_sal_propose': res.offered_wage if res.offered_wage else "",
                 'employe_sal_propose_lettres': res.offered_wage_letters if res.offered_wage_letters else "",
-                'employe_sal_valider': res.officiel_wage if res.officiel_wage else "",
-                'employe_sal_valider_lettres': res.officiel_wage_letters if res.officiel_wage_letters else "",
+                'employe_sal_valider': res.officiel_wage if res.officiel_wage and res.propose else "",
+                'employe_sal_valider_lettres': res.officiel_wage_letters if res.officiel_wage_letters and res.propose else "",
                 'obs':res.obs if res.obs else "",
             })
 
