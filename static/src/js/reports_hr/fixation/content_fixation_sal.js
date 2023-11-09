@@ -156,42 +156,72 @@ export async function content_fixation_sal(data) {
 
             ]
         },
-
         {
 
+            columns: [
+                {
+                    margin: [0, 8, 0, 0],
+                    layout: {
+                        hLineColor: 'gray',
+                        vLineColor: 'gray',
+                    },
+                    table: {
+                        widths: [270],
+                        headerRows: 1,
+                        body: [
+                            [{
+                                text: 'CHANTIER D\'AFFECTATION',
+                                bold: true,
+                                fontSize: 13,
+                                fillColor: '#04aa6d',
+                                color: 'white',
+                                margin: [8, 5.5],
+                                alignment: 'center'
+                            }],
+                            [{
+                                text: data.employe_chantier,
+                                fontSize: 10,
+                                border: [1, 0, 1, 1],
+                                margin: [2, 10, 0, 10],
+                                bold: false,
+                                alignment: 'center'
+                            }],
 
-            margin: [0, 5, 0, 0],
-            layout: {
-                hLineColor: 'gray',
-                vLineColor: 'gray',
-            },
-            table: {
-                widths: '*',
-                headerRows: 1,
-                body: [
-                    [{
-                        text: 'CHANTIER D\'AFFECTATION',
-                        bold: true,
-                        fontSize: 13,
-                        fillColor: '#04aa6d',
-                        color: 'white',
-                        margin: [8, 5.5],
-                        alignment: 'center'
-                    }],
-                    [{
-                        text: data.employe_chantier,
-                        fontSize: 12,
-                        border: [1, 1, 1, 1],
-                        margin: [0, 20, 0, 20],
-                        bold: true,
-                        alignment: 'center'
-                    }]
+                        ]
+                    }
+                },
 
-                ]
-            }
+                {
+                    margin: [0, 8, 0, 0],
+                    layout: {
+                        hLineColor: 'gray',
+                        vLineColor: 'gray'
+                    },
+                    table: {
+                        widths: [275.5],
+                        body: [
+                            [{
+                                text: 'OBSERVATION',
+                                bold: true,
+                                fontSize: 13,
+                                fillColor: '#04aa6d',
+                                color: 'white',
+                                margin: [8, 5.5],
+                                alignment: 'center'
+                            }],
+                            [{
+                                text: data.obs,
+                                fontSize: 10,
+                                border: [1, 0, 1, 1],
+                                margin: [2, 10, 0, 10],
+                                bold: false,
+                                alignment: 'center'
+                            }],
+                        ],
 
-
-
+                    }
+                }
+            ],
 
 
 

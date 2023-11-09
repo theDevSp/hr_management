@@ -50,7 +50,8 @@ class fiche_paie(models.Model):
     type_fiche = fields.Selection([
         ("payroll","Payement Salaire"),
         ("refund","Rembourssement"),
-        ("stc","STC")
+        ("stc","STC"),
+        ("noob","Nouveau Embauche / Réembauche")
         ],"Type de fiche", default="payroll"
     )
 
