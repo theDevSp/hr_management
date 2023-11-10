@@ -20,7 +20,7 @@ class hrFixationSalaireControllers(http.Controller):
                 'employe_name': res.employee_id.name if res.employee_id.name else "",
                 'employe_cin': res.employee_id.cin if res.employee_id.cin else "",
                 'employe_cnss': res.employee_id.cnss if res.employee_id.cnss else "",
-                'employe_chantier': res.chantier_id.code + " - " + res.chantier_id.name.upper() if res.chantier_id.code else "",
+                'employe_chantier': res.chantier_id.name.upper(),
                 'employe_fonction': res.employee_id.job if res.employee_id.job else "",
                 'employe_profile': res.profile.name if res.profile.name else "",
                 'employe_date_embauche': res.date_embauche if res.date_embauche else "",
@@ -28,8 +28,9 @@ class hrFixationSalaireControllers(http.Controller):
                 'employe_rec_par': res.recommander_par.name if res.recommander_par else "",
                 'employe_sal_propose': res.offered_wage if res.offered_wage else "",
                 'employe_sal_propose_lettres': res.offered_wage_letters if res.offered_wage_letters else "",
-                'employe_sal_valider': res.officiel_wage if res.officiel_wage else "",
-                'employe_sal_valider_lettres': res.officiel_wage_letters if res.officiel_wage_letters else "",
+                'employe_sal_valider': res.officiel_wage if res.officiel_wage and res.propose else "",
+                'employe_sal_valider_lettres': res.officiel_wage_letters if res.officiel_wage_letters and res.propose else "",
+                'obs':res.obs if res.obs else "",
             })
 
             return data

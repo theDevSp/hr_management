@@ -78,6 +78,31 @@ class ficheDePaieListController extends ListController {
             create: false
         });
 
+        $('#select-type-fiche').selectize({
+            maxItems: 1,
+            minItems: 1,
+            valueField: 'id',
+            labelField: 'title',
+            searchField: 'title',
+            options: [
+                { id: 'payroll', title: 'Payement Salaire' },
+                { id: 'refund', title: 'Rembourssement' },
+                { id: 'stc', title: 'STC' },
+                { id: 'noob', title: 'Nouveau Embauche / Réembauche"' },
+            ],
+            create: false,
+        });
+
+        $('#select-equipe').selectize({
+            maxItems: 1,
+            minItems: 1,
+            valueField: 'id',
+            labelField: 'name',
+            searchField: 'name',
+            options: this.allEquipes,
+            create: false
+        });
+
         $('#select-type').selectize({
             maxItems: 1,
             minItems: 1,
@@ -121,16 +146,6 @@ class ficheDePaieListController extends ListController {
                 }
             }
         });
-
-        $('#select-equipe').selectize({
-            maxItems: 1,
-            minItems: 1,
-            valueField: 'id',
-            labelField: 'name',
-            searchField: 'name',
-            options: this.allEquipes,
-            create: false
-        });
     }
 
     verify() {
@@ -139,6 +154,7 @@ class ficheDePaieListController extends ListController {
             { element: $('#select-type'), message: 'Type de l\'employé' },
             { element: $('#select-period'), message: 'Période' },
             { element: $('#select-quinzine'), message: 'Quinzine' },
+            { element: $('#select-type-fiche'), message: 'Type Fiche' },
         ];
 
         let allFieldsNotEmpty = true;
@@ -174,6 +190,7 @@ class ficheDePaieListController extends ListController {
                     quinzine: $('#select-quinzine').val(),
                     typeemp: $('#select-type').val(),
                     equipe: $('#select-equipe').val(),
+                    typefiche: $('#select-type-fiche').val(),
                     date: $('#select-period').val()
                 })
             })
@@ -360,6 +377,7 @@ const clearSelectizeInputs = () => {
     $('#select-chantier')[0].selectize.clear();
     $('#select-quinzine')[0].selectize.clear();
     $('#select-type')[0].selectize.clear();
+    $('#select-type-fiche')[0].selectize.clear();
     $('#select-equipe')[0].selectize.clear();
 }
 

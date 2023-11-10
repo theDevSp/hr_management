@@ -18,6 +18,7 @@ class HrFicheDePaieController(http.Controller):
         quinz = post.get("quinzine")
         equipe_id = post.get("equipe")
         type_employe = post.get("typeemp")
+        type_fiche = post.get("typefiche")
 
         period_id = int(period_id)
         chantier_id = int(chantier_id)
@@ -33,6 +34,9 @@ class HrFicheDePaieController(http.Controller):
 
         if type_employe:
             domains.append(('type_emp', '=', type_employe))
+        
+        if type_fiche:
+            domains.append(('type_fiche', '=', type_fiche))
 
         payslips = http.request.env['hr.payslip'].search(domains)
         chantier = http.request.env['fleet.vehicle.chantier'].browse(chantier_id)  # chantier_id

@@ -8,21 +8,16 @@
             </button>
 
             <div t-ref="modalPrint" class="modal" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                    <div class="modal-content">
+                <div class="modal-dialog modal-md modal-dialog-centered">
+                    <div class="modal-content" style="height:65vh !important">
                         <div class="modal-header">
+                            <h2 class="card-text">Fiche de Paie - Impression Mensuelle</h2>
                             <button id="modalClose1" type="button" class="btn-close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row justify-content-center">
-                                <div class="col-8">
-                                    <div class="bg-white shadow p-3">
-                                        <div class="card bg-light my-3">
-                                            <div class="card-body text-center">
-                                                <h2 class="card-text">Fiche de Paie - Impression Mensuelle</h2>
-                                            </div>
-                                        </div>
-                                        <div class="card bg-light my-3">
+                                <div class="col-12">
+                                    <div class="card bg-light my-3">
                                             <div class="card-body">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
@@ -68,8 +63,16 @@
                                                     </div>
                                                     <select id="select-equipe" class="form-control" name="equipe" placeholder="Sélectionner l'Équipe"></select>
                                                 </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <label for="select-type-fiche">Type de Fiche :</label>
+                                                        </span>
+                                                    </div>
+                                                    <select required="True" id="select-type-fiche" class="form-control" name="type-fiche" placeholder="Sélectionner le Type de la fiche"></select>
+                                                </div>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
