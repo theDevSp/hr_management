@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="recap_view_inherit" model="ir.ui.view">
+            <field name="name">recap.form.view.inherit</field>
+            <field name="model">hr.recap.pdf</field>
+            <field name="inherit_id" ref="hr_management.recap_pdf_formulaire"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="js_class">recap_form_view</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!--<record id="conges_list_view_inherit" model="ir.ui.view">
+            <field name="name">conges.list.view.inherit</field>
+            <field name="model">hr.holidays</field>
+            <field name="inherit_id" ref="hr_management.holidays_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="js_class">pdf_many_demande_de_conges</attribute>
+                </xpath>
+            </field>
+        </record>-->
+
+        
+    
+    </data>
+    
+</odoo>

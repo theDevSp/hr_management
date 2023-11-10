@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="owl.RecapFormView" t-inherit="web.FormView" owl="1">
+        <xpath expr="//button[hasclass('o_form_button_create')]" position="after">
+            <div class="dropdown">
+                <button class="print-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-print" style="color: #ffffff;"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" t-on-click="()=>this.printRecap(model.root.data.id)">Imprimer Recap</a>
+                    </li>
+                </ul>
+            </div>
+        </xpath>
+    </t>
+</templates>
