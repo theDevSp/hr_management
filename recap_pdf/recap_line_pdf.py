@@ -16,4 +16,4 @@ class recap_line_pdf(models.Model):
     nombre_effectif = fields.Integer("Nombre D'effectif")
     montant_total = fields.Float("Montant total")  #compute
     recap_pdf_id = fields.Many2one("hr.recap.pdf",u"Recap",ondelete="cascade")
-
+    json_data = fields.Char('field_name')

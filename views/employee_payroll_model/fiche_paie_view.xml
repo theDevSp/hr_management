@@ -32,6 +32,7 @@
                 <field name="jr_travaille_par_chantier" optional="hide"/>
                 <field name="type_fiche" optional="hide"/>
                 <field name="contract_id" optional="hide"/>
+                <field name="entreprise_id" optional="hide"/>
                 <field name="date_start" optional="hide"/>
                 <field name="rapport_id" optional="hide"/>
                 <field name="note" optional="hide"/>
@@ -79,6 +80,7 @@
                 <field name="jr_travaille_par_chantier" optional="hide"/>
                 <field name="type_fiche" optional="hide"/>
                 <field name="contract_id" optional="hide"/>
+                <field name="entreprise_id" optional="hide"/>
                 <field name="date_start" optional="hide"/>
                 <field name="rapport_id" optional="hide"/>
                 <field name="note" optional="hide"/>
@@ -584,11 +586,10 @@
                 <field name="employee_id"/>
                 <field name="period_id"/>
                 <searchpanel>
-                    <field name="chantier_id" icon="fa-city" enable_counters="1" select="multi"/>
-                    <field name="period_id" icon="fa-clock" enable_counters="1" select="multi"/>
-                    <field name="type_emp" icon="fa-clock" enable_counters="1"/>
-                    <field name="quinzaine" icon="fa-clock" enable_counters="1"/>
+                    <field name="entreprise_id" icon="fa-city" enable_counters="1"/>
                     <field name="emplacement_chantier_id" icon="fa-users" enable_counters="1" select="multi"/>
+                    <field name="type_emp" icon="fa-users" enable_counters="1"/>
+                    <field name="quinzaine" icon="fa-clock" enable_counters="1"/>
                 </searchpanel>
             </search>
         </field>

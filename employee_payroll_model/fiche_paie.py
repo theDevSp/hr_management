@@ -32,6 +32,7 @@ class fiche_paie(models.Model):
     type_profile_related = fields.Selection(related="contract_id.type_profile_related",string=u"Type du profile", readonly=True)
     salaire_actuel = fields.Float(related="contract_id.salaire_actuel", string='Salaire Actuel', store=True, readonly=True)
     date_start = fields.Date(related='contract_id.date_start',string="Date d'embauche", readonly=True)
+    entreprise_id = fields.Many2one(related='contract_id.entreprise_id', readonly=True, store=True)
 
     #-------------> infos contract
     #-------------> infos period
