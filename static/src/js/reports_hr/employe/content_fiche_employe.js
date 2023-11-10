@@ -336,9 +336,10 @@ export async function content_fiche_employee(data) {
                     }, {
                         text: data.employe_chantier,
                         fontSize: 9,
-                        border: [0, 1, 0, 0],
+                        border: [0, 1, 1, 0],
                         margin: [0, 5, 0, 0],
                         bold: true,
+                        colSpan: 3
                     }, {
                         text: '',
                         fontSize: 9,

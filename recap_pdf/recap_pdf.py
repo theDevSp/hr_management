@@ -27,4 +27,4 @@ class recap_pdf(models.Model):
     
     @api.depends('responsable_id')
     def _compute_name(self):
-        self.name = '#####'
+        self.name = self.responsable_id.name
