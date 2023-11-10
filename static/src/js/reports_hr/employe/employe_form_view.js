@@ -11,7 +11,6 @@ import { content_fiche_employee } from "./content_fiche_employe"
 class employeFormController extends FormController {
     setup() {
         super.setup()
-        console.log("This is res partner form controller")
         this.action = useService("action")
     }
 
@@ -25,10 +24,6 @@ class employeFormController extends FormController {
 
             const res = await rpc(`/hr_management/get_employe_details/${id}`);
             const data = res[0]
-
-            console.log(data)
-
-
             const content = await content_fiche_employee(data)
 
             const pdfDefinition = {
