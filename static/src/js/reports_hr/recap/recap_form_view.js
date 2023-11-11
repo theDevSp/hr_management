@@ -22,12 +22,9 @@ class RecapFormController extends FormController {
         const rpc = this.env.services.rpc
 
         const res = await rpc(`/hr_management/get_recap_details/${id}`);
-        const data = res
-
         console.log(res)
-        console.log(data)
 
-        const contents = await content_recap()
+        const contents = await content_recap(res)
 
         if (contents) {
             const pdfDefinition = {

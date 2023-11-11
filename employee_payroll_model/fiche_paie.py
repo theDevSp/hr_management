@@ -108,6 +108,8 @@ class fiche_paie(models.Model):
     net_paye_archive = fields.Float('Net à Payer')
     new_help = fields.Boolean('field_name',default=False)
 
+    recap_id = fields.Many2one('hr.recap.line.pdf', string='recap')
+
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
         if self.employee_id:

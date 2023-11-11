@@ -48,7 +48,7 @@ export async function content_recap(data) {
                         body: [
                             [
                                 {
-                                    text: 'MOIS: 07/2023 (1ère quinzaine)',
+                                    text: `MOIS: ${data.recap_period} (${data.recap_quinzaine})`,
                                     bold: true,
                                     fontSize: 8,
                                     //fillColor: '#04aa6d',
@@ -58,7 +58,7 @@ export async function content_recap(data) {
                                    // colSpan: 2
                                 },
                                  {
-                                    text: 'REF: YM/2023/07/128',
+                                    text: 'REF: '+data.recap_name,
                                     bold: true,
                                     fontSize: 8,
                                    // fillColor: '#04aa6d',
@@ -68,7 +68,7 @@ export async function content_recap(data) {
                                    // colSpan: 2
                                 },
                                  {
-                                    text: 'CLASSIFICATION: OUVRIER',
+                                    text: 'CLASSIFICATION: '+data.recap_type_emp,
                                     bold: true,
                                     fontSize: 8,
                                    // fillColor: '#04aa6d',
