@@ -406,16 +406,10 @@ class hr_stc(models.Model):
         
 
     def compute_stc(self):
-        res_add = res_retenu = res_prime = res_prelevement = res_payslip = 0
-
-        res_prime = sum(line.montant_payer for line in self.addition_lines)
-        res_prelevement = sum(line.montant_payer for line in self.deduction_lines)
-        res_payslip = sum(line.net_pay for line in self.payslip_lines)
-        
-        self.reste_salaire = res_payslip
 
         res_add = self.jr_conge_m + self.jr_block_m + self.montant_dim + self.frais_depense + self.frais_route + self.preavis_ajouter_m + self.prime + self.licenciement + self.dgi + self.reste_salaire
-        res_retenu = self.preavis_retenu_m + self.amande + self.retenu + self.emprunt + self.cimr
+        res_add += self.sum_salaire + self.sum_prime
+        res_retenu = self.preavis_retenu_m + self.amande + self.retenu + self.cimr + self.sum_prelevement
 
         self.montant_total = res_add - res_retenu
 
