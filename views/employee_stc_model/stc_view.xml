@@ -60,7 +60,11 @@
                         type="object" class="oe_highlight" />
                     <button name="reset" string="Reset" 
                             class="btn btn-danger rounded border-1" icon="fa-undo" 
-                            type="object" attrs="{'invisible': ['|',('state', '!=', 'draft'),('employee_id', '=', False)]}" 
+                            type="object" attrs="{'invisible': ['|',('state', '=', 'draft'),('employee_id', '=', False)]}" 
+                            groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="compute_stc" string="calculer"
+                            class="btn btn-success rounded border-1" icon="fa-calculator" 
+                            type="object" attrs="{'invisible': ['|',('state', '=', 'draft'),('employee_id', '=', False)]}" 
                             groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
                     <field name="state" widget="statusbar" />
                 </header>
@@ -795,7 +799,6 @@
                 <field name="cin" />
                 <field name="chantier" />
                 <searchpanel>
-                    <field name="chantier" icon="fa-city" enable_counters="1" select="multi" />
                     <field name="employee_type" icon="fa-money" enable_counters="1" select="multi" />
                 </searchpanel>
             </search>
