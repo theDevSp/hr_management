@@ -46,8 +46,8 @@ class recap_line_pdf(models.Model):
                 ('chantier_id', '=', res.chantier_id.id),
                 ('quinzaine', '=', res.recap_pdf_id.quinzaine),
                 ('emplacement_chantier_id', '=', res.emplacement_chantier_id.id),
-                #('state','=','validee'),
-                #('state','=','done'),
+                ('state','=',res.recap_pdf_id.status),
+                ('type_fiche','=',res.recap_pdf_id.type_fiche),
             ]
         )
 
