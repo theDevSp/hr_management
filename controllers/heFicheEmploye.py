@@ -16,9 +16,6 @@ class hrCongesControllers(http.Controller):
         pointeur = http.request.env['res.users'].has_group("hr_management.group_pointeur")
         if res:
 
-            genre = dict(res.fields_get(allfields=['gender'])['gender']['selection'])[res.gender]
-            etat = dict(res.fields_get(allfields=['marital'])['marital']['selection'])[res.marital]
-
             data.append({
                 'employe_name': res.name if res.name not in [False, True, 0, 0.0, ""] else "-",
                 'employe_cin': res.cin if res.cin not in [False, True, 0, 0.0, ""] else "-",
@@ -28,8 +25,8 @@ class hrCongesControllers(http.Controller):
                 'employe_date_naissance': res.date_naissance if res.date_naissance not in [False, True, 0, 0.0, ""] else "-",
                 'employe_val_cin': res.date_cin if res.date_cin not in [False, True, 0, 0.0, ""] else "-",
                 'employe_lieu_naissance': res.lieu_naissance if res.lieu_naissance not in [False, True, 0, 0.0, ""] else "-",
-                'employe_genre': genre if genre not in [False, True, 0, 0.0, ""] else "-",
-                'employe_etat_civil': etat if etat not in [False, True, 0, 0.0, ""] else "-",
+                'employe_genre': res.gender if res.gender not in [False, True, 0, 0.0, ""] else "-",
+                'employe_etat_civil': res.marital if res.marital not in [False, True, 0, 0.0, ""] else "-",
                 'employe_nbr_enfant': str(res.nombre_enfants) if str(res.nombre_enfants) not in [False, True, ""] else "-",
                 'employe_num_tele': res.mobile_phone if res.mobile_phone not in [False, True, 0, 0.0, ""] else "-",
                 'employe_type': res.type_emp if res.type_emp not in [False, True, 0, 0.0, ""] else "-",

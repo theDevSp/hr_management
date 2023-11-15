@@ -18,6 +18,11 @@ class hr_stc(models.Model):
         'done': [('readonly', True)]
     }
 
+    READONLY_STATES_VALID_SALARY = {
+        'cancel': [('readonly', True)],
+        'done': [('readonly', True)]
+    }
+
     def _count_by_year(self):
         query = """
                 select count(*) from hr_stc where job_id = %s and extract(year from date_start) = %s and id <= %s
@@ -75,7 +80,7 @@ class hr_stc(models.Model):
     deduction_lines = fields.One2many("deduction.list", 'stc_id',string='Liste des prélévement', states=READONLY_STATES)
 
     reste_salaire = fields.Float(u"Reste du salaire",readonly=True)
-    valide_salaire = fields.Float(u"Montant Validé", states=READONLY_STATES,tracking=True)
+    valide_salaire = fields.Float(u"Montant Validé", states=READONLY_STATES_VALID_SALARY,tracking=True)
     payslip_lines = fields.One2many("hr.payslip.stc", 'stc_id',string='Fiche Paie', states=READONLY_STATES)
 
     jr_conge = fields.Float(u"Panier Congés", states=READONLY_STATES,tracking=True)
@@ -406,16 +411,10 @@ class hr_stc(models.Model):
         
 
     def compute_stc(self):
-        res_add = res_retenu = res_prime = res_prelevement = res_payslip = 0
-
-        res_prime = sum(line.montant_payer for line in self.addition_lines)
-        res_prelevement = sum(line.montant_payer for line in self.deduction_lines)
-        res_payslip = sum(line.net_pay for line in self.payslip_lines)
-        
-        self.reste_salaire = res_payslip
 
         res_add = self.jr_conge_m + self.jr_block_m + self.montant_dim + self.frais_depense + self.frais_route + self.preavis_ajouter_m + self.prime + self.licenciement + self.dgi + self.reste_salaire
-        res_retenu = self.preavis_retenu_m + self.amande + self.retenu + self.emprunt + self.cimr
+        res_add += self.sum_salaire + self.sum_prime
+        res_retenu = self.preavis_retenu_m + self.amande + self.retenu + self.cimr + self.sum_prelevement
 
         self.montant_total = res_add - res_retenu
 
