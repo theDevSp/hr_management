@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api,_
 from odoo.exceptions import ValidationError
 from datetime import date, datetime
+
 
 class fiche_paie(models.Model):
     _name = "hr.payslip"
@@ -139,6 +140,16 @@ class fiche_paie(models.Model):
         res = super(fiche_paie, self).create(vals)
 
         last_paied_period = self.env[self._name].search_read([('employee_id','=',res.employee_id.id),('id','<',res.id)],['notes','note'],limit=1, order='id desc')
+        
+        recaps = self.env['hr.recap.pdf'].search(
+            [
+                ('period_id', '=', res.period_id.id),
+                ('state', '=', 'cloture')
+            ]
+        )
+
+        if recaps:
+            raise ValidationError(_("Une recap déjà existante et clôturée pour la période sélectionnée !"))
         
         if last_paied_period:
 
