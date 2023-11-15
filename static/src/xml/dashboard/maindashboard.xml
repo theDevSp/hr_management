@@ -7,37 +7,837 @@
 
                     <div class="card">
                         <div class="card-header">
-                            Featured
+                            <div class="d-flex justify-content-between">
+                                <h2>
+                                    Equipe Terrassement
+                                </h2>
+                                <div>
+                                    <button type="button" class="btn"><i class="far fa-calendar-check fa-lg"></i></button>
+                                    <button type="button" class="btn"><i class="far fa-calendar-times fa-lg"></i></button>
+                                    <button type="button" class="btn"><i class="fas fa-list fa-lg"></i></button>
+                                    <button type="button" class="btn"><i class="fas fa-trash fa-lg"></i></button>
+                                    <button type="button" class="btn"><i class="fas fa-undo fa-lg"></i></button>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-3">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title">Special title treatment</h5>
-                                            <p class="card-text">With supporting text below as a
-                                                natural lead-in to additional content.</p>
-                                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                                            <div class="d-flex justify-content-around">
+                                                <h4 class="card-title">Rapports Pointage</h4>
+                                                <i class="fas fa-folder fa-lg"></i>
+                                            </div>
+                                            <hr></hr>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Effectifs:</h6>
+                                                    <h6 class="card-title">35</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Total:</h6>
+                                                    <h6 class="card-title">25</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Traités:</h6>
+                                                    <h6 class="card-title">15</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Non Traités:</h6>
+                                                    <h6 class="card-title">10</h6>
+                                                </div>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="card text-white bg-dark mb-3">
-                                        <div class="card-header">Header</div>
+                                <div class="col-3">
+                                    <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title">Dark card title</h5>
-                                            <p class="card-text">Some quick example text to build on
-                                                the card title and make up the bulk of the card's
-                                                content.</p>
+                                            <div class="d-flex justify-content-around">
+                                                <h4 class="card-title">Fiches de Paie</h4>
+                                                <i class="fas fa-receipt fa-lg"></i>
+                                            </div>
+                                            <hr></hr>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Payement:</h6>
+                                                    <h6 class="card-title">15</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Blockées:</h6>
+                                                    <h6 class="card-title">5</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">STC:</h6>
+                                                    <h6 class="card-title">5</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Rembourssement:</h6>
+                                                    <h6 class="card-title">5</h6>
+                                                </div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-around">
+                                                <h4 class="card-title"> Montant</h4>
+                                                <i class="fas fa-money-bill-alt fa-lg"></i>
+                                            </div>
+                                            <hr></hr>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Payement:</h6>
+                                                    <h6 class="card-title">15000 DH</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Blockées:</h6>
+                                                    <h6 class="card-title">7500 DH</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">STC:</h6>
+                                                    <h6 class="card-title">8600 DH</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Rembourssement:</h6>
+                                                    <h6 class="card-title">11203 DH</h6>
+                                                </div>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <table class="table caption-top text-center">
+                                <caption>Listes des Fiches de paies</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Employé</th>
+                                        <th scope="col">CIN</th>
+                                        <th scope="col">Poste Occupé</th>
+                                        <th scope="col">Net à Payé (DH)</th>
+                                        <th scope="col">Status F.P</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
 
+                <div class="col-6">
 
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between">
+                                <h2>
+                                    Equipe Matériel
+                                </h2>
+                                <div>
+                                    <button type="button" class="btn"><i class="far fa-calendar-check fa-lg"></i></button>
+                                    <button type="button" class="btn"><i class="far fa-calendar-times fa-lg"></i></button>
+                                    <button type="button" class="btn"><i class="fas fa-list fa-lg"></i></button>
+                                    <button type="button" class="btn"><i class="fas fa-trash fa-lg"></i></button>
+                                    <button type="button" class="btn"><i class="fas fa-undo fa-lg"></i></button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-around">
+                                                <h4 class="card-title">Rapports Pointage</h4>
+                                                <i class="fas fa-folder fa-lg"></i>
+                                            </div>
+                                            <hr></hr>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Effectifs:</h6>
+                                                    <h6 class="card-title">35</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Total:</h6>
+                                                    <h6 class="card-title">25</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Traités:</h6>
+                                                    <h6 class="card-title">15</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Non Traités:</h6>
+                                                    <h6 class="card-title">10</h6>
+                                                </div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-around">
+                                                <h4 class="card-title">Fiches de Paie</h4>
+                                                <i class="fas fa-receipt fa-lg"></i>
+                                            </div>
+                                            <hr></hr>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Payement:</h6>
+                                                    <h6 class="card-title">15</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Blockées:</h6>
+                                                    <h6 class="card-title">5</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">STC:</h6>
+                                                    <h6 class="card-title">5</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Rembourssement:</h6>
+                                                    <h6 class="card-title">5</h6>
+                                                </div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-around">
+                                                <h4 class="card-title"> Montant</h4>
+                                                <i class="fas fa-money-bill-alt fa-lg"></i>
+                                            </div>
+                                            <hr></hr>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Payement:</h6>
+                                                    <h6 class="card-title">15000 DH</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Blockées:</h6>
+                                                    <h6 class="card-title">7500 DH</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">STC:</h6>
+                                                    <h6 class="card-title">8600 DH</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Rembourssement:</h6>
+                                                    <h6 class="card-title">11203 DH</h6>
+                                                </div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table caption-top text-center">
+                                <caption>Listes des Fiches de paies</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Employé</th>
+                                        <th scope="col">CIN</th>
+                                        <th scope="col">Poste Occupé</th>
+                                        <th scope="col">Net à Payé (DH)</th>
+                                        <th scope="col">Status F.P</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between">
+                                <h2>
+                                    Equipe Matériel
+                                </h2>
+                                <div>
+                                    <button type="button" class="btn"><i class="far fa-calendar-check fa-lg"></i></button>
+                                    <button type="button" class="btn"><i class="far fa-calendar-times fa-lg"></i></button>
+                                    <button type="button" class="btn"><i class="fas fa-list fa-lg"></i></button>
+                                    <button type="button" class="btn"><i class="fas fa-trash fa-lg"></i></button>
+                                    <button type="button" class="btn"><i class="fas fa-undo fa-lg"></i></button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-around">
+                                                <h4 class="card-title">Rapports Pointage</h4>
+                                                <i class="fas fa-folder fa-lg"></i>
+                                            </div>
+                                            <hr></hr>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Effectifs:</h6>
+                                                    <h6 class="card-title">35</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Total:</h6>
+                                                    <h6 class="card-title">25</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Traités:</h6>
+                                                    <h6 class="card-title">15</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Non Traités:</h6>
+                                                    <h6 class="card-title">10</h6>
+                                                </div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-around">
+                                                <h4 class="card-title">Fiches de Paie</h4>
+                                                <i class="fas fa-receipt fa-lg"></i>
+                                            </div>
+                                            <hr></hr>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Payement:</h6>
+                                                    <h6 class="card-title">15</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Blockées:</h6>
+                                                    <h6 class="card-title">5</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">STC:</h6>
+                                                    <h6 class="card-title">5</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Rembourssement:</h6>
+                                                    <h6 class="card-title">5</h6>
+                                                </div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-around">
+                                                <h4 class="card-title"> Montant</h4>
+                                                <i class="fas fa-money-bill-alt fa-lg"></i>
+                                            </div>
+                                            <hr></hr>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Payement:</h6>
+                                                    <h6 class="card-title">15000 DH</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Blockées:</h6>
+                                                    <h6 class="card-title">7500 DH</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">STC:</h6>
+                                                    <h6 class="card-title">8600 DH</h6>
+                                                </div>
+                                            </p>
+                                            <p class="card-text">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6 class="card-title">Rembourssement:</h6>
+                                                    <h6 class="card-title">11203 DH</h6>
+                                                </div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table caption-top text-center">
+                                <caption>Listes des Fiches de paies</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Employé</th>
+                                        <th scope="col">CIN</th>
+                                        <th scope="col">Poste Occupé</th>
+                                        <th scope="col">Net à Payé (DH)</th>
+                                        <th scope="col">Status F.P</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <td>Mark Otto</td>
+                                        <td>xx 000000</td>
+                                        <td>xxxxxx xxxxxxxxxx</td>
+                                        <td>00 000</td>
+                                        <td>
+                                            <h3>
+                                                <span class="badge rounded-pill bg-success">Success</span>
+                                            </h3>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
+                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
+                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </Layout>
     </t>
