@@ -2,6 +2,25 @@
 
 export async function content_recap(data) {
 
+
+    let recap_lines = []
+
+    /*console.log(data.recap_lines[0].recap_mode_payes_total.map(arr => {
+        return arr.mode
+    }))*/
+
+    data.recap_lines.forEach(line => {
+        recap_lines.push([
+            createRecapItem(line.recap_chantier),
+            createRecapItem(line.recap_equipe),
+            createRecapItem(line.recap_nbr_effectif),
+            createRecapItem((line.recap_mode_payes_total.find(mod => mod.mode === 'Virement') || {}).total || '0'),
+            createRecapItem((line.recap_mode_payes_total.find(mod => mod.mode === 'Versement') || {}).total || '0'),
+            createRecapItem((line.recap_mode_payes_total.find(mod => mod.mode === 'Espece') || {}).total || '0'),
+            createRecapItem(line.recap_montant_total)
+        ]);
+    });
+
     const content = [
        
         {
@@ -48,7 +67,7 @@ export async function content_recap(data) {
                         body: [
                             [
                                 {
-                                    text: 'MOIS: 07/2023 (1ère quinzaine)',
+                                    text: `MOIS: ${data.recap_period} (${data.recap_quinzaine})`,
                                     bold: true,
                                     fontSize: 8,
                                     //fillColor: '#04aa6d',
@@ -58,7 +77,7 @@ export async function content_recap(data) {
                                    // colSpan: 2
                                 },
                                  {
-                                    text: 'REF: YM/2023/07/128',
+                                    text: 'REF: '+data.recap_name,
                                     bold: true,
                                     fontSize: 8,
                                    // fillColor: '#04aa6d',
@@ -68,7 +87,7 @@ export async function content_recap(data) {
                                    // colSpan: 2
                                 },
                                  {
-                                    text: 'CLASSIFICATION: OUVRIER',
+                                    text: 'CLASSIFICATION: '+data.recap_type_emp,
                                     bold: true,
                                     fontSize: 8,
                                    // fillColor: '#04aa6d',
@@ -96,7 +115,7 @@ export async function content_recap(data) {
                     table:
                     {
                         headerRows: 1,
-                        widths: [211,70,25,50,50,50,50],
+                        widths: [206,70,28,50,52,50,50],
                         dontBreakRows: true,
                         body: 
                         [
@@ -104,16 +123,16 @@ export async function content_recap(data) {
                                 {
                                     text: 'CHANTIERS',
                                     bold: true,
-                                    fontSize: 8,
+                                    fontSize: 9,
                                     fillColor: '#04aa6d',
                                     color: 'white',
                                     margin: [0, 5],
                                     alignment: 'center',
                                 },
                                 {
-                                    text: 'REFERENCE',
+                                    text: 'ÉQUIPES',
                                     bold: true,
-                                    fontSize: 8,
+                                    fontSize: 9,
                                     fillColor: '#04aa6d',
                                     color: 'white',
                                     margin: [0, 5],
@@ -122,7 +141,7 @@ export async function content_recap(data) {
                                 {
                                     text: 'EFF',
                                     bold: true,
-                                    fontSize: 8,
+                                    fontSize: 9,
                                     fillColor: '#04aa6d',
                                     color: 'white',
                                     margin: [0, 5],
@@ -131,16 +150,7 @@ export async function content_recap(data) {
                                 {
                                     text: 'VIREMENT',
                                     bold: true,
-                                    fontSize: 8,
-                                    fillColor: '#04aa6d',
-                                    color: 'white',
-                                    margin: [0, 5],
-                                    alignment: 'center',
-                                },
-                                {
-                                    text: 'CCP',
-                                    bold: true,
-                                    fontSize: 8,
+                                    fontSize: 9,
                                     fillColor: '#04aa6d',
                                     color: 'white',
                                     margin: [0, 5],
@@ -149,7 +159,16 @@ export async function content_recap(data) {
                                 {
                                     text: 'VERSEMENT',
                                     bold: true,
-                                    fontSize: 8,
+                                    fontSize: 9,
+                                    fillColor: '#04aa6d',
+                                    color: 'white',
+                                    margin: [0, 5],
+                                    alignment: 'center',
+                                },
+                                {
+                                    text: 'ESPÈCE',
+                                    bold: true,
+                                    fontSize: 9,
                                     fillColor: '#04aa6d',
                                     color: 'white',
                                     margin: [0, 5],
@@ -158,7 +177,7 @@ export async function content_recap(data) {
                                 {
                                     text: 'TOTAL',
                                     bold: true,
-                                    fontSize: 8,
+                                    fontSize: 9,
                                     fillColor: '#04aa6d',
                                     color: 'white',
                                     margin: [0, 5],
@@ -167,947 +186,9 @@ export async function content_recap(data) {
                                
                             ],
                           
-                            [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '1.260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ], 
-                            [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                           
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                            [
-                                {
-                                    text: 'CH-00423 - RENFORCEMENT DE LA RP 6030 PK 1+700 AU PK 20+000',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: 'TY/2023/06/108',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 1.4],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '20',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '289.777,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '126.367,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '72.384,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 0.1],
-                                    alignment: 'center'
-                                },
-                                {
-                                    text: '260.541,0',
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0,0.1],
-                                    alignment: 'center'
-                                },
-
-                            ],
-                             [
-                                {
-                                    text: 'TOTAL',
-                                    bold: true,
-                                    fontSize: 10,
-                                    fillColor: '#04aa6d',
-                                    color: 'white',
-                                    margin: [0, 2],
-                                    alignment: 'center',
-                                    colSpan: 2,
-                                },
-                                {
-                                    text: '',
-                                },
-                                {
-                                    text: '340',
-                                    bold: true,
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 2],
-                                    alignment: 'center',
-                                },
-                                {
-                                    text: '4.926,209',
-                                    bold: true,
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 2],
-                                    alignment: 'center',
-                                },
-                                {
-                                    text: '2.148,239',
-                                    bold: true,
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 2],
-                                    alignment: 'center',
-                                },
-                                {
-                                    text: '1.230,528',
-                                    bold: true,
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 2],
-                                    alignment: 'center',
-                                },
-                                {
-                                    text: '21.429.197,0',
-                                    bold: true,
-                                    fontSize: 8,
-                                    color: 'black',
-                                    margin: [0, 2],
-                                    alignment: 'center',
-                                },
-                               
-                            ],
+                            ...recap_lines, 
+                            
+                            
                         ]
                     }
                 }
@@ -1171,7 +252,7 @@ export async function content_recap(data) {
                                     alignment: 'center',
                                 },
                                 {
-                                    text: '95.706,0',
+                                    text: data.recap_total_virement,
                                     fontSize: 8,
                                     color: 'black',
                                     margin: [0, 2],
@@ -1195,7 +276,31 @@ export async function content_recap(data) {
                                     alignment: 'center',
                                 },
                                 {
-                                    text: '451.123',
+                                    text: data.recap_total_versement,
+                                    fontSize: 8,
+                                    color: 'black',
+                                    margin: [0, 2],
+                                    alignment: 'center',
+                                },
+                                {
+                                    text: '........................................',
+                                    fontSize: 10,
+                                    color: 'black',
+                                    margin: [0, 2],
+                                    alignment: 'center',
+                                },
+                               
+                            ],
+                            [
+                                {
+                                    text: 'ESPÈCE',
+                                    fontSize: 8,
+                                    color: 'black',
+                                    margin: [0, 2],
+                                    alignment: 'center',
+                                },
+                                {
+                                    text: data.recap_total_espece,
                                     fontSize: 8,
                                     color: 'black',
                                     margin: [0, 2],
@@ -1221,7 +326,7 @@ export async function content_recap(data) {
                                     alignment: 'center',
                                 },
                                 {
-                                    text: '546,829',
+                                    text: data.recap_lines_total,
                                     bold: true,
                                     fontSize: 10,
                                     fillColor: '#04aa6d',
@@ -1240,13 +345,14 @@ export async function content_recap(data) {
                                 },
                                
                             ],
+                            
                         ]
                     }
                 }
                 
                 
             ]
-        },
+        }
         
     ]
 
@@ -1255,6 +361,14 @@ export async function content_recap(data) {
 
     return content
 }
+
+const createRecapItem = (text, fontSize = 8) => ({
+    text,
+    fontSize,
+    color: 'black',
+    margin: [0, 2],
+    alignment: 'center'
+});
 
 function limitText(text, maxLength) {
     if (text.length <= maxLength) {

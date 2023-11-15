@@ -40,7 +40,7 @@
                                         </div>
                                         <field name="emplacement_chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}"/>
                                     </div>
-                                    <div class="input-group mb-3">
+                                    <!--<div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" ><label for="nombre_effectif" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                                         </div>
@@ -51,7 +51,7 @@
                                             <span class="input-group-text" ><label for="montant_total" class=""/></span>
                                         </div>
                                         <field name="montant_total" class="form-control" />
-                                    </div>
+                                    </div>-->
                                 </div> 
                             </div> 
                         </div>
