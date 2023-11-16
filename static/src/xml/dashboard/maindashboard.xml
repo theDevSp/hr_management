@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <t t-name="hr_management.main_dashboard" owl="1">
-        <Layout>
-            <div class="row p-3">
-                <div class="col-6">
-
+        <div class="overflow-auto bg-muted" style="height: 100%;">
+            <div class="row pt-2 px-4">
+                <div class="col-12">
+                    <div class="alert alert-success text-center">
+                        <span style="font-size: large;">
+                            <strong>Tableau de Boards :</strong>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <DashboardForm onClick.bind="buildDashboard" />
+            <div class="row px-4 pt-1">
+                <MainCard name="'Equipe 1'" />
+                <MainCard name="'Equipe 2'" />
+                <MainCard name="'Equipe 3'" />
+                <MainCard name="'Equipe 4'" />
+                <MainCard name="'Equipe 5'" />
+                <MainCard name="'Equipe 6'" />
+            </div>
+        </div>
+        <!--<div class="row px-4 pt-1">
+                <div class="col-6 mb-3">
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex justify-content-between">
@@ -12,11 +30,21 @@
                                     Equipe Terrassement
                                 </h2>
                                 <div>
-                                    <button type="button" class="btn"><i class="far fa-calendar-check fa-lg"></i></button>
-                                    <button type="button" class="btn"><i class="far fa-calendar-times fa-lg"></i></button>
-                                    <button type="button" class="btn"><i class="fas fa-list fa-lg"></i></button>
-                                    <button type="button" class="btn"><i class="fas fa-trash fa-lg"></i></button>
-                                    <button type="button" class="btn"><i class="fas fa-undo fa-lg"></i></button>
+                                    <button type="button" class="btn">
+                                        <i class="far fa-calendar-check fa-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <i class="far fa-calendar-times fa-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <i class="fas fa-list fa-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <i class="fas fa-trash fa-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <i class="fas fa-undo fa-lg"></i>
+                                    </button>
                                 </div>
                             </div>
 
@@ -30,30 +58,31 @@
                                                 <h4 class="card-title">Rapports Pointage</h4>
                                                 <i class="fas fa-folder fa-lg"></i>
                                             </div>
-                                            <hr></hr>
+                                            <hr>
+                                            </hr>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Effectifs:</h6>
-                                                    <h6 class="card-title">35</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Effectifs:</h6>
+                                                <h6 class="card-title">35</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Total:</h6>
-                                                    <h6 class="card-title">25</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Total:</h6>
+                                                <h6 class="card-title">25</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Traités:</h6>
-                                                    <h6 class="card-title">15</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Traités:</h6>
+                                                <h6 class="card-title">15</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Non Traités:</h6>
-                                                    <h6 class="card-title">10</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Non Traités:</h6>
+                                                <h6 class="card-title">10</h6>
+                                            </div>
                                             </p>
                                         </div>
                                     </div>
@@ -65,30 +94,31 @@
                                                 <h4 class="card-title">Fiches de Paie</h4>
                                                 <i class="fas fa-receipt fa-lg"></i>
                                             </div>
-                                            <hr></hr>
+                                            <hr>
+                                            </hr>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Payement:</h6>
-                                                    <h6 class="card-title">15</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Payement:</h6>
+                                                <h6 class="card-title">15</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Blockées:</h6>
-                                                    <h6 class="card-title">5</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Blockées:</h6>
+                                                <h6 class="card-title">5</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">STC:</h6>
-                                                    <h6 class="card-title">5</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">STC:</h6>
+                                                <h6 class="card-title">5</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Rembourssement:</h6>
-                                                    <h6 class="card-title">5</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Rembourssement:</h6>
+                                                <h6 class="card-title">5</h6>
+                                            </div>
                                             </p>
                                         </div>
                                     </div>
@@ -100,30 +130,31 @@
                                                 <h4 class="card-title"> Montant</h4>
                                                 <i class="fas fa-money-bill-alt fa-lg"></i>
                                             </div>
-                                            <hr></hr>
+                                            <hr>
+                                            </hr>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Payement:</h6>
-                                                    <h6 class="card-title">15000 DH</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Payement:</h6>
+                                                <h6 class="card-title">15000 DH</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Blockées:</h6>
-                                                    <h6 class="card-title">7500 DH</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Blockées:</h6>
+                                                <h6 class="card-title">7500 DH</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">STC:</h6>
-                                                    <h6 class="card-title">8600 DH</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">STC:</h6>
+                                                <h6 class="card-title">8600 DH</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Rembourssement:</h6>
-                                                    <h6 class="card-title">11203 DH</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Rembourssement:</h6>
+                                                <h6 class="card-title">11203 DH</h6>
+                                            </div>
                                             </p>
                                         </div>
                                     </div>
@@ -144,7 +175,9 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -156,14 +189,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -175,14 +216,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -194,14 +243,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -213,14 +270,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -232,14 +297,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -251,14 +324,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -270,9 +351,15 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -281,9 +368,7 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="col-6">
-
+                <div class="col-6 mb-3">
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex justify-content-between">
@@ -291,11 +376,21 @@
                                     Equipe Matériel
                                 </h2>
                                 <div>
-                                    <button type="button" class="btn"><i class="far fa-calendar-check fa-lg"></i></button>
-                                    <button type="button" class="btn"><i class="far fa-calendar-times fa-lg"></i></button>
-                                    <button type="button" class="btn"><i class="fas fa-list fa-lg"></i></button>
-                                    <button type="button" class="btn"><i class="fas fa-trash fa-lg"></i></button>
-                                    <button type="button" class="btn"><i class="fas fa-undo fa-lg"></i></button>
+                                    <button type="button" class="btn">
+                                        <i class="far fa-calendar-check fa-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <i class="far fa-calendar-times fa-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <i class="fas fa-list fa-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <i class="fas fa-trash fa-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <i class="fas fa-undo fa-lg"></i>
+                                    </button>
                                 </div>
                             </div>
 
@@ -309,30 +404,31 @@
                                                 <h4 class="card-title">Rapports Pointage</h4>
                                                 <i class="fas fa-folder fa-lg"></i>
                                             </div>
-                                            <hr></hr>
+                                            <hr>
+                                            </hr>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Effectifs:</h6>
-                                                    <h6 class="card-title">35</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Effectifs:</h6>
+                                                <h6 class="card-title">35</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Total:</h6>
-                                                    <h6 class="card-title">25</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Total:</h6>
+                                                <h6 class="card-title">25</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Traités:</h6>
-                                                    <h6 class="card-title">15</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Traités:</h6>
+                                                <h6 class="card-title">15</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Non Traités:</h6>
-                                                    <h6 class="card-title">10</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Non Traités:</h6>
+                                                <h6 class="card-title">10</h6>
+                                            </div>
                                             </p>
                                         </div>
                                     </div>
@@ -344,30 +440,31 @@
                                                 <h4 class="card-title">Fiches de Paie</h4>
                                                 <i class="fas fa-receipt fa-lg"></i>
                                             </div>
-                                            <hr></hr>
+                                            <hr>
+                                            </hr>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Payement:</h6>
-                                                    <h6 class="card-title">15</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Payement:</h6>
+                                                <h6 class="card-title">15</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Blockées:</h6>
-                                                    <h6 class="card-title">5</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Blockées:</h6>
+                                                <h6 class="card-title">5</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">STC:</h6>
-                                                    <h6 class="card-title">5</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">STC:</h6>
+                                                <h6 class="card-title">5</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Rembourssement:</h6>
-                                                    <h6 class="card-title">5</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Rembourssement:</h6>
+                                                <h6 class="card-title">5</h6>
+                                            </div>
                                             </p>
                                         </div>
                                     </div>
@@ -379,30 +476,31 @@
                                                 <h4 class="card-title"> Montant</h4>
                                                 <i class="fas fa-money-bill-alt fa-lg"></i>
                                             </div>
-                                            <hr></hr>
+                                            <hr>
+                                            </hr>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Payement:</h6>
-                                                    <h6 class="card-title">15000 DH</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Payement:</h6>
+                                                <h6 class="card-title">15000 DH</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Blockées:</h6>
-                                                    <h6 class="card-title">7500 DH</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Blockées:</h6>
+                                                <h6 class="card-title">7500 DH</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">STC:</h6>
-                                                    <h6 class="card-title">8600 DH</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">STC:</h6>
+                                                <h6 class="card-title">8600 DH</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Rembourssement:</h6>
-                                                    <h6 class="card-title">11203 DH</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Rembourssement:</h6>
+                                                <h6 class="card-title">11203 DH</h6>
+                                            </div>
                                             </p>
                                         </div>
                                     </div>
@@ -423,7 +521,9 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -435,14 +535,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -454,14 +562,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -473,14 +589,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -492,14 +616,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -511,14 +643,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -530,14 +670,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -549,9 +697,15 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -560,8 +714,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
-
+                <div class="col-6 mb-3">
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex justify-content-between">
@@ -569,11 +722,21 @@
                                     Equipe Matériel
                                 </h2>
                                 <div>
-                                    <button type="button" class="btn"><i class="far fa-calendar-check fa-lg"></i></button>
-                                    <button type="button" class="btn"><i class="far fa-calendar-times fa-lg"></i></button>
-                                    <button type="button" class="btn"><i class="fas fa-list fa-lg"></i></button>
-                                    <button type="button" class="btn"><i class="fas fa-trash fa-lg"></i></button>
-                                    <button type="button" class="btn"><i class="fas fa-undo fa-lg"></i></button>
+                                    <button type="button" class="btn">
+                                        <i class="far fa-calendar-check fa-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <i class="far fa-calendar-times fa-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <i class="fas fa-list fa-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <i class="fas fa-trash fa-lg"></i>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <i class="fas fa-undo fa-lg"></i>
+                                    </button>
                                 </div>
                             </div>
 
@@ -587,30 +750,31 @@
                                                 <h4 class="card-title">Rapports Pointage</h4>
                                                 <i class="fas fa-folder fa-lg"></i>
                                             </div>
-                                            <hr></hr>
+                                            <hr>
+                                            </hr>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Effectifs:</h6>
-                                                    <h6 class="card-title">35</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Effectifs:</h6>
+                                                <h6 class="card-title">35</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Total:</h6>
-                                                    <h6 class="card-title">25</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Total:</h6>
+                                                <h6 class="card-title">25</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Traités:</h6>
-                                                    <h6 class="card-title">15</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Traités:</h6>
+                                                <h6 class="card-title">15</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Non Traités:</h6>
-                                                    <h6 class="card-title">10</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Non Traités:</h6>
+                                                <h6 class="card-title">10</h6>
+                                            </div>
                                             </p>
                                         </div>
                                     </div>
@@ -622,30 +786,31 @@
                                                 <h4 class="card-title">Fiches de Paie</h4>
                                                 <i class="fas fa-receipt fa-lg"></i>
                                             </div>
-                                            <hr></hr>
+                                            <hr>
+                                            </hr>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Payement:</h6>
-                                                    <h6 class="card-title">15</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Payement:</h6>
+                                                <h6 class="card-title">15</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Blockées:</h6>
-                                                    <h6 class="card-title">5</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Blockées:</h6>
+                                                <h6 class="card-title">5</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">STC:</h6>
-                                                    <h6 class="card-title">5</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">STC:</h6>
+                                                <h6 class="card-title">5</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Rembourssement:</h6>
-                                                    <h6 class="card-title">5</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Rembourssement:</h6>
+                                                <h6 class="card-title">5</h6>
+                                            </div>
                                             </p>
                                         </div>
                                     </div>
@@ -657,30 +822,31 @@
                                                 <h4 class="card-title"> Montant</h4>
                                                 <i class="fas fa-money-bill-alt fa-lg"></i>
                                             </div>
-                                            <hr></hr>
+                                            <hr>
+                                            </hr>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Payement:</h6>
-                                                    <h6 class="card-title">15000 DH</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Payement:</h6>
+                                                <h6 class="card-title">15000 DH</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Blockées:</h6>
-                                                    <h6 class="card-title">7500 DH</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Blockées:</h6>
+                                                <h6 class="card-title">7500 DH</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">STC:</h6>
-                                                    <h6 class="card-title">8600 DH</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">STC:</h6>
+                                                <h6 class="card-title">8600 DH</h6>
+                                            </div>
                                             </p>
                                             <p class="card-text">
-                                                <div class="d-flex justify-content-between">
-                                                    <h6 class="card-title">Rembourssement:</h6>
-                                                    <h6 class="card-title">11203 DH</h6>
-                                                </div>
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="card-title">Rembourssement:</h6>
+                                                <h6 class="card-title">11203 DH</h6>
+                                            </div>
                                             </p>
                                         </div>
                                     </div>
@@ -701,7 +867,9 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -713,14 +881,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -732,14 +908,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -751,14 +935,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -770,14 +962,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -789,14 +989,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -808,14 +1016,22 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input></th>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></input>
+                                        </th>
                                         <td>Mark Otto</td>
                                         <td>xx 000000</td>
                                         <td>xxxxxx xxxxxxxxxx</td>
@@ -827,9 +1043,15 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <button type="button" class="btn"><i class="far fa-calendar-check"></i></button>
-                                                <button type="button" class="btn"><i class="far fa-calendar-times"></i></button>
-                                                <button type="button" class="btn"><i class="fas fa-list"></i></button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-check"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="far fa-calendar-times"></i>
+                                                </button>
+                                                <button type="button" class="btn">
+                                                    <i class="fas fa-list"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -839,6 +1061,6 @@
                     </div>
                 </div>
             </div>
-        </Layout>
+        </div>-->
     </t>
 </templates>

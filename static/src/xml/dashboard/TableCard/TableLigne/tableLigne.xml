@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="owl.Tableligne" owl="1">
+        <tr>
+            <td><t t-esc="props.name"/></td>
+            <td>xx 000000</td>
+            <td>xxxxxx xxxxxxxxxx</td>
+            <td>00 000</td>
+            <td>
+                <h3>
+                    <span class="badge rounded-pill bg-success">Success</span>
+                </h3>
+            </td>
+            <td>
+                <div>
+                    <button type="button" class="btn">
+                        <i class="far fa-calendar-check" style="color: #28a745;"></i>
+                    </button>
+                    <button type="button" class="btn">
+                        <i class="far fa-calendar-times" style="color: #dc3545;"></i>
+                    </button>
+                    <button type="button" class="btn">
+                        <i class="fas fa-list" style="color: #007bff;"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    </t>
+</templates>

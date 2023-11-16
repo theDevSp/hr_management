@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="owl.SousCard" owl="1">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-around">
+                    <h4 class="card-title"><span t-esc="props.name"></span></h4>
+                    <i t-attf-class="{{props.icon}}"></i>
+                </div>
+                <hr>
+                </hr>
+                <p class="card-text">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="card-title">Effectifs:</h6>
+                        <h6 class="card-title">35</h6>
+                    </div>
+                </p>
+                <p class="card-text">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="card-title">Total:</h6>
+                        <h6 class="card-title">25</h6>
+                    </div>
+                </p>
+                <p class="card-text">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="card-title">Traités:</h6>
+                        <h6 class="card-title">15</h6>
+                    </div>
+                </p>
+                <p class="card-text">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="card-title">Non Traités:</h6>
+                        <h6 class="card-title">10</h6>
+                    </div>
+                </p>
+            </div>
+        </div>
+    </t>
+</templates>
