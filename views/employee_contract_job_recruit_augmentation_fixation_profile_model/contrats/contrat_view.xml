@@ -513,6 +513,7 @@
                 <field name="chantier_id"/>
                 <field name="resource_calendar_id"/>
                 <searchpanel>
+                    <field name="profile_paie_id" icon="fa-user" enable_counters="1" select="multi"/>
                     <field name="type_emp" icon="fa-user" enable_counters="1" select="multi"/>
                     <field name="state" icon="fa-file-contract" enable_counters="1" select="multi"/>
                     <field name="contract_type_id" icon="fa-file-contract" enable_counters="1" select="multi"/>
