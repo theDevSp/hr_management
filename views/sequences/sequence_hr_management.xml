@@ -93,5 +93,15 @@
             <field name="implementation">standard</field>
         </record>
 
+        <record id="sequence_recap" model="ir.sequence">
+            <field name="name">Recap sequence</field>
+            <field name="code">recap.pdf</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">R</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">standard</field>
+        </record>
+
     </data>
 </odoo>

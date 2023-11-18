@@ -13,50 +13,53 @@ class hrRecapControllers(http.Controller):
 
         if recap:
             recap_lines = []
+            total_recap_lines, total_virement, total_versement, total_espece = 0, 0, 0, 0
 
             for rec_line in recap.line_ids:
-                fiche_paie = []
-                paie_totals = {}
 
-                paie = request.env['hr.payslip'].search([
-                    ('chantier_id', '=', rec_line.chantier_id.id),
-                    ('type_emp', '=', recap.type_emp),
-                    ('period_id', '=', recap.period_id.id),
-                    ('quinzaine', '=', recap.quinzaine)
-                ])
+                recap_montant_total = sum(entry.get('total', 0)
+                                          for entry in rec_line.json_data)
+                sum_virement = sum(entry.get(
+                    'total', 0) for entry in rec_line.json_data if entry.get('mode') == "Virement")
+                sum_versement = sum(entry.get(
+                    'total', 0) for entry in rec_line.json_data if entry.get('mode') == "Versement")
+                sum_espece = sum(entry.get(
+                    'total', 0) for entry in rec_line.json_data if entry.get('mode') == "Espece")
 
-                for p in paie:
-                    fiche_paie.append({
-                        'id': p.id,
-                        'emp': p.employee_id.name,
-                        'paie': p.employee_id.rib_number.payement_mode_id.name,
-                        'nap': float(p.net_pay)
-                    })
+                total_recap_lines += recap_montant_total
+                total_virement += sum_virement
+                total_versement += sum_versement
+                total_espece += sum_espece
 
-                    # Calculate sum of 'nap' for each 'paie' in fiche_paie
-                    if p.employee_id.rib_number.payement_mode_id.name in paie_totals:
-                        paie_totals[p.employee_id.rib_number.payement_mode_id.name] += float(
-                            p.net_pay)
-                    else:
-                        paie_totals[p.employee_id.rib_number.payement_mode_id.name] = float(
-                            p.net_pay)
+                formatted_recap_mode_payes_total = [
+                    {'mode': entry['mode'], 'total': '{:,}'.format(entry['total']).replace(',', ' ')}
+                    for entry in rec_line.json_data
+                ]
+
 
                 recap_lines.append({
                     'recap_chantier': rec_line.chantier_id.name,
                     'recap_equipe': rec_line.emplacement_chantier_id.abrv,
                     'recap_nbr_effectif': rec_line.nombre_effectif,
-                    'recap_montant_total': rec_line.montant_total,
-                    'fiche_paie': fiche_paie,
-                    'paie_totals': paie_totals  # Include paie_totals in fiche_paie
+                    'recap_montant_total': '{:,}'.format(round(recap_montant_total)).replace(',', ' '),
+                    'recap_mode_payes_total': formatted_recap_mode_payes_total
                 })
+
+            quinzine_mapping = {'quinzaine1': 'Première Quinzaine',
+                                'quinzaine2': 'Deuxième Quinzaine',
+                                'quinzaine12': 'Q1 + Q2'}
 
             data = {
                 'recap_name': recap.name,
-                'recap_period_id': recap.period_id.code,
-                'recap_quinzaine': recap.quinzaine,
-                'recap_type_emp': recap.type_emp,
+                'recap_period': recap.period_id.code,
+                'recap_quinzaine': quinzine_mapping.get(recap.quinzaine, ''),
+                'recap_type_emp': 'Ouvrier' if recap.type_emp == 'o' else ('Salarié' if recap.type_emp == 's' else 'Non défini'),
                 'recap_responsable': recap.responsable_id.name,
-                'recap_lines': recap_lines
+                'recap_lines': recap_lines,
+                'recap_lines_total': f'{round(total_recap_lines):,}'.replace(',', ' '),
+                'recap_total_virement': f'{round(total_virement):,}'.replace(',', ' '),
+                'recap_total_versement': f'{round(total_versement):,}'.replace(',', ' '),
+                'recap_total_espece': f'{round(total_espece):,}'.replace(',', ' ')
             }
             return data
         else:
