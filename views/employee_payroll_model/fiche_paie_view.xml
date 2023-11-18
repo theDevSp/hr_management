@@ -398,6 +398,47 @@
                         </div>
                         
                     </div>
+                    <div class="col-12 col-md-8 col-lg-3" attrs="{'invisible': [('payed_holidays', '=', False),('payed_worked_holidays', '=', False)]}">
+                        <div class="col- mt-3 justify-content-center">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">REMBOURSSEMENT JFs</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="input-group mb-3" attrs="{'invisible': [('payed_holidays', '=', False)]}">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="payed_holidays" class=""/></span>
+                                            </div>
+                                            <field name="payed_holidays" widget="boolean_toggle" class="form-control text-center"/>
+                                        </div>
+                                        <div class="input-group mb-3" attrs="{'invisible': [('payed_worked_holidays', '=', False)]}">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="payed_worked_holidays" class=""/></span>
+                                            </div>
+                                            <field name="payed_worked_holidays" widget="boolean_toggle" class="form-control text-center"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="nbr_jf_refunded" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="nbr_jf_refunded" class="form-control text-center" force_save="1"/>
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" >
+                                                    <div class="o_form_label" style="color:green">
+                                                        + <field name="amount_jf_refunded" class="h5"/> DH
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div>
+                        
+                    </div>
                     <div class="col-12 col-md-8 col-lg-3">
                         <div class="col- mt-3 justify-content-center">
                             <div class="bg-white shadow p-3">

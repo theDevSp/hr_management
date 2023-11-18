@@ -37,6 +37,7 @@ class profilepaie(models.Model):
     plafonner_bonus = fields.Boolean("Plafonner le bonus", default=True)
     avoir_conge = fields.Boolean("Peut avoir un congé", default=True)
     payed_holidays = fields.Boolean("Jours Férié Remboursser", default=True)
+    payed_worked_holidays = fields.Boolean("Jours Férié Travaillé Remboursser", default=True)
     saved_holidays = fields.Boolean("Jours Férié Conserver", default=True)
     justification = fields.Boolean("Détails travaux obligé", default=True)
     jo = fields.Boolean("Calculer que les JOs", default=False)

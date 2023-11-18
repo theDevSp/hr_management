@@ -73,11 +73,11 @@ class hr_rapport_pointage(models.Model):
         for rapport in self:
             rapport.count_nbr_dim_days = sum(float(line.j_travaille) for line in rapport.rapport_lines.filtered(lambda ln: ln.day_type == '2' and float(ln.h_travailler) > 0))
     
-    @api.depends('rapport_lines.j_travaille','rapport_lines.day_type') 
+    @api.depends('rapport_lines.day_type') 
     def _compute_jour_ferie(self):
         
         for rapport in self:
-            rapport.count_nbr_ferier_days = sum(float(line.j_travaille) for line in rapport.rapport_lines.filtered(lambda ln: ln.day_type == '3'))
+            rapport.count_nbr_ferier_days = len(rapport.rapport_lines.filtered(lambda ln: ln.day_type == '3'))
 
     @api.depends('rapport_lines.j_travaille','rapport_lines.day_type','rapport_lines.h_travailler_v') 
     def _compute_sundays_valide(self):
@@ -151,6 +151,7 @@ class hr_rapport_pointage(models.Model):
     cin = fields.Char(related='employee_id.cin',string="N° CIN",readonly=True)
     fonction = fields.Char(related='employee_id.job',string="Fonction",readonly=True)
     job_id = fields.Many2one(related='employee_id.job_id',string="Poste occupé",readonly=True)
+    
 
     chantier_id = fields.Many2one("fleet.vehicle.chantier",u"Dernier Chantier",readonly=True, index=True)
     periodicite = fields.Selection(related='chantier_id.periodicite',readonly=True)
@@ -457,11 +458,18 @@ class hr_rapport_pointage(models.Model):
                 'view_id': view.id,
             }
         else:
+            if self.payslip_ids[0].payed_holidays:
+                nbr_jf_refunded = self.count_nbr_ferier_days
+        
+            if self.payslip_ids[0].payed_worked_holidays :
+                nbr_jf_refunded = self.count_nbr_ferier_days_v
+
             self.payslip_ids[0].write({
                 'nbr_jour_travaille':total_jt,
-                'nbr_heure_travaille':self.total_h_v
+                'nbr_heure_travaille':self.total_h_v,
+                'nbr_jf_refunded':nbr_jf_refunded
             })
-
+        
 
     def action_validation(self):
         self.write({'state': 'valide'})
