@@ -123,7 +123,7 @@ export class Dashform extends Component {
 
     async sendData() {
 
-        //this.props.onClickFrom(this.state)
+        this.props.onClickFrom()
 
     }
 }
