@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="owl.Tableligne" owl="1">
+    <t t-name="owl.EquipeCardDetailsTableLigne" owl="1">
         <tr>
             <td><t t-esc="props.name"/></td>
             <td>xx 000000</td>

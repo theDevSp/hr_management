@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="hr_management.main_dashboard" owl="1">
+        <div class="overflow-auto bg-muted" style="height: 100%;">
+            <div class="row pt-2 px-4">
+                <div class="col-12">
+                    <div class="alert alert-success text-center">
+                        <span style="font-size: large;">
+                            <strong>Tableau de Bord :</strong>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <Dashform />
+            <div class="row px-4 pt-1">
+                <EquipeCard name="'Equipe 1'" />
+                <EquipeCard name="'Equipe 2'" />
+                <EquipeCard name="'Equipe 3'" />
+                <EquipeCard name="'Equipe 4'" />
+                <EquipeCard name="'Equipe 5'" />
+                <EquipeCard name="'Equipe 6'" />
+            </div>
+        </div>
+    </t>
+</templates>

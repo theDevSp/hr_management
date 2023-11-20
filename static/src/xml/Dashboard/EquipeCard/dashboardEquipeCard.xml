@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="owl.MainCard" owl="1">
+    <t t-name="owl.EquipeCard" owl="1">
         <div class="col-6 mt-3">
             <div class="card">
                 <div class="card-header">
@@ -30,16 +30,16 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-3">
-                            <SousCard name="'Rapports Pointage'" icon="'fas fa-folder fa-lg'" />
+                            <EquipeCardDetails name="'Rapports Pointage'" icon="'fas fa-folder fa-lg'" />
                         </div>
                         <div class="col-3">
-                            <SousCard name="'Fiches de Paie'" icon="'fas fa-receipt fa-lg'" />
+                            <EquipeCardDetails name="'Fiches de Paie'" icon="'fas fa-receipt fa-lg'" />
                         </div>
                         <div class="col-6">
-                            <SousCard name="'Montant'" icon="'fas fa-money-bill-alt fa-lg'" />
+                            <EquipeCardDetails name="'Montant'" icon="'fas fa-money-bill-alt fa-lg'" />
                         </div>
                     </div>
-                    <TableCard />
+                    <EquipeCardDetailsTable />
                 </div>
             </div>
         </div>

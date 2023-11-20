@@ -5,10 +5,10 @@ const { loadJS, loadCSS } = require('@web/core/assets');
 
 import { useService } from "@web/core/utils/hooks"
 
-export class DashboardForm extends Component {
+export class Dashform extends Component {
     setup() {
         this.rpc = useService("rpc");
-
+        
         onWillStart(async () => {
             await loadJS("/reports_templates/static/src/lib/selectize/selectize.min.js")
             await loadCSS("/reports_templates/static/src/lib/selectize/selectize.default.min.css")
@@ -45,7 +45,6 @@ export class DashboardForm extends Component {
             },
             optgroupField: 'year',
         });
-
 
         $('#select-chantier').selectize({
             maxItems: 1,
@@ -122,7 +121,11 @@ export class DashboardForm extends Component {
         });
     }
 
-    
+    async sendData() {
+
+        //this.props.onClickFrom(this.state)
+
+    }
 }
 
-DashboardForm.template = "owl.dashboardForm"
+Dashform.template = "owl.dashboardForm"

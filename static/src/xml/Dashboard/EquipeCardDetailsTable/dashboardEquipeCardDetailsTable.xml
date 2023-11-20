@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="owl.TableCard" owl="1">
+    <t t-name="owl.EquipeCardDetailsTable" owl="1">
         <table class="table caption-top text-center">
             <caption>Listes des Fiches de paies</caption>
             <thead>
@@ -14,10 +14,10 @@
                 </tr>
             </thead>
             <tbody>
-                <Tableligne name="'MOSTAFA'"/>
-                <Tableligne name="'MOSTAFA'"/>
-                <Tableligne name="'MOSTAFA'"/>
-                <Tableligne name="'MOSTAFA'"/>
+                <EquipeCardDetailsTableLigne name="'MOSTAFA'"/>
+                <EquipeCardDetailsTableLigne name="'MOSTAFA'"/>
+                <EquipeCardDetailsTableLigne name="'MOSTAFA'"/>
+                <EquipeCardDetailsTableLigne name="'MOSTAFA'"/>
             </tbody>
         </table>
     </t>
