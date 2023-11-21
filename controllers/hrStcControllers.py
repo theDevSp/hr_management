@@ -52,7 +52,7 @@ class stcController(http.Controller):
                 'stc_cotisation_cimr': "{:.2f}".format(stc_record.cimr) if stc_record.cimr not in [False, True, 0, ""] else "",
                 'stc_prelevement': "{:.2f}".format(stc_record.retenu) if stc_record.retenu not in [False, True, 0, ""] else "",
                 'stc_prelevement_credit': "{:.2f}".format(stc_record.sum_prelevement) if stc_record.sum_prelevement not in [False, True, 0, ""] else "",
-                'stc_notes': stc_record.motifs,
+                'stc_notes': stc_record.motifs if stc_record.motifs not in [False, True, 0, ""] else "",
                 'stc_montant_apayer': round(stc_record.montant_total),
                 'stc_montant_valider': round(stc_record.valide_salaire),
             }
