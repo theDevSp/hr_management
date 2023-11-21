@@ -6,7 +6,7 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <h2>
-                            <span t-esc="props.name"></span>
+                            <span t-esc="props.data.equipe[1]"></span>
                         </h2>
                         <div>
                             <button type="button" class="btn" style="color: #28a745;">
@@ -29,17 +29,9 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-3">
-                            <EquipeCardDetails name="'Rapports Pointage'" icon="'fas fa-folder fa-lg'" />
-                        </div>
-                        <div class="col-3">
-                            <EquipeCardDetails name="'Fiches de Paie'" icon="'fas fa-receipt fa-lg'" />
-                        </div>
-                        <div class="col-6">
-                            <EquipeCardDetails name="'Montant'" icon="'fas fa-money-bill-alt fa-lg'" />
-                        </div>
+                        <EquipeCardDetails details="props.data"/>
                     </div>
-                    <EquipeCardDetailsTable />
+                    <EquipeCardDetailsTable tabledetails="props.data"/>
                 </div>
             </div>
         </div>

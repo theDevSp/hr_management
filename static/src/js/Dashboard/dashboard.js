@@ -13,48 +13,7 @@ export class HrMainDashboard extends Component {
 
         this.state = useState({
             isFirstLoad: true,
-            data: [
-                {
-                    name: "Dune",
-                    id: 1
-                },
-                {
-                    name: "Foundation",
-                    id: 2
-                },
-                {
-                    name: "1984",
-                    id: 3
-                },
-                {
-                    name: "Brave New World",
-                    id: 4
-                },
-                {
-                    name: "Ender's Game",
-                    id: 5
-                },
-                {
-                    name: "The Hitchhiker's Guide to the Galaxy",
-                    id: 6
-                },
-                {
-                    name: "Neuromancer",
-                    id: 7
-                },
-                {
-                    name: "Snow Crash",
-                    id: 8
-                },
-                {
-                    name: "The Martian",
-                    id: 9
-                },
-                {
-                    name: "Ready Player One",
-                    id: 10
-                }
-            ]
+            data: null
         })
 
         onWillRender(async () => {
@@ -64,8 +23,6 @@ export class HrMainDashboard extends Component {
 
     async generateDashboard() {
 
-        console.log("hhhhhhh")
-
         const rpc = this.env.services.rpc
         const data = await rpc('/hr_management/dashboard/', {
             chantier_id: 432,
@@ -74,7 +31,7 @@ export class HrMainDashboard extends Component {
         })
         console.log(data)
         console.log(this.state.data)
-        //this.state.data = data
+        this.state.data = data
         console.log(this.state.data)
         this.state.isFirstLoad = false
     }

@@ -81,6 +81,7 @@ class HrDashboardControllers(http.Controller):
                     })
 
                 obj = {
+                    'id': id_,
                     'equipe': [id_, name],
                     'resume_rapport': {
                         'member_count': member_count,
