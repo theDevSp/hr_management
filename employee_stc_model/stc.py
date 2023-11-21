@@ -33,23 +33,23 @@ class hr_stc(models.Model):
         return
 
     name = fields.Char(u"Référence" ,readonly=True, default="######")
-    employee_id = fields.Many2one("hr.employee",u"Employée",required=True)
-    job_id = fields.Many2one('hr.job',string="Titre du Poste")
+    employee_id = fields.Many2one("hr.employee",u"Employée",required=True,readonly=False, states=READONLY_STATES)
+    job_id = fields.Many2one('hr.job',string="Titre du Poste",readonly=False, states=READONLY_STATES)
     cin = fields.Char(related='employee_id.cin',string='N° CIN' ,readonly=True)
     job = fields.Char(u'FONCTION', states=READONLY_STATES)
-    date_debut = fields.Date(related='contract.date_start',string="Date de début" , states=READONLY_STATES)
-    date_fin = fields.Date(related='contract.date_end',string="Date de fin", states=READONLY_STATES)
+    date_debut = fields.Date(related='contract.date_start',string="Date de début" ,readonly=True)
+    date_fin = fields.Date(related='contract.date_end',string="Date de fin" ,readonly=False, states=READONLY_STATES)
     chantier = fields.Many2one('fleet.vehicle.chantier',string="Dernier Chantier" , states=READONLY_STATES)
     chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Dernier Chantier" , states=READONLY_STATES)
-    #vehicle = fields.Many2one('fleet.vehicle',string="Dernier Engin", states=READONLY_STATES)
+    vehicle = fields.Many2one('fleet.vehicle',string="Dernier Engin",readonly=False, states=READONLY_STATES)
     bank = fields.Char(related='employee_id.bank_account',string='N° RIB' ,readonly=True)
-    date_start = fields.Date(u"Date du STC", default=datetime.today(), states=READONLY_STATES)
-    modePay = fields.Selection([('mode1',u'Mise à disposition'),('mode2',u"Virement Postal"),('mode3',u"Virement Bancaire"),('mode4',u"Espèce")],u"Mode de paiement", states=READONLY_STATES)
-    contract = fields.Many2one('hr.contract' ,string="Contrat", required=True, domain="[('employee_id', '=', employee_id)]")
+    date_start = fields.Date(u"Date du STC", default=datetime.today(),readonly=False, states=READONLY_STATES)
+    modePay = fields.Selection([('mode1',u'Mise à disposition'),('mode2',u"Virement Postal"),('mode3',u"Virement Bancaire"),('mode4',u"Espèce")],u"Mode de paiement",readonly=False, states=READONLY_STATES)
+    contract = fields.Many2one('hr.contract' ,string="Contrat", required=True, domain="[('employee_id', '=', employee_id)]",readonly=False, states=READONLY_STATES)
 
-    motif = fields.Text(u"Motif", states=READONLY_STATES)
-    motifs = fields.Char(u"Motif", states=READONLY_STATES)
-    note = fields.Text(u"Observation", states=READONLY_STATES)
+    motif = fields.Text(u"Motif",readonly=False, states=READONLY_STATES)
+    motifs = fields.Char(u"Motif",readonly=False, states=READONLY_STATES)
+    note = fields.Text(u"Observation",readonly=False, states=READONLY_STATES)
     notes = fields.Html('Notes')
     
     montant_total = fields.Float(u"Montant total",readonly=True)
@@ -117,15 +117,21 @@ class hr_stc(models.Model):
 
     def action_cancel(self):
         self.write({'state': 'cancel'})
+        self.contract.to_cancelled()
     
     def action_done(self):
         self.write({'state': 'done'})
+        self.contract.to_expired()
     
     def action_valide(self):
         self.write({'state': 'valide'})
     
     def action_draft(self):
         self.write({'state': 'draft'})
+        self.contract.to_running()
+        self.write({
+            'date_fin':False
+        })
 
     @api.depends('contract')
     def _compute_salaire_jr(self):
@@ -399,7 +405,7 @@ class hr_stc(models.Model):
     
     
     def get_employee_payslip(self):
-        payslips = self.env['hr.payslip'].search([('employee_id','=',self.employee_id.id),('state','=','cal'),('type_fiche','=','stc')],order="id desc")
+        payslips = self.env['hr.payslip'].search([('employee_id','=',self.employee_id.id),('state','in',('cal','done','approuved')),('type_fiche','=','stc')],order="id desc")
         payslip_lines = [(5,0,0)]
         for line in payslips:
             if not line.stc_id:
@@ -424,13 +430,21 @@ class hr_stc(models.Model):
         for rec in self:
             if rec.employee_id:
                 rec.reset()
+    
+    @api.onchange('contract_id')
+    def get_reste(self):
+        for rec in self:
+            if rec.contract_id:
+                rec.reset()
 
 
     def reset(self):
         for rec in self:
             if rec.employee_id:
+                if not rec.contract:
+                    rec.contract = rec.employee_id.contract_id
 
-                rec.contract = rec.employee_id.contract_id
+                rec.job_id = rec.contract_id.job_id
                 rec.jr_conge = rec.get_valide_panier(rec.employee_id,rec.date_debut,rec.date_fin,rec.date_start)
                 rec.jr_dim = rec.get_valide_panier(rec.employee_id,rec.date_debut,rec.date_fin,rec.date_start,True)
                 rec.chantier = rec.employee_id.chantier_id
