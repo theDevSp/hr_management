@@ -426,25 +426,23 @@ class hr_stc(models.Model):
 
 
     @api.onchange('employee_id')
-    def get_reste(self):
+    def get_reste_on_changed_employee(self):
         for rec in self:
             if rec.employee_id:
                 rec.reset()
     
-    @api.onchange('contract_id')
-    def get_reste(self):
+    @api.onchange('contract')
+    def get_reste_on_changed_contract(self):
         for rec in self:
-            if rec.contract_id:
-                rec.reset()
+            if rec.contract:
+                rec.reset_contract()
 
 
     def reset(self):
         for rec in self:
             if rec.employee_id:
-                if not rec.contract:
-                    rec.contract = rec.employee_id.contract_id
-
-                rec.job_id = rec.contract_id.job_id
+                rec.contract = rec.employee_id.contract_id
+                rec.job_id = rec.contract.job_id
                 rec.jr_conge = rec.get_valide_panier(rec.employee_id,rec.date_debut,rec.date_fin,rec.date_start)
                 rec.jr_dim = rec.get_valide_panier(rec.employee_id,rec.date_debut,rec.date_fin,rec.date_start,True)
                 rec.chantier = rec.employee_id.chantier_id
@@ -452,6 +450,17 @@ class hr_stc(models.Model):
                 rec.get_employee_deductions()
                 rec.get_employee_payslip()
                 rec.last_period_days = rec.get_last_period_days()
+    
+    def reset_contract(self):
+        for rec in self:
+            rec.job_id = rec.contract.job_id
+            rec.jr_conge = rec.get_valide_panier(rec.employee_id,rec.date_debut,rec.date_fin,rec.date_start)
+            rec.jr_dim = rec.get_valide_panier(rec.employee_id,rec.date_debut,rec.date_fin,rec.date_start,True)
+            rec.chantier = rec.employee_id.chantier_id
+            rec.get_employee_additions()
+            rec.get_employee_deductions()
+            rec.get_employee_payslip()
+            rec.last_period_days = rec.get_last_period_days()
     
     def get_valide_panier(self,employee_id,date_debut,date_fin,date,is_dimanche=False):
         allocation_object = self.env['hr.allocations']
