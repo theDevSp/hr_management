@@ -704,35 +704,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-10 col-lg-8 mt-3 mt-md-3">
-                        <div class="bg-white shadow p-3">
-                            <div class="card bg-light my-3">
-                                <div class="card-body text-center">
-                                    <h2 class="card-text">LISTE DES PRELEVEMENT ET CREDITS</h2>
-                                </div>
-                            </div>
-                            <div class="card bg-light my-3">
-                                <div class="card-body text-center">
-                                    <h2 class="card-text"><small class="text-muted">Montant Total (DH): </small><strong style="color:red">- <field name="sum_prelevement" /></strong></h2>
-                                </div>
-                            </div>
-                            <div class="card bg-light my-3">
-                                <div class="card-body">
-                                    <field name="deduction_lines" nolabel="1" create="false">
-                                        <tree editable="bottom">
-                                            <field name="prelevement_id" force_save="1" />
-                                            <field name="prelevement_montant" />
-                                            <field name="prelevement_reste" />
-                                            <field name="add" />
-                                            <field name="montant_payer" />
-                                            <field name="note" />
-                                            <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-danger="state == 'annulee'" decoration-success="state == 'validee'"/>
-                                        </tree>
-                                    </field>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="col-12 col-md-10 col-lg-8 mt-3 mt-md-3">
                         <div class="bg-white shadow p-3">
                             <div class="card bg-light my-3">
@@ -762,7 +734,35 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <div class="col-12 col-md-10 col-lg-8 mt-3 mt-md-3">
+                        <div class="bg-white shadow p-3">
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text">LISTE DES PRELEVEMENT ET CREDITS</h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body text-center">
+                                    <h2 class="card-text"><small class="text-muted">Montant Total (DH): </small><strong style="color:red">- <field name="sum_prelevement" /></strong></h2>
+                                </div>
+                            </div>
+                            <div class="card bg-light my-3">
+                                <div class="card-body">
+                                    <field name="deduction_lines" nolabel="1" create="false">
+                                        <tree editable="bottom">
+                                            <field name="prelevement_id" force_save="1" />
+                                            <field name="prelevement_montant" />
+                                            <field name="prelevement_reste" />
+                                            <field name="add" />
+                                            <field name="montant_payer" />
+                                            <field name="note" />
+                                            <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-danger="state == 'annulee'" decoration-success="state == 'validee'"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row my-3 justify-content-center">
                     <div class="col-12 col-md-10 col-lg-8 mt-3 mt-md-3">
