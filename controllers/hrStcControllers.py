@@ -23,14 +23,14 @@ class stcController(http.Controller):
 
             data = {
                 'stc_reference': stc_record.name if stc_record.name not in [False, True, 0, ""] else "-",
-                'stc_date': stc_record.date_debut if stc_record.date_debut not in [False, True, 0, ""] else "-",
+                'stc_date': stc_record.date_start if stc_record.date_start not in [False, True, 0, ""] else "-",
                 'stc_employee_nom_prenom': stc_record.employee_id.name if stc_record.employee_id.name not in [False, True, 0, ""] else "-",
                 'stc_employee_cin': stc_record.employee_id.cin if stc_record.employee_id.cin not in [False, True, 0, ""] else "-",
                 'stc_employee_fonction': stc_record.job if stc_record.job not in [False, True, 0, ""] else "-",
                 'stc_employee_salaire': stc_record.salaire if stc_record.salaire not in [False, True, 0, "-"] else "-",
                 'stc_employee_bank': stc_record.bank if stc_record.bank not in [False, True, 0, ""] else "-",
                 'stc_employee_paiment': dict(stc_record.fields_get(allfields=['modePay'])['modePay']['selection'])[stc_record.modePay] if stc_record.modePay not in [False, True, 0, ""] else "-",
-                'stc_employee_periode': f"{stc_record.date_start} AU {stc_record.date_fin}" if (stc_record.date_start, stc_record.date_fin) != (False, True, 0, "") else "-",
+                'stc_employee_periode': f"{stc_record.date_debut} AU {stc_record.date_fin}" if (stc_record.date_debut, stc_record.date_fin) != (False, True, 0, "") else "-",
                 'stc_par_ordre': dict(stc_record.fields_get(allfields=['ordre'])['ordre']['selection'])[stc_record.ordre] if stc_record.ordre not in [False, True, 0, ""] else "-",
                 'stc_employee_chantier': stc_record.chantier_id.simplified_name if stc_record.chantier_id.simplified_name not in [False, True, 0, ""] else "-",
                 'stc_employee_poste': stc_record.job_id.name if stc_record.job_id.name not in [False, True, 0, ""] else "-",
@@ -52,9 +52,9 @@ class stcController(http.Controller):
                 'stc_cotisation_cimr': "{:.2f}".format(stc_record.cimr) if stc_record.cimr not in [False, True, 0, ""] else "",
                 'stc_prelevement': "{:.2f}".format(stc_record.retenu) if stc_record.retenu not in [False, True, 0, ""] else "",
                 'stc_prelevement_credit': "{:.2f}".format(stc_record.sum_prelevement) if stc_record.sum_prelevement not in [False, True, 0, ""] else "",
-                'stc_notes': html2plaintext(stc_record.notes) if stc_record.notes not in [False, True, 0, ""] else "",
-                'stc_montant_apayer': round(stc_record.montant_total) if stc_record.montant_total not in [False, True, 0, ""] else "",
-                'stc_montant_valider': round(stc_record.valide_salaire) if stc_record.valide_salaire not in [False, True, 0, ""] else "",
+                'stc_notes': stc_record.motifs,
+                'stc_montant_apayer': round(stc_record.montant_total),
+                'stc_montant_valider': round(stc_record.valide_salaire),
             }
 
             return data
