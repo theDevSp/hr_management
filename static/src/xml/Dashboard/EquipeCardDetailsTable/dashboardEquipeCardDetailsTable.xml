@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="owl.EquipeCardDetailsTable" owl="1">
+        <table class="table caption-top text-center">
+            <caption>Listes des Fiches de paies</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Employé</th>
+                    <th scope="col">CIN</th>
+                    <th scope="col">Poste Occupé</th>
+                    <th scope="col">Net à Payé (DH)</th>
+                    <th scope="col">Status F.P</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <EquipeCardDetailsTableLigne lignes="props.tabledetails.payroll_details"/>
+            </tbody>
+        </table>
+    </t>
+</templates>

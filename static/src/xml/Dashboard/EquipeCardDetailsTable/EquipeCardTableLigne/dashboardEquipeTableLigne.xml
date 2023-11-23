@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="owl.EquipeCardDetailsTableLigne" owl="1">
+        <tr t-foreach="props.lignes" t-as="obj" t-key="obj.payroll_id">
+            <td>
+                <t t-esc="obj.employee_obj[1]"/>
+            </td>
+            <td>
+                <t t-esc="obj.employee_obj[2]"/>
+            </td>
+            <td>
+                <t t-esc="obj.employee_obj[3]"/>
+            </td>
+            <td>
+                <t t-esc="obj.net_paye"/>
+            </td>
+            <td>
+                <h3>
+                    <span class="badge rounded-pill bg-success">
+                        <t t-esc="obj.status"/>
+                    </span>
+                </h3>
+            </td>
+            <td>
+                <div>
+                    <button type="button" class="btn">
+                        <i class="far fa-calendar-check" style="color: #28a745;"></i>
+                    </button>
+                    <button type="button" class="btn">
+                        <i class="far fa-calendar-times" style="color: #dc3545;"></i>
+                    </button>
+                    <button type="button" class="btn">
+                        <i class="fas fa-list" style="color: #007bff;"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    </t>
+</templates>

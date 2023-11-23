@@ -423,6 +423,7 @@ class hr_stc(models.Model):
         res_retenu = self.preavis_retenu_m + self.amande + self.retenu + self.cimr + self.sum_prelevement
 
         self.montant_total = res_add - res_retenu
+        self.valide_salaire = self.montant_total
 
 
     @api.onchange('employee_id')

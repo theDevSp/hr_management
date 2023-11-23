@@ -33,6 +33,7 @@ class StcListController extends ListController {
             try {
                 const stcs = await Promise.all(stcIds.map(async (id) => {
                     const res = await this.rpc(`/hr_management/get_stc/${id}`);
+                    console.log(res);
                     return res;
                 }));
 
