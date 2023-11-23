@@ -35,7 +35,7 @@ class stcController(http.Controller):
                 'stc_employee_chantier': stc_record.chantier_id.simplified_name if stc_record.chantier_id.simplified_name not in [False, True, 0, ""] else "-",
                 'stc_employee_poste': stc_record.job_id.name if stc_record.job_id.name not in [False, True, 0, ""] else "-",
                 'stc_employee_numero': stc_record.count_by_year if stc_record.count_by_year not in [False, True, 0, ""] else "-",
-                'stc_panier_conges_jours': stc_record.jr_conge if stc_record.jr_conge not in [False, True, 0, ""] else "",
+                'stc_panier_conges_jours': "{:.2f}".format(stc_record.jr_conge) if stc_record.jr_conge not in [False, True, 0, ""] else "",
                 'stc_panier_conges_dh': "{:.2f}".format(stc_record.jr_conge_m) if stc_record.jr_conge_m not in [False, True, 0, ""] else "",
                 'stc_nbr_dimanche_jours': stc_record.jr_dim if stc_record.jr_dim not in [False, True, 0, ""] else "",
                 'stc_nbr_dimanche_dh': "{:.2f}".format(stc_record.montant_dim) if stc_record.montant_dim not in [False, True, 0, ""] else "",
@@ -45,7 +45,7 @@ class stcController(http.Controller):
                 'stc_frais_de_depence': "{:.2f}".format(stc_record.frais_depense) if stc_record.frais_depense not in [False, True, 0, ""] else "",
                 'stc_frais_de_route': "{:.2f}".format(stc_record.frais_route) if stc_record.frais_route not in [False, True, 0, ""] else "",
                 'stc_prime': "{:.2f}".format(prime) if prime not in [False, True, 0, ""] else "",
-                'stc_rest_salaire': "{:.2f}".format(stc_record.reste_salaire) if stc_record.reste_salaire not in [False, True, 0, ""] else "",
+                'stc_rest_salaire': "{:.2f}".format(stc_record.sum_salaire) if stc_record.sum_salaire not in [False, True, 0, ""] else "",
                 'stc_preavis_retenir_jours': stc_record.preavis_retenu if stc_record.preavis_retenu not in [False, True, 0, ""] else "",
                 'stc_preavis_retenir_dh': "{:.2f}".format(stc_record.preavis_retenu_m) if stc_record.preavis_retenu_m not in [False, True, 0, ""] else "",
                 'stc_amende': "{:.2f}".format(stc_record.amande) if stc_record.amande not in [False, True, 0, ""] else "",
@@ -54,7 +54,7 @@ class stcController(http.Controller):
                 'stc_prelevement_credit': "{:.2f}".format(stc_record.sum_prelevement) if stc_record.sum_prelevement not in [False, True, 0, ""] else "",
                 'stc_notes': stc_record.motifs if stc_record.motifs not in [False, True, 0, ""] else "",
                 'stc_montant_apayer': round(stc_record.montant_total),
-                'stc_montant_valider': round(stc_record.valide_salaire),
+                'stc_montant_valider': round(stc_record.montant_total) if round(stc_record.valide_salaire) == 0 else round(stc_record.valide_salaire),
             }
 
             return data

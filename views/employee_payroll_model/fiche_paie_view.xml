@@ -6,37 +6,31 @@
         <field name="arch" type="xml">
             <tree string="Fiche de paie">
                 <field name="name" optional="show"/>
-                <field name="period_id" optional="show"/>
-                <field name="date_validation" optional="show"/>
-                <field name="quinzaine" optional="show"/>
                 <field name="employee_name"/>
                 <field name="cin" optional="hide"/>
                 <field name="rib_number" optional="hide"/>
-                <field name="payement_mode_id" optional="hide"/>
-                <field name="profile_paie_id" optional="hide"/>
-                <field name="type_emp" optional="show"/>
                 <field name="job_id" optional="show"/>
-                <field name="chantier_id" optional="show"/>
-                <field name="emplacement_chantier_id" optional="show"/>
+                <field name="period_id" optional="show"/>
                 <field name="vehicle_id" optional="show"/>
-                <field name="salaire_actuel" optional="hide"/>
-                <field name="addition" optional="hide" string="prime"/>
-                <field name="deduction" optional="hide" string="DED"/>
-                <field name="total" optional="show"/>
-                <field name="sad" optional="show"/>
-                <field name="net_pay" optional="show"/>
-                <field name="affich_bonus_jour" optional="hide"/>
+                <field name="date_start" optional="hide"/>
                 <field name="affich_jour_conge" optional="hide"/>
+                <field name="profile_paie_id" optional="hide"/>
+                <field name="payement_mode_id" optional="hide"/>
+                <field name="type_emp" optional="show"/>
+                <field name="salaire_actuel" optional="hide"/>
                 <field name="nbr_jour_travaille" optional="hide"/>
                 <field name="nbr_heure_travaille" optional="hide"/>
-                <field name="jr_travaille_par_chantier" optional="hide"/>
-                <field name="type_fiche" optional="hide"/>
-                <field name="contract_id" optional="hide"/>
-                <field name="entreprise_id" optional="hide"/>
-                <field name="date_start" optional="hide"/>
-                <field name="rapport_id" optional="hide"/>
+                <field name="cp_number" optional="hide"/>
+                <field name="total" optional="show"/>
+                <field name="deduction" optional="hide" string="DED"/>
+                <field name="sad" optional="show"/>
+                <field name="addition" optional="hide" string="prime"/>
+                <field name="net_pay" optional="show"/>
+                <field name="chantier_id" optional="show"/>
+                <field name="emplacement_chantier_id" optional="show"/>
                 <field name="note" optional="hide"/>
-                <field name="stc_id" optional="hide"/>
+                <field name="type_fiche" optional="hide"/>
+                <field name="entreprise_id" optional="hide"/>
                 <field name="state" widget="badge"  optional="show"
                                                     decoration-muted="state == 'draft'" 
                                                     decoration-info="state == 'cal'" 
@@ -44,6 +38,14 @@
                                                     decoration-warning="state == 'validee'"
                                                     decoration-success="state == 'done'"
                                             />
+                <field name="create_uid" optional="show"/>
+                <field name="date_validation" optional="hide"/>
+                <field name="quinzaine" optional="show"/>
+                <field name="affich_bonus_jour" optional="hide"/>
+                <field name="jr_travaille_par_chantier" optional="hide"/>
+                <field name="contract_id" optional="hide"/>
+                <field name="rapport_id" optional="hide"/>
+                <field name="stc_id" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -54,37 +56,31 @@
         <field name="arch" type="xml">
             <tree string="Fiche de paie">
                 <field name="name" optional="show"/>
-                <field name="period_id" optional="show"/>
-                <field name="date_validation" optional="show"/>
-                <field name="quinzaine" optional="show"/>
                 <field name="employee_name"/>
                 <field name="cin" optional="hide"/>
                 <field name="rib_number" optional="hide"/>
-                <field name="payement_mode_id" optional="hide"/>
-                <field name="profile_paie_id" optional="hide"/>
-                <field name="type_emp" optional="show"/>
                 <field name="job_id" optional="show"/>
-                <field name="chantier_id" optional="show"/>
-                <field name="emplacement_chantier_id" optional="show"/>
+                <field name="period_id" optional="show"/>
                 <field name="vehicle_id" optional="show"/>
-                <field name="salaire_actuel" optional="hide"/>
-                <field name="addition" optional="hide" string="prime"/>
-                <field name="deduction" optional="hide" string="DED"/>
-                <field name="total" optional="show"/>
-                <field name="sad" optional="show"/>
-                <field name="net_pay" optional="show"/>
-                <field name="affich_bonus_jour" optional="hide"/>
+                <field name="date_start" optional="hide"/>
                 <field name="affich_jour_conge" optional="hide"/>
+                <field name="profile_paie_id" optional="hide"/>
+                <field name="payement_mode_id" optional="hide"/>
+                <field name="type_emp" optional="show"/>
+                <field name="salaire_actuel" optional="hide"/>
                 <field name="nbr_jour_travaille" optional="hide"/>
                 <field name="nbr_heure_travaille" optional="hide"/>
-                <field name="jr_travaille_par_chantier" optional="hide"/>
-                <field name="type_fiche" optional="hide"/>
-                <field name="contract_id" optional="hide"/>
-                <field name="entreprise_id" optional="hide"/>
-                <field name="date_start" optional="hide"/>
-                <field name="rapport_id" optional="hide"/>
+                <field name="cp_number" optional="hide"/>
+                <field name="total" optional="show"/>
+                <field name="deduction" optional="hide" string="DED"/>
+                <field name="sad" optional="show"/>
+                <field name="addition" optional="hide" string="prime"/>
+                <field name="net_pay" optional="show"/>
+                <field name="chantier_id" optional="show"/>
+                <field name="emplacement_chantier_id" optional="show"/>
                 <field name="note" optional="hide"/>
-                <field name="stc_id" optional="hide"/>
+                <field name="type_fiche" optional="hide"/>
+                <field name="entreprise_id" optional="hide"/>
                 <field name="state" widget="badge"  optional="show"
                                                     decoration-muted="state == 'draft'" 
                                                     decoration-info="state == 'cal'" 
@@ -92,6 +88,14 @@
                                                     decoration-warning="state == 'validee'"
                                                     decoration-success="state == 'done'"
                                             />
+                <field name="create_uid" optional="show"/>
+                <field name="date_validation" optional="hide"/>
+                <field name="quinzaine" optional="show"/>
+                <field name="affich_bonus_jour" optional="hide"/>
+                <field name="jr_travaille_par_chantier" optional="hide"/>
+                <field name="contract_id" optional="hide"/>
+                <field name="rapport_id" optional="hide"/>
+                <field name="stc_id" optional="hide"/>
             </tree>
         </field>
     </record>
