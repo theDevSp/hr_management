@@ -28,7 +28,7 @@ class stcController(http.Controller):
                 'stc_employee_cin': stc_record.employee_id.cin if stc_record.employee_id.cin not in [False, True, 0, ""] else "-",
                 'stc_employee_fonction': stc_record.job if stc_record.job not in [False, True, 0, ""] else "-",
                 'stc_employee_salaire': stc_record.salaire if stc_record.salaire not in [False, True, 0, "-"] else "-",
-                'stc_employee_bank': stc_record.bank if stc_record.bank not in [False, True, 0, ""] else "-",
+                'stc_employee_bank': stc_record.bank.name if stc_record.bank not in [False, True, 0, ""] else "-",
                 'stc_employee_paiment': dict(stc_record.fields_get(allfields=['modePay'])['modePay']['selection'])[stc_record.modePay] if stc_record.modePay not in [False, True, 0, ""] else "-",
                 'stc_employee_periode': f"{stc_record.date_debut} AU {stc_record.date_fin}" if (stc_record.date_debut, stc_record.date_fin) != (False, True, 0, "") else "-",
                 'stc_par_ordre': dict(stc_record.fields_get(allfields=['ordre'])['ordre']['selection'])[stc_record.ordre] if stc_record.ordre not in [False, True, 0, ""] else "-",
