@@ -10,6 +10,7 @@
                 <field name="cin" />
                 <field name="job" />
                 <field name="job_id" />
+                <field name="bank" />
                 <field name="chantier" />
                 <field name="date_debut" />
                 <field name="date_fin" />
@@ -32,6 +33,7 @@
                 <field name="cin" />
                 <field name="job" />
                 <field name="job_id" />
+                <field name="bank" />
                 <field name="chantier" />
                 <field name="date_debut" />
                 <field name="date_fin" />

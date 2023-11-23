@@ -42,7 +42,7 @@ class hr_stc(models.Model):
     chantier = fields.Many2one('fleet.vehicle.chantier',string="Dernier Chantier" , states=READONLY_STATES)
     chantier_id = fields.Many2one('fleet.vehicle.chantier',string="Dernier Chantier" , states=READONLY_STATES)
     vehicle = fields.Many2one('fleet.vehicle',string="Dernier Engin",readonly=False, states=READONLY_STATES)
-    bank = fields.Char(related='employee_id.bank_account',string='N° RIB' ,readonly=True)
+    bank = fields.Char(related='employee_id.rib_number',string='N° RIB' ,readonly=True)
     date_start = fields.Date(u"Date du STC", default=datetime.today(),readonly=False, states=READONLY_STATES)
     modePay = fields.Selection([('mode1',u'Mise à disposition'),('mode2',u"Virement Postal"),('mode3',u"Virement Bancaire"),('mode4',u"Espèce")],u"Mode de paiement",readonly=False, states=READONLY_STATES)
     contract = fields.Many2one('hr.contract' ,string="Contrat", required=True, domain="[('employee_id', '=', employee_id)]",readonly=False, states=READONLY_STATES)
