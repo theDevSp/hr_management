@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="owl.EquipeCardDetailsTable" owl="1">
-        <!--<table class="table caption-top text-center">
-            <caption>Listes des Fiches de paies</caption>
-            <thead>
-                <tr>
-                    <th scope="col">Employé</th>
-                    <th scope="col">CIN</th>
-                    <th scope="col">Poste Occupé</th>
-                    <th scope="col">Net à Payé (DH)</th>
-                    <th scope="col">Status F.P</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <EquipeCardDetailsTableLigne lignes="props.tabledetails.payroll_details"/>
-            </tbody>
-        </table>-->
-        <div class="row pt-2">
-            <div t-attf-id="{{props.tabledetails.id}}"></div>
+        <div class="table-container mt-3">
+            <div class="mb-3">
+                <h6>Listes des Fiches de paies :</h6>
+            </div>
+            <table t-attf-id="{{props.tabledetails.id}}"
+                class="pt-4 table caption-top text-center table-striped table-bordered table-sm" cellspacing="0"
+                width="100%">
+                <thead>
+                    <tr>
+                        <th scope="col">Employé</th>
+                        <th scope="col">CIN</th>
+                        <th scope="col">Poste Occupé</th>
+                        <th scope="col">Net à Payé (DH)</th>
+                        <th scope="col">Status F.P</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <EquipeCardDetailsTableLigne lignes="props.tabledetails.payroll_details" />
+                </tbody>
+            </table>
         </div>
+
     </t>
 </templates>

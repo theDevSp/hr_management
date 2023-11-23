@@ -15,21 +15,53 @@
                 <t t-esc="obj.net_paye"/>
             </td>
             <td>
-                <h3>
-                    <span class="badge rounded-pill bg-success">
-                        <t t-esc="obj.status"/>
-                    </span>
-                </h3>
+                <h4 style="color: aliceblue;">
+                    <t t-if="obj.status == 'draft'">
+                        <span class="badge rounded-pill bg-primary" style="padding: 5%;">
+                            Brouillon
+                        </span>
+                    </t>
+                    <t t-elif="obj.status == 'validee'">
+                        <span class="badge rounded-pill bg-info" style="padding: 5%;">
+                            Validée
+                        </span>
+                    </t>
+                    <t t-elif="obj.status == 'cal'">
+                        <span class="badge rounded-pill bg-warning" style="padding: 5%;">
+                            Calculée
+                        </span>
+                    </t>
+                    <t t-elif="obj.status == 'done'">
+                        <span class="badge rounded-pill bg-success" style="padding: 5%;">
+                            Payée
+                        </span>
+                    </t>
+                    <t t-elif="obj.status == 'approuved'">
+                        <span class="badge rounded-pill bg-secondary" style="padding: 5%;">
+                            Clôturé
+                        </span>
+                    </t>
+                    <t t-elif="obj.status == 'annulee'">
+                        <span class="badge rounded-pill bg-danger" style="padding: 5%;">
+                            Annulée
+                        </span>
+                    </t>
+                    <t t-elif="obj.status == 'blocked'">
+                        <span class="badge rounded-pill bg-danger" style="padding: 5%;">
+                            Bloquée
+                        </span>
+                    </t>
+                </h4>
             </td>
             <td>
                 <div>
-                    <button type="button" class="btn">
+                    <button type="button" class="btn" t-on-click="()=>this.check(obj.payroll_id)">
                         <i class="far fa-calendar-check" style="color: #28a745;"></i>
                     </button>
-                    <button type="button" class="btn">
+                    <button type="button" class="btn" t-on-click="()=>this.times(obj.payroll_id)">
                         <i class="far fa-calendar-times" style="color: #dc3545;"></i>
                     </button>
-                    <button type="button" class="btn">
+                    <button type="button" class="btn" t-on-click="()=>this.goToFiche(obj.payroll_id)">
                         <i class="fas fa-list" style="color: #007bff;"></i>
                     </button>
                 </div>

@@ -1,0 +1,11 @@
+.table-container {
+    background-color: #f8f9fa;
+    /* Set your desired background color */
+    padding: 10px;
+    /* Adjust the padding as needed */
+    border-radius: 10px;
+}
+
+.dataTables_filter {
+    float: left !important;
+}
