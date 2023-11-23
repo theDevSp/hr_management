@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="owl.EquipeCardDetailsTable" owl="1">
-        <table class="table caption-top text-center">
+        <!--<table class="table caption-top text-center">
             <caption>Listes des Fiches de paies</caption>
             <thead>
                 <tr>
@@ -16,6 +16,9 @@
             <tbody>
                 <EquipeCardDetailsTableLigne lignes="props.tabledetails.payroll_details"/>
             </tbody>
-        </table>
+        </table>-->
+        <div class="row pt-2">
+            <div t-attf-id="{{props.tabledetails.id}}"></div>
+        </div>
     </t>
 </templates>

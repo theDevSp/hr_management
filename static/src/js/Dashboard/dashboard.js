@@ -28,6 +28,7 @@ export class HrMainDashboard extends Component {
             chantier_id: 432,
             period_id: 142,
             periodicite: 'quinzaine12',
+            equipe: 3,
         })
         console.log(data)
         console.log(this.state.data)

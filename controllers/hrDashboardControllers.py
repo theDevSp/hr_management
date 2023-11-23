@@ -12,14 +12,17 @@ from colorama import Fore, Back, Style
 class HrDashboardControllers(http.Controller):
 
     @http.route('/hr_management/dashboard/', type='json', auth='user')
-    def get_dashboard_details(self, chantier_id, period_id, periodicite):
+    def get_dashboard_details(self, chantier_id, period_id, periodicite,equipe):
 
         period_id = int(period_id)
         chantier_id = int(chantier_id)
+        equipe = int(equipe)
 
         domains = [('period_id', '=', period_id),
                    ('chantier_id', '=', chantier_id),
-                   ('quinzaine', '=', periodicite)]
+                   ('quinzaine', '=', periodicite),
+                   #('emplacement_chantier_id', '=', equipe)
+                   ]
 
         payslips = http.request.env['hr.payslip'].search(domains)
 

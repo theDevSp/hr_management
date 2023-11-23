@@ -1,12 +1,11 @@
 /** @odoo-module */
 
-const { Component } = owl
+import { Component, useSubEnv, useEffect, useState, useRef } from "@odoo/owl"
+import { loadCSS, loadJS } from "@web/core/assets";
+const { onWillStart, onMounted, onWillUnmount } = owl;
+
 
 export class EquipeCardDetailsTableLigne extends Component {
-    setup(){
-        console.log('table ligne',this.props.lignes)
-        this.props.lignes.map(e => console.log)
-    }
     
 }
 
