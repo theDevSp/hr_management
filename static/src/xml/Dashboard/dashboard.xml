@@ -13,13 +13,13 @@
             </div>
             <Dashform onClickFrom.bind="generateDashboard" />
             <div class="row px-4 pt-1" t-if="!state.isFirstLoad">
-                <EquipeCard data="obj" t-foreach="state.data" t-as="obj" t-key="obj.id" />
+                <EquipeCard regenerate.bind="generateDashboard" data="obj" t-foreach="state.data" t-as="obj" t-key="obj.id" />
             </div>
             <div class="row pt-4 px-4" t-if="state.isFirstLoad">
                 <div class="col-12">
-                    <div class="alert alert-info text-center">
+                    <div class="alert alert-danger text-center">
                         <span style="font-size: large;">
-                            <strong>Valider le Formulaire avec les informatiosn required</strong>
+                            <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> <strong>Valider le formulaire avec les informations requises.                            </strong>
                         </span>
                     </div>
                 </div>

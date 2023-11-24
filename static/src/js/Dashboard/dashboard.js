@@ -21,23 +21,29 @@ export class HrMainDashboard extends Component {
         })
     }
 
-    async generateDashboard() {
+    async generateDashboard(periodeID,chantierID,employeType,quinzine,equipe) {
 
         var framework = require('web.framework');
         framework.blockUI();
 
+        console.log("Data: ",periodeID,chantierID,employeType,quinzine)
+
         const rpc = this.env.services.rpc
         const data = await rpc('/hr_management/dashboard/', {
-            chantier_id: 432,
-            period_id: 142,
-            periodicite: 'quinzaine12',
-            equipe: 3,
+            chantier_id: chantierID,
+            period_id: periodeID,
+            periodicite: quinzine,
+            equipe: equipe,
         })
 
         this.state.data = data
         this.state.isFirstLoad = false
 
         framework.unblockUI();
+    }
+
+    test() {
+        console.log("bind")
     }
 
 }

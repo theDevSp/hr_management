@@ -9,7 +9,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
                                     <label for="select-period">
-                                        <strong>Période :</strong>
+                                        <strong>Période : <span><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span></strong>
                                     </label>
                                 </span>
                             </div>
@@ -21,7 +21,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
                                     <label for="select-type">
-                                        <strong>Type d'employé :</strong>
+                                        <strong>Type d'employé : <span><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span></strong>
                                     </label>
                                 </span>
                             </div>
@@ -33,7 +33,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
                                     <label for="select-quinzine">
-                                        <strong>Quinzine :</strong>
+                                        <strong>Quinzine : <span><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span></strong>
                                     </label>
                                 </span>
                             </div>
@@ -47,7 +47,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
                                     <label for="select-chantier">
-                                        <strong>Chantier :</strong>
+                                        <strong>Chantier : <span><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span></strong>
                                     </label>
                                 </span>
                             </div>
@@ -69,7 +69,8 @@
                 </div>
                 <div class="row px-4">
                     <div class="col-sm">
-                        <button style="float: right; width: 15%;" class="btn btn-info cursor-pointer" t-on-click="()=>this.sendData()">
+                        <span><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> <b>Required</b>.</span>
+                        <button style="float: right; width: 15%;" class="btn btn-info cursor-pointer" t-on-click="()=>this.verify()">
                             Valider
                         </button>
                     </div>

@@ -9,8 +9,6 @@ import { EquipeCardDetailsTableLigne } from "./EquipeCardTableLigne/dashboardEqu
 export class EquipeCardDetailsTable extends Component {
     setup() {
 
-        console.log(JSON.parse(JSON.stringify(this.props.tabledetails.payroll_details)))
-
         this.data = JSON.parse(JSON.stringify(this.props.tabledetails.payroll_details))
 
         onWillStart(async () => {

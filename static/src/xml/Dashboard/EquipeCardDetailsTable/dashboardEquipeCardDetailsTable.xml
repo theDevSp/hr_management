@@ -19,7 +19,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <EquipeCardDetailsTableLigne lignes="props.tabledetails.payroll_details" />
+                    <EquipeCardDetailsTableLigne regenerate.bind="props.regenerate" lignes="props.tabledetails.payroll_details" />
                 </tbody>
             </table>
         </div>

@@ -8,6 +8,7 @@ export class EquipeCardDetails extends Component {
         onWillStart(async () => {
             await loadCSS("/hr_management/static/src/css/Dashboard/EquipeCardDetails/EquipeCardDetails.css");
         })
+        
     }
 }
 

@@ -16,13 +16,17 @@ class HrDashboardControllers(http.Controller):
 
         period_id = int(period_id)
         chantier_id = int(chantier_id)
-        equipe = int(equipe)
 
         domains = [('period_id', '=', period_id),
                    ('chantier_id', '=', chantier_id),
-                   ('quinzaine', '=', periodicite),
-                   #('emplacement_chantier_id', '=', equipe)
+                   ('quinzaine', '=', periodicite)
                    ]
+
+        if equipe:
+            equipe = int(equipe)
+            domains.append(('emplacement_chantier_id', '=', equipe))
+
+        print(domains)
 
         payslips = http.request.env['hr.payslip'].search(domains)
 
@@ -114,4 +118,73 @@ class HrDashboardControllers(http.Controller):
                 'timestamp': datetime.now().isoformat()
             }
             return json.dumps(response_data)
+        
+    @http.route('/hr_management/dashboard/update_fp_status_cloture/<int:id>', type='json', auth='user')
+    def update_fp_status_cloture(self, id):
+
+        try:
+
+            fp_record = http.request.env['hr.payslip'].sudo().browse(id)
+
+            if fp_record.exists():
+
+                fp_record.write({'state': 'approuved'})
+
+                data = {
+                    'code':200,
+                    'message': 'Status updated successfully',
+                    'timestamp': datetime.now().isoformat()
+                }
+                return data
+
+            else:
+                response_data = {
+                    'code':202,
+                    'message': 'No data found for the given criteria',
+                    'timestamp': datetime.now().isoformat()
+                }
+                return response_data
+
+        except Exception as e:
+            error_message = {
+                'code':504,
+                'error': _(f'An error occurred while processing the request. {e}'),
+                'timestamp': datetime.now().isoformat()
+            }
+            return error_message
+    
+    @http.route('/hr_management/dashboard/update_fp_status_paye/<int:id>', type='json', auth='user')
+    def update_fp_status_paye(self, id):
+
+        try:
+
+            fp_record = http.request.env['hr.payslip'].sudo().browse(id)
+
+            if fp_record.exists():
+
+                fp_record.write({'state': 'done'})
+
+                data = {
+                    'code':200,
+                    'message': 'Status updated successfully',
+                    'timestamp': datetime.now().isoformat()
+                }
+                return data
+
+            else:
+                response_data = {
+                    'code':202,
+                    'message': 'No data found for the given criteria',
+                    'timestamp': datetime.now().isoformat()
+                }
+                return response_data
+
+        except Exception as e:
+            error_message = {
+                'code':504,
+                'error': _(f'An error occurred while processing the request. {e}'),
+                'timestamp': datetime.now().isoformat()
+            }
+            return error_message
+
 

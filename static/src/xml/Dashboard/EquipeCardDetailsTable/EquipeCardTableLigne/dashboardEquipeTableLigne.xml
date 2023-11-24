@@ -37,7 +37,7 @@
                         </span>
                     </t>
                     <t t-elif="obj.status == 'approuved'">
-                        <span class="badge rounded-pill bg-secondary" style="padding: 5%;">
+                        <span class="badge rounded-pill bg-warning" style="padding: 5%;">
                             Clôturé
                         </span>
                     </t>
@@ -55,13 +55,13 @@
             </td>
             <td>
                 <div>
-                    <button type="button" class="btn" t-on-click="()=>this.check(obj.payroll_id)">
-                        <i class="far fa-calendar-check" style="color: #28a745;"></i>
+                    <button data-toggle="tooltip" data-placement="left" title="Clôturé" type="button" class="btn" t-on-click="()=>this.changeStatusToCloture(obj.payroll_id)">
+                        <i class="far fa-calendar-check" style="color: #dc3545;"></i>
                     </button>
-                    <button type="button" class="btn" t-on-click="()=>this.times(obj.payroll_id)">
-                        <i class="far fa-calendar-times" style="color: #dc3545;"></i>
+                    <button data-toggle="tooltip" data-placement="left" title="Payé" type="button" class="btn" t-on-click="()=>this.changeStatusToPaye(obj.payroll_id)">
+                        <i class="far fa-calendar-times" style="color: #28a745;"></i>
                     </button>
-                    <button type="button" class="btn" t-on-click="()=>this.goToFiche(obj.payroll_id)">
+                    <button data-toggle="tooltip" data-placement="left" title="Détails" type="button" class="btn" t-on-click="()=>this.goToFiche(obj.payroll_id)">
                         <i class="fas fa-list" style="color: #007bff;"></i>
                     </button>
                 </div>
