@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="owl.EquipeCard" owl="1">
-        <div class="col-6 mt-3">
-            <div class="card">
+        <div class="col-6">
+            <div class="card bg-c-yellow order-card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <h2>

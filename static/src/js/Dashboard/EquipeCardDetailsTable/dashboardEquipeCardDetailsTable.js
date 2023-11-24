@@ -14,9 +14,12 @@ export class EquipeCardDetailsTable extends Component {
         this.data = JSON.parse(JSON.stringify(this.props.tabledetails.payroll_details))
 
         onWillStart(async () => {
+            // we nedd to import the library in static mode
             await loadCSS("https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css");
-            await loadCSS("/hr_management/static/src/js/Dashboard/EquipeCardDetailsTable/dashboardEquipeCardDetailsTable.css");
             await loadJS("https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js");
+            
+            // static css
+            await loadCSS("/hr_management/static/src/css/Dashboard/EquipeCardDetailsTable/EquipeCardDetailsTable.css");
         })
 
         onMounted(() => {
@@ -24,9 +27,10 @@ export class EquipeCardDetailsTable extends Component {
                 lengthChange: false,
                 lengthMenu: [[5], [5]],
                 language: {
-                  url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+                    url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/French.json",
+                    searchPlaceholder: "Rechercher..."
                 },
-              });
+            });
         });
 
     }

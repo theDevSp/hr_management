@@ -3,7 +3,7 @@
     <t t-name="owl.EquipeCardDetails" owl="1">
         <div class="col-3">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body bg-c-blue order-card">
                     <div class="d-flex justify-content-around">
                         <h4 class="card-title">
                             Rapports Pointage
@@ -50,7 +50,7 @@
 
         <div class="col-3">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body bg-c-green order-card">
                     <div class="d-flex justify-content-around">
                         <h4 class="card-title">
                             Fiches de Paie
@@ -95,7 +95,7 @@
 
         <div class="col-6">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body bg-c-pink order-card">
                     <div class="d-flex justify-content-around">
                         <h4 class="card-title">
                             Montant
