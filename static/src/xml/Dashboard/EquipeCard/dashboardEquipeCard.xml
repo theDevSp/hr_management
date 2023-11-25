@@ -9,13 +9,19 @@
                             <span t-esc="props.data.equipe[1]"></span>
                         </h2>
                         <div>
-                            <button type="button" class="btn" style="color: #28a745;">
+                            <button 
+                                data-placement="left" title="Détails" 
+                                type="button" class="btn" style="color: #28a745;"
+                                t-on-click="()=>this.allFpOnPaye()">
                                 <i class="far fa-calendar-check fa-lg"></i>
                             </button>
                             <button type="button" class="btn" style="color: #c8626c;">
                                 <i class="far fa-calendar-times fa-lg"></i>
                             </button>
-                            <button type="button" class="btn" style="color: #007bff;">
+                            <button 
+                                data-placement="left" title="Détails" 
+                                type="button" class="btn" style="color: #007bff;" 
+                                t-on-click="()=>this.showFpsOfEquipe()">
                                 <i class="fas fa-list fa-lg"></i>
                             </button>
                             <button type="button" class="btn" style="color: #dc3545;">

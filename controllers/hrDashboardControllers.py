@@ -89,6 +89,9 @@ class HrDashboardControllers(http.Controller):
 
                 obj = {
                     'id': id_,
+                    'chantierID': chantier_id,
+                    'periodID': period_id,
+                    'quinz': periodicite,
                     'equipe': [id_, name],
                     'resume_rapport': {
                         'member_count': member_count,
@@ -133,7 +136,18 @@ class HrDashboardControllers(http.Controller):
                 data = {
                     'code':200,
                     'message': 'Status updated successfully',
-                    'timestamp': datetime.now().isoformat()
+                    'timestamp': datetime.now().isoformat(),
+                    'ligne': {
+                        "payroll_id": fp_record.id,
+                        "employee_obj": [
+                            fp_record.employee_id.id,
+                            fp_record.employee_id.name,
+                            fp_record.employee_id.cin,
+                            fp_record.employee_id.job_id.name,
+                        ],
+                        "net_paye": round(fp_record.net_pay),
+                        "status": fp_record.state
+                    }
                 }
                 return data
 
@@ -167,7 +181,18 @@ class HrDashboardControllers(http.Controller):
                 data = {
                     'code':200,
                     'message': 'Status updated successfully',
-                    'timestamp': datetime.now().isoformat()
+                    'timestamp': datetime.now().isoformat(),
+                    'ligne': {
+                        "payroll_id": fp_record.id,
+                        "employee_obj": [
+                            fp_record.employee_id.id,
+                            fp_record.employee_id.name,
+                            fp_record.employee_id.cin,
+                            fp_record.employee_id.job_id.name,
+                        ],
+                        "net_paye": round(fp_record.net_pay),
+                        "status": fp_record.state
+                    }
                 }
                 return data
 

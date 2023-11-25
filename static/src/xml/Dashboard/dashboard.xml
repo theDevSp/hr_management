@@ -4,7 +4,7 @@
         <div class="overflow-auto bg-muted" style="height: 100%;">
             <div class="row pt-2 px-4">
                 <div class="col-12">
-                    <div class="alert alert-success text-center">
+                    <div class="alert text-center" style="background-color: rgb(93,187,70); color: aliceblue;">
                         <span style="font-size: large;">
                             <strong>Tableau de Bord :</strong>
                         </span>

@@ -7,6 +7,8 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 
 import { useService } from "@web/core/utils/hooks";
 
+import NOTIFICATION_MESSAGES from "../../Notification/NotificationMessages";
+
 
 export class EquipeCardDetailsTableLigne extends Component {
 
@@ -14,7 +16,7 @@ export class EquipeCardDetailsTableLigne extends Component {
         this.actionService = useService("action")
     }
 
-    changeStatusToPaye(id){
+    changeStatusToPaye(id) {
         const rpc = this.env.services.rpc
         const dialog = this.env.services.dialog;
 
@@ -22,28 +24,35 @@ export class EquipeCardDetailsTableLigne extends Component {
             title: "Confirmation",
             body: "Êtes-vous sûr de vouloir continuer cette action ?",
             confirm: async () => {
+
                 const data = await rpc(`/hr_management/dashboard/update_fp_status_paye/${id}`);
-                
+
                 switch (data.code) {
                     case 200:
-                        this.props.regenerate();
-                        this.showNotification("success", "Statut mis à jour avec succès");
+                        const ligneToPay = this.props.lignes.find(ligne => {
+                            if (ligne.payroll_id === id) {
+                                Object.assign(ligne, data.ligne);
+                                return true;
+                            }
+                            return false;
+                        });
+                        this.showNotification("success", NOTIFICATION_MESSAGES.success);
                         break;
-        
+
                     case 202:
-                        this.showNotification("warning", "Statut n'est pas mis à jour avec succès");
+                        this.showNotification("warning", NOTIFICATION_MESSAGES.warningSuccess);
                         break;
-        
+
                     case 502:
-                        this.showNotification("warning", "Quelque chose ne va pas, veuillez contacter l'Administrateur du système");
+                        this.showNotification("warning", NOTIFICATION_MESSAGES.warningError);
                         break;
-        
+
                     default:
                         break;
                 }
-                
+
             },
-            cancel: () => {}
+            cancel: () => { }
         });
     }
 
@@ -56,27 +65,33 @@ export class EquipeCardDetailsTableLigne extends Component {
             body: "Êtes-vous sûr de vouloir continuer cette action ?",
             confirm: async () => {
                 const data = await rpc(`/hr_management/dashboard/update_fp_status_cloture/${id}`);
-                
+
                 switch (data.code) {
                     case 200:
-                        this.props.regenerate();
-                        this.showNotification("success", "Statut mis à jour avec succès");
+                        const ligneToCloture = this.props.lignes.find(ligne => {
+                            if (ligne.payroll_id === id) {
+                                Object.assign(ligne, data.ligne);
+                                return true;
+                            }
+                            return false;
+                        });
+                        this.showNotification("success", NOTIFICATION_MESSAGES.success);
                         break;
-        
+
                     case 202:
                         this.showNotification("warning", "Statut n'est pas mis à jour avec succès");
                         break;
-        
+
                     case 502:
                         this.showNotification("warning", "Quelque chose ne va pas, veuillez contacter l'Administrateur du système");
                         break;
-        
+
                     default:
                         break;
                 }
-                
+
             },
-            cancel: () => {}
+            cancel: () => { }
         });
     }
 
@@ -86,20 +101,9 @@ export class EquipeCardDetailsTableLigne extends Component {
             type: "ir.actions.act_url",
             url: `/web#id=${id}&model=hr.payslip&view_type=form`
         });
-        /*this.actionService.doAction({
-            type: 'ir.actions.act_window',
-            name: 'Action Service',
-            target: 'new',
-            res_id: id,
-            res_model: 'hr.payslip',
-            views: [[false, 'form']],
-            context: {
-                'dialog_size': 'large',
-            }
-        });*/
     }
 
-    showNotification(typ,msg){
+    showNotification(typ, msg) {
         const notification = this.env.services.notification
         notification.add(msg, {
             title: "Notification",
