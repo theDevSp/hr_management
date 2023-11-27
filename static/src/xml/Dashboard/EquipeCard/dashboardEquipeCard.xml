@@ -9,25 +9,19 @@
                             <span t-esc="props.data.equipe[1]"></span>
                         </h2>
                         <div>
-                            <button 
-                                data-placement="left" title="Détails" 
-                                type="button" class="btn" style="color: #28a745;"
-                                t-on-click="()=>this.allFpOnPaye()">
-                                <i class="far fa-calendar-check fa-lg"></i>
+                            <button data-toggle="tooltip" data-placement="left" title="Clôturé" type="button" class="btn" t-on-click="()=>this.updateStatus('approuved')">
+                                <i class="far fa-calendar-times fa-lg" style="color: #dc3545;"></i>
                             </button>
-                            <button type="button" class="btn" style="color: #c8626c;">
-                                <i class="far fa-calendar-times fa-lg"></i>
+                            <button data-toggle="tooltip" data-placement="left" title="Payé" type="button" class="btn" t-on-click="()=>this.updateStatus('done')">
+                                <i class="far fa-calendar-check fa-lg" style="color: #28a745;"></i>
                             </button>
-                            <button 
-                                data-placement="left" title="Détails" 
-                                type="button" class="btn" style="color: #007bff;" 
-                                t-on-click="()=>this.showFpsOfEquipe()">
-                                <i class="fas fa-list fa-lg"></i>
+                            <button data-toggle="tooltip" data-placement="left" title="Détails" type="button" class="btn" t-on-click="()=>this.showFpsOfEquipe()">
+                                <i class="fas fa-list fa-lg" style="color: #007bff;"></i>
                             </button>
-                            <button type="button" class="btn" style="color: #dc3545;">
+                            <button data-toggle="tooltip" data-placement="left" title="Supprimer les rapports de pointage vide" type="button" class="btn" style="color: #dc3545;" t-on-click="()=>this.deleteTrashReports()">
                                 <i class="fas fa-trash fa-lg"></i>
                             </button>
-                            <button type="button" class="btn" style="color: #2c4960;">
+                            <button data-toggle="tooltip" data-placement="left" title="Actualiser" type="button" class="btn" style="color: #2c4960;" t-on-click="()=>this.reload()">
                                 <i class="fas fa-undo fa-lg"></i>
                             </button>
                         </div>

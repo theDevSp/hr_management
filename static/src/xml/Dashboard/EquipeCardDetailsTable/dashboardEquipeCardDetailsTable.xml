@@ -19,7 +19,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <EquipeCardDetailsTableLigne regenerate.bind="props.regenerate" lignes="props.tabledetails.payroll_details" />
+                    <t t-foreach="props.tabledetails.payroll_details" t-as="ligne" t-key="ligne.payroll_id">
+                        <EquipeCardDetailsTableLigne ligne="ligne" />
+                    </t>
                 </tbody>
             </table>
         </div>

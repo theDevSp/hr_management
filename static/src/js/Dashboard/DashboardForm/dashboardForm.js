@@ -125,8 +125,8 @@ export class Dashform extends Component {
     verify() {
 
         //this.props.onClickFrom(periodeID,chantierID,employeType,quinzine,equipe);
-        this.props.onClickFrom(142,432,'','quinzaine12','');
-        return 
+        //this.props.onClickFrom(142,432,'','quinzaine12','');
+        //return 
 
         const fields = [
             { element: $('#select-period'), message: 'Période' },

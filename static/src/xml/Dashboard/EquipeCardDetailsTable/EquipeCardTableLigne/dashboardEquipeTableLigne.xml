@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="owl.EquipeCardDetailsTableLigne" owl="1">
-        <tr t-foreach="props.lignes" t-as="obj" t-key="obj.payroll_id">
+        <tr>
             <td>
-                <t t-esc="obj.employee_obj[1]"/>
+                <t t-esc="props.ligne.employee_obj[1]"/>
             </td>
             <td>
-                <t t-esc="obj.employee_obj[2]"/>
+                <t t-esc="props.ligne.employee_obj[2]"/>
             </td>
             <td>
-                <t t-esc="obj.employee_obj[3]"/>
+                <t t-esc="props.ligne.employee_obj[3]"/>
             </td>
             <td>
-                <t t-esc="obj.net_paye"/>
+                <t t-esc="props.ligne.net_paye"/>
             </td>
             <td>
                 <h4 style="color: aliceblue;">
-                    <t t-if="obj.status == 'draft'">
+                    <t t-if="props.ligne.status == 'draft'">
                         <span class="badge rounded-pill bg-primary" style="padding: 5%;">
                             Brouillon
                         </span>
                     </t>
-                    <t t-elif="obj.status == 'validee'">
+                    <t t-elif="props.ligne.status == 'validee'">
                         <span class="badge rounded-pill bg-info" style="padding: 5%;">
                             Validée
                         </span>
                     </t>
-                    <t t-elif="obj.status == 'cal'">
+                    <t t-elif="props.ligne.status == 'cal'">
                         <span class="badge rounded-pill bg-warning" style="padding: 5%;">
                             Calculée
                         </span>
                     </t>
-                    <t t-elif="obj.status == 'done'">
+                    <t t-elif="props.ligne.status == 'done'">
                         <span class="badge rounded-pill bg-success" style="padding: 5%;">
                             Payée
                         </span>
                     </t>
-                    <t t-elif="obj.status == 'approuved'">
+                    <t t-elif="props.ligne.status == 'approuved'">
                         <span class="badge rounded-pill bg-warning" style="padding: 5%;">
                             Clôturé
                         </span>
                     </t>
-                    <t t-elif="obj.status == 'annulee'">
+                    <t t-elif="props.ligne.status == 'annulee'">
                         <span class="badge rounded-pill bg-danger" style="padding: 5%;">
                             Annulée
                         </span>
                     </t>
-                    <t t-elif="obj.status == 'blocked'">
+                    <t t-elif="props.ligne.status == 'blocked'">
                         <span class="badge rounded-pill bg-danger" style="padding: 5%;">
                             Bloquée
                         </span>
@@ -55,13 +55,13 @@
             </td>
             <td>
                 <div>
-                    <button data-toggle="tooltip" data-placement="left" title="Clôturé" type="button" class="btn" t-on-click="()=>this.changeStatusToCloture(obj.payroll_id)">
-                        <i class="far fa-calendar-check" style="color: #dc3545;"></i>
+                    <button data-toggle="tooltip" data-placement="left" title="Clôturé" type="button" class="btn" t-on-click="()=>this.updateStatus('approuved')">
+                        <i class="far fa-calendar-times" style="color: #dc3545;"></i>
                     </button>
-                    <button data-toggle="tooltip" data-placement="left" title="Payé" type="button" class="btn" t-on-click="()=>this.changeStatusToPaye(obj.payroll_id)">
-                        <i class="far fa-calendar-times" style="color: #28a745;"></i>
+                    <button data-toggle="tooltip" data-placement="left" title="Payé" type="button" class="btn" t-on-click="()=>this.updateStatus('done')">
+                        <i class="far fa-calendar-check" style="color: #28a745;"></i>
                     </button>
-                    <button data-toggle="tooltip" data-placement="left" title="Détails" type="button" class="btn" t-on-click="()=>this.goToFiche(obj.payroll_id)">
+                    <button data-toggle="tooltip" data-placement="left" title="Détails" type="button" class="btn" t-on-click="()=>this.goToFiche()">
                         <i class="fas fa-list" style="color: #007bff;"></i>
                     </button>
                 </div>
