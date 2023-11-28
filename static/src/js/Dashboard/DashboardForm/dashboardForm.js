@@ -1,9 +1,11 @@
 /** @odoo-module */
 
-const { Component, useSubEnv, onWillStart, useEffect, useState, useRef, onMounted } = owl
+const { Component,onWillStart,onMounted } = owl
 const { loadJS, loadCSS } = require('@web/core/assets');
 
 import { useService } from "@web/core/utils/hooks"
+
+import showNotification from "../Utils/showNotification";
 
 export class Dashform extends Component {
     setup() {
@@ -124,10 +126,6 @@ export class Dashform extends Component {
 
     verify() {
 
-        //this.props.onClickFrom(periodeID,chantierID,employeType,quinzine,equipe);
-        //this.props.onClickFrom(142,432,'','quinzaine12','');
-        //return 
-
         const fields = [
             { element: $('#select-period'), message: 'Période' },
             { element: $('#select-type'), message: 'Type de l\'employé' },
@@ -139,7 +137,7 @@ export class Dashform extends Component {
 
         for (const field of fields) {
             if (field.element.val() === '') {
-                this.showNotification(`Le champ ${field.message} est requis.`, 'danger');
+                showNotification(this.notification,'danger',`Le champ ${field.message} est requis.`);
                 allFieldsNotEmpty = false;
                 return;
             }
@@ -153,13 +151,6 @@ export class Dashform extends Component {
             const equipe = $('#select-equipe').val();
             this.props.onClickFrom(periodeID,chantierID,employeType,quinzine,equipe);
         }
-    }
-
-    showNotification(message, typeNotification) {
-        this.notification.add(message, {
-            title: "Notification",
-            type: typeNotification, // info, warning, danger, success
-        });
     }
 }
 

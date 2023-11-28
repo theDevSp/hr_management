@@ -10,7 +10,7 @@ import { blockUI, unblockUI } from "web.framework";
 import { Dashform } from "./DashboardForm/dashboardForm"
 import { EquipeCard } from "./EquipeCard/dashboardEquipeCard"
 
-import showNotification from "./Notification/showNotification";
+import showNotification from "./Utils/showNotification";
 
 export class HrMainDashboard extends Component {
     setup() {
@@ -52,7 +52,7 @@ export class HrMainDashboard extends Component {
                 break;
 
             case 202:
-                showNotification(this.notification,"warning", res.message);
+                showNotification(this.notification,"warning", 'Pas de données à afficher pour ce critère.');
                 unblockUI();
                 break;
 

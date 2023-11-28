@@ -5,7 +5,7 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 
 import { useService } from "@web/core/utils/hooks";
 
-import showNotification from "../../Notification/showNotification";
+import showNotification from "../../Utils/showNotification";
 
 
 export class EquipeCardDetailsTableLigne extends Component {

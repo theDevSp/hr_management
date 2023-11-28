@@ -12,9 +12,8 @@ export class EquipeCardDetailsTable extends Component {
         this.data = JSON.parse(JSON.stringify(this.props.tabledetails.payroll_details))
 
         onWillStart(async () => {
-            // we nedd to import the library in static mode
-            await loadCSS("https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css");
-            await loadJS("https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js");
+            await loadCSS("/hr_management/static/src/js/Dashboard/Utils/DataTables/jquery.dataTables.min.css");
+            await loadJS("/hr_management/static/src/js/Dashboard/Utils/DataTables/jquery.dataTables.min.js");
             
             // static css
             await loadCSS("/hr_management/static/src/css/Dashboard/EquipeCardDetailsTable/EquipeCardDetailsTable.css");

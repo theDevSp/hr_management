@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { loadCSS, loadJS } from "@web/core/assets";
-const { Component,onWillStart, onMounted, onWillUnmount } = owl;
+const { Component,onWillStart} = owl;
 
 export class EquipeCardDetails extends Component {
     setup() {

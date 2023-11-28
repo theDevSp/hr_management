@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-const { Component, onWillStart, onMounted, onWillUnmount } = owl;
+const { Component, onWillStart} = owl;
 import { loadCSS, loadJS } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
 
@@ -8,7 +8,7 @@ import { EquipeCardDetails } from "../EquipeCardDetails/dashboardEquipeCardDetai
 import { EquipeCardDetailsTable } from "../EquipeCardDetailsTable/dashboardEquipeCardDetailsTable"
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog"
 import { blockUI, unblockUI } from "web.framework";
-import showNotification from "../Notification/showNotification";
+import showNotification from "../Utils/showNotification";
 
 export class EquipeCard extends Component {
     setup() {
