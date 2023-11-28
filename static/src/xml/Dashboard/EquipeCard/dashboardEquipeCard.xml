@@ -31,7 +31,7 @@
                     <div class="row">
                         <EquipeCardDetails details="props.data"/>
                     </div>
-                    <EquipeCardDetailsTable regenerate.bind="props.regenerate" tabledetails="props.data"/>
+                    <EquipeCardDetailsTable tabledetails="props.data"/>
                 </div>
             </div>
         </div>

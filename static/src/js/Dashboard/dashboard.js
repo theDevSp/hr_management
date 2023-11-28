@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry"
-import { Component, useSubEnv, onWillRender, useEffect, useState, useRef, onMounted } from "@odoo/owl"
+import { Component,onWillRender,useState} from "@odoo/owl"
 
 import { useService } from "@web/core/utils/hooks";
 
@@ -22,9 +22,6 @@ export class HrMainDashboard extends Component {
             data: null
         })
 
-        onWillRender(async () => {
-
-        })
     }
 
     async generateDashboard(periodeID,chantierID,employeType,quinzine,equipe) {

@@ -13,7 +13,7 @@
             </div>
             <Dashform onClickFrom.bind="generateDashboard" />
             <div class="row px-4 pt-1" t-if="!state.isFirstLoad">
-                <EquipeCard regenerate.bind="generateDashboard" data="obj" t-foreach="state.data" t-as="obj" t-key="obj.id" />
+                <EquipeCard data="obj" t-foreach="state.data" t-as="obj" t-key="obj.id" />
             </div>
             <div class="row pt-4 px-4" t-if="state.isFirstLoad">
                 <div class="col-12">
