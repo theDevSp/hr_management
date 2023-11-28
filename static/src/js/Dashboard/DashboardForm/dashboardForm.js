@@ -1,7 +1,8 @@
 /** @odoo-module */
 
-const { Component, onWillStart, onMounted } = owl
+const { Component, onWillStart, onMounted,useState } = owl
 const { loadJS, loadCSS } = require('@web/core/assets');
+
 
 import { useService } from "@web/core/utils/hooks"
 
@@ -11,6 +12,10 @@ export class Dashform extends Component {
     setup() {
         this.rpc = useService("rpc");
         this.notification = this.env.services.notification;
+
+        this.state = useState({
+            isDisabled: true
+        });
 
         onWillStart(async () => {
             await loadJS("/reports_templates/static/src/lib/selectize/selectize.min.js")
@@ -126,15 +131,16 @@ export class Dashform extends Component {
 
     verify() {
 
+        
         const fields = [
             { element: $('#select-period'), message: 'Période' },
             { element: $('#select-type'), message: 'Type de l\'employé' },
             { element: $('#select-quinzine'), message: 'Quinzine' },
             { element: $('#select-chantier'), message: 'Chantier' },
         ];
-
+        
         let allFieldsNotEmpty = true;
-
+        
         for (const field of fields) {
             if (field.element.val() === '') {
                 showNotification(this.notification, 'danger', `Le champ ${field.message} est requis.`);
@@ -150,6 +156,7 @@ export class Dashform extends Component {
             const quinzine = $('#select-quinzine').val();
             const equipe = $('#select-equipe').val();
             this.props.onClickFrom(periodeID, chantierID, employeType, quinzine, equipe);
+            this.state.isDisabled = false
         }
     }
 
@@ -159,6 +166,7 @@ export class Dashform extends Component {
         $('#select-quinzine')[0].selectize.clear();
         $('#select-type')[0].selectize.clear();
         $('#select-equipe')[0].selectize.clear();
+        this.state.isDisabled = true
         this.props.updateView()
     }
 }

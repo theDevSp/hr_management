@@ -71,10 +71,10 @@
                     <div class="col-sm">
                         <span><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> <b>Required</b>.</span>
                         <button style="float: right; width: 12%;" class="btn btn-info cursor-pointer" t-on-click="()=>this.verify()">
-                            Valider
+                            Valider <i class="fas fa-check"></i> 
                         </button>
-                        <button style="margin-right: 5px; float: right; width: 6%;" class="btn btn-danger cursor-pointer" t-on-click="()=>this.clear()">
-                            Reset
+                        <button t-att-disabled="state.isDisabled" style="margin-right: 5px; float: right; width: 8%;" class="btn btn-danger cursor-pointer" t-on-click="()=>this.clear()">
+                            Reset <i class="fas fa-undo"></i> 
                         </button>
                     </div>
                 </div>
