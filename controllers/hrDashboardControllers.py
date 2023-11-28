@@ -78,7 +78,7 @@ class HrDashboardControllers(http.Controller):
                                 paie.employee_id.cin,
                                 paie.employee_id.job_id.name,
                             ],
-                            "net_paye": round(paie.net_pay),
+                            "net_paye": f'{round(paie.net_pay):,}'.replace(',', ' '),
                             "status": paie.state
                         })
 
@@ -100,9 +100,9 @@ class HrDashboardControllers(http.Controller):
                             'refund': payroll_refund,
                             'stc': payroll_stc,
                             'blocked': payroll_blocked,
-                            'montant_total': round(montant_total),
-                            'montant_sad': round(montant_sad),
-                            'montant_net_paye': round(montant_net_paye)
+                            'montant_total': f'{round(montant_total):,} Dh'.replace(',', ' '),
+                            'montant_sad': f'{round(montant_sad):,} Dh'.replace(',', ' '),
+                            'montant_net_paye': f'{round(montant_net_paye):,} Dh'.replace(',', ' ')
                         },
                         'payroll_details': payroll_details
                     }
