@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-const { Component,onWillStart,onMounted } = owl
+const { Component, onWillStart, onMounted } = owl
 const { loadJS, loadCSS } = require('@web/core/assets');
 
 import { useService } from "@web/core/utils/hooks"
@@ -11,7 +11,7 @@ export class Dashform extends Component {
     setup() {
         this.rpc = useService("rpc");
         this.notification = this.env.services.notification;
-        
+
         onWillStart(async () => {
             await loadJS("/reports_templates/static/src/lib/selectize/selectize.min.js")
             await loadCSS("/reports_templates/static/src/lib/selectize/selectize.default.min.css")
@@ -137,7 +137,7 @@ export class Dashform extends Component {
 
         for (const field of fields) {
             if (field.element.val() === '') {
-                showNotification(this.notification,'danger',`Le champ ${field.message} est requis.`);
+                showNotification(this.notification, 'danger', `Le champ ${field.message} est requis.`);
                 allFieldsNotEmpty = false;
                 return;
             }
@@ -149,8 +149,17 @@ export class Dashform extends Component {
             const employeType = $('#select-type').val();
             const quinzine = $('#select-quinzine').val();
             const equipe = $('#select-equipe').val();
-            this.props.onClickFrom(periodeID,chantierID,employeType,quinzine,equipe);
+            this.props.onClickFrom(periodeID, chantierID, employeType, quinzine, equipe);
         }
+    }
+
+    clear() {
+        $('#select-period')[0].selectize.clear();
+        $('#select-chantier')[0].selectize.clear();
+        $('#select-quinzine')[0].selectize.clear();
+        $('#select-type')[0].selectize.clear();
+        $('#select-equipe')[0].selectize.clear();
+        this.props.updateView()
     }
 }
 

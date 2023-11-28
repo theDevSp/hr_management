@@ -11,7 +11,7 @@
                     </div>
                 </div>
             </div>
-            <Dashform onClickFrom.bind="generateDashboard" />
+            <Dashform onClickFrom.bind="generateDashboard" updateView.bind="resetView" />
             <div class="row px-4 pt-1" t-if="!state.isFirstLoad">
                 <EquipeCard data="obj" t-foreach="state.data" t-as="obj" t-key="obj.id" />
             </div>

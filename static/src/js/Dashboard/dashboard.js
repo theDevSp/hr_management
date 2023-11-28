@@ -65,6 +65,10 @@ export class HrMainDashboard extends Component {
         }
     }
 
+    resetView(){
+        this.state.isFirstLoad = true;
+    }
+
 }
 
 HrMainDashboard.template = "hr_management.main_dashboard"

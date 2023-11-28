@@ -70,8 +70,11 @@
                 <div class="row px-4">
                     <div class="col-sm">
                         <span><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> <b>Required</b>.</span>
-                        <button style="float: right; width: 15%;" class="btn btn-info cursor-pointer" t-on-click="()=>this.verify()">
+                        <button style="float: right; width: 12%;" class="btn btn-info cursor-pointer" t-on-click="()=>this.verify()">
                             Valider
+                        </button>
+                        <button style="margin-right: 5px; float: right; width: 6%;" class="btn btn-danger cursor-pointer" t-on-click="()=>this.clear()">
+                            Reset
                         </button>
                     </div>
                 </div>
