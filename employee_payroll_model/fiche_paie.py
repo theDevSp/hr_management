@@ -193,7 +193,8 @@ class fiche_paie(models.Model):
 
     @api.depends('nbr_jf_refunded')
     def _compute_amount_jf_refunded(self):
-        self.amount_jf_refunded = self.nbr_jf_refunded * self.salaire_jour
+        for rec in self:
+            rec.amount_jf_refunded = rec.nbr_jf_refunded * rec.salaire_jour
 
     @api.depends('nbr_jour_travaille','nbr_heure_travaille','autoriz_cp','autoriz_zero_cp')
     def _compute_cp_number(self):
