@@ -12,7 +12,7 @@ export async function content_report_pointage_ouvrier(data, chantier, quinz, per
     const widthTable = [40, 120, 60, ...Array(nbr).fill('*'), 35]
 
     const headerTable = Array.from({ length: nbr }, (_, index) => ({
-        text: (nbr === 15 ? index + 1 : index + 16).toString(),
+        text: ((nbr === 15 && data_header.quinzine === 'quinzine1') ? index + 1 : index + 16).toString(),
         bold: true,
         fontSize: 10,
         fillColor: '#04aa6d',
@@ -365,7 +365,7 @@ export async function content_report_pointage_ouvrier(data, chantier, quinz, per
             ],
         }
 
-    } :  {}
+    } : {}
 
 
     ]
