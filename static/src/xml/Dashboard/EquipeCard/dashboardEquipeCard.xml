@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="owl.EquipeCard" owl="1">
-        <div class="col-6">
+        <div class="col-6" style="margin-top: 10px;">
             <div class="card bg-c-yellow order-card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <h2>
-                            <span t-esc="props.data.equipe[1]"></span>
+                            <span t-esc="props.data.equipe[1].toUpperCase()"></span>
                         </h2>
                         <div>
                             <button data-toggle="tooltip" data-placement="left" title="Clôturé" type="button" class="btn" t-on-click="()=>this.updateStatus('approuved')">
@@ -29,9 +29,9 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <EquipeCardDetails details="props.data"/>
+                        <EquipeCardDetails details="props.data" />
                     </div>
-                    <EquipeCardDetailsTable tabledetails="props.data"/>
+                    <EquipeCardDetailsTable tabledetails="props.data" />
                 </div>
             </div>
         </div>

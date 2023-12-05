@@ -19,8 +19,15 @@
                 <div class="col-12">
                     <div class="alert alert-danger text-center">
                         <span style="font-size: large;">
-                            <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> <strong>Valider le formulaire avec les informations requises.                            </strong>
+                            <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                            <strong>Valider le formulaire avec les informations requises.                            </strong>
                         </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row pt-2 px-4" t-if="!state.isFirstLoad">
+                <div class="col-12">
+                    <div class="alert text-center bg-muted">
                     </div>
                 </div>
             </div>

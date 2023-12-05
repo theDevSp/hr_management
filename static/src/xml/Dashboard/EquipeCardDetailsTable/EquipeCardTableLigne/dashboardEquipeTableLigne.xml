@@ -55,12 +55,16 @@
             </td>
             <td>
                 <div>
-                    <button data-toggle="tooltip" data-placement="left" title="Clôturé" type="button" class="btn" t-on-click="()=>this.updateStatus('approuved')">
-                        <i class="far fa-calendar-times" style="color: #dc3545;"></i>
-                    </button>
-                    <button data-toggle="tooltip" data-placement="left" title="Payé" type="button" class="btn" t-on-click="()=>this.updateStatus('done')">
-                        <i class="far fa-calendar-check" style="color: #28a745;"></i>
-                    </button>
+                    <t t-if="props.ligne.status != 'done'">
+                        <button data-toggle="tooltip" data-placement="left" title="Payé" type="button" class="btn" t-on-click="()=>this.updateStatus('done')">
+                            <i class="far fa-calendar-check" style="color: #28a745;"></i>
+                        </button>
+                    </t>
+                    <t t-if="props.ligne.status != 'approuved'">
+                        <button data-toggle="tooltip" data-placement="left" title="Clôturé" type="button" class="btn" t-on-click="()=>this.updateStatus('approuved')">
+                            <i class="far fa-calendar-times" style="color: #dc3545;"></i>
+                        </button>
+                    </t>
                     <button data-toggle="tooltip" data-placement="left" title="Détails" type="button" class="btn" t-on-click="()=>this.goToFiche()">
                         <i class="fas fa-list" style="color: #007bff;"></i>
                     </button>
