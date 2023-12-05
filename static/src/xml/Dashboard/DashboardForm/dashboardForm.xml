@@ -5,80 +5,45 @@
             <div class="card-body">
                 <div class="row px-4">
                     <div class="col-sm">
-                        <div class="input-group mb-3 mt-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <label for="select-period">
-                                        <strong>Période : <span><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span></strong>
-                                    </label>
-                                </span>
-                            </div>
-                            <select required="True" id="select-period" class="form-control" name="period" placeholder="Sélectionner une Période"></select>
-                        </div>
+                        <Periode onChangePeriode.bind="setPeriodeID"/>
+                    </div>
+                    <Quinzaine onChangeQuinizaine.bind="setQuinz" />
+                </div>
+                <div class="row px-4">
+                    <div class="col-sm">
+                        <Chantiers onChangeChantier.bind="setChantierID"/>
                     </div>
                     <div class="col-sm">
-                        <div class="input-group mb-3 mt-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <label for="select-type">
-                                        <strong>Type d'employé : <span><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span></strong>
-                                    </label>
-                                </span>
-                            </div>
-                            <select required="True" id="select-type" class="form-control" name="employe_type" placeholder="Sélectionner le Type de l'employé"></select>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="input-group mb-3 mt-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <label for="select-quinzine">
-                                        <strong>Quinzine : <span><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span></strong>
-                                    </label>
-                                </span>
-                            </div>
-                            <select required="True" id="select-quinzine" class="form-control" name="quinzine" placeholder="Sélectionner le Quinzine"></select>
-                        </div>
+                        <Equipes onChangeEquipe.bind="setEquipeID"/>
                     </div>
                 </div>
                 <div class="row px-4">
                     <div class="col-sm">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <label for="select-chantier">
-                                        <strong>Chantier : <span><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span></strong>
-                                    </label>
-                                </span>
-                            </div>
-                            <select required="True" id="select-chantier" class="form-control" name="chantier" placeholder="Sélectionner un Chantier"></select>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <label for="select-equipe">
-                                        <strong>Équipe :</strong>
-                                    </label>
-                                </span>
-                            </div>
-                            <select id="select-equipe" class="form-control" name="equipe" placeholder="Sélectionner l'Équipe"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row px-4">
-                    <div class="col-sm">
-                        <span><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> <b>Required</b>.</span>
+                        <span>
+                            <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                            <b>Required</b>.
+                        </span>
                         <button style="float: right; width: 12%;" class="btn btn-info cursor-pointer" t-on-click="()=>this.verify()">
-                            Valider <i class="fas fa-check"></i> 
+                            Valider <i class="fas fa-check"></i>
                         </button>
                         <button t-att-disabled="state.isDisabled" style="margin-right: 5px; float: right; width: 8%;" class="btn btn-danger cursor-pointer" t-on-click="()=>this.clear()">
-                            Reset <i class="fas fa-undo"></i> 
+                            Reset <i class="fas fa-undo"></i>
                         </button>
                     </div>
                 </div>
-            </div>
-        </div>
-    </t>
+                <div class="row px-4">
+                    <span>
+                            Quinzine : <t t-esc="state.quinz"/>
+                    <br />
+                            periodeID : <t t-esc="state.periodeID"/>
+                <br />
+                            chantierID : <t t-esc="state.chantierID"/>
+            <br />
+                            equipeID : <t t-esc="state.equipeID"/>
+
+        </span>
+    </div>
+</div>
+</div>
+</t>
 </templates>

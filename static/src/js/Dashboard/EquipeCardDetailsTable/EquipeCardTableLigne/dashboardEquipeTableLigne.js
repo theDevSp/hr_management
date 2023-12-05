@@ -5,7 +5,7 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 
 import { useService } from "@web/core/utils/hooks";
 
-import showNotification from "../../Utils/showNotification";
+import showNotification from "@configuration_module/js/utils/showNotification";
 
 
 export class EquipeCardDetailsTableLigne extends Component {
@@ -32,16 +32,16 @@ export class EquipeCardDetailsTableLigne extends Component {
                 switch (data.code) {
                     case 200:
                         Object.assign(this.props.ligne, data.ligne);
-                        showNotification(notification,"success", data.message);
+                        showNotification(notification, "success", data.message);
                         break;
 
                     case 202:
-                        showNotification(notification,"warning", data.message);
+                        showNotification(notification, "warning", data.message);
                         break;
 
                     case 504:
                         console.error(data.error)
-                        showNotification(notification,"danger", data.message);
+                        showNotification(notification, "danger", data.message);
                         break;
 
                     default:

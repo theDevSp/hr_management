@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-const { Component, onWillStart} = owl;
+const { Component, onWillStart } = owl;
 import { loadCSS, loadJS } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
 
@@ -8,7 +8,7 @@ import { EquipeCardDetails } from "../EquipeCardDetails/dashboardEquipeCardDetai
 import { EquipeCardDetailsTable } from "../EquipeCardDetailsTable/dashboardEquipeCardDetailsTable"
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog"
 import { blockUI, unblockUI } from "web.framework";
-import showNotification from "../Utils/showNotification";
+import showNotification from "@configuration_module/js/utils/showNotification";
 
 export class EquipeCard extends Component {
     setup() {
@@ -42,18 +42,18 @@ export class EquipeCard extends Component {
                 switch (data.code) {
                     case 200:
                         Object.assign(this.props.data.payroll_details, data.lignes);
-                        showNotification(notification,"success", data.message);
+                        showNotification(notification, "success", data.message);
                         unblockUI();
                         break;
 
                     case 202:
-                        showNotification(notification,"warning", data.message);
+                        showNotification(notification, "warning", data.message);
                         unblockUI();
                         break;
 
                     case 504:
                         console.error(data.error)
-                        showNotification(notification,"danger", data.message);
+                        showNotification(notification, "danger", data.message);
                         unblockUI();
                         break;
 
@@ -106,18 +106,18 @@ export class EquipeCard extends Component {
         switch (res.code) {
             case 200:
                 Object.assign(this.props.data, res.data[0]);
-                showNotification(this.notification,"success", res.message);
+                showNotification(this.notification, "success", res.message);
                 unblockUI();
                 break;
 
             case 202:
-                showNotification(this.notification,"warning", res.message);
+                showNotification(this.notification, "warning", res.message);
                 unblockUI();
                 break;
 
             case 504:
                 console.error(res.error)
-                showNotification(this.notification,"danger", res.message);
+                showNotification(this.notification, "danger", res.message);
                 unblockUI();
                 break;
 
@@ -127,7 +127,7 @@ export class EquipeCard extends Component {
         }
     }
 
-    async deleteTrashReports(){
+    async deleteTrashReports() {
         const equipeID = this.props.data.equipe[0]
         const chantierID = this.props.data.chantierID
         const periodID = this.props.data.periodID
@@ -150,21 +150,21 @@ export class EquipeCard extends Component {
 
                 switch (res.code) {
                     case 200:
-                        showNotification(this.notification,"success", res.message);
+                        showNotification(this.notification, "success", res.message);
                         unblockUI();
                         break;
-        
+
                     case 202:
-                        showNotification(this.notification,"warning", res.message);
+                        showNotification(this.notification, "warning", res.message);
                         unblockUI();
                         break;
-        
+
                     case 504:
                         console.error(res.error)
-                        showNotification(this.notification,"danger", res.message);
+                        showNotification(this.notification, "danger", res.message);
                         unblockUI();
                         break;
-        
+
                     default:
                         unblockUI();
                         break;
@@ -174,7 +174,7 @@ export class EquipeCard extends Component {
             cancel: () => { }
         });
 
-        
+
     }
 }
 

@@ -365,7 +365,7 @@ export async function content_report_pointage_ouvrier(data, chantier, quinz, per
             ],
         }
 
-    } :  {}
+    } : {}
 
 
     ]

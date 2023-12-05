@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="owl.quinzaine" owl="1">
+        <div class="col-sm">
+            <div class="input-group mb-3 mt-2">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <label for="select-type">
+                            <strong>Type d'employé :</strong>
+                            <span>
+                                <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                            </span>
+                        </label>
+                    </span>
+                </div>
+                <select required="True" id="select-type" class="form-control" name="employe_type" placeholder="Sélectionner le Type de l'employé"></select>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="input-group mb-3 mt-2">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <label for="select-quinzine">
+                            <strong>Quinzine :</strong>
+                            <span>
+                                <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                            </span>
+                        </label>
+                    </span>
+                </div>
+                <select required="True" id="select-quinzine" class="form-control" name="quinzine" placeholder="Sélectionner le Quinzine"></select>
+            </div>
+        </div>
+    </t>
+</templates>

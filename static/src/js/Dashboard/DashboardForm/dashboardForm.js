@@ -1,12 +1,16 @@
 /** @odoo-module */
 
-const { Component, onWillStart, onMounted,useState } = owl
+const { Component, onWillStart, onMounted, useState } = owl
 const { loadJS, loadCSS } = require('@web/core/assets');
 
+import { Quinzaine } from "@hr_management/js/components/quinzaine/quinzaine";
+import { Periode } from "@account_fiscal_year_period/js/components/periodes/periodes";
+import { Chantiers } from "@construction_site_management/js/components/Chantiers/chantiers";
+import { Equipes } from "@construction_site_management/js/components/Equipes/equipes";
 
 import { useService } from "@web/core/utils/hooks"
 
-import showNotification from "../Utils/showNotification";
+import showNotification from "@configuration_module/js/utils/showNotification";
 
 export class Dashform extends Component {
     setup() {
@@ -14,135 +18,53 @@ export class Dashform extends Component {
         this.notification = this.env.services.notification;
 
         this.state = useState({
-            isDisabled: true
+            isDisabled: true,
+            quinz: [],
+            periodeID: '',
+            chantierID: '',
+            equipeID: ''
         });
 
         onWillStart(async () => {
-            await loadJS("/reports_templates/static/src/lib/selectize/selectize.min.js")
-            await loadCSS("/reports_templates/static/src/lib/selectize/selectize.default.min.css")
-        })
-
-        onMounted(async () => {
-            this.formData()
+            await loadJS("/configuration_module/static/src/libraries/selectize/selectize.min.js")
+            await loadCSS("/configuration_module/static/src/libraries/selectize/selectize.default.min.css")
         })
     }
 
-    async formData() {
+    setState(key, val) {
+        this.state[key] = val;
+    }
 
-        this.allChantiers = await this.rpc(`/hr_management/pointage/get_all_chantiers`);
-        this.allEquipes = await this.rpc(`/hr_management/pointage/get_all_Equipes`);
-        this.periods = await this.rpc(`/hr_management/pointage/get_all_periods`);
+    setQuinz(val) {
+        this.setState('quinz', val);
+    }
 
-        $("#select-period").selectize({
-            maxItems: 1,
-            minItems: 1,
-            valueField: 'id',
-            labelField: 'code',
-            searchField: 'code',
-            options: this.periods,
-            create: false,
-            optionGroupRegister: function (optgroup) {
-                var capitalised = optgroup.charAt(0).toUpperCase() + optgroup.substring(1);
-                var group = {
-                    label: 'Année : ' + capitalised
-                };
+    setPeriodeID(val) {
+        this.setState('periodeID', val);
+    }
 
-                group[this.settings.optgroupValueField] = optgroup;
+    setChantierID(val) {
+        this.setState('chantierID', val);
+    }
 
-                return group;
-            },
-            optgroupField: 'year',
-        });
-
-        $('#select-chantier').selectize({
-            maxItems: 1,
-            minItems: 1,
-            valueField: 'id',
-            labelField: 'name',
-            searchField: 'name',
-            options: this.allChantiers,
-            create: false
-        });
-
-        $('#select-quinzine').selectize({
-            maxItems: 1,
-            minItems: 1,
-            valueField: 'id',
-            labelField: 'title',
-            searchField: 'title',
-            options: [],
-            create: false
-        });
-
-        $('#select-equipe').selectize({
-            maxItems: 1,
-            minItems: 1,
-            valueField: 'id',
-            labelField: 'name',
-            searchField: 'name',
-            options: this.allEquipes,
-            create: false
-        });
-
-        $('#select-type').selectize({
-            maxItems: 1,
-            minItems: 1,
-            valueField: 'id',
-            labelField: 'title',
-            searchField: 'title',
-            options: [
-                { id: 'o', title: 'Ouvrier' },
-                { id: 's', title: 'Salarié' },
-            ],
-            create: false,
-            onChange: (selectedValue) => {
-                const selectQuinzine = $('#select-quinzine')[0].selectize;
-
-                if (selectedValue === 'o') {
-
-                    selectQuinzine.clearOptions();
-
-                    const existingOption = selectQuinzine.options['quinzaine12'];
-                    if (existingOption) {
-                        delete selectQuinzine.options['quinzaine12'];
-                    }
-
-                    selectQuinzine.addOption([
-                        { id: 'quinzaine1', title: 'Quinzaine1' },
-                        { id: 'quinzaine2', title: 'Quinzaine2' }
-                    ]);
-                    selectQuinzine.refreshOptions();
-                    selectQuinzine.clear();
-                    selectQuinzine.enable();
-                } else if (selectedValue === 's') {
-
-                    selectQuinzine.clearOptions();
-                    selectQuinzine.addOption([
-                        { id: 'quinzaine12', title: 'Quinzaine12' },
-                    ]);
-                    selectQuinzine.refreshOptions();
-                    selectQuinzine.clear();
-                    selectQuinzine.setValue('quinzaine12');
-                    selectQuinzine.disable();
-                }
-            }
-        });
+    setEquipeID(val) {
+        this.setState('equipeID', val);
     }
 
     verify() {
 
-        
+        const state = this.state
         const fields = [
-            { element: $('#select-period'), message: 'Période' },
-            { element: $('#select-type'), message: 'Type de l\'employé' },
-            { element: $('#select-quinzine'), message: 'Quinzine' },
-            { element: $('#select-chantier'), message: 'Chantier' },
+            { element: state.periodeID, message: 'Période' },
+            { element: state.quinz[1], message: 'Type de l\'employé' },
+            { element: state.quinz[0], message: 'Quinzine' },
+            { element: state.chantierID, message: 'Chantier' },
         ];
-        
+
         let allFieldsNotEmpty = true;
-        
+
         for (const field of fields) {
-            if (field.element.val() === '') {
+            if (field.element === '') {
                 showNotification(this.notification, 'danger', `Le champ ${field.message} est requis.`);
                 allFieldsNotEmpty = false;
                 return;
@@ -150,13 +72,13 @@ export class Dashform extends Component {
         }
 
         if (allFieldsNotEmpty) {
-            const periodeID = $('#select-period').val();
-            const chantierID = $('#select-chantier').val();
-            const employeType = $('#select-type').val();
-            const quinzine = $('#select-quinzine').val();
-            const equipe = $('#select-equipe').val();
+            const periodeID = state.periodeID;
+            const chantierID = state.chantierID;
+            const employeType = state.quinz[1];
+            const quinzine = state.quinz[0];
+            const equipe = state.equipeID;
             this.props.onClickFrom(periodeID, chantierID, employeType, quinzine, equipe);
-            this.state.isDisabled = false
+            this.setState('isDisabled', false);
         }
     }
 
@@ -166,9 +88,16 @@ export class Dashform extends Component {
         $('#select-quinzine')[0].selectize.clear();
         $('#select-type')[0].selectize.clear();
         $('#select-equipe')[0].selectize.clear();
-        this.state.isDisabled = true
+
+        this.setState('quinz', '');
+        this.setState('periodeID', '');
+        this.setState('chantierID', '');
+        this.setState('equipeID', '');
+
+        this.setState('isDisabled', true);
         this.props.updateView()
     }
 }
 
 Dashform.template = "owl.dashboardForm"
+Dashform.components = { Chantiers, Equipes, Periode, Quinzaine }

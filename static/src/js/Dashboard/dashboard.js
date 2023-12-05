@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry"
-import { Component,onWillRender,useState} from "@odoo/owl"
+import { Component, onWillRender, useState } from "@odoo/owl"
 
 import { useService } from "@web/core/utils/hooks";
 
@@ -10,7 +10,7 @@ import { blockUI, unblockUI } from "web.framework";
 import { Dashform } from "./DashboardForm/dashboardForm"
 import { EquipeCard } from "./EquipeCard/dashboardEquipeCard"
 
-import showNotification from "./Utils/showNotification";
+import showNotification from "@configuration_module/js/utils/showNotification";
 
 export class HrMainDashboard extends Component {
     setup() {
@@ -24,7 +24,7 @@ export class HrMainDashboard extends Component {
 
     }
 
-    async generateDashboard(periodeID,chantierID,employeType,quinzine,equipe) {
+    async generateDashboard(periodeID, chantierID, employeType, quinzine, equipe) {
 
         blockUI();
 
@@ -44,18 +44,18 @@ export class HrMainDashboard extends Component {
             case 200:
                 this.state.data = res.data;
                 this.state.isFirstLoad = false;
-                showNotification(this.notification,"success", 'Chargement réussi !');
+                showNotification(this.notification, "success", 'Chargement réussi !');
                 unblockUI();
                 break;
 
             case 202:
-                showNotification(this.notification,"warning", 'Pas de données à afficher pour ce critère.');
+                showNotification(this.notification, "warning", 'Pas de données à afficher pour ce critère.');
                 unblockUI();
                 break;
 
             case 504:
                 console.error(res.error)
-                showNotification(this.notification,"danger", res.message);
+                showNotification(this.notification, "danger", res.message);
                 unblockUI();
                 break;
 
@@ -65,7 +65,7 @@ export class HrMainDashboard extends Component {
         }
     }
 
-    resetView(){
+    resetView() {
         this.state.isFirstLoad = true;
     }
 

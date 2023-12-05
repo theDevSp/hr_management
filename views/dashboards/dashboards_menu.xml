@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    
+
     <record id="action_hr_main_dashboard" model="ir.actions.client">
         <field name="name">Tableaux de Bords</field>
         <field name="tag">hr_management.action_main_dashboard</field>
     </record>
 
-    <menuitem id="menu_hr_main_dashboard" name="Tableaux de Bords" action="action_hr_main_dashboard" parent="hr_management_base_menu" groups ="hr_management.group_admin_paie" sequence="0"/>
+    <record id="action_hr_main_analytique" model="ir.actions.client">
+        <field name="name">Analytique</field>
+        <field name="tag">hr_management.action_main_analytique</field>
+    </record>
+
+    <menuitem id="menu_hr_main_dashboard" name="Tableau de Bords" parent="hr_management_base_menu" 
+    groups ="hr_management.group_admin_paie" sequence="0" />
+
+    <menuitem id="menu_hr_main_analytique" name="Analytique" action="action_hr_main_analytique" parent="menu_hr_main_dashboard" groups="hr_management.group_admin_paie" sequence="2" />
+    <menuitem id="menu_hr_main_tableau" name="Tableau de Bords - Fp" action="action_hr_main_dashboard" parent="menu_hr_main_dashboard" groups="hr_management.group_admin_paie" sequence="1" />
 
 </odoo>

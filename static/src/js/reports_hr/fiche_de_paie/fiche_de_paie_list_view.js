@@ -9,7 +9,7 @@ const { loadJS, loadCSS } = require('@web/core/assets');
 const { onWillStart, useRef, onMounted } = owl
 
 import { content_fiche_de_paie } from "./content_fiche_de_paie";
-import {header_a3_landscape} from "./header_a3_landscape"
+import { header_a3_landscape } from "./header_a3_landscape"
 
 class ficheDePaieListController extends ListController {
     setup() {
@@ -22,8 +22,8 @@ class ficheDePaieListController extends ListController {
         this.notification = this.env.services.notification;
 
         onWillStart(async () => {
-            await loadJS("/reports_templates/static/src/lib/selectize/selectize.min.js")
-            await loadCSS("/reports_templates/static/src/lib/selectize/selectize.default.min.css")
+            await loadJS("/configuration_module/static/src/libraries/selectize/selectize.min.js")
+            await loadCSS("/configuration_module/static/src/libraries/selectize/selectize.default.min.css")
         })
 
         onMounted(async () => {

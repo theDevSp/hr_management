@@ -9,12 +9,10 @@ import { EquipeCardDetailsTableLigne } from "./EquipeCardTableLigne/dashboardEqu
 export class EquipeCardDetailsTable extends Component {
     setup() {
 
-        this.data = JSON.parse(JSON.stringify(this.props.tabledetails.payroll_details))
-
         onWillStart(async () => {
-            await loadCSS("/hr_management/static/src/js/Dashboard/Utils/DataTables/jquery.dataTables.min.css");
-            await loadJS("/hr_management/static/src/js/Dashboard/Utils/DataTables/jquery.dataTables.min.js");
-            
+            await loadCSS("/configuration_module/static/src/libraries/DataTables/jquery.dataTables.min.css");
+            await loadJS("/configuration_module/static/src/libraries/DataTables/jquery.dataTables.min.js");
+
             // static css
             await loadCSS("/hr_management/static/src/css/Dashboard/EquipeCardDetailsTable/EquipeCardDetailsTable.css");
         })
@@ -24,7 +22,7 @@ export class EquipeCardDetailsTable extends Component {
                 lengthChange: false,
                 lengthMenu: [[5], [5]],
                 language: {
-                    url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/French.json",
+                    url: "/configuration_module/static/src/libraries/DataTables/frenchLanguage.json",
                     searchPlaceholder: "Rechercher..."
                 },
             });
