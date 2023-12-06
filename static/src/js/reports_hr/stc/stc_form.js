@@ -68,7 +68,7 @@ class StcFormController extends FormController {
                                         color: 'white',
                                         margin: [0, 5]
                                     }, {
-                                        text: 'Direction',
+                                        text: 'DIRECTEUR ADMINISTRATIF',
                                         fontSize: 10,
                                         bold: true,
                                         alignment: 'center',
@@ -76,7 +76,7 @@ class StcFormController extends FormController {
                                         color: 'white',
                                         margin: [0, 5]
                                     }, {
-                                        text: 'Juridique',
+                                        text: 'M. LE PDG',
                                         fontSize: 10,
                                         bold: true,
                                         alignment: 'center',
