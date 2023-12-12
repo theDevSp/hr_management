@@ -31,7 +31,4 @@ from . import heFicheEmploye
 from . import hrRecapControllers
 
 # HR Dashboard controllers
-from . import hrDashboardControllers
-
-# HR Dashboard Analytique
-from . import hrDashboardAnalytique
+from . import Dashboards

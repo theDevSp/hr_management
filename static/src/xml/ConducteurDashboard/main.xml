@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="owl.ConducteurDashboard" owl="1">
+        <div class="vh-100 overflow-auto bg-muted">
+            <div class="row m-3">
+                <div class="col-6">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-6 bg-white shadow-sm border">
+                            <div class="col my-4 p-0">
+                                <div class="m-2 p-2 bg-white">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h2 class="w-bold" style="color: rgb(0, 150, 136);">Tableau de Bord - Conducteur
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div class="m-2 p-2 bg-white">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h2 class="fw-bold" style="color: rgb(0, 150, 136);">
+                                            Chantier: <t t-esc="state.chantier"/>
+                                        </h2>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h2 class="fw-bold" style="color: rgb(0, 150, 136);">
+                                            Dernière période: <t t-esc="state.periode"/>
+                                        </h2>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h2 class="fw-bold" style="color: rgb(0, 150, 136);">
+                                            Période Précédente: <t t-esc="state.pperiode"/>
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div class="m-2 p-2 bg-white" style="">
+                                    <Chantiers onChangeChantier.bind="setChantierID" />
+                                    <div class="col-sm">
+                                        <Periode onChangePeriode.bind="setPeriodeID" />
+                                    </div>
+                                    <button class="btn btn-info cursor-pointer" t-on-click="()=>this.getData()">
+                                        Test
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 bg-white shadow-sm border mt-2">
+                            <ChartRenderer type="'bar'" title="'Nombre d\'effectif'" config="state.totalEffectifs" />
+                        </div>
+                        <div class="col-6 bg-white shadow-sm border mt-2">
+                            <ChartRenderer type="'bar'" title="'Nombre d\'effectif'" config="state.totalHeures" />
+                        </div>
+                        <div class="col-6 bg-white shadow-sm border mt-2">
+                            <ChartRenderer type="'bar'" title="'Nombre d\'effectif'" config="state.totalSalaires" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 d-flex align-items-center">
+                    <div class="col m-0 p-0">
+                        <div class="shadow-sm border m-2 p-4 bg-white" style="height: 150%;">
+                            <EffectifPosteTable />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row px-4">
+                <div class="col-6" style="margin-top: 10px;">
+                    <EquipeCard />
+                </div>
+                <div class="col-6" style="margin-top: 10px;">
+                    <EquipeCard />
+                </div>
+                <div class="col-6" style="margin-top: 10px;">
+                    <EquipeCard />
+                </div>
+                <div class="col-6" style="margin-top: 10px;">
+                    <EquipeCard />
+                </div>
+            </div>
+
+            <div class="col-lg">
+                <div class="row">
+                    <div class="col m-0 p-0">
+                        <div class="shadow-sm border m-2 p-4 bg-white"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -33,14 +33,13 @@
                 </div>
                 <div class="row px-4">
                     <span>
-                            Quinzine : <t t-esc="state.quinz"/>
+                        Quinzine : <t t-esc="state.quinz"/>
                     <br />
-                            periodeID : <t t-esc="state.periodeID"/>
+                        periodeID : <t t-esc="state.periodeID"/>
                 <br />
-                            chantierID : <t t-esc="state.chantierID"/>
+                        chantierID : <t t-esc="state.chantierID"/>
             <br />
-                            equipeID : <t t-esc="state.equipeID"/>
-
+                        equipeID : <t t-esc="state.equipeID"/>
         </span>
     </div>
 </div>

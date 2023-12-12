@@ -11,10 +11,17 @@
         <field name="tag">hr_management.action_main_analytique</field>
     </record>
 
+    <record id="action_hr_main_conducteur" model="ir.actions.client">
+        <field name="name">Tableaux de Bords - Conducteur</field>
+        <field name="tag">hr_management.action_main_conducteur</field>
+    </record>
+
     <menuitem id="menu_hr_main_dashboard" name="Tableau de Bords" parent="hr_management_base_menu" 
     groups ="hr_management.group_admin_paie" sequence="0" />
 
     <menuitem id="menu_hr_main_analytique" name="Analytique" action="action_hr_main_analytique" parent="menu_hr_main_dashboard" groups="hr_management.group_admin_paie" sequence="2" />
     <menuitem id="menu_hr_main_tableau" name="Tableau de Bords - Fp" action="action_hr_main_dashboard" parent="menu_hr_main_dashboard" groups="hr_management.group_admin_paie" sequence="1" />
+    <menuitem id="menu_hr_main_dashboard_conducteur" name="Tableau de Bords - Conducteur" action="action_hr_main_conducteur" parent="menu_hr_main_dashboard" groups="hr_management.group_admin_paie" sequence="1" />
+
 
 </odoo>

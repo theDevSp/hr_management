@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl.ConducteurEffectifPoste" owl="1">
+        <table class="table table-striped caption-top">
+            <caption>
+                <h3 class="fw-bold" style="color: rgb(0, 150, 136);">Nombre d'effectif par titre de poste :</h3>
+            </caption>
+            <thead>
+                <tr>
+                    <th scope="col">Postes</th>
+                    <th scope="col">10/2023</th>
+                    <th scope="col">11/2023</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>poste 1</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>
+                        <span class="text-success">
+                            <i class="fas fa-caret-up me-1"></i>
+                            <span>14.0%</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Poste 2</td>
+                    <td>Thornton</td>
+                    <td>Thornton</td>
+                    <td>
+                        <span class="text-success">
+                            <i class="fas fa-caret-up me-1"></i>
+                            <span>14.0%</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Poste 3</td>
+                    <td>the Bird</td>
+                    <td>the Bird</td>
+                    <td>
+                        <span class="text-danger">
+                            <i class="fas fa-caret-down me-1"></i>
+                            <span>-48.8%%</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Poste 3</td>
+                    <td>the Bird</td>
+                    <td>the Bird</td>
+                    <td>
+                        <span class="text-danger">
+                            <i class="fas fa-caret-down me-1"></i>
+                            <span>-48.8%%</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Poste 3</td>
+                    <td>the Bird</td>
+                    <td>the Bird</td>
+                    <td>
+                        <span class="text-danger">
+                            <i class="fas fa-caret-down me-1"></i>
+                            <span>-48.8%%</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Poste 3</td>
+                    <td>the Bird</td>
+                    <td>the Bird</td>
+                    <td>
+                        <span class="text-danger">
+                            <i class="fas fa-caret-down me-1"></i>
+                            <span>-48.8%%</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Poste 3</td>
+                    <td>the Bird</td>
+                    <td>the Bird</td>
+                    <td>
+                        <span class="text-danger">
+                            <i class="fas fa-caret-down me-1"></i>
+                            <span>-48.8%%</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Poste 3</td>
+                    <td>the Bird</td>
+                    <td>the Bird</td>
+                    <td>
+                        <span class="text-danger">
+                            <i class="fas fa-caret-down me-1"></i>
+                            <span>-48.8%%</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Poste 3</td>
+                    <td>the Bird</td>
+                    <td>the Bird</td>
+                    <td>
+                        <span class="text-danger">
+                            <i class="fas fa-caret-down me-1"></i>
+                            <span>-48.8%%</span>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Poste 3</td>
+                    <td>the Bird</td>
+                    <td>the Bird</td>
+                    <td>
+                        <span class="text-danger">
+                            <i class="fas fa-caret-down me-1"></i>
+                            <span>-48.8%%</span>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </t>
+</templates>
