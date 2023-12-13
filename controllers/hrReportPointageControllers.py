@@ -206,22 +206,21 @@ class printReportPointageController(http.Controller):
 
                 for re in group:
                     dates_lines = []
-                    
+
                     for re_line in re.rapport_lines:
 
                         """report_line.details and 'gardien' not in report_line.employee_id.job_id.name.lower() and 
-									(float(report_line.h_travailler) - report_line.get_normal_heur(report_line.day,report_line.chantier_id) > 0 or 
-									float(report_line.h_travailler) > 0 and report_line.day_type == 2)"""
+                                                                        (float(report_line.h_travailler) - report_line.get_normal_heur(report_line.day,report_line.chantier_id) > 0 or 
+                                                                        float(report_line.h_travailler) > 0 and report_line.day_type == 2)"""
 
                         h_tr = float(re_line.h_travailler)
                         sup = 0
                         if ('gardien' not in re_line.employee_id.job_id.name.lower()):
                             if (re_line.day_type == '1' and re_line.h_sup_cal > 0):
                                 sup = re_line.h_sup_cal
-                            if (re_line.day_type in ('2','3') and h_tr > 0):
+                            if (re_line.day_type in ('2', '3') and h_tr > 0):
                                 sup = h_tr
 
-                                
                         dates_lines.append({
                             'jour': re_line.name or "",
                             'th': re_line.h_travailler or "",
@@ -248,9 +247,9 @@ class printReportPointageController(http.Controller):
             return http.request.make_json_response(data={
                 "chantier": chantier.name.upper(),
                 "periode": period.name.upper(),
-                "quinzine": "Première Quinzaine" if quinz == "quinzaine1" else "Deuxième Quinzaine",
+                "quinzine": quinz,
                 "lines": final,
-                "nbrj_mois": period.get_number_of_days_per_month()-15 if quinz == "quinzaine2" else 15
+                "nbrj_mois": period.get_number_of_days_per_month()
             }, status=200)
 
         else:
