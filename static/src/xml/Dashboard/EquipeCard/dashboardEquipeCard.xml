@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="owl.EquipeCard" owl="1">
+<<<<<<< HEAD
         <div class="col-6" style="margin-top: 10px;">
             <div class="card bg-c-yellow order-card">
                 <div class="card-header">
@@ -22,6 +23,29 @@
                                 <i class="fas fa-trash fa-lg"></i>
                             </button>
                             <button data-toggle="tooltip" data-placement="left" title="Actualiser" type="button" class="btn" style="color: #2c4960;" t-on-click="()=>this.reload()">
+=======
+        <div class="col-6 mt-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between">
+                        <h2>
+                            <span t-esc="props.data.equipe[1]"></span>
+                        </h2>
+                        <div>
+                            <button type="button" class="btn" style="color: #28a745;">
+                                <i class="far fa-calendar-check fa-lg"></i>
+                            </button>
+                            <button type="button" class="btn" style="color: #c8626c;">
+                                <i class="far fa-calendar-times fa-lg"></i>
+                            </button>
+                            <button type="button" class="btn" style="color: #007bff;">
+                                <i class="fas fa-list fa-lg"></i>
+                            </button>
+                            <button type="button" class="btn" style="color: #dc3545;">
+                                <i class="fas fa-trash fa-lg"></i>
+                            </button>
+                            <button type="button" class="btn" style="color: #2c4960;">
+>>>>>>> master
                                 <i class="fas fa-undo fa-lg"></i>
                             </button>
                         </div>
@@ -29,9 +53,15 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+<<<<<<< HEAD
                         <EquipeCardDetails details="props.data" />
                     </div>
                     <EquipeCardDetailsTable tabledetails="props.data" />
+=======
+                        <EquipeCardDetails details="props.data"/>
+                    </div>
+                    <EquipeCardDetailsTable tabledetails="props.data"/>
+>>>>>>> master
                 </div>
             </div>
         </div>

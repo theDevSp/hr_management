@@ -212,7 +212,7 @@ export async function content_fiche_de_paie(data, chantier, period, quinz, type)
                     table:
                     {
                         headerRows: 1,
-                        widths: [120,50,80,50,45,35,50,60,50,40,30,39,30,30,35,30,35,'*'],
+                        widths: [120, 50, 80, 50, 45, 35, 50, 60, 50, 40, 30, 30, 39, 30, 30, 35, 30, 35, '*'],
                         dontBreakRows: true,
                         body:
                             [
@@ -300,6 +300,15 @@ export async function content_fiche_de_paie(data, chantier, period, quinz, type)
                                     },
                                     {
                                         text: 'JOURS HEURES',
+                                        bold: true,
+                                        fontSize: 8,
+                                        fillColor: '#04aa6d',
+                                        color: 'white',
+                                        margin: [0, 5],
+                                        alignment: 'center',
+                                    },
+                                    {
+                                        text: 'S.J',
                                         bold: true,
                                         fontSize: 8,
                                         fillColor: '#04aa6d',
@@ -453,6 +462,13 @@ export async function content_fiche_de_paie(data, chantier, period, quinz, type)
                                             alignment: 'center'
                                         },
                                         {
+                                            text: tab.employe_salaire_jour,
+                                            fontSize: 8,
+                                            color: 'black',
+                                            margin: [0, 4],
+                                            alignment: 'center'
+                                        },
+                                        {
                                             text: tab.employe_cp,
                                             fontSize: 8,
                                             color: 'black',
@@ -520,7 +536,14 @@ export async function content_fiche_de_paie(data, chantier, period, quinz, type)
                                         color: 'white',
                                         margin: [0, 2],
                                         alignment: 'center',
-                                        colSpan: 11,
+                                        colSpan: 12,
+                                    },
+                                    {
+                                        text: '',
+                                        fontSize: 8,
+                                        color: 'black',
+                                        margin: [0, 2],
+                                        alignment: 'center'
                                     },
                                     {
                                         text: '',

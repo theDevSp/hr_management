@@ -42,6 +42,7 @@ class contrats(models.Model):
     plafonner_bonus_related = fields.Boolean(related="pp_personnel_id_many2one.plafonner_bonus", readonly=False)
     avoir_conge_related = fields.Boolean(related="pp_personnel_id_many2one.avoir_conge", readonly=False)
     payed_holidays_related = fields.Boolean(related="pp_personnel_id_many2one.payed_holidays", readonly=False)
+    payed_worked_holidays_related = fields.Boolean(related="pp_personnel_id_many2one.payed_worked_holidays", readonly=False)
     justification_related = fields.Boolean(related="pp_personnel_id_many2one.justification", readonly=False)
     saved_holidays_related = fields.Boolean(related="pp_personnel_id_many2one.saved_holidays", readonly=False)
     jo_related = fields.Boolean(related="pp_personnel_id_many2one.jo", readonly=False)
@@ -147,6 +148,9 @@ class contrats(models.Model):
                 "plafonner_bonus": self.profile_paie_id.plafonner_bonus,    
                 "avoir_conge": self.profile_paie_id.avoir_conge,    
                 "payed_holidays":self.profile_paie_id.payed_holidays,
+                "payed_worked_holidays":self.profile_paie_id.payed_worked_holidays,
+                "max_worked_days_p":self.profile_paie_id.max_worked_days_p,
+                "max_worked_days_d":self.profile_paie_id.max_worked_days_d,
                 "saved_holidays":self.profile_paie_id.saved_holidays,
                 "justification":self.profile_paie_id.justification,
                 "jo":self.profile_paie_id.jo,

@@ -4,33 +4,50 @@
         <div class="overflow-auto bg-muted" style="height: 100%;">
             <div class="row pt-2 px-4">
                 <div class="col-12">
+<<<<<<< HEAD
                     <div class="alert text-center" style="background-color: rgb(93,187,70); color: aliceblue;">
+=======
+                    <div class="alert alert-success text-center">
+>>>>>>> master
                         <span style="font-size: large;">
                             <strong>Tableau de Bord :</strong>
                         </span>
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
             <Dashform onClickFrom.bind="generateDashboard" updateView.bind="resetView" />
+=======
+            <Dashform onClickFrom.bind="generateDashboard" />
+>>>>>>> master
             <div class="row px-4 pt-1" t-if="!state.isFirstLoad">
                 <EquipeCard data="obj" t-foreach="state.data" t-as="obj" t-key="obj.id" />
             </div>
             <div class="row pt-4 px-4" t-if="state.isFirstLoad">
                 <div class="col-12">
+<<<<<<< HEAD
                     <div class="alert alert-danger text-center">
                         <span style="font-size: large;">
                             <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
                             <strong>Valider le formulaire avec les informations requises.                            </strong>
+=======
+                    <div class="alert alert-info text-center">
+                        <span style="font-size: large;">
+                            <strong>Valider le Formulaire avec les informatiosn required</strong>
+>>>>>>> master
                         </span>
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
             <div class="row pt-2 px-4" t-if="!state.isFirstLoad">
                 <div class="col-12">
                     <div class="alert text-center bg-muted">
                     </div>
                 </div>
             </div>
+=======
+>>>>>>> master
         </div>
     </t>
 </templates>

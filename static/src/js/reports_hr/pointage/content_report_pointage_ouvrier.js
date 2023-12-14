@@ -9,10 +9,12 @@ export async function content_report_pointage_ouvrier(data, chantier, quinz, per
         "equipe": data.equipe,
     }
 
-    const widthTable = [40, 120, 60, ...Array(nbr).fill('*'), 35]
+    const length = (data_header.quinzine == 'quinzaine1') ? 15 : (nbr - 15)
 
-    const headerTable = Array.from({ length: nbr }, (_, index) => ({
-        text: (nbr === 15 ? index + 1 : index + 16).toString(),
+    const widthTable = [40, 120, 60, ...Array(length).fill('*'), 35]
+
+    const headerTable = Array.from({ length: length }, (_, index) => ({
+        text: (data_header.quinzine === 'quinzaine1' ? index + 1 : index + 16).toString(),
         bold: true,
         fontSize: 10,
         fillColor: '#04aa6d',
@@ -146,7 +148,7 @@ export async function content_report_pointage_ouvrier(data, chantier, quinz, per
                         alignment: 'center'
                     }],
                     [{
-                        text: data_header.quinzine,
+                        text: data_header.quinzine === 'quinzaine1' ? "Première Quinzaine" : "Deuxième Quinzaine",
                         fontSize: 11,
                         border: [1, 0, 1, 1],
                         margin: [2, 6, 0, 7],

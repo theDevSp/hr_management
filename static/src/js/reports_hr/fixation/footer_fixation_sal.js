@@ -80,7 +80,7 @@ export function footer_fixation_sal(currentPage, pageCount) {
                 headerRows: 1,
                 body: [
                     [{
-                        text: 'M. SEDDAS KHALID',
+                        text: 'DIRECTEUR ADMINISTRATIF',
                         bold: true,
                         fontSize: 10,
                         alignment: 'center',
