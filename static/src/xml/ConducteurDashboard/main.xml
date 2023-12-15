@@ -35,9 +35,9 @@
                                     <div class="col-sm">
                                         <Periode onChangePeriode.bind="setPeriodeID" />
                                     </div>
-                                    <button class="btn btn-info cursor-pointer" t-on-click="()=>this.getData()">
+                                    <!--<button class="btn btn-info cursor-pointer" t-on-click="()=>this.getData()">
                                         Test
-                                    </button>
+                                    </button>-->
                                 </div>
                             </div>
                         </div>
