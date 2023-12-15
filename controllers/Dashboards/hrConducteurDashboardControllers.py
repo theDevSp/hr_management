@@ -1,9 +1,8 @@
 from odoo import http
-from odoo.http import request
 
-from itertools import groupby
-from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import json
+from datetime import datetime
 
 
 class hrConducteurDashboardControllers(http.Controller):
@@ -16,175 +15,225 @@ class hrConducteurDashboardControllers(http.Controller):
     @http.route('/hr_management/conducteur-dashboard/', type='json', auth='user')
     def get_chantiers_data_details(self, chantier_id, period_id):
 
-        period_id = int(period_id)
-        chantier_id = int(chantier_id)
+        try:
+            periode_id = int(period_id)
+            chantier_id = int(chantier_id)
 
-        chantier = http.request.env['fleet.vehicle.chantier'].sudo().browse(
-            chantier_id)
+            chantier = http.request.env['fleet.vehicle.chantier'].sudo().browse(
+                chantier_id)
 
-        current_period_record = http.request.env['account.month.period'].sudo().browse(
-            period_id)
+            periode_actuelle = http.request.env['account.month.period'].sudo().browse(
+                periode_id)
 
-        previous_period = self.get_previous_period(
-            current_period_record.date_start - relativedelta(months=1))
-        current_period = current_period_record
+            periode_precedente = self.get_previous_period(
+                periode_actuelle.date_start - relativedelta(months=1)
+            )
 
-        line_reports = http.request.env['hr.rapport.pointage.line'].sudo().search(
-            [('rapport_id.period_id.date_start', '>=', previous_period.date_start),
-             ('rapport_id.period_id.date_stop', '<=', current_period.date_stop),
-             ('chantier_id', '=', chantier_id)])
+            periode_courante = periode_actuelle
+            periode_precedente = periode_precedente
 
-        line_reports = sorted(line_reports, key=lambda r: (
-            r.day.month, r.employee_id.type_emp))
+            lignes_rapports = http.request.env['hr.rapport.pointage.line'].sudo().search([
+                ('day',
+                 '>=', periode_precedente.date_start),
+                ('day', '<=', periode_courante.date_stop),
+                ('chantier_id', '=', chantier_id)
+            ])
 
-        line_reports_grouped_by_month = groupby(
-            line_reports, lambda x: x.day.month)
+            if lignes_rapports:
 
-        for month_key, month_group in line_reports_grouped_by_month:
-            month_group_sorted = sorted(
-                month_group, key=lambda r: r.employee_id.type_emp)
-            line_reports_grouped_by_type = groupby(
-                month_group_sorted, lambda x: x.employee_id.type_emp)
+                rapports_lignes_periode_courante = lignes_rapports.filtered(
+                    lambda ln: periode_courante.date_start <= ln.day <= periode_courante.date_stop
+                )
 
-            for type_key, type_group in line_reports_grouped_by_type:
-                for line in type_group:
-                    print(line.id)
-        return
+                rapports_lignes_periode_precedente = lignes_rapports.filtered(
+                    lambda ln: periode_precedente.date_start <= ln.day <= periode_precedente.date_stop
+                )
 
-        total_hours_salarier_current_period = 0
-        total_hours_ouvrier_current_period = 0
+                rapports_lignes_periode_courante_salaries = rapports_lignes_periode_courante.filtered(
+                    lambda ln: ln.rapport_id.type_emp == 's'
+                )
 
-        total_hours_salarier_last_period = 0
-        total_hours_ouvrier_last_period = 0
+                rapports_lignes_periode_courante_ouvriers = rapports_lignes_periode_courante.filtered(
+                    lambda ln: ln.rapport_id.type_emp == 'o'
+                )
 
-        salarier_count_current_period = 0
-        ouvrier_count_current_period = 0
+                rapports_lignes_periode_precedente_salaries = rapports_lignes_periode_precedente.filtered(
+                    lambda ln: ln.rapport_id.type_emp == 's'
+                )
 
-        salarier_count_last_period = 0
-        ouvrier_count_last_period = 0
+                rapports_lignes_periode_precedente_ouvriers = rapports_lignes_periode_precedente.filtered(
+                    lambda ln: ln.rapport_id.type_emp == 'o'
+                )
 
-        salarier_amounts_last_period = 0
-        ouvrier_amounts_last_period = 0
+                total_heures_periode_salaries = sum(
+                    float(ln.h_travailler) for ln in rapports_lignes_periode_courante_salaries
+                )
+                total_heures_derniere_periode_salaries = sum(
+                    float(ln.h_travailler) for ln in rapports_lignes_periode_precedente_salaries
+                )
 
-        salarier_amounts_current_period = 0
-        ouvrier_amounts_current_period = 0
+                total_heures_periode_ouvriers = sum(
+                    float(ln.h_travailler) for ln in rapports_lignes_periode_courante_ouvriers
+                )
+                total_heures_derniere_periode_ouvriers = sum(
+                    float(ln.h_travailler) for ln in rapports_lignes_periode_precedente_ouvriers
+                )
 
-        for line in current_period_line_reports:
-            h_travailler = float(line.h_travailler)
+                total_salaires_periode_salaries = sum(
+                    float(ln.h_travailler) *
+                    ln.employee_id.salaire_heure_related
+                    for ln in rapports_lignes_periode_courante_salaries
+                )
+                total_salaires_derniere_periode_salaries = sum(
+                    float(ln.h_travailler) *
+                    ln.employee_id.salaire_heure_related
+                    for ln in rapports_lignes_periode_precedente_salaries
+                )
 
-            if line.rapport_id.quinzaine == "quinzaine12":
-                total_hours_salarier_current_period += h_travailler
-                salarier_count_current_period += 1
-                salarier_amounts_current_period += (
-                    line.employee_id.salaire_heure_related * h_travailler)
-            elif line.rapport_id.quinzaine in ('quinzaine1', 'quinzaine2'):
-                total_hours_ouvrier_current_period += h_travailler
-                ouvrier_count_current_period += 1
-                ouvrier_amounts_current_period += (
-                    line.employee_id.salaire_heure_related * h_travailler)
+                total_salaires_periode_ouvriers = sum(
+                    float(ln.h_travailler) *
+                    ln.employee_id.salaire_heure_related
+                    for ln in rapports_lignes_periode_courante_ouvriers
+                )
+                total_salaires_derniere_periode_ouvriers = sum(
+                    float(ln.h_travailler) *
+                    ln.employee_id.salaire_heure_related
+                    for ln in rapports_lignes_periode_precedente_ouvriers
+                )
 
-        for line in last_period_line_reports:
-            h_travailler = float(line.h_travailler)
+                count_salaries_derniere_periode = len(
+                    set(ln.rapport_id.id for ln in rapports_lignes_periode_precedente_salaries if ln.rapport_id.chantier_id.id == chantier_id)
+                )
+                count_salaries_periode = len(
+                    set(ln.rapport_id.id for ln in rapports_lignes_periode_courante_salaries if ln.rapport_id.chantier_id.id == chantier_id)
+                )
 
-            if line.rapport_id.quinzaine == "quinzaine12":
-                total_hours_salarier_last_period += h_travailler
-                salarier_count_last_period += 1
-                salarier_amounts_last_period += (
-                    line.employee_id.salaire_heure_related * h_travailler)
-            elif line.rapport_id.quinzaine in ('quinzaine1', 'quinzaine2'):
-                total_hours_ouvrier_last_period += h_travailler
-                ouvrier_count_last_period += 1
-                ouvrier_amounts_last_period += (
-                    line.employee_id.salaire_heure_related * h_travailler)
+                count_ouvriers_q1_derniere_periode = len(
+                    set(ln.rapport_id.id for ln in rapports_lignes_periode_precedente_ouvriers if ln.rapport_id.quinzaine ==
+                        'quinzaine1' and ln.rapport_id.chantier_id.id == chantier_id)
+                )
+                count_ouvriers_q1_periode = len(
+                    set(ln.rapport_id.id for ln in rapports_lignes_periode_courante_ouvriers if ln.rapport_id.quinzaine ==
+                        'quinzaine1' and ln.rapport_id.chantier_id.id == chantier_id)
+                )
 
-        current_period_line_reports = sorted(
-            current_period_line_reports, key=lambda r: (r.employee_id.job_id.name))
-        last_period_line_reports = sorted(
-            last_period_line_reports, key=lambda r: (r.employee_id.job_id.name))
+                count_ouvriers_q2_derniere_periode = len(
+                    set(ln.rapport_id.id for ln in rapports_lignes_periode_precedente_ouvriers if ln.rapport_id.quinzaine ==
+                        'quinzaine2' and ln.rapport_id.chantier_id.id == chantier_id)
+                )
+                count_ouvriers_q2_periode = len(
+                    set(ln.rapport_id.id for ln in rapports_lignes_periode_courante_ouvriers if ln.rapport_id.quinzaine == 'quinzaine2' and ln.rapport_id.chantier_id.id == chantier_id))
 
-        current_period_grouped_data = {key: len(set(record.employee_id.id for record in group)) for key, group in groupby(
-            current_period_line_reports, key=lambda r: r.employee_id.job_id.name)}
-        last_period_grouped_data = {key: len(set(record.employee_id.id for record in group)) for key, group in groupby(
-            last_period_line_reports, key=lambda r: r.employee_id.job_id.name)}
+                return {
+                    'code': 200,
+                    'message': 'Les données ont été chargées avec succès.',
+                    'timestamp': datetime.now().isoformat(),
+                    'periode_courante': periode_courante.code,
+                    'periode_precedente': periode_precedente.code,
+                    "chantier": chantier.code + " - " + chantier.simplified_name,
+                    'total_heures_periode_salaries': total_heures_periode_salaries,
+                    'total_heures_derniere_periode_salaries': total_heures_derniere_periode_salaries,
+                    'total_heures_periode_ouvriers': total_heures_periode_ouvriers,
+                    'total_heures_derniere_periode_ouvriers': total_heures_derniere_periode_ouvriers,
+                    'total_salaires_periode_salaries': total_salaires_periode_salaries,
+                    'total_salaires_derniere_periode_salaries': total_salaires_derniere_periode_salaries,
+                    'total_salaires_periode_ouvriers': total_salaires_periode_ouvriers,
+                    'total_salaires_derniere_periode_ouvriers': total_salaires_derniere_periode_ouvriers,
+                    'count_salaries_derniere_periode': count_salaries_derniere_periode,
+                    'count_salaries_periode': count_salaries_periode,
+                    'count_ouvriers_q1_derniere_periode': count_ouvriers_q1_derniere_periode,
+                    'count_ouvriers_q1_periode': count_ouvriers_q1_periode,
+                    'count_ouvriers_q2_derniere_periode': count_ouvriers_q2_derniere_periode,
+                    'count_ouvriers_q2_periode': count_ouvriers_q2_periode
+                }
+            else:
+                response_data = {
+                    'code': 202,
+                    'message': "Aucune donnée à charger.",
+                    'timestamp': datetime.now().isoformat()
+                }
+                return response_data
 
-        return {
-            "chantier": chantier.code + " - " + chantier.simplified_name,
-            "current_period": current_period.code,
-            "last_period": previous_period.code,
-            "total_hours_salarier_current_period": total_hours_salarier_current_period,
-            "total_hours_ouvrier_current_period": total_hours_ouvrier_current_period,
-            "total_hours_salarier_last_period": total_hours_salarier_last_period,
-            "total_hours_ouvrier_last_period": total_hours_ouvrier_last_period,
-            "salarier_count_current_period": salarier_count_current_period,
-            "ouvrier_count_current_period": ouvrier_count_current_period,
-            "salarier_count_last_period": salarier_count_last_period,
-            "ouvrier_count_last_period": ouvrier_count_last_period,
-            "salarier_amounts_last_period": salarier_amounts_last_period,
-            "ouvrier_amounts_last_period": ouvrier_amounts_last_period,
-            "salarier_amounts_current_period": salarier_amounts_current_period,
-            "ouvrier_amounts_current_period": ouvrier_amounts_current_period,
-            "count_effectif_postes_period": current_period_grouped_data,
-            "count_effectif_postes_last_period": last_period_grouped_data,
-        }
+        except Exception as e:
+            error_message = {
+                'code': 504,
+                'error': f'An error occurred while processing the request. {e}',
+                'message': "Une erreur s'est produite, veuillez réessayer !",
+                'timestamp': datetime.now().isoformat()
+            }
+            return error_message
 
-        """current_period_reports = http.request.env['hr.rapport.pointage'].sudo().search(
-            [('period_id', '=', current_period.id), ('chantier_id', '=', chantier_id)])
-        last_period_reports = http.request.env['hr.rapport.pointage'].sudo().search(
-            [('period_id', '=', previous_period.id), ('chantier_id', '=', chantier_id)])
+    @http.route('/hr_management/conducteur-dashboard/effectif-postes', type='json', auth='user')
+    def get_postes_details(self, chantier_id, period_id):
+        try:
 
-        print(len(current_period_reports), len(last_period_reports))
+            periode_id = int(period_id)
+            chantier_id = int(chantier_id)
 
-        period_total_h_ouvrier = 0
-        period_total_h_salarier = 0
-        period_total_sal_ouvrier = 0
-        period_total_sal_salarier = 0
-        period_total_salarier = 0
-        period_total_ouvrier = 0
+            periode_actuelle = http.request.env['account.month.period'].sudo().browse(
+                periode_id)
 
-        last_period_total_h_ouvrier = 0
-        last_period_total_h_salarier = 0
-        last_period_total_sal_ouvrier = 0
-        last_period_total_sal_salarier = 0
-        last_period_total_salarier = 0
-        last_period_total_ouvrier = 0
+            periode_precedente = self.get_previous_period(
+                periode_actuelle.date_start - relativedelta(months=1)
+            )
 
-        for rapport in current_period_reports:
-            if rapport.quinzaine in ('quinzaine1', 'quinzaine2'):
-                period_total_h_ouvrier += rapport.total_h
-                period_total_sal_ouvrier += rapport.employee_id.wage
-                period_total_ouvrier += 1
-            elif rapport.quinzaine == 'quinzaine12':
-                period_total_h_salarier += rapport.total_h
-                period_total_sal_salarier += rapport.employee_id.wage
-                period_total_salarier += 1
+            periode_courante = periode_actuelle
+            periode_precedente = periode_precedente
 
-        for rapport in last_period_reports:
-            if rapport.quinzaine in ('quinzaine1', 'quinzaine2'):
-                last_period_total_h_ouvrier += rapport.total_h
-                last_period_total_sal_ouvrier += rapport.employee_id.wage
-                last_period_total_ouvrier += 1
-            elif rapport.quinzaine == 'quinzaine12':
-                last_period_total_h_salarier += rapport.total_h
-                last_period_total_sal_salarier += rapport.employee_id.wage
-                last_period_total_salarier += 1
+            query = """
+                        select json_agg(e) from (
+                            SELECT
+                                v.job,
+                                MIN(CAST(e.name AS VARCHAR)) AS job_name,
+                                COUNT(1) FILTER (WHERE v.periode = %s) AS count_current,
+                                COUNT(1) FILTER (WHERE v.periode = %s) AS count_before
+                            FROM total_rapport v
+                            LEFT JOIN hr_job e ON v.job = e.id
+                            WHERE
+                                v.chantier = %s
+                            GROUP BY
+                                v.job
+                            ORDER BY
+                                job_name ASC
+                        ) e
+                    """ % (periode_courante.id, periode_precedente.id, chantier_id)
+            http.request.cr.execute(query)
 
-        user = http.request.env.user
+            results = http.request.cr.fetchall()[0][0]
+            res = []
 
-        return {
-            'previous_period': previous_period.code,
-            'current_period': current_period.code,
-            'period_total_h_ouvrier': period_total_h_ouvrier,
-            'period_total_h_salarier': period_total_h_salarier,
-            'period_total_sal_ouvrier': period_total_sal_ouvrier,
-            'period_total_sal_salarier': period_total_sal_salarier,
-            'period_total_salarier': period_total_salarier,
-            'period_total_ouvrier': period_total_ouvrier,
-            'last_period_total_h_ouvrier': last_period_total_h_ouvrier,
-            'last_period_total_h_salarier': last_period_total_h_salarier,
-            'last_period_total_sal_ouvrier': last_period_total_sal_ouvrier,
-            'last_period_total_sal_salarier': last_period_total_sal_salarier,
-            'last_period_total_ouvrier': last_period_total_ouvrier,
-            'last_period_total_salarier': last_period_total_salarier,
-            'user': user.name.upper()
-        }
-"""
+            if results:
+                for obj in results:
+                    posteName = json.loads(obj['job_name'])
+                    row = [
+                        posteName['en_US'],
+                        obj['count_before'],
+                        obj['count_current'],
+                    ]
+                    res.append(row)
+
+                return {
+                    'code': 200,
+                    'message': 'Les données ont été chargées avec succès.',
+                    'timestamp': datetime.now().isoformat(),
+                    'periode_actuelle':  periode_actuelle.code,
+                    'periode_precedente':  periode_precedente.code,
+                    'postesData': res
+                }
+
+            else:
+                response_data = {
+                    'code': 202,
+                    'message': "Aucune donnée à charger",
+                    'timestamp': datetime.now().isoformat()
+                }
+                return response_data
+
+        except Exception as e:
+            error_message = {
+                'code': 504,
+                'error': f'An error occurred while processing the request. {e}',
+                'message': "Une erreur s'est produite, veuillez réessayer !",
+                'timestamp': datetime.now().isoformat()
+            }
+            return error_message

@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry"
 
-const { Component, onMounted, useState, onWillStart, useRef } = owl
+const { Component, onMounted, useState, onWillStart, useEffect } = owl
 const { loadJS, loadCSS } = require('@web/core/assets');
 
 import { Chantiers } from "@construction_site_management/js/components/Chantiers/chantiers";
@@ -19,66 +19,26 @@ export class ConducteurDashboard extends Component {
         this.state = useState({
             periodeID: 143,
             chantierID: 179,
-            chantier: '',
-            periode: '',
-            pperiode: '',
-            totalHeures: {
-                labels: ['10/2023', '11/2023'],
-                datasets: [
-                    {
-                        label: 'Hours des Salariés',
-                        data: [300, 500],
-                        hoverOffset: 4,
-                        backgroundColor: 'rgb(153, 102, 255)',
-                    },
-                    {
-                        label: 'Hours des Ouvriers',
-                        data: [100, 170],
-                        hoverOffset: 4,
-                        backgroundColor: 'rgb(255, 205, 86)',
-                    }
-                ]
-            },
-            totalEffectifs: {
-                labels: ['10/2023', '11/2023'],
-                datasets: [
-                    {
-                        label: 'Total des Salariés',
-                        data: [300, 500],
-                        hoverOffset: 4,
-                        backgroundColor: 'rgb(255, 159, 64)',
-                    },
-                    {
-                        label: 'Total des Ouvriers',
-                        data: [100, 170],
-                        hoverOffset: 4,
-                        backgroundColor: 'rgb(255, 99, 132)',
-                    }
-                ]
-            },
-            totalSalaires: {
-                labels: ['10/2023', '11/2023'],
-                datasets: [
-                    {
-                        label: 'Total des Salariés',
-                        data: [300, 500],
-                        hoverOffset: 4,
-                        backgroundColor: 'rgb(54, 174, 61)',
-                    },
-                    {
-                        label: 'Total des Ouvriers',
-                        data: [100, 170],
-                        hoverOffset: 4,
-                        backgroundColor: 'rgb(75, 192, 192)',
-                    }
-                ]
-            }
+            chantierName: '',
+            periodeCode: '',
+            prevPeriodeCode: '',
+            totalHeures: null,
+            totalEffectifs: null,
+            totalSalaires: null
         })
+
+        useEffect(
+            () => {
+                if (this.state.chantierID != '' && this.state.periodeID != '') {
+                    this.getData();
+                }
+            },
+            () => [this.state.chantierID, this.state.periodeID]
+        )
 
         onWillStart(async () => {
             await loadJS("/configuration_module/static/src/libraries/selectize/selectize.min.js")
             await loadCSS("/configuration_module/static/src/libraries/selectize/selectize.default.min.css")
-            await this.getData()
         })
 
         onMounted(() => {
@@ -98,26 +58,16 @@ export class ConducteurDashboard extends Component {
         this.setState('chantierID', val);
     }
 
-    setChantier(val) {
-        this.setState('chantier', val);
+    setChantierName(val) {
+        this.setState('chantierName', val);
     }
 
-    setPeriode(val) {
-        this.setState('periode', val);
+    setPeriodeCode(val) {
+        this.setState('periodeCode', val);
     }
 
-    setPPeriode(val) {
-        this.setState('pperiode', val);
-    }
-
-    generateRandomRGBA(alpha = 0.9) {
-        var red = Math.floor(Math.random() * 256);
-        var green = Math.floor(Math.random() * 256);
-        var blue = Math.floor(Math.random() * 256);
-
-        var rgbaString = 'rgba(' + red + ', ' + green + ', ' + blue + ', ' + alpha + ')';
-
-        return rgbaString;
+    setPrevPeriodeCode(val) {
+        this.setState('prevPeriodeCode', val);
     }
 
     async getData() {
@@ -127,42 +77,46 @@ export class ConducteurDashboard extends Component {
             period_id: this.state.periodeID
         })
 
-        console.log(res)
-
-        this.setChantier(res.chantier)
-        this.setPeriode(res.current_period)
-        this.setPPeriode(res.last_period)
+        this.setChantierName(res.chantier)
+        this.setPeriodeCode(res.periode_courante)
+        this.setPrevPeriodeCode(res.periode_precedente)
 
         this.setState('totalEffectifs', {
-            labels: [res.last_period, res.current_period],
+            labels: [res.periode_precedente, res.periode_courante],
             datasets: [
                 {
                     label: 'Effectif des Salariés',
-                    data: [res.salarier_count_last_period, res.salarier_count_current_period],
+                    data: [res.count_salaries_derniere_periode, res.count_salaries_periode],
                     backgroundColor: 'rgb(255, 159, 64)',
                     hoverOffset: 4,
                 },
                 {
-                    label: 'Effectif des Ouvriers',
-                    data: [res.ouvrier_count_last_period, res.ouvrier_count_current_period],
-                    backgroundColor: 'rgb(255, 99, 132)',
+                    label: 'Effectif des Ouvriers Q1',
+                    data: [res.count_ouvriers_q1_derniere_periode, res.count_ouvriers_q1_periode],
+                    backgroundColor: 'rgb(255, 29, 132)',
+                    hoverOffset: 4
+                },
+                {
+                    label: 'Effectif des Ouvriers Q2',
+                    data: [res.count_ouvriers_q2_periode, res.count_ouvriers_q2_derniere_periode],
+                    backgroundColor: 'rgb(255, 99, 102)',
                     hoverOffset: 4
                 }
             ]
         });
 
         this.setState('totalHeures', {
-            labels: [res.last_period, res.current_period],
+            labels: [res.periode_precedente, res.periode_courante],
             datasets: [
                 {
                     label: 'Total herures des Salariés',
-                    data: [res.total_hours_salarier_last_period, res.total_hours_salarier_current_period],
+                    data: [res.total_heures_derniere_periode_salaries, res.total_heures_periode_salaries],
                     backgroundColor: 'rgb(153, 102, 255)',
                     hoverOffset: 4,
                 },
                 {
                     label: 'Total herures des Ouvriers',
-                    data: [res.total_hours_ouvrier_last_period, res.total_hours_ouvrier_current_period],
+                    data: [res.total_heures_derniere_periode_ouvriers, res.total_heures_periode_ouvriers],
                     backgroundColor: 'rgb(255, 205, 86)',
                     hoverOffset: 4
                 }
@@ -170,17 +124,17 @@ export class ConducteurDashboard extends Component {
         });
 
         this.setState('totalSalaires', {
-            labels: [res.last_period, res.current_period],
+            labels: [res.periode_precedente, res.periode_courante],
             datasets: [
                 {
                     label: 'Total des Salaires des Salariés',
-                    data: [res.salarier_amounts_current_period, res.salarier_amounts_last_period],
+                    data: [res.total_salaires_derniere_periode_salaries, res.total_salaires_periode_salaries],
                     backgroundColor: 'rgb(54, 174, 61)',
                     hoverOffset: 4,
                 },
                 {
                     label: 'Total des Salaires des Ouvriers',
-                    data: [res.ouvrier_amounts_last_period, res.ouvrier_amounts_current_period],
+                    data: [res.total_salaires_derniere_periode_ouvriers, res.total_salaires_periode_ouvriers],
                     backgroundColor: 'rgb(75, 192, 192)',
                     hoverOffset: 4
                 }

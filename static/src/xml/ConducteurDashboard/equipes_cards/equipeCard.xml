@@ -5,7 +5,9 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between">
                     <h2>
-                        <span style="color: aliceblue;">EQUIPE MATERIEL</span>
+                        <span style="color: aliceblue;">
+                            <t t-esc="props.name" />
+                        </span>
                     </h2>
                 </div>
             </div>
@@ -16,35 +18,35 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-around">
                                     <h4 class="card-title">
-                                                    Répartition effectifs
+                                        Répartition effectifs
                                     </h4>
                                     <i class="fas fa-solid fa-users fa-lg" style="color: rgb(0, 150, 136);"></i>
                                 </div>
                                 <hr>
                                 </hr>
                                 <p class="card-text">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="card-title">Les salariés :</h6>
-                                        <h6 class="card-title">
-                                            <span>120</span>
-                                        </h6>
-                                    </div>
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="card-title">Les salariés :</h6>
+                                    <h6 class="card-title">
+                                        <span>120</span>
+                                    </h6>
+                                </div>
                                 </p>
                                 <p class="card-text">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="card-title">Les ouvriers :</h6>
-                                        <h6 class="card-title">
-                                            <span>160</span>
-                                        </h6>
-                                    </div>
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="card-title">Les ouvriers :</h6>
+                                    <h6 class="card-title">
+                                        <span>160</span>
+                                    </h6>
+                                </div>
                                 </p>
                                 <p class="card-text">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="card-title">Total :</h6>
-                                        <h6 class="card-title">
-                                            <span>280</span>
-                                        </h6>
-                                    </div>
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="card-title">Total :</h6>
+                                    <h6 class="card-title">
+                                        <span>280</span>
+                                    </h6>
+                                </div>
                                 </p>
                             </div>
                         </div>
@@ -54,35 +56,35 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-around">
                                     <h4 class="card-title">
-                                                    Répartition heures
+                                        Répartition heures
                                     </h4>
                                     <i class="fas fa-solid fa-clock fa-lg" style="color: rgb(0, 150, 136);"></i>
                                 </div>
                                 <hr>
                                 </hr>
                                 <p class="card-text">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="card-title">Les salariés :</h6>
-                                        <h6 class="card-title">
-                                            <span>1200 h</span>
-                                        </h6>
-                                    </div>
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="card-title">Les salariés :</h6>
+                                    <h6 class="card-title">
+                                        <span>1200 h</span>
+                                    </h6>
+                                </div>
                                 </p>
                                 <p class="card-text">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="card-title">Les ouvriers :</h6>
-                                        <h6 class="card-title">
-                                            <span>1300 h</span>
-                                        </h6>
-                                    </div>
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="card-title">Les ouvriers :</h6>
+                                    <h6 class="card-title">
+                                        <span>1300 h</span>
+                                    </h6>
+                                </div>
                                 </p>
                                 <p class="card-text">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="card-title">Total :</h6>
-                                        <h6 class="card-title">
-                                            <span>2400 h</span>
-                                        </h6>
-                                    </div>
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="card-title">Total :</h6>
+                                    <h6 class="card-title">
+                                        <span>2400 h</span>
+                                    </h6>
+                                </div>
                                 </p>
                             </div>
                         </div>
@@ -92,35 +94,35 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-around">
                                     <h4 class="card-title">
-                                                    Répartition des montants totaux à payer :
+                                        Répartition des montants totaux à payer :
                                     </h4>
                                     <i class="fas fa-solid fa-money-bill fa-lg" style="color: rgb(0, 150, 136);"></i>
                                 </div>
                                 <hr>
                                 </hr>
                                 <p class="card-text">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="card-title">Les salariés :</h6>
-                                        <h6 class="card-title">
-                                            <span>120 000 DH</span>
-                                        </h6>
-                                    </div>
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="card-title">Les salariés :</h6>
+                                    <h6 class="card-title">
+                                        <span>120 000 DH</span>
+                                    </h6>
+                                </div>
                                 </p>
                                 <p class="card-text">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="card-title">Les ouvriers :</h6>
-                                        <h6 class="card-title">
-                                            <span>130 000 DH</span>
-                                        </h6>
-                                    </div>
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="card-title">Les ouvriers :</h6>
+                                    <h6 class="card-title">
+                                        <span>130 000 DH</span>
+                                    </h6>
+                                </div>
                                 </p>
                                 <p class="card-text">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="card-title">Total :</h6>
-                                        <h6 class="card-title">
-                                            <span>240 000 DH</span>
-                                        </h6>
-                                    </div>
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="card-title">Total :</h6>
+                                    <h6 class="card-title">
+                                        <span>240 000 DH</span>
+                                    </h6>
+                                </div>
                                 </p>
                             </div>
                         </div>
@@ -128,40 +130,41 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-lg">
-                        <table class="table table-hover" style="border-color: rgb(0, 150, 136);">
+                        <div style="text-align: center;">
+                            <strong>Les Ouvriers</strong>
+                        </div>
+                        <hr style="border: 1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                        <table class="table table-striped text-center">
                             <thead>
-                                <tr style="text-align: center;">
-                                    <th scope="col" colSpan="5">Ouvrier</th>
-                                </tr>
                                 <tr>
-                                    <th scope="col">NOM et Prenom</th>
+                                    <th scope="col">Nom et Prénom</th>
                                     <th scope="col">CIN</th>
                                     <th scope="col">Poste</th>
-                                    <th scope="col">Total H</th>
-                                    <th scope="col">Total A Payer</th>
+                                    <th scope="col">Total des Heures</th>
+                                    <th scope="col">Total À Payer</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th>1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
+                                    <th scope="row">ABDELILLAH TOUMI</th>
+                                    <td>F256612</td>
+                                    <td>BOISSEUR</td>
+                                    <td>153 H</td>
+                                    <td>4500 DH</td>
                                 </tr>
                                 <tr>
-                                    <th>2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@mdo</td>
-                                    <td>@fat</td>
+                                    <th scope="row">JALAL KASMI</th>
+                                    <td>U256612</td>
+                                    <td>CHAUFFEUR DE BUS</td>
+                                    <td>110 H</td>
+                                    <td>5500 DH</td>
                                 </tr>
                                 <tr>
-                                    <th>3</th>
-                                    <td>Larry the Bird</td>
-                                    <td>@twitter</td>
-                                    <td>@twitter</td>
-                                    <td>@twitter</td>
+                                    <th scope="row">MOUNIR TOUR</th>
+                                    <td>S256612</td>
+                                    <td>CHEF DE CHANTIER</td>
+                                    <td>120 H</td>
+                                    <td>6500 DH</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -170,40 +173,41 @@
 
                 <div class="row mt-2">
                     <div class="col-lg">
-                        <table class="table table-hover" style="border-color: rgb(0, 150, 136);">
+                        <div style="text-align: center;">
+                            <strong>Les Salariés</strong>
+                        </div>
+                        <hr style="border:1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                        <table class="table table-striped text-center">
                             <thead>
-                                <tr style="text-align: center;">
-                                    <th scope="col" colSpan="5">Salarier</th>
-                                </tr>
                                 <tr>
-                                    <th scope="col">NOM et Prenom</th>
+                                    <th scope="col">Nom et Prénom</th>
                                     <th scope="col">CIN</th>
                                     <th scope="col">Poste</th>
-                                    <th scope="col">Total H</th>
-                                    <th scope="col">Total A Payer</th>
+                                    <th scope="col">Total des Heures</th>
+                                    <th scope="col">Total À Payer</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th>1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
+                                    <th scope="row">ABDELILLAH TOUMI</th>
+                                    <td>F256612</td>
+                                    <td>BOISSEUR</td>
+                                    <td>153 H</td>
+                                    <td>4500 DH</td>
                                 </tr>
                                 <tr>
-                                    <th>2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@mdo</td>
-                                    <td>@fat</td>
+                                    <th scope="row">JALAL KASMI</th>
+                                    <td>U256612</td>
+                                    <td>CHAUFFEUR DE BUS</td>
+                                    <td>110 H</td>
+                                    <td>5500 DH</td>
                                 </tr>
                                 <tr>
-                                    <th>3</th>
-                                    <td>Larry the Bird</td>
-                                    <td>@twitter</td>
-                                    <td>@twitter</td>
-                                    <td>@twitter</td>
+                                    <th scope="row">MOUNIR TOUR</th>
+                                    <td>S256612</td>
+                                    <td>CHEF DE CHANTIER</td>
+                                    <td>120 H</td>
+                                    <td>6500 DH</td>
                                 </tr>
                             </tbody>
                         </table>
