@@ -54,8 +54,16 @@ export class EffectifPosteTable extends Component {
         this.grid = new gridjs.Grid({
             search: true,
             sort: true,
-            pagination: true,
+            pagination: {
+                limit: 12
+            },
             data: this.state.data.postesData,
+            data: () => {
+                return new Promise(resolve => {
+                    setTimeout(() =>
+                        resolve(this.state.data.postesData), 500);
+                });
+            },
             language: {
                 'search': {
                     'placeholder': 'Recherche...'
@@ -73,10 +81,34 @@ export class EffectifPosteTable extends Component {
                 this.state.data.periode_actuelle,
                 {
                     name: '',
-                    formatter: (_, row) => gridjs.html(markup(`<span class="text-success">
-                                            <i class=""></i>${row.cells[1].data + row.cells[2].data}
-                                            </span>`))
+                    sortable: false,
+                    formatter: (_, row) => {
+                        const diff = row.cells[1].data - row.cells[2].data;
+
+                        if (!isNaN(diff) && diff !== 0) {
+                            const arrowIcon = diff > 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+                            const textColorClass = diff > 0 ? 'text-success' : 'text-danger';
+
+                            return gridjs.html(`<span class="${textColorClass}">
+                                        <i class="fas ${arrowIcon}"></i> ${Math.abs(diff)}
+                                    </span>`);
+                        } else if (diff === 0) {
+                            return gridjs.html(`<span class="text-info">
+                                        ${diff}
+                                    </span>`);
+                        }
+                    }
                 }],
+            style: {
+                table: {
+                },
+                th: {
+                    'background-color': 'rgb(0,145,132,0.1)',
+                    'font-weight': 'bold'
+                },
+                td: {
+                }
+            }
 
         }).render(this.table.el);
     }

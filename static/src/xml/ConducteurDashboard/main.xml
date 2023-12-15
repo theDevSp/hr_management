@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="owl.ConducteurDashboard" owl="1">
-        <div class="vh-100 overflow-auto bg-muted">
+        <div class="vh-100 overflow-auto bg-dark-subtle">
             <div class="row m-3">
                 <div class="col-6">
                     <div class="row d-flex align-items-center">
@@ -45,16 +45,16 @@
                             <ChartRenderer type="'bar'" title="'Total d\'Effectif'" config="state.totalEffectifs" />
                         </div>
                         <div class="col-6 bg-white shadow-sm border mt-2">
-                            <ChartRenderer type="'bar'" title="'Total des heures'" config="state.totalHeures" />
+                            <ChartRenderer type="'bar'" title="'Total des heures Travaillées'" config="state.totalHeures" />
                         </div>
                         <div class="col-6 bg-white shadow-sm border mt-2">
-                            <ChartRenderer type="'bar'" title="'Total des Salaires'" config="state.totalSalaires" />
+                            <ChartRenderer type="'bar'" title="'Total des Montants'" config="state.totalSalaires" />
                         </div>
                     </div>
                 </div>
                 <div class="col-6 d-flex">
                     <div class="col m-0 p-0">
-                        <div class="shadow-sm border m-2 p-4 bg-white" style="height: 680px;">
+                        <div class="shadow-sm border m-2 p-4 bg-white" style="height: 790px;">
                             <EffectifPosteTable period="state.periodeID" chantier="state.chantierID" />
                         </div>
                     </div>
