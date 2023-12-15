@@ -33,6 +33,7 @@ class StcListController extends ListController {
             try {
                 const stcs = await Promise.all(stcIds.map(async (id) => {
                     const res = await this.rpc(`/hr_management/get_stc/${id}`);
+                    console.log(res);
                     return res;
                 }));
 
@@ -96,7 +97,7 @@ class StcListController extends ListController {
                                             color: 'white',
                                             margin: [0, 5]
                                         }, {
-                                            text: 'Direction',
+                                            text: 'DIRECTEUR ADMINISTRATIF',
                                             fontSize: 10,
                                             bold: true,
                                             alignment: 'center',
@@ -104,7 +105,7 @@ class StcListController extends ListController {
                                             color: 'white',
                                             margin: [0, 5]
                                         }, {
-                                            text: 'Juridique',
+                                            text: 'M. LE PDG',
                                             fontSize: 10,
                                             bold: true,
                                             alignment: 'center',

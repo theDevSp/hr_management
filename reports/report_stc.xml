@@ -92,7 +92,7 @@
 						</div>
 
 						<div class="row mb-3">
-							<div class="col-6" t-if="doc.reste_salaire != 0 or doc.dgi != 0 or doc.licenciement != 0 or doc.prime != 0 or doc.frais_depense != 0 or doc.frais_route != 0">
+							<div class="col-6">
 								<div class="card mb-4 bg-light job-card-fixed cadres" style="border-radius: 10px;">
                                     <div class="card-header border-top border-left border-right border-dark text-center">
                                         <h5>Remboursement</h5>
@@ -136,7 +136,7 @@
                                 </div>
 							</div>
 
-							<div class="col-6" t-if="doc.jr_conge != 0 or doc.jr_dim > 0 or doc.jr_block != 0">
+							<div class="col-6">
 								<div class="card mt-3 mb-2 bg-light job-card-fixed cadres" style="border-radius: 10px;">
                                     <div class="card-header border-top border-left border-right border-dark text-center">
                                         <h5>Congés, Dimanches et Indeminités</h5>
@@ -186,104 +186,37 @@
                                 </div>
 							</div>
 						</div>
-
-						<div class="row">
-							<div class="col-6" t-if="doc.preavis_ajouter != 0 or doc.preavis_retenu > 0 or doc.amande != 0 or doc.retenu != 0 or doc.cimr != 0 or doc.emprunt != 0">
-								<div class="card mb-4 bg-light job-card-fixed cadres" style="border-radius: 10px;">
-                                    <div class="card-header border-top border-left border-right border-dark text-center">
-                                        <h5>Préavis</h5>
-                                    </div>
-                                    <div class="card-body border-right border-bottom border-left border-dark text-dark">
-										<center>
-											<table width="100%" class="stc_table">
-												<tr>
-													<td class="text-left" width="50%"><strong>PRÉAVIS À AJOUTER</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-                                                    <td class="text-left" width="42%"><span t-esc="doc.preavis_ajouter"/></td>
-												</tr>
-												<tr>
-													<td class="text-left" width="50%"><strong>MONTANT</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-													<td class="text-left" width="42%"><span t-esc="'%.2f'% (doc.preavis_ajouter_m)" /> (DH)</td>
-												</tr>
-												<tr>
-													<td class="text-left" width="50%"><strong>PRÉAVIS À RETENIR</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-													<td class="text-left" width="42%"><span t-esc="doc.preavis_retenu" /></td>
-												</tr>
-												<tr>
-													<td class="text-left" width="50%"><strong>MONTANT</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-													<td class="text-left" width="42%"><span t-esc="'%.2f'% (doc.preavis_retenu_m)" /> (DH)</td>
-												</tr>
-												<tr>
-													<td class="text-left" width="50%"><strong>AMENDE</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-													<td class="text-left" width="42%"><span t-field="doc.amande" /> (DH)</td>
-												</tr>
-												<tr>
-													<td class="text-left" width="50%"><strong>PRÉLÈVEMENT</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-													<td class="text-left" width="42%"><span t-field="doc.retenu" /> (DH)</td>
-												</tr>
-												<tr>
-													<td class="text-left" width="50%"><strong>CIMR</strong></td>
-                                                    <td width="8%" class="text-center"> : </td>
-													<td class="text-left" width="42%"><span t-field="doc.cimr" /> (DH)</td>
-												</tr>
-												<tr>
-													<td class="text-left" width="50%" t-if="doc.emprunt > 0"><strong>RESTE DE L'EMPRUNT</strong></td>
-                                                    <td width="8%" class="text-center" t-if="doc.emprunt > 0"> : </td>
-													<td class="text-left" width="42%" t-if="doc.emprunt > 0"><span t-field="doc.emprunt" /> (DH)</td>
-												</tr>
-											</table>
-										</center>
-									</div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="row mb-2">
-									<div class="col-12">
-										<div class="card mb-4 bg-light job-card-fixed cadres" style="border-radius: 10px;">
-											<div class="card-header border-top border-left border-right border-dark text-center">
-												<h5>Observation / Motif</h5>
-											</div>
-											<div class="card-body border-right border-bottom border-left border-dark text-dark">
-												<p t-if="doc.motif">- <span t-field="doc.motif" /></p>
-												<p t-if="doc.note">- <span t-field="doc.note" /></p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-6">
-										<div class="card mb-4 bg-light job-card-fixed cadres" style="border-radius: 10px;">
-											<div class="card-header border-top border-left border-right border-dark text-center">
-												<h5>Montant à payé</h5>
-											</div>
-											<div class="card-body border-right border-bottom border-left border-dark text-dark">
-												<h4 class="text-center"><strong><span  t-esc="'%.0f'% doc.montant_total" /> (DH)</strong></h4>
-											</div>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="card mb-4 bg-light job-card-fixed cadres" style="border-radius: 10px;">
-											<div class="card-header border-top border-left border-right border-dark text-center">
-												<h5>Montant Validé</h5>
-											</div>
-											<div class="card-body border-right border-bottom border-left border-dark text-dark">
-												<h4 class="text-center" t-if="doc.valide_salaire != 0"><strong><span  t-esc="'%.0f'% doc.valide_salaire" /> (DH)</strong></h4>
-												<h4 class="text-center" t-if="doc.valide_salaire == 0"><strong style="color:transparent">(DH)</strong></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>					
+				
 					</div>
-                    <t t-call="reports_templates.common_footer">
-                        <t t-call="reports_templates.bc_rh_signature"/>
-                    </t>
+                    <div class="footer">
+                        <div class="row">
+                            <div class="col-12">
+                                <t t-out="0"/>
+                            </div>
+                        </div>
+                        
+                        <hr/>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="contacts">
+                                    <p><span class="fas fa-map-marker-alt mr-3" ></span>DOUAR SNAYNA–COMMUNE ISLY BP 10775 OUJDA MAROC</p>
+                                    <p><span class="fas fa-phone mr-3"></span>+212 (0) 536 680 509 / +212 (0) 536 690 116</p>
+                                    <p><span class="fas fa-fax mr-3"></span>+212 (0) 536 688 747 / +212 (0) 536 523 562</p>
+                                    <p><span class="fas fa-globe mr-3"></span>https://www.biouitravaux.com</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="footer-page float-right">
+                                    <div class="print-date">
+                                        <span t-esc="time.strftime('%d-%m-%Y %H:%M:%S')"/>
+                                    </div>
+                                    <div class="page-number">
+                                        Page: <span class="page"/> / <span class="topage"/>                           
+                                    </div>                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </t>
             </t>
         </t>

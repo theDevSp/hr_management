@@ -25,28 +25,28 @@
                                 <hr>
                                 </hr>
                                 <p class="card-text">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="card-title">Les salariés :</h6>
-                                    <h6 class="card-title">
-                                        <span>120</span>
-                                    </h6>
-                                </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-title">Les salariés :</h6>
+                                        <h6 class="card-title">
+                                            <span>120</span>
+                                        </h6>
+                                    </div>
                                 </p>
                                 <p class="card-text">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="card-title">Les ouvriers :</h6>
-                                    <h6 class="card-title">
-                                        <span>160</span>
-                                    </h6>
-                                </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-title">Les ouvriers :</h6>
+                                        <h6 class="card-title">
+                                            <span>160</span>
+                                        </h6>
+                                    </div>
                                 </p>
                                 <p class="card-text">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="card-title">Total :</h6>
-                                    <h6 class="card-title">
-                                        <span>280</span>
-                                    </h6>
-                                </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-title">Total :</h6>
+                                        <h6 class="card-title">
+                                            <span>280</span>
+                                        </h6>
+                                    </div>
                                 </p>
                             </div>
                         </div>
@@ -63,28 +63,28 @@
                                 <hr>
                                 </hr>
                                 <p class="card-text">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="card-title">Les salariés :</h6>
-                                    <h6 class="card-title">
-                                        <span>1200 h</span>
-                                    </h6>
-                                </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-title">Les salariés :</h6>
+                                        <h6 class="card-title">
+                                            <span>1200 h</span>
+                                        </h6>
+                                    </div>
                                 </p>
                                 <p class="card-text">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="card-title">Les ouvriers :</h6>
-                                    <h6 class="card-title">
-                                        <span>1300 h</span>
-                                    </h6>
-                                </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-title">Les ouvriers :</h6>
+                                        <h6 class="card-title">
+                                            <span>1300 h</span>
+                                        </h6>
+                                    </div>
                                 </p>
                                 <p class="card-text">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="card-title">Total :</h6>
-                                    <h6 class="card-title">
-                                        <span>2400 h</span>
-                                    </h6>
-                                </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-title">Total :</h6>
+                                        <h6 class="card-title">
+                                            <span>2400 h</span>
+                                        </h6>
+                                    </div>
                                 </p>
                             </div>
                         </div>
@@ -101,28 +101,28 @@
                                 <hr>
                                 </hr>
                                 <p class="card-text">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="card-title">Les salariés :</h6>
-                                    <h6 class="card-title">
-                                        <span>120 000 DH</span>
-                                    </h6>
-                                </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-title">Les salariés :</h6>
+                                        <h6 class="card-title">
+                                            <span>120 000 DH</span>
+                                        </h6>
+                                    </div>
                                 </p>
                                 <p class="card-text">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="card-title">Les ouvriers :</h6>
-                                    <h6 class="card-title">
-                                        <span>130 000 DH</span>
-                                    </h6>
-                                </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-title">Les ouvriers :</h6>
+                                        <h6 class="card-title">
+                                            <span>130 000 DH</span>
+                                        </h6>
+                                    </div>
                                 </p>
                                 <p class="card-text">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="card-title">Total :</h6>
-                                    <h6 class="card-title">
-                                        <span>240 000 DH</span>
-                                    </h6>
-                                </div>
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-title">Total :</h6>
+                                        <h6 class="card-title">
+                                            <span>240 000 DH</span>
+                                        </h6>
+                                    </div>
                                 </p>
                             </div>
                         </div>
@@ -131,7 +131,7 @@
                 <div class="row mt-2">
                     <div class="col-lg">
                         <div style="text-align: center;">
-                            <strong>Les Ouvriers</strong>
+                            <strong>Détails Salariés</strong>
                         </div>
                         <hr style="border: 1px solid rgb(0, 150, 136); border-radius: 5px;" />
                         <table class="table table-striped text-center">
@@ -174,7 +174,7 @@
                 <div class="row mt-2">
                     <div class="col-lg">
                         <div style="text-align: center;">
-                            <strong>Les Salariés</strong>
+                            <strong>Détails Ouvriers</strong>
                         </div>
                         <hr style="border:1px solid rgb(0, 150, 136); border-radius: 5px;" />
                         <table class="table table-striped text-center">

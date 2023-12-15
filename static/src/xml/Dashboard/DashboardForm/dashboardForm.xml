@@ -31,18 +31,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="row px-4">
-                    <span>
-                        Quinzine : <t t-esc="state.quinz"/>
-                    <br />
-                        periodeID : <t t-esc="state.periodeID"/>
-                <br />
-                        chantierID : <t t-esc="state.chantierID"/>
-            <br />
-                        equipeID : <t t-esc="state.equipeID"/>
-        </span>
-    </div>
-</div>
-</div>
-</t>
+            </div>
+        </div>
+    </t>
 </templates>

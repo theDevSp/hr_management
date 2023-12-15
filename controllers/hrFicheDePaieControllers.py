@@ -23,7 +23,8 @@ class HrFicheDePaieController(http.Controller):
         period_id = int(period_id)
         chantier_id = int(chantier_id)
 
-        domains = [('period_id', '=', period_id),('chantier_id', '=', chantier_id)]
+        domains = [('period_id', '=', period_id),
+                   ('chantier_id', '=', chantier_id)]
 
         if quinz:
             domains.append(('quinzaine', '=', quinz))
@@ -34,17 +35,20 @@ class HrFicheDePaieController(http.Controller):
 
         if type_employe:
             domains.append(('type_emp', '=', type_employe))
-        
+
         if type_fiche:
             domains.append(('type_fiche', '=', type_fiche))
 
         payslips = http.request.env['hr.payslip'].search(domains)
-        chantier = http.request.env['fleet.vehicle.chantier'].browse(chantier_id)  # chantier_id
-        period = http.request.env['account.month.period'].browse(period_id)  # period_id
+        chantier = http.request.env['fleet.vehicle.chantier'].browse(
+            chantier_id)  # chantier_id
+        period = http.request.env['account.month.period'].browse(
+            period_id)  # period_id
 
         if payslips:
 
-            res = sorted(payslips, key=lambda re: re.emplacement_chantier_id.name)
+            res = sorted(
+                payslips, key=lambda re: re.emplacement_chantier_id.name)
             final = []
 
             for group_key, group in groupby(res, key=lambda re: re.emplacement_chantier_id.name):
@@ -98,23 +102,26 @@ class HrFicheDePaieController(http.Controller):
                         'employe_deduction': f"{grp.deduction:.0f}" or 0,
                         'employe_cotisation': f"{cotisation:.0f}" or 0,
                         'employe_jours_heure': jours_heure or 0,
+                        'employe_salaire_jour': f"{grp.salaire_jour:.2f}" or 0,
                         'employe_cp': f"{grp.cp_number:.2f}" or 0,
                         'employe_total': round(total) or 0,
-                        'employe_prime_ftor': f"{grp.addition:.0f}"or 0,
+                        'employe_prime_ftor': f"{grp.addition:.0f}" or 0,
                         'employe_sad': round(salaire_sad) or 0,
                         'employe_nap': round(salaire_nap) or 0,
                         'observation': grp.note or ""
                     }
 
                     total_employe_total += float(data_entry['employe_total'])
-                    total_employe_deduction += float(data_entry['employe_deduction'])
-                    total_employe_cotisation += float(data_entry['employe_cotisation'])
+                    total_employe_deduction += float(
+                        data_entry['employe_deduction'])
+                    total_employe_cotisation += float(
+                        data_entry['employe_cotisation'])
                     total_employe_sad += float(data_entry['employe_sad'])
                     total_employe_nap += float(data_entry['employe_nap'])
-                    total_employe_addition += float(data_entry['employe_prime_ftor'])
+                    total_employe_addition += float(
+                        data_entry['employe_prime_ftor'])
 
                     obj["data"].append(data_entry)
-                
 
                 obj["total_employe_total"] = total_employe_total
                 obj["total_employe_deduction"] = total_employe_deduction
@@ -124,14 +131,13 @@ class HrFicheDePaieController(http.Controller):
                 obj["total_employe_addition"] = total_employe_addition
                 final.append(obj)
 
-            
             if quinz == "quinzaine1":
                 quinzine = "Première Quinzaine"
             elif quinz == "quinzaine2":
                 quinzine = "Deuxième Quinzaine"
             elif quinz == "quinzaine12":
                 quinzine = "Q1 + Q2"
-            
+
             return http.request.make_json_response(data={
                 "chantier": chantier.name.upper(),
                 "periode": period.name.upper(),
@@ -141,4 +147,3 @@ class HrFicheDePaieController(http.Controller):
             }, status=200)
         else:
             return http.request.make_json_response(data={'message': 'No data found'}, status=204)
-

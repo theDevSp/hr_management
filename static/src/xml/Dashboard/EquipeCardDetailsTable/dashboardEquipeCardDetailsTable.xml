@@ -5,9 +5,7 @@
             <div class="mb-3">
                 <h6>Listes des Fiches de paies :</h6>
             </div>
-            <table t-attf-id="{{props.tabledetails.id}}"
-                class="pt-4 table caption-top text-center table-striped table-bordered table-sm" cellspacing="0"
-                width="100%">
+            <table t-attf-id="{{props.tabledetails.id}}" class="pt-4 table caption-top text-center table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th scope="col">Employé</th>

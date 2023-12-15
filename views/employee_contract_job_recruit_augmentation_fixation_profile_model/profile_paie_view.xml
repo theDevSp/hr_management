@@ -101,6 +101,12 @@
                                             </div>
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
+                                                    <span class="input-group-text" ><label for="payed_worked_holidays" class=""/></span>
+                                                </div>
+                                                <field name="payed_worked_holidays" widget="boolean_toggle"  class="form-control"/>
+                                            </div>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
                                                     <span class="input-group-text" ><label for="justification" class=""/></span>
                                                 </div>
                                                 <field name="justification" class="form-control" widget="boolean_toggle" />

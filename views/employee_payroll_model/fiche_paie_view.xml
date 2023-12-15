@@ -6,37 +6,31 @@
         <field name="arch" type="xml">
             <tree string="Fiche de paie">
                 <field name="name" optional="show"/>
-                <field name="period_id" optional="show"/>
-                <field name="date_validation" optional="show"/>
-                <field name="quinzaine" optional="show"/>
                 <field name="employee_name"/>
                 <field name="cin" optional="hide"/>
                 <field name="rib_number" optional="hide"/>
-                <field name="payement_mode_id" optional="hide"/>
-                <field name="profile_paie_id" optional="hide"/>
-                <field name="type_emp" optional="show"/>
                 <field name="job_id" optional="show"/>
-                <field name="chantier_id" optional="show"/>
-                <field name="emplacement_chantier_id" optional="show"/>
+                <field name="period_id" optional="show"/>
                 <field name="vehicle_id" optional="show"/>
-                <field name="salaire_actuel" optional="hide"/>
-                <field name="addition" optional="hide" string="prime"/>
-                <field name="deduction" optional="hide" string="DED"/>
-                <field name="total" optional="show"/>
-                <field name="sad" optional="show"/>
-                <field name="net_pay" optional="show"/>
-                <field name="affich_bonus_jour" optional="hide"/>
+                <field name="date_start" optional="hide"/>
                 <field name="affich_jour_conge" optional="hide"/>
+                <field name="profile_paie_id" optional="hide"/>
+                <field name="payement_mode_id" optional="hide"/>
+                <field name="type_emp" optional="show"/>
+                <field name="salaire_actuel" optional="hide"/>
                 <field name="nbr_jour_travaille" optional="hide"/>
                 <field name="nbr_heure_travaille" optional="hide"/>
-                <field name="jr_travaille_par_chantier" optional="hide"/>
-                <field name="type_fiche" optional="hide"/>
-                <field name="contract_id" optional="hide"/>
-                <field name="entreprise_id" optional="hide"/>
-                <field name="date_start" optional="hide"/>
-                <field name="rapport_id" optional="hide"/>
+                <field name="cp_number" optional="hide"/>
+                <field name="total" optional="show"/>
+                <field name="deduction" optional="hide" string="DED"/>
+                <field name="sad" optional="show"/>
+                <field name="addition" optional="hide" string="prime"/>
+                <field name="net_pay" optional="show"/>
+                <field name="chantier_id" optional="show"/>
+                <field name="emplacement_chantier_id" optional="show"/>
                 <field name="note" optional="hide"/>
-                <field name="stc_id" optional="hide"/>
+                <field name="type_fiche" optional="hide"/>
+                <field name="entreprise_id" optional="hide"/>
                 <field name="state" widget="badge"  optional="show"
                                                     decoration-muted="state == 'draft'" 
                                                     decoration-info="state == 'cal'" 
@@ -44,6 +38,14 @@
                                                     decoration-warning="state == 'validee'"
                                                     decoration-success="state == 'done'"
                                             />
+                <field name="create_uid" optional="show"/>
+                <field name="date_validation" optional="hide"/>
+                <field name="quinzaine" optional="show"/>
+                <field name="affich_bonus_jour" optional="hide"/>
+                <field name="jr_travaille_par_chantier" optional="hide"/>
+                <field name="contract_id" optional="hide"/>
+                <field name="rapport_id" optional="hide"/>
+                <field name="stc_id" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -54,37 +56,31 @@
         <field name="arch" type="xml">
             <tree string="Fiche de paie">
                 <field name="name" optional="show"/>
-                <field name="period_id" optional="show"/>
-                <field name="date_validation" optional="show"/>
-                <field name="quinzaine" optional="show"/>
                 <field name="employee_name"/>
                 <field name="cin" optional="hide"/>
                 <field name="rib_number" optional="hide"/>
-                <field name="payement_mode_id" optional="hide"/>
-                <field name="profile_paie_id" optional="hide"/>
-                <field name="type_emp" optional="show"/>
                 <field name="job_id" optional="show"/>
-                <field name="chantier_id" optional="show"/>
-                <field name="emplacement_chantier_id" optional="show"/>
+                <field name="period_id" optional="show"/>
                 <field name="vehicle_id" optional="show"/>
-                <field name="salaire_actuel" optional="hide"/>
-                <field name="addition" optional="hide" string="prime"/>
-                <field name="deduction" optional="hide" string="DED"/>
-                <field name="total" optional="show"/>
-                <field name="sad" optional="show"/>
-                <field name="net_pay" optional="show"/>
-                <field name="affich_bonus_jour" optional="hide"/>
+                <field name="date_start" optional="hide"/>
                 <field name="affich_jour_conge" optional="hide"/>
+                <field name="profile_paie_id" optional="hide"/>
+                <field name="payement_mode_id" optional="hide"/>
+                <field name="type_emp" optional="show"/>
+                <field name="salaire_actuel" optional="hide"/>
                 <field name="nbr_jour_travaille" optional="hide"/>
                 <field name="nbr_heure_travaille" optional="hide"/>
-                <field name="jr_travaille_par_chantier" optional="hide"/>
-                <field name="type_fiche" optional="hide"/>
-                <field name="contract_id" optional="hide"/>
-                <field name="entreprise_id" optional="hide"/>
-                <field name="date_start" optional="hide"/>
-                <field name="rapport_id" optional="hide"/>
+                <field name="cp_number" optional="hide"/>
+                <field name="total" optional="show"/>
+                <field name="deduction" optional="hide" string="DED"/>
+                <field name="sad" optional="show"/>
+                <field name="addition" optional="hide" string="prime"/>
+                <field name="net_pay" optional="show"/>
+                <field name="chantier_id" optional="show"/>
+                <field name="emplacement_chantier_id" optional="show"/>
                 <field name="note" optional="hide"/>
-                <field name="stc_id" optional="hide"/>
+                <field name="type_fiche" optional="hide"/>
+                <field name="entreprise_id" optional="hide"/>
                 <field name="state" widget="badge"  optional="show"
                                                     decoration-muted="state == 'draft'" 
                                                     decoration-info="state == 'cal'" 
@@ -92,6 +88,14 @@
                                                     decoration-warning="state == 'validee'"
                                                     decoration-success="state == 'done'"
                                             />
+                <field name="create_uid" optional="show"/>
+                <field name="date_validation" optional="hide"/>
+                <field name="quinzaine" optional="show"/>
+                <field name="affich_bonus_jour" optional="hide"/>
+                <field name="jr_travaille_par_chantier" optional="hide"/>
+                <field name="contract_id" optional="hide"/>
+                <field name="rapport_id" optional="hide"/>
+                <field name="stc_id" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -391,6 +395,47 @@
                                                 <span class="input-group-text" ><label for="cp_number_regularisation" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                                             </div>
                                             <field name="cp_number_regularisation" class="form-control text-center" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        </div>
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-12 col-md-8 col-lg-3" attrs="{'invisible': [('payed_holidays', '=', False),('payed_worked_holidays', '=', False)]}">
+                        <div class="col- mt-3 justify-content-center">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">REMBOURSSEMENT JFs</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="input-group mb-3" attrs="{'invisible': [('payed_holidays', '=', False)]}">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="payed_holidays" class=""/></span>
+                                            </div>
+                                            <field name="payed_holidays" widget="boolean_toggle" class="form-control text-center"/>
+                                        </div>
+                                        <div class="input-group mb-3" attrs="{'invisible': [('payed_worked_holidays', '=', False)]}">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="payed_worked_holidays" class=""/></span>
+                                            </div>
+                                            <field name="payed_worked_holidays" widget="boolean_toggle" class="form-control text-center"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" ><label for="nbr_jf_refunded" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                            </div>
+                                            <field name="nbr_jf_refunded" class="form-control text-center" force_save="1"/>
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" >
+                                                    <div class="o_form_label" style="color:green">
+                                                        + <field name="amount_jf_refunded" class="h5"/> DH
+                                                    </div>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div> 
                                 </div> 

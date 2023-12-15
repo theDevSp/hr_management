@@ -34,6 +34,10 @@ class fiche_paie(models.Model):
     salaire_actuel = fields.Float(related="contract_id.salaire_actuel", string='Salaire Actuel', store=True, readonly=True)
     date_start = fields.Date(related='contract_id.date_start',string="Date d'embauche", readonly=True)
     entreprise_id = fields.Many2one(related='contract_id.entreprise_id', readonly=True, store=True)
+    
+    payed_holidays = fields.Boolean(related='contract_id.payed_holidays_related', readonly=True)
+    payed_worked_holidays = fields.Boolean(related='contract_id.payed_worked_holidays_related', readonly=True)
+    
 
     #-------------> infos contract
     #-------------> infos period
@@ -91,8 +95,13 @@ class fiche_paie(models.Model):
     total = fields.Float('Total', compute="compute_total", readonly=True,store=True)
     sad = fields.Float('Total aprés Déduction', compute="compute_sad", readonly=True,store=True)
     net_pay = fields.Float('Net à payer', compute="compute_net_a_payer", readonly=True,store=True)
+
     nbr_jour_travaille = fields.Float("Nombre de jours travaillés")
     nbr_heure_travaille = fields.Float("Nombre des heures travaillées")
+    nbr_jf_refunded = fields.Float("Nombre JFs Rembourssés")
+    amount_jf_refunded = fields.Float(compute='_compute_amount_jf_refunded', string='Montant JF Rembourssé')
+    
+
     date_validation = fields.Date(u'Date de validation', readonly=True)
     salaire_jour = fields.Float(compute='_compute_salaire_jour',string="Salaire du jour", readonly=True)
     salaire_demi_jour = fields.Float(compute='_compute_salaire_demi_jour',string="Salaire du demi-jour", readonly=True)
@@ -158,6 +167,12 @@ class fiche_paie(models.Model):
                 'note': res.note + '\n' + last_paied_period[0]['note'] if res.note else last_paied_period[0]['note'],
             })
         
+        if res.payed_holidays and res.rapport_id:
+            res.nbr_jf_refunded = res.rapport_id.count_nbr_ferier_days
+        
+        if res.payed_worked_holidays and res.rapport_id:
+            res.nbr_jf_refunded = res.rapport_id.count_nbr_ferier_days_v
+        
         return res
 
     def write(self, vals):
@@ -168,7 +183,18 @@ class fiche_paie(models.Model):
                 'state':'cal'
             })
         
+            if self.payed_holidays and self.rapport_id:
+                self.nbr_jf_refunded = self.rapport_id.count_nbr_ferier_days
+            
+            if self.payed_worked_holidays and self.rapport_id:
+                self.nbr_jf_refunded = self.rapport_id.count_nbr_ferier_days_v
+        
         return res
+
+    @api.depends('nbr_jf_refunded')
+    def _compute_amount_jf_refunded(self):
+        for rec in self:
+            rec.amount_jf_refunded = rec.nbr_jf_refunded * rec.salaire_jour
 
     @api.depends('nbr_jour_travaille','nbr_heure_travaille','autoriz_cp','autoriz_zero_cp')
     def _compute_cp_number(self):
@@ -200,9 +226,6 @@ class fiche_paie(models.Model):
                     rec.cp_number += rec.employee_result()['j_comp'] if rec.employee_result() else 0
             
             
-                
-
-    
     @api.depends('employee_id','period_id','contract_id')
     def _compute_salaire_jour(self):
         for rec in self:
@@ -297,13 +320,13 @@ class fiche_paie(models.Model):
                     base_time = profile_paie_p.nbre_heure_worked_par_jour * worked_days_per_month
                 res = worked_time / base_time * 1.5
 
-                if profile_paie_p.periodicity == "m":
+                if record.quinzaine == "quinzaine12":
                     record.affich_bonus_jour = min(res, 1.5) if not record.overrid_bonus else res
                 else:
                     record.affich_bonus_jour = min(res,0.75) if not record.overrid_bonus else res  
 
 
-    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','cp_number')
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','cp_number','cal_state')
     def compute_total(self):
         for rec in self:
             if rec.contract_id:
@@ -312,7 +335,7 @@ class fiche_paie(models.Model):
             else:
                 rec.total = 0
 
-    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','deduction','cp_number','employee_id.cotisation','employee_id.montant_cimr')
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','deduction','cp_number','employee_id.cotisation','employee_id.montant_cimr','cal_state')
     def compute_sad(self):
         for rec in self:
             if rec.contract_id:
@@ -321,11 +344,11 @@ class fiche_paie(models.Model):
             else:
                 rec.sad = 0
 
-    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','addition','deduction','cp_number')
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','addition','deduction','cp_number','cal_state','nbr_jf_refunded')
     def compute_net_a_payer(self):
         for rec in self:
             if rec.contract_id:
-                rec.net_pay = rec.sad + rec.addition
+                rec.net_pay = rec.sad + rec.addition + rec.amount_jf_refunded
             else:
                 rec.net_pay = 0
 

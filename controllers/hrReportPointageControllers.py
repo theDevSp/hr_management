@@ -247,9 +247,9 @@ class printReportPointageController(http.Controller):
             return http.request.make_json_response(data={
                 "chantier": chantier.name.upper(),
                 "periode": period.name.upper(),
-                "quinzine": "Première Quinzaine" if quinz == "quinzaine1" else "Deuxième Quinzaine",
+                "quinzine": quinz,
                 "lines": final,
-                "nbrj_mois": period.get_number_of_days_per_month()-15 if quinz == "quinzaine2" else 15
+                "nbrj_mois": period.get_number_of_days_per_month()
             }, status=200)
 
         else:
