@@ -11,7 +11,7 @@
     <record id="hr_contract_rule_agent_paie_cadre" model="ir.rule">
         <field name="name">Contract Rules Agent de Paie cadre</field>
         <field name="model_id" ref="model_hr_contract"/>
-        <field name="domain_force">[('contract_id.type_emp','=','c')]</field>
+        <field name="domain_force">[('type_emp','=','c')]</field>
         <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_cadre'))]"/>
     </record>
 
