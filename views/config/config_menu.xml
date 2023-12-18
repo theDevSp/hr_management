@@ -2,7 +2,7 @@
 <odoo>
     <menuitem name="Configuration" id="config_hr_menu" 
         parent="hr_management.hr_management_base_menu" sequence="10000" 
-        groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+        groups="hr_management.group_admin_paie,hr_management.group_admin_view_paie,hr_management.group_agent_paie"/>
 
         <menuitem
             id="contract_submenu"
