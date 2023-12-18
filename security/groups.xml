@@ -11,9 +11,24 @@
         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"></field>                                
         <field name="category_id" ref="module_management"></field>                            
     </record>
+
+    <record id="group_admin_view_paie" model="res.groups">                                
+        <field name="name">Accés Directeur</field>                             
+        <field name="category_id" ref="module_management"></field>                            
+    </record>
     
     <record id="group_agent_paie" model="res.groups">                                
         <field name="name">Agent de paie</field>
+        <field name="category_id" ref="module_management"></field>                            
+    </record>  
+
+    <record id="group_agent_paie_cadre" model="res.groups">                                
+        <field name="name">Agent de paie cadre</field>
+        <field name="category_id" ref="module_management"></field>                            
+    </record>  
+
+    <record id="group_agent_paie_administration" model="res.groups">                                
+        <field name="name">Agent de paie Siége</field>
         <field name="category_id" ref="module_management"></field>                            
     </record>  
 
@@ -32,7 +47,7 @@
         <field name="category_id" ref="module_management"></field> 
     </record>
 
-     <record id="group_cnss_juridique" model="res.groups">
+    <record id="group_cnss_juridique" model="res.groups">
         <field name="name">CNSS, juridique ...</field>
         <field name="category_id" ref="module_management"></field> 
     </record>

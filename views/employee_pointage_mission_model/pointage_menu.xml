@@ -27,11 +27,24 @@
         }</field>
     </record>
 
-    <record id='pointage_without_contract_action' model='ir.actions.act_window'>
+    <record id='pointage_cadre_action' model='ir.actions.act_window'>
         <field name="name"> Rapport de pointage </field>
         <field name="res_model">hr.rapport.pointage</field>
         <field name="view_mode">tree,form,search</field>
-        <field name="domain">[('type_emp', '=', False)]</field>
+        <field name="domain">[('type_emp', '=', 'c')]</field>
+        <field name="context">{
+            "search_default_group_by_public_market_id":1,
+            "search_default_group_by_period_id":1,
+            "search_default_group_by_emplacement_chantier_id":1,
+            "search_default_group_by_quinzaine":1
+        }</field>
+    </record>
+
+    <record id='pointage_siege_action' model='ir.actions.act_window'>
+        <field name="name"> Rapport de pointage </field>
+        <field name="res_model">hr.rapport.pointage</field>
+        <field name="view_mode">tree,form,search</field>
+        <field name="domain">[('type_emp', '=', 'a')]</field>
         <field name="context">{
             "search_default_group_by_public_market_id":1,
             "search_default_group_by_period_id":1,
@@ -79,10 +92,41 @@
 
     <menuitem name="Pointage" id="pointage_menu" parent="hr_management_base_menu" action="" sequence="10"/>
     <menuitem name="Rapport Pointage" id="rapport_pointage_main_menu" parent="pointage_menu" sequence="1"/>
-    <menuitem name="Rapport (Salariés)" id="rapport_pointage_menu_s" parent="rapport_pointage_main_menu" action="pointage_s_action" sequence="1"/>
-    <menuitem name="Rapport (Ouvriers)" id="rapport_pointage_menu_o" parent="rapport_pointage_main_menu" action="pointage_o_action" sequence="2"/>
-    <menuitem name="Rapport (Sans Contrat)" id="rapport_pointage_without_contract" parent="rapport_pointage_main_menu" action="pointage_without_contract_action" sequence="3"/>
-    <menuitem name="Transfert" id="transfert_menu" parent="pointage_menu" action="transfert_action" sequence="3"/>
-    <menuitem name="Création par mass" id="create_mass_menu" parent="pointage_menu" action="mass_create_creation_action" sequence="20" groups="hr_management.group_admin_paie,hr_management.group_pointeur"/>
+    <menuitem name="Rapport (Cadre)" 
+                id="rapport_pointage_cadre" 
+                parent="rapport_pointage_main_menu" 
+                groups="hr_management.group_admin_view_paie,hr_management.group_agent_paie_cadre"
+                action="pointage_cadre_action" 
+                sequence="1"/>
+    <menuitem name="Rapport (Siége)" 
+                id="rapport_pointage_administration" 
+                parent="rapport_pointage_main_menu" 
+                groups="hr_management.group_admin_view_paie,hr_management.group_agent_paie_administration"
+                action="pointage_siege_action" 
+                sequence="2"/>
+    <menuitem name="Rapport (Salariés)" 
+                id="rapport_pointage_menu_s" 
+                parent="rapport_pointage_main_menu" 
+                groups="hr_management.group_admin_paie,hr_management.group_admin_view_paie,hr_management.group_agent_paie"
+                action="pointage_s_action" 
+                sequence="3"/>
+    <menuitem name="Rapport (Ouvriers)" 
+                id="rapport_pointage_menu_o" 
+                parent="rapport_pointage_main_menu" 
+                action="pointage_o_action" 
+                groups="hr_management.group_admin_paie,hr_management.group_admin_view_paie,hr_management.group_agent_paie"
+                sequence="4"/>
+    <menuitem name="Transfert" 
+                id="transfert_menu" 
+                parent="pointage_menu" 
+                action="transfert_action" 
+                groups="hr_management.group_admin_paie,hr_management.group_admin_view_paie,hr_management.group_agent_paie"
+                sequence="5"/>
+    <menuitem name="Création par mass" 
+                id="create_mass_menu" 
+                parent="pointage_menu" 
+                action="mass_create_creation_action" 
+                sequence="20" 
+                groups="hr_management.group_admin_paie,hr_management.group_pointeur"/>
 
 </odoo>

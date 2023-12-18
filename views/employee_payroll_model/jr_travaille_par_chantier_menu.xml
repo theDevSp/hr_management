@@ -9,6 +9,6 @@
 
     <menuitem name="Jours travaillés par chantier" id="jr_travaille_par_chantier_menu" 
         parent="general_config_submenu" action="jr_travaille_par_chantier_action" sequence="10" 
-        groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+        groups="hr_management.group_admin_paie,hr_management.group_admin_view_paie,hr_management.group_agent_paie"/>
         
 </odoo>
