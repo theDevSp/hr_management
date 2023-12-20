@@ -3,6 +3,7 @@ from odoo import http
 from dateutil.relativedelta import relativedelta
 import json
 from datetime import datetime
+from itertools import groupby
 
 
 class hrConducteurDashboardControllers(http.Controller):
@@ -204,13 +205,14 @@ class hrConducteurDashboardControllers(http.Controller):
 
             if results:
                 for obj in results:
-                    posteName = json.loads(obj['job_name'])
-                    row = [
-                        posteName['en_US'],
-                        obj['count_before'],
-                        obj['count_current'],
-                    ]
-                    res.append(row)
+                    if obj['job_name'] is not None and obj['job'] is not None:
+                        posteName = json.loads(obj['job_name'])
+                        row = [
+                            posteName['en_US'],
+                            obj['count_before'],
+                            obj['count_current'],
+                        ]
+                        res.append(row)
 
                 return {
                     'code': 200,
@@ -225,6 +227,184 @@ class hrConducteurDashboardControllers(http.Controller):
                 response_data = {
                     'code': 202,
                     'message': "Aucune donnée à charger",
+                    'timestamp': datetime.now().isoformat()
+                }
+                return response_data
+
+        except Exception as e:
+            print("Error -> ", e)
+            error_message = {
+                'code': 504,
+                'error': f'An error occurred while processing the request. {e}',
+                'message': "Une erreur s'est produite, veuillez réessayer !",
+                'timestamp': datetime.now().isoformat()
+            }
+            return error_message
+
+    @http.route('/hr_management/conducteur-dashboard/equipes', type='json', auth='user')
+    def get_equipes_data_details(self, chantier_id, period_id):
+        try:
+            chantier_id, period_id = int(chantier_id), int(period_id)
+
+            chantier = http.request.env['fleet.vehicle.chantier'].sudo().browse(
+                chantier_id)
+            periode = http.request.env['account.month.period'].sudo().browse(
+                period_id)
+
+            lignes_rapports = http.request.env['hr.rapport.pointage.line'].sudo().search([
+                ('day', '>=', periode.date_start),
+                ('day', '<=', periode.date_stop),
+                ('chantier_id', '=', chantier_id)
+            ])
+
+            id = 0
+
+            equipes_data = {}
+
+            for line in lignes_rapports:
+                equipe = line.emplacement_chantier_id.name
+                equipes_data.setdefault(equipe, []).append(line)
+
+            data = []
+
+            for equipe, data_list in equipes_data.items():
+
+                rapports_salaries = [
+                    ligne for ligne in data_list if ligne.rapport_id.type_emp == 's' and ligne.rapport_id.chantier_id.id == chantier_id]
+                rapports_ouvriers = [
+                    ligne for ligne in data_list if ligne.rapport_id.type_emp == 'o' and ligne.rapport_id.chantier_id.id == chantier_id]
+
+                rapports_cadre = [
+                    ligne for ligne in data_list if ligne.rapport_id.type_emp == False and ligne.rapport_id.chantier_id.id == chantier_id]
+
+                total_heures_salaries = sum(
+                    float(ln.h_travailler) for ln in rapports_salaries if ln.rapport_id.chantier_id.id == chantier_id)
+                total_heures_ouvriers = sum(
+                    float(ln.h_travailler) for ln in rapports_ouvriers if ln.rapport_id.chantier_id.id == chantier_id)
+
+                total_salaires_salaries = sum(float(ln.h_travailler) * ln.employee_id.salaire_heure_related
+                                              for ln in rapports_salaries if ln.rapport_id.chantier_id.id == chantier_id)
+
+                total_salaires_ouvriers = sum(float(ln.h_travailler) * ln.employee_id.salaire_heure_related
+                                              for ln in rapports_ouvriers if ln.rapport_id.chantier_id.id == chantier_id)
+
+                count_salaries = {ln.employee_id.id for ln in rapports_salaries if ln.rapport_id.quinzaine == 'quinzaine12'
+                                  and ln.rapport_id.chantier_id.id == chantier_id}
+
+                count_ouvriers = {ln.employee_id.id for ln in rapports_ouvriers
+                                  if ln.rapport_id.quinzaine in ('quinzaine1', 'quinzaine2')
+                                  and ln.rapport_id.chantier_id.id == chantier_id}
+
+                salarier_employee_data = {}
+                for line in rapports_salaries:
+                    employee = line.employee_id.name
+                    salarier_employee_data.setdefault(
+                        employee, []).append(line)
+
+                salaries_data = []
+
+                for employee, data_list in salarier_employee_data.items():
+                    total_heure = 0
+                    total_a_payer = 0.0
+
+                    for ligne in data_list:
+                        total_heure += float(ligne.h_travailler)
+                        total_a_payer += float(float(ligne.h_travailler) *
+                                               float(ligne.employee_id.salaire_heure_related))
+
+                    employee_info = {
+                        'employe_name': employee,
+                        'employe_cin': data_list[0].employee_id.cin,
+                        'employe_poste': data_list[0].employee_id.job_id.name,
+                        'employe_total_heure': total_heure,
+                        'employe_total_a_payer': total_a_payer,
+                    }
+
+                    salaries_data.append(employee_info)
+
+                ouvrier_employee_data = {}
+                for line in rapports_ouvriers:
+                    employee = line.employee_id.name
+                    ouvrier_employee_data.setdefault(
+                        employee, []).append(line)
+
+                ouvriers_data = []
+
+                for employee, data_list in ouvrier_employee_data.items():
+                    total_heure = 0
+                    total_a_payer = 0.0
+
+                    for ligne in data_list:
+                        total_heure += float(ligne.h_travailler)
+                        total_a_payer += float(float(ligne.h_travailler) *
+                                               float(ligne.employee_id.salaire_heure_related))
+
+                    employee_info = {
+                        'employe_name': employee,
+                        'employe_cin': data_list[0].employee_id.cin,
+                        'employe_poste': data_list[0].employee_id.job_id.name,
+                        'employe_total_heure': total_heure,
+                        'employe_total_a_payer': total_a_payer,
+                    }
+
+                    ouvriers_data.append(employee_info)
+
+                cadre_employee_data = {}
+                for line in rapports_cadre:
+                    employee = line.employee_id.name
+                    cadre_employee_data.setdefault(
+                        employee, []).append(line)
+
+                cadres_data = []
+
+                for employee, data_list in cadre_employee_data.items():
+                    total_heure = 0
+                    total_a_payer = 0.0
+
+                    for ligne in data_list:
+                        total_heure += float(ligne.h_travailler)
+                        total_a_payer += float(float(ligne.h_travailler) *
+                                               float(ligne.employee_id.salaire_heure_related))
+
+                    employee_info = {
+                        'employe_name': employee,
+                        'employe_cin': data_list[0].employee_id.cin,
+                        'employe_poste': data_list[0].employee_id.job_id.name,
+                        'employe_total_heure': total_heure,
+                        'employe_total_a_payer': total_a_payer,
+                    }
+
+                    cadres_data.append(employee_info)
+
+                id += 1
+                data.append({
+                    'equipe': equipe,
+                    'equipeID': id,
+                    'total_salaires_ouvriers': total_salaires_ouvriers,
+                    'total_salaires_salaries': total_salaires_salaries,
+                    'total_heures_ouvriers': total_heures_ouvriers,
+                    'total_heures_salaries': total_heures_salaries,
+                    'count_salaries': len(count_salaries),
+                    'count_ouvriers': len(count_ouvriers),
+                    'salaries_data': salaries_data,
+                    'ouvriers_data': ouvriers_data,
+                    'equipes_data': equipes_data,
+                    'cadres_data': cadres_data
+                })
+
+            if lignes_rapports:
+                return {
+                    'code': 200,
+                    'message': 'Les données ont été chargées avec succès.',
+                    'timestamp': datetime.now().isoformat(),
+                    'data': data,
+                    'chantier': chantier.simplified_name,
+                    'periode': periode.code
+                }
+            else:
+                response_data = {
+                    'code': 202,
+                    'message': "Aucune donnée à charger.",
                     'timestamp': datetime.now().isoformat()
                 }
                 return response_data

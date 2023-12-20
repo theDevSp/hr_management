@@ -6,7 +6,7 @@
                 <div class="d-flex justify-content-between">
                     <h2>
                         <span style="color: aliceblue;">
-                            <t t-esc="props.name" />
+                            <t t-esc="props.data.equipe"/>
                         </span>
                     </h2>
                 </div>
@@ -28,7 +28,9 @@
                                     <div class="d-flex justify-content-between">
                                         <h6 class="card-title">Les salariés :</h6>
                                         <h6 class="card-title">
-                                            <span>120</span>
+                                            <span>
+                                                <t t-esc="props.data.count_salaries"/>
+                                            </span>
                                         </h6>
                                     </div>
                                 </p>
@@ -36,7 +38,9 @@
                                     <div class="d-flex justify-content-between">
                                         <h6 class="card-title">Les ouvriers :</h6>
                                         <h6 class="card-title">
-                                            <span>160</span>
+                                            <span>
+                                                <t t-esc="props.data.count_ouvriers"/>
+                                            </span>
                                         </h6>
                                     </div>
                                 </p>
@@ -44,7 +48,7 @@
                                     <div class="d-flex justify-content-between">
                                         <h6 class="card-title">Total :</h6>
                                         <h6 class="card-title">
-                                            <span>280</span>
+                                            <t t-esc="props.data.count_ouvriers + props.data.count_salaries"/>
                                         </h6>
                                     </div>
                                 </p>
@@ -66,7 +70,8 @@
                                     <div class="d-flex justify-content-between">
                                         <h6 class="card-title">Les salariés :</h6>
                                         <h6 class="card-title">
-                                            <span>1200 h</span>
+                                            <t t-esc="props.data.total_heures_salaries"/>
+                                            h
                                         </h6>
                                     </div>
                                 </p>
@@ -74,7 +79,8 @@
                                     <div class="d-flex justify-content-between">
                                         <h6 class="card-title">Les ouvriers :</h6>
                                         <h6 class="card-title">
-                                            <span>1300 h</span>
+                                            <t t-esc="props.data.total_heures_ouvriers"/>
+                                            h
                                         </h6>
                                     </div>
                                 </p>
@@ -82,7 +88,8 @@
                                     <div class="d-flex justify-content-between">
                                         <h6 class="card-title">Total :</h6>
                                         <h6 class="card-title">
-                                            <span>2400 h</span>
+                                            <t t-esc="props.data.total_heures_ouvriers + props.data.total_heures_salaries"/>
+                                            h
                                         </h6>
                                     </div>
                                 </p>
@@ -94,7 +101,7 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-around">
                                     <h4 class="card-title">
-                                        Répartition des Montants
+                                        Répartition des Charges
                                     </h4>
                                     <i class="fas fa-solid fa-money-bill fa-lg" style="color: rgb(0, 150, 136);"></i>
                                 </div>
@@ -104,7 +111,8 @@
                                     <div class="d-flex justify-content-between">
                                         <h6 class="card-title">Les salariés :</h6>
                                         <h6 class="card-title">
-                                            <span>120 000 DH</span>
+                                            <t t-esc="props.data.total_salaires_salaries.toFixed(2)"/>
+                                            DH
                                         </h6>
                                     </div>
                                 </p>
@@ -112,7 +120,8 @@
                                     <div class="d-flex justify-content-between">
                                         <h6 class="card-title">Les ouvriers :</h6>
                                         <h6 class="card-title">
-                                            <span>130 000 DH</span>
+                                            <t t-esc="props.data.total_salaires_ouvriers.toFixed(2)"/>
+                                            DH
                                         </h6>
                                     </div>
                                 </p>
@@ -120,7 +129,8 @@
                                     <div class="d-flex justify-content-between">
                                         <h6 class="card-title">Total :</h6>
                                         <h6 class="card-title">
-                                            <span>240 000 DH</span>
+                                            <t t-esc="(props.data.total_salaires_salaries + props.data.total_salaires_ouvriers).toFixed(2)"/>
+                                            DH
                                         </h6>
                                     </div>
                                 </p>
@@ -128,92 +138,43 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-lg">
-                        <div style="text-align: center;">
-                            <strong>Détails Salariés</strong>
+                <t t-if="this.props.data.salaries_data.length > 0">
+                    <div class="row mt-2">
+                        <div class="col-lg">
+                            <hr style="border: 1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                            <div style="text-align: center;">
+                                <h5>Détails des Salariés</h5>
+                            </div>
+                            <hr style="border: 1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                            <EquipeGridTable id="props.data.equipeID" type="'salaries'" data="props.data.salaries_data"/>
                         </div>
-                        <hr style="border: 1px solid rgb(0, 150, 136); border-radius: 5px;" />
-                        <table class="table table-striped text-center">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Nom et Prénom</th>
-                                    <th scope="col">CIN</th>
-                                    <th scope="col">Poste</th>
-                                    <th scope="col">Total des Heures</th>
-                                    <th scope="col">Total À Payer</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">ABDELILLAH TOUMI</th>
-                                    <td>F256612</td>
-                                    <td>BOISSEUR</td>
-                                    <td>153 H</td>
-                                    <td>4500 DH</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">JALAL KASMI</th>
-                                    <td>U256612</td>
-                                    <td>CHAUFFEUR DE BUS</td>
-                                    <td>110 H</td>
-                                    <td>5500 DH</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">MOUNIR TOUR</th>
-                                    <td>S256612</td>
-                                    <td>CHEF DE CHANTIER</td>
-                                    <td>120 H</td>
-                                    <td>6500 DH</td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
-                </div>
-
-                <div class="row mt-2">
-                    <div class="col-lg">
-                        <div style="text-align: center;">
-                            <strong>Détails Ouvriers</strong>
+                </t>
+                <t t-if="this.props.data.ouvriers_data.length > 0">
+                    <div class="row mt-2">
+                        <div class="col-lg">
+                            <hr style="border: 1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                            <div style="text-align: center;">
+                                <h5>Détails des Ouvriers</h5>
+                            </div>
+                            <hr style="border:1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                            <EquipeGridTable id="props.data.equipeID" type="'ouvriers'" data="props.data.ouvriers_data"/>
                         </div>
-                        <hr style="border:1px solid rgb(0, 150, 136); border-radius: 5px;" />
-                        <table class="table table-striped text-center">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Nom et Prénom</th>
-                                    <th scope="col">CIN</th>
-                                    <th scope="col">Poste</th>
-                                    <th scope="col">Total des Heures</th>
-                                    <th scope="col">Total À Payer</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">ABDELILLAH TOUMI</th>
-                                    <td>F256612</td>
-                                    <td>BOISSEUR</td>
-                                    <td>153 H</td>
-                                    <td>4500 DH</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">JALAL KASMI</th>
-                                    <td>U256612</td>
-                                    <td>CHAUFFEUR DE BUS</td>
-                                    <td>110 H</td>
-                                    <td>5500 DH</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">MOUNIR TOUR</th>
-                                    <td>S256612</td>
-                                    <td>CHEF DE CHANTIER</td>
-                                    <td>120 H</td>
-                                    <td>6500 DH</td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
-                </div>
-
+                </t>
+                <t t-if="this.props.data.cadres_data.length > 0">
+                    <div class="row mt-2">
+                        <div class="col-lg">
+                            <hr style="border: 1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                            <div style="text-align: center;">
+                                <h5>Détails des Cadres</h5>
+                            </div>
+                            <hr style="border:1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                            <div />
+                            <EquipeGridTable id="props.data.equipeID" type="'cadres'" data="props.data.cadres_data"/>
+                        </div>
+                    </div>
+                </t>
             </div>
         </div>
     </t>

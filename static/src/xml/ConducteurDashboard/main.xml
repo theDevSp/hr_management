@@ -35,9 +35,6 @@
                                     <div class="col-sm">
                                         <Periode onChangePeriode.bind="setPeriodeID" />
                                     </div>
-                                    <!--<button class="btn btn-info cursor-pointer" t-on-click="()=>this.getData()">
-                                        Test
-                                    </button>-->
                                 </div>
                             </div>
                         </div>
@@ -48,7 +45,7 @@
                             <ChartRenderer type="'bar'" title="'Total des heures Travaillées'" config="state.totalHeures" />
                         </div>
                         <div class="col-6 bg-white shadow-sm border mt-2">
-                            <ChartRenderer type="'bar'" title="'Total des Montants'" config="state.totalSalaires" />
+                            <ChartRenderer type="'bar'" title="'Total des Charges'" config="state.totalSalaires" />
                         </div>
                     </div>
                 </div>
@@ -62,18 +59,13 @@
             </div>
 
             <div class="row px-4">
-                <div class="col-6" style="margin-top: 10px;">
-                    <EquipeCard name="'ÉQUIPE TERRASSEMENT'" />
-                </div>
-                <div class="col-6" style="margin-top: 10px;">
-                    <EquipeCard name="'ÉQUIPE ENROBÉ'" />
-                </div>
-                <div class="col-6" style="margin-top: 10px;">
-                    <EquipeCard name="'ÉQUIPE REVETEMENT'" />
-                </div>
-                <div class="col-6" style="margin-top: 10px;">
-                    <EquipeCard name="'ÉQUIPE OUVRAGE'" />
-                </div>
+                <t t-if="state.equipesData">
+                    <t t-foreach="state.equipesData.data" t-as="eq" t-key="eq.equipeID">
+                        <div class="col-6" style="margin-top: 10px;">
+                            <EquipeCard data="eq" period="state.periodeID" chantier="state.chantierID"/>
+                        </div>
+                    </t>
+                </t>
             </div>
 
             <div class="col-lg">

@@ -1,15 +1,16 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry"
-const { Component, onMounted, useState, onWillStart, useEffect, useRef, markup, onWillUnmount } = owl
-
 import { loadCSS, loadJS } from "@web/core/assets";
 import { blockUI, unblockUI } from "web.framework";
-
+const { Component, onMounted, useState, onWillStart, useEffect, useRef, xml, onWillUnmount } = owl
+import { useService } from "@web/core/utils/hooks";
+import showNotification from "@configuration_module/js/utils/showNotification";
 
 export class EffectifPosteTable extends Component {
     setup() {
 
+        this.notification = useService("notification")
         this.table = useRef("wrapperRef");
 
         this.state = useState({
@@ -81,7 +82,7 @@ export class EffectifPosteTable extends Component {
                 this.state.data.periode_actuelle,
                 {
                     name: '',
-                    sortable: false,
+                    sort: false,
                     formatter: (_, row) => {
                         const diff = row.cells[1].data - row.cells[2].data;
 
@@ -143,9 +144,25 @@ export class EffectifPosteTable extends Component {
             chantier_id: this.state.chantierID,
             period_id: this.state.periodeID
         })
+        switch (res.code) {
+            case 200:
+                this.state.data = res
+                this.mountTable()
+                showNotification(this.notification, "success", res.message);
+                break;
 
-        this.state.data = res
-        this.mountTable()
+            case 202:
+                showNotification(this.notification, "warning", 'Pas de données à afficher pour ce critère.');
+                break;
+
+            case 504:
+                console.error(res.error)
+                showNotification(this.notification, "danger", res.message);
+                break;
+
+            default:
+                break;
+        }
     }
 
 }

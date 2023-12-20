@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl.ConducteurEquipeGridTable" owl="1">
+        <div t-attf-id="{{state.type+this.state.id}}" />
+    </t>
+</templates>
