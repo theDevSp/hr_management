@@ -7,6 +7,11 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem name="STC" id="stc_menu" parent="hr_management_base_menu" action="stc_action" sequence="6" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+    <menuitem name="STC" 
+                id="stc_menu" 
+                parent="hr_management_base_menu" 
+                groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique,hr_management.group_admin_view_paie,hr_management.group_agent_paie_cadre,hr_management.group_agent_paie_administration" 
+                action="stc_action" 
+                sequence="6"/>
 
 </odoo>
