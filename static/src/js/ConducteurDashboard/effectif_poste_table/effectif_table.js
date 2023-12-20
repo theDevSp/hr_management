@@ -21,13 +21,16 @@ export class EffectifPosteTable extends Component {
 
         useEffect(
             () => {
-                if (this.props.chantier != '' && this.props.period != '' && this.state.data) {
+                if (this.props) {
                     this.state.chantierID = this.props.chantier;
                     this.state.periodeID = this.props.period;
                     this.getPostesData()
                 }
+                else {
+                    console.log("else on effectif table")
+                }
             },
-            () => [this.props.period, this.props.chantier]
+            () => [this.props]
         )
 
         onWillStart(async () => {
@@ -144,18 +147,24 @@ export class EffectifPosteTable extends Component {
             chantier_id: this.state.chantierID,
             period_id: this.state.periodeID
         })
+
         switch (res.code) {
             case 200:
+                this.table.el.innerHTML = ''
                 this.state.data = res
                 this.mountTable()
                 showNotification(this.notification, "success", res.message);
+                console.log("data 200 ", res, this.state)
                 break;
 
             case 202:
+                this.table.el.innerHTML = `<strong>Pas de données à afficher pour ce critère.</strong>`
                 showNotification(this.notification, "warning", 'Pas de données à afficher pour ce critère.');
+                console.log("data 202 ", res, this.state)
                 break;
 
             case 504:
+                this.table.el.innerHTML = ''
                 console.error(res.error)
                 showNotification(this.notification, "danger", res.message);
                 break;

@@ -150,8 +150,6 @@ export class ConducteurDashboard extends Component {
                     ]
                 });
 
-                showNotification(this.notification, "success", res.message);
-
                 const equipesData = await rpc('/hr_management/conducteur-dashboard/equipes', {
                     chantier_id: this.state.chantierID,
                     period_id: this.state.periodeID
@@ -159,7 +157,11 @@ export class ConducteurDashboard extends Component {
 
                 if (equipesData.code == 200) {
                     this.setState('equipesData', equipesData)
-                    //showNotification(this.notification, "success", equipesData.message);
+                    showNotification(this.notification, "success", equipesData.message);
+                }
+                else {
+                    this.setState('equipesData', false)
+                    showNotification(this.notification, "warning", 'Pas de données à afficher pour ce critère.');
                 }
                 unblockUI();
                 break;

@@ -13,7 +13,7 @@ export class EquipeGridTable extends Component {
 
         useEffect(
             () => {
-                if (this.props.id && this.props.type && this.props.data) {
+                if (this.props) {
                     this.state.data = this.props.data;
                     this.state.id = this.props.id;
                     this.state.type = this.props.type;
@@ -23,7 +23,7 @@ export class EquipeGridTable extends Component {
                 }
 
             },
-            () => [this.props.id, this.props.type, this.props.data]
+            () => [this.props]
         )
 
         onWillUnmount(() => {
@@ -35,7 +35,7 @@ export class EquipeGridTable extends Component {
         onMounted(() => {
             this.id = `${this.props.type}${this.props.id}`;
             this.gridTable = document.getElementById(this.id);
-            if (this.props.id && this.props.type && this.props.data) {
+            if (this.props) {
                 this.doTable();
             }
         })

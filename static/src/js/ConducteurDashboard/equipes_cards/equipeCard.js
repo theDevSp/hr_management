@@ -20,14 +20,13 @@ export class EquipeCard extends Component {
 
         useEffect(
             () => {
-                if (this.props.chantier != '' && this.props.period != '' && this.props.data) {
+                if (this.props) {
                     this.state.chantierID = this.props.chantier;
                     this.state.periodeID = this.props.period;
                     this.state.data = this.props.data;
                 }
-                console.log(this.props.data.salaries_data.length)
             },
-            () => [this.props.period, this.props.chantier]
+            () => [this.props]
         )
     }
 
