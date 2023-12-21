@@ -52,7 +52,7 @@ export class ChartRenderer extends Component {
                     y: {
                         beginAtZero: true
                     }
-                }
+                },
             },
         });
     }

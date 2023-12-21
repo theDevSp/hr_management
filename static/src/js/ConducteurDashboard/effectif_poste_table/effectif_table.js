@@ -14,8 +14,8 @@ export class EffectifPosteTable extends Component {
         this.table = useRef("wrapperRef");
 
         this.state = useState({
-            chantierID: this.props.chantier,
-            periodeID: this.props.period,
+            chantierID: false,
+            periodeID: false,
             data: false,
         })
 
@@ -25,9 +25,6 @@ export class EffectifPosteTable extends Component {
                     this.state.chantierID = this.props.chantier;
                     this.state.periodeID = this.props.period;
                     this.getPostesData()
-                }
-                else {
-                    console.log("else on effectif table")
                 }
             },
             () => [this.props]
@@ -39,7 +36,6 @@ export class EffectifPosteTable extends Component {
         })
 
         onMounted(() => {
-            this.getPostesData();
         });
 
         onWillUnmount(() => {
@@ -80,10 +76,11 @@ export class EffectifPosteTable extends Component {
                 }
             },
             columns: [
-                'Postes',
-                this.state.data.periode_precedente,
-                this.state.data.periode_actuelle,
+                { id: 'postes', name: 'Postes' },
+                { id: 'periode_precedente', name: this.state.data.periode_precedente },
+                { id: 'periode_actuelle', name: this.state.data.periode_actuelle },
                 {
+                    id: 'difference',
                     name: '',
                     sort: false,
                     formatter: (_, row) => {
@@ -102,7 +99,8 @@ export class EffectifPosteTable extends Component {
                                     </span>`);
                         }
                     }
-                }],
+                }
+            ],
             style: {
                 table: {
                 },
@@ -142,6 +140,10 @@ export class EffectifPosteTable extends Component {
     }
 
     async getPostesData() {
+
+        if (this.state.chantierID === null || this.state.periodeID === null) {
+            return
+        }
         const rpc = this.env.services.rpc
         const res = await rpc('/hr_management/conducteur-dashboard/effectif-postes', {
             chantier_id: this.state.chantierID,
@@ -153,20 +155,17 @@ export class EffectifPosteTable extends Component {
                 this.table.el.innerHTML = ''
                 this.state.data = res
                 this.mountTable()
-                showNotification(this.notification, "success", res.message);
-                console.log("data 200 ", res, this.state)
+                showNotification(this.notification, "success", `Effectif des Postes: ${res.message}`);
                 break;
 
             case 202:
                 this.table.el.innerHTML = `<strong>Pas de données à afficher pour ce critère.</strong>`
-                showNotification(this.notification, "warning", 'Pas de données à afficher pour ce critère.');
-                console.log("data 202 ", res, this.state)
+                showNotification(this.notification, "warning", 'Effectif des Postes: Pas de données à afficher pour ce critère.');
                 break;
 
             case 504:
                 this.table.el.innerHTML = ''
-                console.error(res.error)
-                showNotification(this.notification, "danger", res.message);
+                showNotification(this.notification, "danger", `Effectif des Postes: ${res.message}`);
                 break;
 
             default:

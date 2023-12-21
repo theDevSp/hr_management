@@ -9,7 +9,7 @@ export class HrMainAnalytique extends Component {
 
     async request1() {
         const rpc = this.env.services.rpc
-        const res = await rpc('/hr_management/analytique_q12/')
+        const res = await rpc('/hr_management/users/get_all_chantiers')
         console.log(res)
     }
 

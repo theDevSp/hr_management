@@ -31,7 +31,7 @@
                                     </div>
                                 </div>
                                 <div class="m-2 p-2 bg-white" style="">
-                                    <Chantiers onChangeChantier.bind="setChantierID" />
+                                    <ConducteurChantiers onChangeChantier.bind="setChantierID" />
                                     <div class="col-sm">
                                         <Periode onChangePeriode.bind="setPeriodeID" />
                                     </div>

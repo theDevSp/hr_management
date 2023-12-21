@@ -7,7 +7,7 @@ const { loadJS, loadCSS } = require('@web/core/assets');
 import { blockUI, unblockUI } from "web.framework";
 import { useService } from "@web/core/utils/hooks";
 
-import { Chantiers } from "@construction_site_management/js/components/Chantiers/chantiers";
+import { ConducteurChantiers } from "@construction_site_management/js/components/Chantiers/ConducteurChantiers";
 import { Periode } from "@account_fiscal_year_period/js/components/periodes/periodes";
 
 import { ChartRenderer } from "./chart_renderer/chart_renderer";
@@ -22,8 +22,8 @@ export class ConducteurDashboard extends Component {
         this.notification = useService("notification")
 
         this.state = useState({
-            periodeID: 143,
-            chantierID: 432,
+            periodeID: null,
+            chantierID: null,
             chantierName: '',
             periodeCode: '',
             prevPeriodeCode: '',
@@ -35,7 +35,7 @@ export class ConducteurDashboard extends Component {
 
         useEffect(
             () => {
-                if (this.state.chantierID != '' && this.state.periodeID != '') {
+                if (this.state.chantierID != null && this.state.periodeID !== null) {
                     this.getData();
                 }
             },
@@ -77,6 +77,7 @@ export class ConducteurDashboard extends Component {
     }
 
     async getData() {
+
         blockUI();
         const rpc = this.env.services.rpc
         const res = await rpc('/hr_management/conducteur-dashboard/', {
@@ -155,25 +156,26 @@ export class ConducteurDashboard extends Component {
                     period_id: this.state.periodeID
                 })
 
+                showNotification(this.notification, "success", `Graphiques: ${res.message}`);
+
                 if (equipesData.code == 200) {
                     this.setState('equipesData', equipesData)
-                    showNotification(this.notification, "success", equipesData.message);
                 }
                 else {
                     this.setState('equipesData', false)
-                    showNotification(this.notification, "warning", 'Pas de données à afficher pour ce critère.');
+                    showNotification(this.notification, "warning", 'Détail des Équipes: Pas de données à afficher pour ce critère.');
                 }
                 unblockUI();
                 break;
 
             case 202:
-                showNotification(this.notification, "warning", 'Pas de données à afficher pour ce critère.');
+                showNotification(this.notification, "warning", 'Graphiques: Pas de données à afficher pour ce critère.');
                 unblockUI();
                 break;
 
             case 504:
                 console.error(res.error)
-                showNotification(this.notification, "danger", res.message);
+                showNotification(this.notification, "danger", `Graphiques: ${res.message}`);
                 unblockUI();
                 break;
 
@@ -185,7 +187,7 @@ export class ConducteurDashboard extends Component {
 }
 
 ConducteurDashboard.template = "owl.ConducteurDashboard"
-ConducteurDashboard.components = { Chantiers, Periode, ChartRenderer, EquipeCard, EffectifPosteTable }
+ConducteurDashboard.components = { ConducteurChantiers, Periode, ChartRenderer, EquipeCard, EffectifPosteTable }
 
 
 registry.category("actions").add("hr_management.action_main_conducteur", ConducteurDashboard)
