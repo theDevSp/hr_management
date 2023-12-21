@@ -112,7 +112,7 @@
                                         <div class="d-flex justify-content-between">
                                             <h6 class="card-title">Les salariés :</h6>
                                             <h6 class="card-title">
-                                                <t t-esc="state.data.total_salaires_salaries.toFixed(2)"/>
+                                                <t t-esc="this.formatNumber(state.data.total_salaires_salaries)"/>
                                             DH
                                             </h6>
                                         </div>
@@ -121,7 +121,7 @@
                                         <div class="d-flex justify-content-between">
                                             <h6 class="card-title">Les ouvriers :</h6>
                                             <h6 class="card-title">
-                                                <t t-esc="state.data.total_salaires_ouvriers.toFixed(2)"/>
+                                                <t t-esc="this.formatNumber(state.data.total_salaires_ouvriers)"/>
                                             DH
                                             </h6>
                                         </div>
@@ -130,7 +130,7 @@
                                         <div class="d-flex justify-content-between">
                                             <h6 class="card-title">Total :</h6>
                                             <h6 class="card-title">
-                                                <t t-esc="(state.data.total_salaires_salaries + state.data.total_salaires_ouvriers).toFixed(2)"/>
+                                                <t t-esc="this.formatNumber(state.data.total_salaires_salaries + state.data.total_salaires_ouvriers)"/>
                                             DH
                                             </h6>
                                         </div>
@@ -148,7 +148,7 @@
                                 </div>
                                 <hr style="border:1px solid rgb(0, 150, 136); border-radius: 5px;" />
                                 <div />
-                                <EquipeGridTable id="state.data.equipeID" type="'cadres'" data="state.data.cadres_data"/>
+                                <EquipeGridTable format.bind="formatNumber" id="state.data.equipeID" type="'cadres'" data="state.data.cadres_data"/>
                             </div>
                         </div>
                     </t>
@@ -160,7 +160,7 @@
                                     <h5>Détails des Salariés</h5>
                                 </div>
                                 <hr style="border: 1px solid rgb(0, 150, 136); border-radius: 5px;" />
-                                <EquipeGridTable id="state.data.equipeID" type="'salaries'" data="state.data.salaries_data"/>
+                                <EquipeGridTable format.bind="formatNumber" id="state.data.equipeID" type="'salaries'" data="state.data.salaries_data"/>
                             </div>
                         </div>
                     </t>
@@ -172,7 +172,7 @@
                                     <h5>Détails des Ouvriers</h5>
                                 </div>
                                 <hr style="border:1px solid rgb(0, 150, 136); border-radius: 5px;" />
-                                <EquipeGridTable id="state.data.equipeID" type="'ouvriers'" data="state.data.ouvriers_data"/>
+                                <EquipeGridTable format.bind="formatNumber" id="state.data.equipeID" type="'ouvriers'" data="state.data.ouvriers_data"/>
                             </div>
                         </div>
                     </t>

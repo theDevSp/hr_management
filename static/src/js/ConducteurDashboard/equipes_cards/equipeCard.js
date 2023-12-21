@@ -30,6 +30,10 @@ export class EquipeCard extends Component {
         )
     }
 
+    formatNumber(number) {
+        return Math.round(number).toLocaleString().replace(/,/g, ' ');
+    }
+
 }
 
 EquipeCard.template = "owl.ConducteurEquipeCard"

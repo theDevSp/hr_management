@@ -94,7 +94,7 @@ export class EquipeGridTable extends Component {
                     ligne.employe_cin.replace(" ", ""),
                     ligne.employe_poste,
                     ligne.employe_total_heure,
-                    ligne.employe_total_a_payer.toFixed(2)
+                    this.props.format(ligne.employe_total_a_payer)
                 ])
 
             ]
