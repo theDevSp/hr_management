@@ -55,8 +55,9 @@ export class EquipeGridTable extends Component {
 
         this.grid = new gridjs.Grid({
             sort: true,
+            resizable: true,
             pagination: {
-                limit: 3
+                limit: 7
             },
             language: {
                 'search': {
@@ -82,10 +83,10 @@ export class EquipeGridTable extends Component {
                 }
             },
             columns: [
-                { name: 'Nom et Prénom', sort: true, width: '25%' },
-                { name: 'CIN', sort: true, width: '15%' },
-                { name: 'Poste', sort: true },
-                { name: 'Total des Heures', sort: false, width: '10%' },
+                { name: 'Nom et Prénom', sort: true, },
+                { name: 'CIN', sort: false, },
+                { name: 'Poste', sort: false },
+                { name: 'Total des Heures', sort: false, },
                 { name: 'Total À Payer', sort: false },
             ],
             data: [

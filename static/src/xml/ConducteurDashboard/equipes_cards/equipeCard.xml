@@ -71,7 +71,7 @@
                                         <div class="d-flex justify-content-between">
                                             <h6 class="card-title">Les salariés :</h6>
                                             <h6 class="card-title">
-                                                <t t-esc="state.data.total_heures_salaries"/>
+                                                <t t-esc="this.formatNumber(state.data.total_heures_salaries)"/>
                                             h
                                             </h6>
                                         </div>
@@ -80,7 +80,7 @@
                                         <div class="d-flex justify-content-between">
                                             <h6 class="card-title">Les ouvriers :</h6>
                                             <h6 class="card-title">
-                                                <t t-esc="state.data.total_heures_ouvriers"/>
+                                                <t t-esc="this.formatNumber(state.data.total_heures_ouvriers)"/>
                                             h
                                             </h6>
                                         </div>
@@ -89,7 +89,7 @@
                                         <div class="d-flex justify-content-between">
                                             <h6 class="card-title">Total :</h6>
                                             <h6 class="card-title">
-                                                <t t-esc="state.data.total_heures_ouvriers + state.data.total_heures_salaries"/>
+                                                <t t-esc="this.formatNumber(state.data.total_heures_ouvriers + state.data.total_heures_salaries)"/>
                                             h
                                             </h6>
                                         </div>
