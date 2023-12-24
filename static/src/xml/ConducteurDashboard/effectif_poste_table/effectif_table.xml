@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<templates xml:space="preserve">
-    <t t-name="owl.ConducteurEffectifPoste" owl="1">
-        <h4 class="fw-bold" style="color: rgb(0, 150, 136);">
-            Effectif par titre de poste :
-        </h4>
-        <div t-ref="wrapperRef" />
-    </t>
-</templates>
