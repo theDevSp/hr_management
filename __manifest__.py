@@ -24,6 +24,9 @@
     'data': [
         'security/groups.xml',
         'security/rules.xml',
+        'security/paiement_chantier_rules.xml',
+        'security/paiement_cadre_rules.xml',
+        'security/paiement_adminstration_rules.xml',
         'security/ir.model.access.csv',
         'wizard/wizard_blacklist_view.xml',
         'wizard/wizard_reporter_dates_view.xml',

@@ -38,7 +38,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
     chantier_id = fields.Many2one("fleet.vehicle.chantier",u"Chantier",domain=_get_chantier_domain)
     periodicite = fields.Selection(related="chantier_id.periodicite")
     sous_chantier = fields.Many2one("fleet.vehicle.chantier.emplacement",string="Equipes")
-    employee_type = fields.Selection([("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé")
+    employee_type = fields.Selection([("c","Cadre de Chantier"),("a","Administration"),("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé")
     period_id = fields.Many2one("account.month.period",u'Période',domain = _get_ab_default)
     quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine")
     jour = fields.Date('Date Jour')
@@ -60,7 +60,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
 
     @api.onchange('employee_type')
     def _onchange_employee_type(self):
-        if self.employee_type == 's':
+        if self.employee_type != 'o':
             self.quinzaine = 'quinzaine12'
         else:
             self.quinzaine = 'quinzaine1'
@@ -182,6 +182,8 @@ class hr_filtre_pointage_wizard(models.TransientModel):
         period_month = self.period_id.date_start.month
         period_year = self.period_id.date_start.year
 
+        last_period = self.env["account.month.period"].get_period_from_date(self.period_id.date_start - relativedelta(months=1)) 
+
         last_period_month = period_month - 1 if period_month > 1 else 12
         last_period_year = period_year if period_month > 1 else period_year - 1
 
@@ -233,7 +235,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
             res = [ln['employee_id'][0] for ln in self.env['hr.rapport.pointage'].read_group(
                                 domain=[
                                     ('chantier_id', '=', self.chantier_id.id),
-                                    ('period_id', '=', self.period_id.id - 1),
+                                    ('period_id', '=', last_period.id),
                                     ('type_emp', '=', self.employee_type),
                                 ],
                                 fields=['employee_id'],
@@ -287,7 +289,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
             res = [ln['employee_id'][0] for ln in self.env['hr.rapport.pointage'].read_group(
                                 domain=[
                                     ('chantier_id', '=', self.chantier_id.id),
-                                    ('period_id', '=', self.period_id.id - 1),
+                                    ('period_id', '=', last_period.id),
                                     ('type_emp', '=', self.employee_type),
                                 ],
                                 fields=['employee_id'],
@@ -342,7 +344,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                 'chantier_id':self.chantier_id.id,
                 'quinzaine':'quinzaine2'
                 })
-        elif self.employee_id.type_emp == 's' and self.quinzaine == 'quinzaine12' and self.previlege_validation():
+        elif self.employee_id.type_emp != 'o' and self.quinzaine == 'quinzaine12' and self.previlege_validation():
             self.env['hr.rapport.pointage'].sudo().create({
                 'employee_id':self.employee_id.id,
                 'period_id':self.period_id.id,
@@ -377,55 +379,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
     
     def cancel_rapport_creation(self):
         return True
-    
-    
-    def create_payslip(self):
-        periode = self.env['hr.payroll.ma.mois'].search([('mois','=',self.period_id.id)])
-        if not periode:
-            periode = self.env['hr.payroll.ma.mois'].create({
-                'name':fields.Date.from_string(self.period_id.date_start).strftime("%B").capitalize()+' '+fields.Date.from_string(self.period_id.date_start).strftime("%Y"),
-                'mois':self.period_id.id
-            })
-        note = self.env['hr.payslip'].get_prev_note(self.employee_id,periode)
-        data = {
-            'employee_id':self.employee_id.id,
-            'chantier_id':self.chantier_id.id,
-            'periode':periode.id,
-            'job':self.employee_id.job,
-            'employee_type':self.employee_id.employee_type,
-            'vehicle_id':self.vehicle_id.id,
-            'emplacement_chantier_id':self.sous_chantier.id,
-            'rapport_id':self.rapport_id.id,
-            'quinzaine':self.quinzaine,
-            'note':note and note.get("note") or False
-        }
-        total_h,total_j = 0,0.0
 
-        payslip_id = self.env['hr.payslip'].create(data)
-        
-        if self.quinzaine == 'quinzaine12':
-            total_h = self.rapport_id.total_h_v
-            total_j = self.rapport_id.total_j_v
-        elif self.quinzaine == 'quinzaine1':
-            for line_day in self.rapport_id.rapport_lines:
-                if int(line_day.name[:2]) < 16 :
-                    total_h += int(line_day.h_travailler_v) + int(line_day.h_sup)
-                    total_j += float(line_day.j_travaille_v)
-        else:
-            for line_day in self.rapport_id.rapport_lines:
-                if int(line_day.name[:2]) >= 16 :
-                    total_h += int(line_day.h_travailler_v) + int(line_day.h_sup)
-                    total_j += float(line_day.j_travaille_v)
-        if payslip_id:
-            payslip_id.recuperer_rubriques_payslip()
-            for line in payslip_id.view_line_ids:
-                if line.code == 'h1':
-                    line.valeur = total_h
-                if line.code == 'njt':
-                    line.valeur = total_j
-            payslip_id.compute_sheet_ma()
-            
-    
     def is_pointeur(self):
 
         return self.env['res.users'].has_group("hr_management.group_pointeur")

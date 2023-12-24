@@ -7,6 +7,11 @@
         <field name="view_mode">tree,form,search</field>
     </record>
 
-    <menuitem name="Directeur" id="directeur_menu" parent="general_config_submenu" action="directeur_action" sequence="199" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
+    <menuitem name="Directeur" 
+                id="directeur_menu" 
+                parent="general_config_submenu" 
+                action="directeur_action" 
+                sequence="199" 
+                groups="hr_management.group_admin_paie"/>
 
 </odoo>

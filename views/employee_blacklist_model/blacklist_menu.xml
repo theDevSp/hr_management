@@ -10,6 +10,6 @@
     </record>
 
     <menuitem name="Black List" id="blacklist_menu" parent="employees_main_menu" 
-                action="blacklist_action" sequence="1" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+                action="blacklist_action" sequence="1" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique,hr_management.group_admin_view_paie,hr_management.group_agent_paie_cadre,hr_management.group_agent_paie_administration"/>
 
 </odoo>
