@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="hr_management.main_owl.analytique" owl="1">
+        <div class="d-flex justify-content-center">
+            <div class="card mx-auto" style="width: 50%;">
+                <div class="card-body">
+                    <h5 class="card-title">Analytique Q12</h5>
+                    <a t-on-click="()=>this.request1('test')" href="#" class="btn btn-primary">Q12</a>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="card mx-auto" style="width: 50%;">
+                <div class="card-body">
+                    <h5 class="card-title">Analytique Q1+Q2</h5>
+                    <a t-on-click="()=>this.request2('test')" href="#" class="btn btn-primary">Q1+Q2</a>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

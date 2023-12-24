@@ -35,7 +35,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" ><label for="quinzaine" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                         </div>
-                        <field name="quinzaine" class="form-control" attrs="{'readonly': [('employee_type', '=', 's')]}" required="1" force_save="1"/>
+                        <field name="quinzaine" class="form-control" attrs="{'readonly': [('employee_type', '!=', 'o')]}" required="1" force_save="1"/>
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">

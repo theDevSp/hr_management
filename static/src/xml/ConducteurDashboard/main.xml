@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="owl.ConducteurDashboard" owl="1">
+        <div class="vh-100 overflow-auto bg-dark-subtle">
+            <div class="row m-3">
+                <div class="col-6">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-6 bg-white shadow-sm border">
+                            <div class="col my-4 p-0">
+                                <div class="m-2 p-2 bg-white">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h2 class="w-bold" style="color: rgb(0, 150, 136);">Tableau de Bord - Conducteur
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div class="m-2 p-2 bg-white">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h2 class="fw-bold" style="color: rgb(0, 150, 136);">
+                                            Chantier: <t t-esc="state.chantierName"/>
+                                        </h2>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h4 class="fw-bold" style="color: rgb(0, 150, 136);">
+                                            Dernière période: <t t-esc="state.periodeCode"/>
+                                        </h4>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h4 class="fw-bold" style="color: rgb(0, 150, 136);">
+                                            Période Précédente: <t t-esc="state.prevPeriodeCode"/>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="m-2 p-2 bg-white" style="">
+                                    <ConducteurChantiers onChangeChantier.bind="setChantierID" />
+                                    <div class="col-sm">
+                                        <Periode onChangePeriode.bind="setPeriodeID" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 bg-white shadow-sm border mt-2">
+                            <ChartRenderer type="'bar'" title="'Total d\'Effectif'" config="state.totalEffectifs" />
+                        </div>
+                        <div class="col-6 bg-white shadow-sm border mt-2">
+                            <ChartRenderer type="'bar'" title="'Total des heures Travaillées'" config="state.totalHeures" />
+                        </div>
+                        <div class="col-6 bg-white shadow-sm border mt-2">
+                            <ChartRenderer type="'bar'" title="'Total des Charges'" config="state.totalSalaires" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 d-flex">
+                    <div class="col m-0 p-0">
+                        <div class="shadow-sm border m-2 p-4 bg-white" style="height: 790px;">
+                            <EffectifPosteTable period="state.periodeID" chantier="state.chantierID" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row px-4">
+                <t t-if="state.equipesData">
+                    <t t-foreach="state.equipesData.data" t-as="eq" t-key="eq.equipeID">
+                        <div class="col-6" style="margin-top: 10px;">
+                            <EquipeCard data="eq" period="state.periodeID" chantier="state.chantierID"/>
+                        </div>
+                    </t>
+                </t>
+            </div>
+
+            <div class="col-lg">
+                <div class="row">
+                    <div class="col m-0 p-0">
+                        <div class="shadow-sm border m-2 p-4 bg-white"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
