@@ -120,12 +120,26 @@ class fiche_paie(models.Model):
 
     recap_id = fields.Many2one('hr.recap.line.pdf', string='recap')
 
+    augementation_lines = fields.One2many("complement.augmentation", 'comp_aug_id',string='Liste des Augementatuions')
+
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
         if self.employee_id:
             self.contract_id = self.employee_id.contract_id
             self.autoriz_zero_cp = self.contract_id.autoriz_zero_cp_related
             self.autoriz_cp = self.contract_id.completer_salaire_related
+            self.get_employee_augementations()
+    
+    def get_employee_augementations(self):
+        augementations = self.env['hr.augmentation'].search([('employee_id','=',self.employee_id.id),('state','=','acceptee'),('type','!=','aug')])
+        augementations_lines = [(5,0,0)]
+        for line in augementations:
+            if line:
+                vals = {
+                    "augmentation_id": line.id
+                    }
+                augementations_lines.append((0,0,vals))
+        self.augementation_lines = augementations_lines
     
     @api.onchange('contract_id')
     def _onchange_contract_id(self):
@@ -144,9 +158,10 @@ class fiche_paie(models.Model):
         fiche_paie_sequence = self.env['ir.sequence'].next_by_code('hr.payslip.sequence')
         vals['name'] =  str(fiche_paie_sequence) + '/' + str(month) + '/' + str(year)   
         self.payroll_validation(vals['contract_id'],vals['period_id'])  
-        self.unique_payroll_validation(vals['employee_id'],vals['period_id'],vals['quinzaine'])   
-
+        self.unique_payroll_validation(vals['employee_id'],vals['period_id'],vals['quinzaine'])
         res = super(fiche_paie, self).create(vals)
+
+        res.get_employee_augementations()
 
         last_paied_period = self.env[self._name].search_read([('employee_id','=',res.employee_id.id),('id','<',res.id)],['notes','note'],limit=1, order='id desc')
         
@@ -176,6 +191,7 @@ class fiche_paie(models.Model):
         return res
 
     def write(self, vals):
+        print("Vals write : ",vals)   
         res = super(fiche_paie, self).write(vals)
         self.payroll_validation(self.contract_id.id,self.period_id.id) 
         if vals.get('cal_state') and self.cal_state == True:
@@ -224,7 +240,6 @@ class fiche_paie(models.Model):
                     rec.cp_number = min(rec.employee_result()['j_comp'],self.employee_id.panier_conge) if rec.employee_result() else 0
                 elif rec.autoriz_zero_cp:
                     rec.cp_number += rec.employee_result()['j_comp'] if rec.employee_result() else 0
-            
             
     @api.depends('employee_id','period_id','contract_id')
     def _compute_salaire_jour(self):

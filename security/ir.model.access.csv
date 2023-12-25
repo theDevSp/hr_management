@@ -291,3 +291,6 @@ recap_line_pdf_service_analytique,recap_line_pdf,model_hr_recap_line_pdf,group_s
 recap_line_pdf_controle_gestion,recap_line_pdf,model_hr_recap_line_pdf,group_controle_gestion,1,0,0,0
 recap_line_pdf_pointeur,recap_line_pdf,model_hr_recap_line_pdf,group_pointeur,0,0,0,0
 recap_line_pdf_cnss_juridique,recap_line_pdf,model_hr_recap_line_pdf,group_cnss_juridique,1,0,0,0
+
+hr_management.access_hr_mission,access_hr_mission,hr_management.model_hr_mission,base.group_user,1,1,1,1
+hr_management.access_complement_augmentation,access_complement_augmentation,hr_management.model_complement_augmentation,base.group_user,1,1,1,1
