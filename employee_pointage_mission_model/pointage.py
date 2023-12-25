@@ -527,8 +527,7 @@ class hr_rapport_pointage(models.Model):
                 data[key]['j'] += float(line.j_travaille_v)
             else:
                 data[key]['j'] = float(line.j_travaille_v)
-                
-
+    
 
     def rapport_result(self):
         contract = self.employee_id.contract_id # contrat par defaut

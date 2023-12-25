@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_employee_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">Employee Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="domain_force">[('contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+
+    <record id="hr_contract_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">Contract Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_hr_contract"/>
+        <field name="domain_force">[('type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+
+    <record id="hr_payroll_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">Payroll Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_hr_payslip"/>
+        <field name="domain_force">[('contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+
+    <record id="hr_holidays_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">Holidays Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_hr_holidays"/>
+        <field name="domain_force">[('employee_id.contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+
+    <record id="hr_fixation_salaire_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">Fixation salaire Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_hr_fixation_salaire"/>
+        <field name="domain_force">[('employee_id.contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+
+    <record id="hr_augmentation_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">Augmentation Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_hr_augmentation"/>
+        <field name="domain_force">[('employee_id.contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+    
+    <record id="hr_prelevement_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">Prelevement Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_hr_prelevement"/>
+        <field name="domain_force">[('employee_id.contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+
+    <record id="hr_paiement_prelevement_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">Prelevement lines Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_hr_paiement_prelevement"/>
+        <field name="domain_force">[('employee_id.contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+    
+    <record id="hr_prime_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">Prime Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_hr_prime"/>
+        <field name="domain_force">[('employee_id.contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+
+    <record id="hr_paiement_ligne_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">Prime lines Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_hr_paiement_ligne"/>
+        <field name="domain_force">[('employee_id.contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+
+    <record id="employee_rib_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">RIB Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_employee_rib"/>
+        <field name="domain_force">[('employee_id.contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+
+    <record id="hr_stc_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">STC Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_hr_stc"/>
+        <field name="domain_force">[('employee_id.contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+
+    <record id="addition_list_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">STC Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_addition_list"/>
+        <field name="domain_force">[('stc_id.employee_id.contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+
+    <record id="deduction_list_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">STC Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_deduction_list"/>
+        <field name="domain_force">[('stc_id.employee_id.contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+    
+    <record id="hr_payslip_stc_rule_agent_paie_administration" model="ir.rule">
+        <field name="name">STC Rules Agent de Paie administration</field>
+        <field name="model_id" ref="model_hr_payslip_stc"/>
+        <field name="domain_force">[('stc_id.employee_id.contract_id.type_emp','=','a')]</field>
+        <field name="groups" eval="[(4,ref('hr_management.group_agent_paie_administration'))]"/>
+    </record>
+</odoo>

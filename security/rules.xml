@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-   
+
     <record id="hr_recrutement_rule_agent_paie" model="ir.rule">
         <field name="name">Recrutement Rules Agent de Paie</field>
         <field name="model_id" ref="model_hr_recrutement"/>
