@@ -5,17 +5,37 @@
         <field name="model">hr.augmentation</field>
         <field name="arch" type="xml">
             <tree string="Augmentations" multi_edit="1" sample="1" default_order='date_fait ASC' class="table">
-                <field name="employee_id" readonly="1" widget="many2one_avatar_employee"/>
-                <field name="chantier_id"/>
-                <field name="responsable_id"/>
-                <field name="directeur_id"/>
-                <field name="period_id"/>
-                <field name="date_fait"/>
-                <field name="montant_propose"/>
-                <field name="montant_valide"/>
-                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
-                <field name="motif"/>
-                <field name="observation"/>
+                <field name="employee_id" readonly="1" widget="many2one_avatar_employee" />
+                <field name="chantier_id" />
+                <field name="responsable_id" />
+                <field name="directeur_id" />
+                <field name="period_id" />
+                <field name="date_fait" />
+                <field name="montant_propose" />
+                <field name="montant_valide" attrs="{'column_invisible': [('type', '==', 'chg')]}" />
+                <field name="state" widget="badge" decoration-info="state == 'draft'"
+                    decoration-warning="state == 'annulee'" decoration-success="state == 'validee'" />
+                <field name="motif" />
+                <field name="type" attrs="{'column_invisible': True}" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="chg_prg_tree" model="ir.ui.view">
+        <field name="name">Liste des augmentations</field>
+        <field name="model">hr.augmentation</field>
+        <field name="arch" type="xml">
+            <tree string="Augmentations" multi_edit="1" sample="1" default_order='date_fait ASC' class="table">
+                <field name="employee_id" readonly="1" widget="many2one_avatar_employee" />
+                <field name="chantier_id" />
+                <field name="responsable_id" />
+                <field name="directeur_id" />
+                <field name="period_id" />
+                <field name="date_fait" />
+                <field name="montant_propose" />
+                <field name="state" widget="badge" decoration-info="state == 'draft'"
+                    decoration-warning="state == 'annulee'" decoration-success="state == 'validee'" />
+                <field name="motif" />
             </tree>
         </field>
     </record>
@@ -25,17 +45,20 @@
         <field name="model">hr.augmentation</field>
         <field name="arch" type="xml">
             <tree string="Augmentations" multi_edit="1" sample="1" default_order='date_fait ASC' class="table">
-                <field name="employee_id" readonly="1" widget="many2one_avatar_employee"/>
-                <field name="chantier_id"/>
-                <field name="responsable_id"/>
-                <field name="directeur_id"/>
-                <field name="period_id"/>
-                <field name="date_fait"/>
-                <field name="montant_propose"/>
-                <field name="montant_valide" sum="Total Montant(s) Validé(s)"/>
-                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'"/>
-                <field name="motif"/>
-                <field name="observation"/>
+                <field name="employee_id" readonly="1" widget="many2one_avatar_employee" />
+                <field name="chantier_id" />
+                <field name="responsable_id" />
+                <field name="directeur_id" />
+                <field name="period_id" />
+                <field name="date_fait" />
+                <field name="montant_propose" />
+                <field name="montant_valide" sum="Total Montant(s) Validé(s)"
+                    attrs="{'invisible': [('type', '!=', 'augementation')]}" />
+                <field name="state" widget="badge" decoration-info="state == 'draft'"
+                    decoration-warning="state == 'annulee'" decoration-success="state == 'validee'" />
+                <field name="motif" />
+                <field name="observation" />
+                <field name="type" />
             </tree>
         </field>
     </record>
@@ -46,19 +69,37 @@
         <field name="arch" type="xml">
             <form>
                 <header class="bar-box-shadow mb-4">
-                    <button name="to_draft" string="Brouillon" type="object" attrs="{'invisible': [('state', 'in', ('draft','acceptee','refusee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                    <button name="to_validee" string="Valider" type="object" attrs="{'invisible': [('state', 'in', ('validee','acceptee','refusee','annulee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                    <button name="to_acceptee" string="Accepter" type="object" attrs="{'invisible': [('state', 'in', ('draft','acceptee','annulee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                    <button name="to_refusee" string="Refuser" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'refusee', 'annulee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                    <button name="to_annulee" string="Annuler" type="object" attrs="{'invisible': [('state', 'in', ('annulee'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
-                    <field name="state" widget="statusbar" nolabel="1"/>
+                    <button name="to_draft" string="Brouillon" type="object"
+                        attrs="{'invisible': [('state', 'in', ('draft','acceptee','refusee'))]}"
+                        groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
+                    <button name="to_validee" string="Valider" type="object"
+                        attrs="{'invisible': [('state', 'in', ('validee','acceptee','refusee','annulee'))]}"
+                        groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
+                    <button name="to_acceptee" string="Accepter" type="object"
+                        attrs="{'invisible': [('state', 'in', ('draft','acceptee','annulee'))]}"
+                        groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
+                    <button name="to_refusee" string="Refuser" type="object"
+                        attrs="{'invisible': [('state', 'in', ('draft', 'refusee', 'annulee'))]}"
+                        groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
+                    <button name="to_annulee" string="Annuler" type="object"
+                        attrs="{'invisible': [('state', 'in', ('annulee'))]}"
+                        groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
+                    <field name="state" widget="statusbar" nolabel="1" />
                 </header>
                 <sheet>
                     <div class="bg-white shadow p-3">
-                        <div class="alert alert-danger text-center mb-2"><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> Champs Obligatoire </div>
+                        <div class="alert alert-danger text-center mb-2">
+                            <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i> Champs Obligatoire
+                        </div>
                         <div class="card bg-light my-3">
                             <div class="card-body text-center">
-                                <h2 class="card-text">AUGMENTATION <span attrs="{'invisible': [('name', '=', False )]}">N° <field name="name" readonly="1" /></span></h2>
+                                <h2 class="card-text">
+                                    <span>
+                                        <field name="type" readonly="1" />
+                                    </span> <span attrs="{'invisible': [('name', '=', False )]}">N°
+                                        <field name="name" readonly="1" />
+                                    </span>
+                                </h2>
                             </div>
                         </div>
                         <div class="card bg-light my-3">
@@ -67,117 +108,159 @@
                                     <div class="col-12 col-lg-6">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="employee_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                <span class="input-group-text">
+                                                    <label for="employee_id" class="" />
+                                                    <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                </span>
                                             </div>
-                                            <field name="employee_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                            <field name="employee_id" options="{'no_create': True, 'no_open': True}"
+                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="chantier_id" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="chantier_id" class="" />
+                                                </span>
                                             </div>
-                                            <field name="chantier_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"  class="form-control"/>
+                                            <field name="chantier_id" options="{'no_create': True, 'no_open': True}"
+                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="responsable_id" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="responsable_id" class="" />
+                                                </span>
                                             </div>
-                                            <field name="responsable_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"  class="form-control"/>
+                                            <field name="responsable_id" options="{'no_create': True, 'no_open': True}"
+                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="directeur_id" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="directeur_id" class="" />
+                                                </span>
                                             </div>
-                                            <field name="directeur_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"  class="form-control"/>
+                                            <field name="directeur_id" options="{'no_create': True, 'no_open': True}"
+                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="period_id" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="period_id" class="" />
+                                                </span>
                                             </div>
-                                            <field name="period_id"  options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"  class="form-control"/>
+                                            <field name="period_id" options="{'no_create': True, 'no_open': True}"
+                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="date_fait" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="date_fait" class="" />
+                                                </span>
                                             </div>
-                                            <field name="date_fait" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                            <field name="date_fait" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                                class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="montant_propose" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                <span class="input-group-text">
+                                                    <label for="montant_propose" class="" />
+                                                    <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                </span>
                                             </div>
-                                            <field name="montant_propose" attrs="{'readonly': [('state', '!=', 'draft')]}"  class="form-control"/>
-                                            
+                                            <field name="montant_propose"
+                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
+
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6" attrs="{'invisible': [('type', '!=', 'aug')]}">
+                                        <field name="type" attrs="{'invisible': True}" />
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <label for="montant_valide" class="" />
+                                                </span>
+                                            </div>
+                                            <field name="montant_valide"
+                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <div class="o_form_label o_form_label_readonly">DH</div>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="montant_valide" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="motif" class="" />
+                                                </span>
                                             </div>
-                                            <field name="montant_valide" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">DH</div></span>
-                                            </div>
+                                            <field name="motif" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                                class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="motif" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="type_salaire" class="" />
+                                                </span>
                                             </div>
-                                            <field name="motif" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                            <field name="type_salaire" class="form-control" />
                                         </div>
                                     </div>
-                                    <div class="col-12 col-lg-6">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="type_salaire" class=""/></span>
-                                            </div>
-                                            <field name="type_salaire" class="form-control"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-lg-6"  attrs="{'invisible': [('motif', '!=', 'autres')]}">
+                                    <div class="col-12 col-lg-6" attrs="{'invisible': [('motif', '!=', 'autres')]}">
                                         <div class="card my-3">
                                             <div class="card-body text-center">
-                                                <h6 class="card-text">Détail Motif <i class="fas fa-exclamation-triangle" style="color:#f00000;"></i></h6>
+                                                <h6 class="card-text">Détail Motif <i
+                                                        class="fas fa-exclamation-triangle" style="color:#f00000;"></i>
+                                                </h6>
                                             </div>
                                             <div class="card-body text-dark text-center">
-                                                <field name="motif_autres" attrs="{'readonly': [('state', '!=', 'draft')],'required':[('motif', '=', 'autres')]}"/>
+                                                <field name="motif_autres"
+                                                    attrs="{'readonly': [('state', '!=', 'draft')],'required':[('motif', '=', 'autres')]}" />
                                             </div>
-                                        </div>  
-                                    </div>
-                                    <div class="col-12 col-lg-6">
-                                        <div class="card my-3">
-                                            <div class="card-body text-center">
-                                                <h6 class="card-text">Observation <i class="fas fa-exclamation-triangle" style="color:#f00000;"></i></h6>
-                                            </div>
-                                            <div class="card-body text-dark text-center">
-                                                <field name="observation" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                            </div>
-                                        </div>  
+                                        </div>
                                     </div>
                                 </div>
-                            </div> 
-                        </div> 
+                                <div class="row">
+                                    <div class="col-12 col-lg">
+                                        <div class="card my-3" style="border-color: #635b5b;">
+                                            <div class="card-body text-center">
+                                                <h6 class="card-text">Observation <i class="fas fa-exclamation-triangle"
+                                                        style="color:#f00000;"></i>
+                                                </h6>
+                                            </div>
+                                            <div class="card-body text-dark text-center">
+                                                <field name="observation"
+                                                    attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
+
                 </sheet>
                 <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="activity_ids" widget="mail_activity"/>
-                    <field name="message_ids" widget="mail_thread"/>
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="activity_ids" widget="mail_activity" />
+                    <field name="message_ids" widget="mail_thread" />
                 </div>
             </form>
         </field>
@@ -188,16 +271,16 @@
         <field name="model">hr.augmentation</field>
         <field name="arch" type="xml">
             <search>
-                <field name="employee_id"/>
-                <field name="chantier_id"/>
-                <field name="period_id"/>
-                <field name="date_fait"/>
-                <field name="state"/>
-                <field name="motif"/>
+                <field name="employee_id" />
+                <field name="chantier_id" />
+                <field name="period_id" />
+                <field name="date_fait" />
+                <field name="state" />
+                <field name="motif" />
                 <searchpanel>
-                    <field name="chantier_id" icon="fa-city" enable_counters="1" select="multi"/>
-                    <field name="period_id" icon="fa-clock" enable_counters="1" select="multi"/>
-                    <field name="state" icon="fa-align-center" enable_counters="1" select="multi"/>
+                    <field name="chantier_id" icon="fa-city" enable_counters="1" select="multi" />
+                    <field name="period_id" icon="fa-clock" enable_counters="1" select="multi" />
+                    <field name="state" icon="fa-align-center" enable_counters="1" select="multi" />
                 </searchpanel>
             </search>
         </field>

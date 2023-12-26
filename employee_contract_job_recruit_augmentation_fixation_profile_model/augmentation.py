@@ -46,6 +46,14 @@ class augmentation(models.Model):
         string='Motif'
     )
 
+    type =  fields.Selection([
+        ('aug', 'Augementation'),
+        ('chg', 'Charge Fixe'),
+        ('prg', 'Privilège')
+        ], 
+        string='type'
+    )
+
     motif_autres = fields.Text("Motif Autres")
 
     observation = fields.Text('Observation')
@@ -162,7 +170,7 @@ class augmentation(models.Model):
             query = """
                     SELECT period_id,montant_propose,date_fait
                     FROM hr_augmentation
-                    WHERE employee_id=%s AND id<%s
+                    WHERE employee_id=%s AND id<%s AND type='aug'
                     ORDER BY id DESC
                     LIMIT 1
                 """ % (rec.employee_id.id, rec.id)
@@ -183,7 +191,7 @@ class augmentation(models.Model):
             query = """
                     SELECT case when SUM(montant_valide) is null then 0 else SUM(montant_valide) end as sum
                     FROM hr_augmentation 
-                    WHERE employee_id = %s AND state='acceptee' AND period_id >= %s 
+                    WHERE employee_id = %s AND state='acceptee' AND period_id >= %s AND type='aug'
                 """ % (employee_id.id,period_id.id)
             self.env.cr.execute(query)
             res = self.env.cr.dictfetchall()
