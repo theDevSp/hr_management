@@ -10,30 +10,6 @@ from itertools import groupby
 
 
 class printReportPointageController(http.Controller):
-    @http.route('/hr_management/pointage/get_all_chantiers', type='json', auth='user')
-    def get_all_chantiers(self):
-
-        chantier_records = http.request.env['fleet.vehicle.chantier'].search([
-            ('type_chantier', '!=', 'CG')
-        ])
-
-        data = []
-
-        for record in chantier_records:
-
-            data.append({
-                'id': record.id,
-                'name': record.name,
-            })
-
-        if data:
-            return data
-        else:
-            return {
-                'code': 504,
-                'msg': 'error'
-            }
-
     @http.route('/hr_management/pointage/get_all_Equipes', type='json', auth='user')
     def get_all_equipes(self):
 
@@ -56,32 +32,6 @@ class printReportPointageController(http.Controller):
                 'code': 504,
                 'msg': 'error'
             }
-
-    @http.route('/hr_management/pointage/get_all_periods', type='json', auth='user')
-    def get_all_periods(self):
-
-        today = date.today()
-        this_year = today.year
-        first_day_of_next_month = today + relativedelta(day=1, months=1)
-        periods = request.env['account.month.period'].search([
-            ('date_stop', '<', first_day_of_next_month),
-            ('fiscalyear_id.fiscal_year_id.name',
-             'in', [str(this_year), str(this_year-1)])
-        ], order='date_start asc')
-
-        data = []
-
-        for record in periods:
-            data.append({
-                'id': record.id,
-                'code': record.code,
-                'year': record.fiscalyear_id.fiscal_year_id.display_name
-            })
-
-        if data:
-            return data
-        else:
-            return http.request.make_json_response(data={'message': 'No data found'}, status=404)
 
     @http.route('/hr_management/get_report_pointage/', type='http', auth='user', methods=['POST'], csrf=False)
     def get_report_pointage_filtered(self):

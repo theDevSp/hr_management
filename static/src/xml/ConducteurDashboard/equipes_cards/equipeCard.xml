@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl.ConducteurEquipeCard" owl="1">
+        <t t-if="state.data">
+            <div class="card" style="background-color: rgb(0, 150, 136)">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between">
+                        <h2>
+                            <span style="color: aliceblue;">
+                                <t t-esc="state.data.equipe.toLocaleString().toUpperCase()"/>
+                            </span>
+                        </h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="card" style="background-color: rgb(55, 154, 184)">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-around">
+                                        <h4 class="card-title">
+                                        Répartition effectifs
+                                        </h4>
+                                        <i class="fas fa-solid fa-users fa-lg" style="color: rgb(0, 150, 136);"></i>
+                                    </div>
+                                    <hr>
+                                    </hr>
+                                    <p class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="card-title">Les salariés :</h6>
+                                            <h6 class="card-title">
+                                                <span>
+                                                    <t t-esc="state.data.count_salaries"/>
+                                                </span>
+                                            </h6>
+                                        </div>
+                                    </p>
+                                    <p class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="card-title">Les ouvriers :</h6>
+                                            <h6 class="card-title">
+                                                <span>
+                                                    <t t-esc="state.data.count_ouvriers"/>
+                                                </span>
+                                            </h6>
+                                        </div>
+                                    </p>
+                                    <p class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="card-title">Total :</h6>
+                                            <h6 class="card-title">
+                                                <t t-esc="state.data.count_ouvriers + state.data.count_salaries"/>
+                                            </h6>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card" style="background-color: rgb(57, 203, 219);">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-around">
+                                        <h4 class="card-title">
+                                        Répartition heures
+                                        </h4>
+                                        <i class="fas fa-solid fa-clock fa-lg" style="color: rgb(0, 150, 136);"></i>
+                                    </div>
+                                    <hr>
+                                    </hr>
+                                    <p class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="card-title">Les salariés :</h6>
+                                            <h6 class="card-title">
+                                                <t t-esc="this.formatNumber(state.data.total_heures_salaries)"/>
+                                            h
+                                            </h6>
+                                        </div>
+                                    </p>
+                                    <p class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="card-title">Les ouvriers :</h6>
+                                            <h6 class="card-title">
+                                                <t t-esc="this.formatNumber(state.data.total_heures_ouvriers)"/>
+                                            h
+                                            </h6>
+                                        </div>
+                                    </p>
+                                    <p class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="card-title">Total :</h6>
+                                            <h6 class="card-title">
+                                                <t t-esc="this.formatNumber(state.data.total_heures_ouvriers + state.data.total_heures_salaries)"/>
+                                            h
+                                            </h6>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card" style="background-color: rgb(26, 154, 173);">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-around">
+                                        <h4 class="card-title">
+                                        Répartition des Charges
+                                        </h4>
+                                        <i class="fas fa-solid fa-money-bill fa-lg" style="color: rgb(0, 150, 136);"></i>
+                                    </div>
+                                    <hr>
+                                    </hr>
+                                    <p class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="card-title">Les salariés :</h6>
+                                            <h6 class="card-title">
+                                                <t t-esc="this.formatNumber(state.data.total_salaires_salaries)"/>
+                                            DH
+                                            </h6>
+                                        </div>
+                                    </p>
+                                    <p class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="card-title">Les ouvriers :</h6>
+                                            <h6 class="card-title">
+                                                <t t-esc="this.formatNumber(state.data.total_salaires_ouvriers)"/>
+                                            DH
+                                            </h6>
+                                        </div>
+                                    </p>
+                                    <p class="card-text">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="card-title">Total :</h6>
+                                            <h6 class="card-title">
+                                                <t t-esc="this.formatNumber(state.data.total_salaires_salaries + state.data.total_salaires_ouvriers)"/>
+                                            DH
+                                            </h6>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <t t-if="this.props.data.cadres_data.length > 0">
+                        <div class="row mt-2">
+                            <div class="col-lg">
+                                <hr style="border: 1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                                <div style="text-align: center;">
+                                    <h5>Détails des Cadres</h5>
+                                </div>
+                                <hr style="border:1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                                <div />
+                                <EquipeGridTable format.bind="formatNumber" id="state.data.equipeID" type="'cadres'" data="state.data.cadres_data"/>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="this.props.data.salaries_data.length > 0">
+                        <div class="row mt-2">
+                            <div class="col-lg">
+                                <hr style="border: 1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                                <div style="text-align: center;">
+                                    <h5>Détails des Salariés</h5>
+                                </div>
+                                <hr style="border: 1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                                <EquipeGridTable format.bind="formatNumber" id="state.data.equipeID" type="'salaries'" data="state.data.salaries_data"/>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="this.props.data.ouvriers_data.length > 0">
+                        <div class="row mt-2">
+                            <div class="col-lg">
+                                <hr style="border: 1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                                <div style="text-align: center;">
+                                    <h5>Détails des Ouvriers</h5>
+                                </div>
+                                <hr style="border:1px solid rgb(0, 150, 136); border-radius: 5px;" />
+                                <EquipeGridTable format.bind="formatNumber" id="state.data.equipeID" type="'ouvriers'" data="state.data.ouvriers_data"/>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+
+    </t>
+</templates>

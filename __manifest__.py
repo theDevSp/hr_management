@@ -8,20 +8,20 @@
     'license': 'LGPL-3',
 
     'depends': [
-        'base', 
-        'mail', 
-        'hr',  
-        'hr_contract', 
-        'construction_site_management', 
-        'muk_web_theme', 
-        'account_fiscal_year_period', 
-        'base_fontawesome', 
-        'reports_templates', 
+        'base',
+        'mail',
+        'hr',
+        'hr_contract',
+        'construction_site_management',
+        'muk_web_theme',
+        'account_fiscal_year_period',
+        'base_fontawesome',
+        'reports_templates',
         'fleet_gmao_management',
         'configuration_module'
-        ],
+    ],
 
-    'data': [         
+    'data': [
         'security/groups.xml',
         'security/rules.xml',
         'security/paiement_chantier_rules.xml',
@@ -114,7 +114,7 @@
         'views/recap_pdf/recap_pdf_view.xml',
         'views/recap_pdf/recap_pdf_menu.xml',
         'views/recap_pdf/recap_line_pdf_view.xml',
-        
+
         'views/dashboards/dashboards_menu.xml',
 
         'views/owl_views/report_pointage_views_inherit.xml',
@@ -125,16 +125,16 @@
         'views/owl_views/fixation/fixation_salaire_views_inherit.xml',
         'views/owl_views/employe/employe_views_inherit.xml',
         'views/owl_views/recap/recap_views_inherit.xml'
-        
 
-],
+
+    ],
 
     'demo': [
     ],
 
     'assets': {
         'web.assets_qweb': [
-            
+
         ],
         'web.assets_backend': [
             'hr_management/static/src/js/*.js',
@@ -142,20 +142,20 @@
             'hr_management/static/src/xml/*.xml',
             'hr_management/static/src/xml/**/*.xml',
             'hr_management/static/src/css/*.scss',
-            'hr_management/static/src/css/**/*.scss'
+            'hr_management/static/src/css/**/*.scss',
         ],
         'web.report_assets_pdf': [
-            'hr_management/static/src/report_css/*.scss',  
+            'hr_management/static/src/report_css/*.scss',
         ],
         'web.assets_common': [
-            'hr_management/static/src/**/*.scss',  
+            'hr_management/static/src/**/*.scss',
 
         ],
-        
+
     },
 
-    'application': True ,
-    'installable': True ,
+    'application': True,
+    'installable': True,
     'auto_install': False,
     'sequence': 2,
 

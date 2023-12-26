@@ -27,8 +27,8 @@ class PointageListController extends ListController {
         this.notification = this.env.services.notification;
 
         onWillStart(async () => {
-            await loadJS("/reports_templates/static/src/lib/selectize/selectize.min.js")
-            await loadCSS("/reports_templates/static/src/lib/selectize/selectize.default.min.css")
+            await loadJS("/configuration_module/static/src/libraries/selectize/selectize.min.js")
+            await loadCSS("/configuration_module/static/src/libraries/selectize/selectize.default.min.css")
         })
 
         onMounted(async () => {

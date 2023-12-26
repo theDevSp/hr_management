@@ -18,7 +18,7 @@ class hr_employee_add_transit(models.TransientModel):
         else:
             for chantier in self.env['fleet.vehicle.chantier'].search([('type_chantier','in',('Chantier','Depot','Poste'))]):
                 res.append(chantier.id)
-        print(res)
+        
         return [('id', 'in',res)] 
     
     def _get_engin_domain(self):
@@ -60,7 +60,7 @@ class hr_employee_add_transit(models.TransientModel):
     chantier = fields.Many2one("fleet.vehicle.chantier",string="Chantier",domain=_get_chantier_domain,required=True)
     vehicle = fields.Many2one("fleet.vehicle",string="Code Engin")
     emplacement = fields.Many2one("fleet.vehicle.chantier.emplacement",string="Equipe")
-    employee_type = fields.Selection([("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé",required=True)
+    employee_type = fields.Selection([("c","Cadre de Chantier"),("a","Administration"),("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé",required=True)
     period_id = fields.Many2one("account.month.period",u'Période',required=True,domain = _get_ab_default)
     date_start = fields.Date('Date Début',required=True)
     quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine",default='quinzaine1')

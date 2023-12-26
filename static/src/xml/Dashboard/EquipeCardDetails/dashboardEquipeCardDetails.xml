@@ -3,7 +3,7 @@
     <t t-name="owl.EquipeCardDetails" owl="1">
         <div class="col-3">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body bg-c-blue order-card">
                     <div class="d-flex justify-content-around">
                         <h4 class="card-title">
                             Rapports Pointage
@@ -50,7 +50,7 @@
 
         <div class="col-3">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body bg-c-green order-card">
                     <div class="d-flex justify-content-around">
                         <h4 class="card-title">
                             Fiches de Paie
@@ -62,31 +62,41 @@
                     <p class="card-text">
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title">Effectifs:</h6>
-                            <h6 class="card-title"><span t-esc="props.details.resume_payroll.payroll_count"></span></h6>
+                            <h6 class="card-title">
+                                <span t-esc="props.details.resume_payroll.payroll_count"></span>
+                            </h6>
                         </div>
                     </p>
                     <p class="card-text">
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title">Total Payment:</h6>
-                            <h6 class="card-title"><span t-esc="props.details.resume_payroll.payement"></span></h6>
+                            <h6 class="card-title">
+                                <span t-esc="props.details.resume_payroll.payement"></span>
+                            </h6>
                         </div>
                     </p>
                     <p class="card-text">
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title">Total Refund:</h6>
-                            <h6 class="card-title"><span t-esc="props.details.resume_payroll.refund"></span></h6>
+                            <h6 class="card-title">
+                                <span t-esc="props.details.resume_payroll.refund"></span>
+                            </h6>
                         </div>
                     </p>
                     <p class="card-text">
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title">Total STC:</h6>
-                            <h6 class="card-title"><span t-esc="props.details.resume_payroll.stc"></span></h6>
+                            <h6 class="card-title">
+                                <span t-esc="props.details.resume_payroll.stc"></span>
+                            </h6>
                         </div>
                     </p>
                     <p class="card-text">
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title">Total Blocked:</h6>
-                            <h6 class="card-title"><span t-esc="props.details.resume_payroll.blocked"></span></h6>
+                            <h6 class="card-title">
+                                <span t-esc="props.details.resume_payroll.blocked"></span>
+                            </h6>
                         </div>
                     </p>
                 </div>
@@ -95,7 +105,7 @@
 
         <div class="col-6">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body bg-c-pink order-card">
                     <div class="d-flex justify-content-around">
                         <h4 class="card-title">
                             Montant
@@ -107,19 +117,25 @@
                     <p class="card-text">
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title">Total Net Paye:</h6>
-                            <h6 class="card-title"><span t-esc="props.details.resume_payroll.montant_net_paye"></span></h6>
+                            <h6 class="card-title">
+                                <span t-esc="props.details.resume_payroll.montant_net_paye"></span>
+                            </h6>
                         </div>
                     </p>
                     <p class="card-text">
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title">Total SAD:</h6>
-                            <h6 class="card-title"><span t-esc="props.details.resume_payroll.montant_sad"></span></h6>
+                            <h6 class="card-title">
+                                <span t-esc="props.details.resume_payroll.montant_sad"></span>
+                            </h6>
                         </div>
                     </p>
                     <p class="card-text">
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title">Montant Total:</h6>
-                            <h6 class="card-title"><span t-esc="props.details.resume_payroll.montant_total"></span></h6>
+                            <h6 class="card-title">
+                                <span t-esc="props.details.resume_payroll.montant_total"></span>
+                            </h6>
                         </div>
                     </p>
                 </div>

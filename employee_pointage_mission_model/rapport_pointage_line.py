@@ -186,7 +186,7 @@ class hr_rapport_pointage_line(models.Model):
         quinzaine2_delimite = datetime.strptime(str(period_year)+'-'+str(period_month)+'-'+str(calendar.monthrange(period_year, period_month)[1]), "%Y-%m-%d")
 
         if 'state' not in vals and 'day_type' not in vals:
-            if (self.rapport_id.chantier_id.periodicite == '2' or self.rapport_id.employee_id.type_emp == 's'):
+            if (self.rapport_id.chantier_id.periodicite == '2' or self.rapport_id.employee_id.type_emp != 'o'):
                 if pointeur and not self.grant_modification and not self.rapport_id.chantier_id.grant_modification and datetime.strptime(str(self.day), "%Y-%m-%d") <= quinzaine2_delimite and datetime.now() >= quinzaine2_day_ref:
                     raise ValidationError(
                         "Erreur, Vous n'étes plus autorisé à modifier ce jour."
@@ -220,7 +220,7 @@ class hr_rapport_pointage_line(models.Model):
                 raise ValidationError(
                         "Erreur, Vous devez spécifier un Emplacement sur Chantier."
                     )
-            if not self.details and not vals.get('details')  and self.employee_id.type_emp == 's' and pointeur:
+            if not self.details and not vals.get('details')  and self.employee_id.type_emp != 'o' and pointeur:
                 raise ValidationError(
                         "Erreur, Vous devez spécifier les détails des travaux."
                     )
