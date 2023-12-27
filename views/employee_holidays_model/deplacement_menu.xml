@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id='deplacement_action' model='ir.actions.act_window'>
+        <field name="name">Déplacement</field>
+        <field name="res_model">hr.deplacement</field>
+        <field name="view_mode">tree,form,search</field>
+        <field name="context">{'default_type': 'dpl'}</field>
+        <field name="domain">[('type', '=', 'dpl')]</field>
+    </record>
+
+    <record id='autorisation_action' model='ir.actions.act_window'>
+        <field name="name">Autorisation</field>
+        <field name="res_model">hr.deplacement</field>
+        <field name="view_mode">tree,form,search</field>
+        <field name="context">{'default_type': 'auth'}</field>
+        <field name="domain">[('type', '=', 'auth')]</field>
+    </record>
+
+
+    <menuitem id="deplacement_submenu" name="les Déplacements" parent="holidays_allocations_hr_menu" sequence="1"/>
+    <menuitem name="Déplacement" id="deplacement_hr_menu" parent="deplacement_submenu" action="deplacement_action" sequence="2"/>
+    <menuitem name="Autorisation" id="quthorisation_hr_menu" action="autorisation_action" groups="hr_management.group_admin_paie,hr_management.group_pointeur" parent="deplacement_submenu" sequence="10"/>
+
+</odoo>

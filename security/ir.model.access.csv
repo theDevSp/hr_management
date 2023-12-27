@@ -417,3 +417,8 @@ repartition_salaire_administration_agent_paie,repartition_salaire,model_repartit
 employee_rib_administration_agent_paie,employee_rib_agent,model_employee_rib,group_agent_paie_administration,1,1,1,1
 recap_pdf_administration_agent_paie,recap_pdf,model_hr_recap_pdf,group_agent_paie_administration,1,1,1,1
 recap_line_pdf_administration_agent_paie,recap_line_pdf,model_hr_recap_line_pdf,group_agent_paie_administration,1,1,1,1
+
+hr_management.access_zk_machines,access_zk_machines,hr_management.model_zk_machines,base.group_user,1,1,1,1
+hr_management.access_machine_pointage,access_machine_pointage,hr_management.model_machine_pointage,base.group_user,1,1,1,1
+
+hr_management.access_hr_deplacement,access_hr_deplacement,hr_management.model_hr_deplacement,base.group_user,1,1,1,1

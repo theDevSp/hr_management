@@ -180,6 +180,9 @@ class hr_employee(models.Model):
 
     @api.model
     def create(self,vals):
+
+        print("Valsss ",vals)
+
         res_char = []
         char = "".join(re.split("[^a-zA-Z]*", vals['cin']))
         num = "".join(re.split("[^0-9]*", vals['cin']))

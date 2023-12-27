@@ -91,15 +91,24 @@
                     </div>
                 </div>
                 <div class="oe_button_box bar-box-shadow bg-white mt-4" name="button_box">
-                    <button name="all_contracts" type="object" class="oe_stat_button col-12" icon="fa-paste" string="Contracts" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Contrats <field name="nbr_contrats"/></button> 
-                    <button name="all_augmentations" type="object" class="oe_stat_button col-12" icon="fa-chart-line" string="Augmentations" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Augmentations <field name="nbr_augmentations"/></button>
-                    <button name="all_primes" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Primes" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Primes <field name="nbr_primes"/></button>
-                    <button name="all_prelevements" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Prélèvements" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Prélèvements <field name="nbr_prelevements"/></button>
-                    <button name="all_credits" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Crédits" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Crédits <field name="nbr_credits"/></button>
-                    <button name="all_conges" type="object" class="oe_stat_button col-12" icon="fa-sliders" string="Congés" >Congés <field name="nbr_holidays"/></button>
-                    <button name="all_fiche_paie" type="object" class="oe_stat_button col-12" icon="fa-barcode" string="Fiches de paie" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Fiches de paie <field name="nbr_fiches_de_paie"/></button>
-                    <button name="all_stc" type="object" class="oe_stat_button col-12" icon="fa-handshake-o" string="STC" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">STC <field name="nbr_stc"/></button>
-                    <button name="all_rapports_pointage" type="object" class="oe_stat_button col-12" icon="fa-file-contract" string="Rapports de pointage" >Pointages <field name="nbr_rapports_pointage"/></button>
+                    <button name="all_contracts" type="object" class="oe_stat_button col-12" icon="fa-paste" string="Contracts" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Contrats <field name="nbr_contrats"/>
+                    </button>
+                    <button name="all_augmentations" type="object" class="oe_stat_button col-12" icon="fa-chart-line" string="Augmentations" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Augmentations <field name="nbr_augmentations"/>
+                    </button>
+                    <button name="all_primes" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Primes" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Primes <field name="nbr_primes"/>
+                    </button>
+                    <button name="all_prelevements" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Prélèvements" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Prélèvements <field name="nbr_prelevements"/>
+                    </button>
+                    <button name="all_credits" type="object" class="oe_stat_button col-12" icon="fa-money-bill-wave" string="Crédits" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Crédits <field name="nbr_credits"/>
+                    </button>
+                    <button name="all_conges" type="object" class="oe_stat_button col-12" icon="fa-sliders" string="Congés">Congés <field name="nbr_holidays"/>
+                    </button>
+                    <button name="all_fiche_paie" type="object" class="oe_stat_button col-12" icon="fa-barcode" string="Fiches de paie" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">Fiches de paie <field name="nbr_fiches_de_paie"/>
+                    </button>
+                    <button name="all_stc" type="object" class="oe_stat_button col-12" icon="fa-handshake-o" string="STC" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_service_analytique,hr_management.group_controle_gestion,hr_management.group_cnss_juridique">STC <field name="nbr_stc"/>
+                    </button>
+                    <button name="all_rapports_pointage" type="object" class="oe_stat_button col-12" icon="fa-file-contract" string="Rapports de pointage">Pointages <field name="nbr_rapports_pointage"/>
+                    </button>
                 </div>
                 <div class="container-fliud p-3 my-3">
                     <div class="row">
@@ -117,7 +126,10 @@
                                         </center>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="name" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                <span class="input-group-text">
+                                                    <label for="name" class=""/>
+                                                    <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                </span>
                                             </div>
                                             <field name="name" class="form-control"/>
                                         </div>
@@ -125,7 +137,10 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="cin" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                        <span class="input-group-text">
+                                                            <label for="cin" class=""/>
+                                                            <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                        </span>
                                                     </div>
                                                     <field name="cin" class="form-control"/>
                                                 </div>
@@ -133,7 +148,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="date_cin" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="date_cin" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="date_cin" class="form-control"/>
                                                 </div>
@@ -141,7 +158,9 @@
                                         </div>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="cnss" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="cnss" class=""/>
+                                                </span>
                                             </div>
                                             <field name="cnss" class="form-control"/>
                                         </div>
@@ -149,7 +168,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="date_naissance" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="date_naissance" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="date_naissance" class="form-control"/>
                                                 </div>
@@ -157,7 +178,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="employee_age" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="employee_age" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="employee_age" class="form-control"/>
                                                 </div>
@@ -167,7 +190,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="lieu_naissance" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="lieu_naissance" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="lieu_naissance" class="form-control"/>
                                                 </div>
@@ -175,7 +200,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="gender" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="gender" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="gender" class="form-control"/>
                                                 </div>
@@ -185,7 +212,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="marital" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="marital" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="marital" class="form-control"/>
                                                 </div>
@@ -193,14 +222,16 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="nombre_enfants" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="nombre_enfants" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="nombre_enfants" class="form-control"/>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                             <div class="bg-white shadow p-3 my-3" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
                                         hr_management.group_service_analytique,hr_management.group_controle_gestion,
@@ -251,9 +282,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> 
-                                </div> 
-                            </div>   
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 my-3">
                             <div class="bg-white shadow p-3">
@@ -263,20 +294,20 @@
                                     </div>
                                 </div>
                                 <div class="card bg-light my-3">
-                                    <div class="card-body"  attrs="{'invisible':[('having_contrat', '=', 1)]}">   
+                                    <div class="card-body" attrs="{'invisible':[('having_contrat', '=', 1)]}">
                                         <div class="row">
                                             <div class="container">
                                                 <div class="alert alert-warning text-center" role="alert">
                                                     Alert ! Cet employé n'a pas encore de contrat.
                                                 </div>
-                                            </div>  
+                                            </div>
                                         </div>
                                         <div class="row" groups="hr_management.group_admin_paie,hr_management.group_agent_paie">
                                             <div class="container">
                                                 <center>
                                                     <button name="ajouter_contrat" type="object" class="oe_highlight" icon="fa-paste" string="Ajouter un contrat" width="150"/>
                                                 </center>
-                                            </div>  
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="card-body" attrs="{'invisible':[('having_contrat', '!=', 1)]}">
@@ -284,7 +315,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="contract_id" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="contract_id" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="company_id" invisible="1"/>
                                                     <field name="contract_id" class="form-control" options="{'no_create': True,'no_open':True}" readonly="1"/>
@@ -293,7 +326,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="type_contrat" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="type_contrat" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="type_contrat" options="{'no_create': True,'no_open':True}" class="form-control"/>
                                                 </div>
@@ -303,7 +338,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="date_start" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="date_start" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="date_start" class="form-control"/>
                                                 </div>
@@ -311,7 +348,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="date_end" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="date_end" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="date_end" class="form-control"/>
                                                 </div>
@@ -321,7 +360,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="chantier_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="chantier_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="chantier_related" options="{'no_create': True,'no_open':True}" class="form-control"/>
                                                 </div>
@@ -331,24 +372,28 @@
                                                                                     hr_management.group_cnss_juridique">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="working_years" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="working_years" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="working_years" class="form-control"/>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row align-items-end"  groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                        <div class="row align-items-end" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
                                                                                     hr_management.group_service_analytique,hr_management.group_controle_gestion,
                                                                                     hr_management.group_cnss_juridique">
                                             <div class="col-6 col-lg-4">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="wage" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="wage" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="wage" class="form-control"/>
                                                 </div>
                                             </div>
-                                            <div class="col-6 col-lg-4"  groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                            <div class="col-6 col-lg-4" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
                                                                                     hr_management.group_service_analytique,hr_management.group_controle_gestion,
                                                                                     hr_management.group_cnss_juridique" style="max-width: 30em;">
                                                 <label for="salaire_actuel" class=""/>
@@ -360,7 +405,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-12 col-lg-4"  groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
+                                            <div class="col-12 col-lg-4" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
                                                                                     hr_management.group_service_analytique,hr_management.group_controle_gestion,
                                                                                     hr_management.group_cnss_juridique">
                                                 <div class="alert alert-info text-center" role="alert">
@@ -369,7 +414,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                             <div class="bg-white shadow p-3 my-3" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,
                                         hr_management.group_service_analytique,hr_management.group_controle_gestion,
@@ -385,19 +430,25 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="completer_salaire_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="completer_salaire_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="completer_salaire_related" widget="boolean_toggle" class="form-control"/>
                                                 </div>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="plafonner_bonus_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="plafonner_bonus_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="plafonner_bonus_related" widget="boolean_toggle" class="form-control"/>
                                                 </div>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="avoir_conge_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="avoir_conge_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="avoir_conge_related" widget="boolean_toggle" class="form-control"/>
                                                 </div>
@@ -405,19 +456,25 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="code_profile_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="code_profile_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="code_profile_related" class="form-control"/>
                                                 </div>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="name_profile_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="name_profile_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="name_profile_related" class="form-control"/>
                                                 </div>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="type_profile_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="type_profile_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="type_profile_related" class="form-control"/>
                                                 </div>
@@ -427,7 +484,9 @@
                                             <div class="col-12 col-lg-4">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="nbre_jour_worked_par_mois_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="nbre_jour_worked_par_mois_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="nbre_jour_worked_par_mois_related" string="Jrs / Mois" class="form-control"/>
                                                 </div>
@@ -435,7 +494,9 @@
                                             <div class="col-12 col-lg-4">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="nbre_heure_worked_par_jour_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="nbre_heure_worked_par_jour_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="nbre_heure_worked_par_jour_related" string="Heures / Jr" class="form-control"/>
                                                 </div>
@@ -443,7 +504,9 @@
                                             <div class="col-12 col-lg-4">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="nbre_heure_worked_par_demi_jour_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="nbre_heure_worked_par_demi_jour_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="nbre_heure_worked_par_demi_jour_related" string="Heures / demi-Jr" class="form-control"/>
                                                 </div>
@@ -453,7 +516,9 @@
                                             <div class="col-12 col-lg-4">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="definition_nbre_jour_worked_par_mois_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="definition_nbre_jour_worked_par_mois_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="definition_nbre_jour_worked_par_mois_related" string="Définition" class="form-control"/>
                                                 </div>
@@ -461,7 +526,9 @@
                                             <div class="col-12 col-lg-4">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="period_id_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="period_id_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="period_id_related" class="form-control"/>
                                                 </div>
@@ -469,7 +536,9 @@
                                             <div class="col-12 col-lg-4">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="periodicity_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="periodicity_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="periodicity_related" class="form-control"/>
                                                 </div>
@@ -481,7 +550,7 @@
                                                 <div class="card text-white bg-dark mb-3">
                                                     <div class="card-body">
                                                         <h4 class="card-title text-center align-middle">
-                                                            <field name="salaire_jour_related"  style="height:0.3em;"/>
+                                                            <field name="salaire_jour_related" style="height:0.3em;"/>
                                                         </h4>
                                                     </div>
                                                 </div>
@@ -491,7 +560,7 @@
                                                 <div class="card text-white bg-dark mb-3">
                                                     <div class="card-body">
                                                         <h4 class="card-title text-center align-middle">
-                                                            <field name="salaire_demi_jour_related"  style="height:0.3em;"/>
+                                                            <field name="salaire_demi_jour_related" style="height:0.3em;"/>
                                                         </h4>
                                                     </div>
                                                 </div>
@@ -501,14 +570,14 @@
                                                 <div class="card text-white bg-dark mb-3">
                                                     <div class="card-body">
                                                         <h4 class="card-title text-center align-middle">
-                                                            <field name="salaire_heure_related"  style="height:0.3em;"/>
+                                                            <field name="salaire_heure_related" style="height:0.3em;"/>
                                                         </h4>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> 
-                                </div> 
+                                    </div>
+                                </div>
                             </div>
                             <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">
@@ -517,12 +586,14 @@
                                     </div>
                                 </div>
                                 <div class="card bg-light my-3">
-                                    <div class="card-body">            
+                                    <div class="card-body">
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="rib_number" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="rib_number" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="rib_number" class="form-control"/>
                                                 </div>
@@ -530,7 +601,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="bank_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="bank_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="bank_related" class="form-control"/>
                                                 </div>
@@ -538,7 +611,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="ville_bank_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="ville_bank_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="ville_bank_related" class="form-control"/>
                                                 </div>
@@ -546,7 +621,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="bank_agence_related" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="bank_agence_related" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="bank_agence_related" class="form-control"/>
                                                 </div>
@@ -556,7 +633,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><label for="cotisation" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="cotisation" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="cotisation" widget="boolean_toggle" class="form-control"/>
                                                 </div>
@@ -564,17 +643,53 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><label for="montant_cimr" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="montant_cimr" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="montant_cimr" class="form-control"/>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> 
-                                </div> 
-                            </div> 
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">Pointage Machine</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <label for="machine_id" class="" />
+                                                        </span>
+                                                    </div>
+                                                    <field name="machine_id" class="form-control" options="{'no_create': True,'no_open':True}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <label for="user_machine_id" class="" />
+                                                        </span>
+                                                    </div>
+                                                    <field name="user_machine_id" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">
@@ -583,12 +698,14 @@
                                     </div>
                                 </div>
                                 <div class="card bg-light my-3">
-                                    <div class="card-body">            
+                                    <div class="card-body">
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="adress_personnel" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="adress_personnel" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="adress_personnel" class="form-control"/>
                                                 </div>
@@ -596,7 +713,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="mobile_phone" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="mobile_phone" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="mobile_phone" class="form-control"/>
                                                 </div>
@@ -604,7 +723,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="phone1" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="phone1" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="phone1" class="form-control"/>
                                                 </div>
@@ -612,7 +733,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="phone2" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="phone2" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="phone2" class="form-control"/>
                                                 </div>
@@ -620,16 +743,18 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="phone3" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="phone3" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="phone3" class="form-control"/>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> 
-                                </div> 
+                                    </div>
+                                </div>
                             </div>
-                        </div>   
+                        </div>
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 my-3 my-md-0">
                             <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">
@@ -643,7 +768,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="type_emp" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="type_emp" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="type_emp" class="form-control"/>
                                                 </div>
@@ -651,7 +778,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="job_id" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="job_id" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="job_id" options="{'no_create': True,'no_open':True}" class="form-control"/>
                                                 </div>
@@ -659,7 +788,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="job" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="job" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="job" class="form-control"/>
                                                 </div>
@@ -667,7 +798,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="chantier_id" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="chantier_id" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="chantier_id" options="{'no_create': True,'no_open':True}" class="form-control"/>
                                                 </div>
@@ -675,7 +808,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="emplacement_chantier_id" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="emplacement_chantier_id" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="emplacement_chantier_id" options="{'no_create': True,'no_open':True}" class="form-control"/>
                                                 </div>
@@ -683,7 +818,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="vehicle_id" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="vehicle_id" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="vehicle_id" options="{'no_create': True,'no_open':True}" class="form-control"/>
                                                 </div>
@@ -691,7 +828,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="embaucher_par" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="embaucher_par" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="embaucher_par" options="{'no_create': True,'no_open':True}" class="form-control"/>
                                                 </div>
@@ -699,7 +838,9 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="recommander_par" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="recommander_par" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="recommander_par" options="{'no_create': True,'no_open':True}" class="form-control"/>
                                                 </div>
@@ -707,14 +848,16 @@
                                             <div class="col-12 col-lg-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text" ><label for="motif_enbauche" class=""/></span>
+                                                        <span class="input-group-text">
+                                                            <label for="motif_enbauche" class=""/>
+                                                        </span>
                                                     </div>
                                                     <field name="motif_enbauche" class="form-control"/>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> 
-                                </div> 
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -740,8 +883,8 @@
                                             <field name="user_doing_action"/>
                                         </tree>
                                     </field>
-                                </div> 
-                            </div> 
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -752,7 +895,7 @@
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
 
-                
+
             </form>
         </field>
     </record>
