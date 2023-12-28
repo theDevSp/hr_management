@@ -52,10 +52,25 @@ class Deplacement(models.Model):
         return res
 
     def to_draft(self):
-        self.state = 'draft'
+        if self.state:
+            self.state = 'draft'
+        else:
+            raise ValidationError(
+                "Erreur, Cette action n'est pas autorisée."
+            )
 
     def to_validee(self):
-        self.state = 'valide'
+        if self.state:
+            self.state = 'valide'
+        else:
+            raise ValidationError(
+                "Erreur, Cette action n'est pas autorisée."
+            )
 
     def to_approuver(self):
-        self.state = 'approuved'
+        if self.state:
+            self.state = 'approuved'
+        else:
+            raise ValidationError(
+                "Erreur, Cette action n'est pas autorisée."
+            )
