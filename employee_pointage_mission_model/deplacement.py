@@ -43,8 +43,6 @@ class Deplacement(models.Model):
         self.env.cr.execute(query, (datetime.today().year, res.type,))
         result = self.env.cr.fetchall()
 
-        print("result[0][0] ", result[0][0])
-
         code = res.type[0].upper() if res.type else ''
         sequence_number = result[0][0]
         res.name = f"{code}{sequence_number:05d}-{datetime.today().month}/{datetime.today().year}"
