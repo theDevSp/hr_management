@@ -191,7 +191,6 @@ class fiche_paie(models.Model):
         return res
 
     def write(self, vals):
-        print("Vals write : ",vals)   
         res = super(fiche_paie, self).write(vals)
         self.payroll_validation(self.contract_id.id,self.period_id.id) 
         if vals.get('cal_state') and self.cal_state == True:
@@ -219,7 +218,7 @@ class fiche_paie(models.Model):
             if not max_worked_days_p :
 
                 if rec.autoriz_cp:
-                    rec.cp_number = min(rec.employee_result()['j_comp'],self.employee_id.panier_conge) if rec.employee_result() else 0
+                    rec.cp_number = min(rec.employee_result()['j_comp'],rec.employee_id.panier_conge) if rec.employee_result() else 0
                 elif rec.autoriz_zero_cp:
                     rec.cp_number = rec.employee_result()['j_comp'] if rec.employee_result() else 0
                 else:
@@ -230,14 +229,14 @@ class fiche_paie(models.Model):
                 if rec.employee_result()['j_comp'] > rec.employee_result()['default_day_2_add'] :
                     rec.cp_number = rec.employee_result()['default_day_2_add']
                 if rec.autoriz_cp:
-                    rec.cp_number += min(rec.employee_result()['j_comp']-rec.employee_result()['default_day_2_add'],self.employee_id.panier_conge) if rec.employee_result() else 0
+                    rec.cp_number += min(rec.employee_result()['j_comp']-rec.employee_result()['default_day_2_add'],rec.employee_id.panier_conge) if rec.employee_result() else 0
                 elif rec.autoriz_zero_cp:
                     rec.cp_number += rec.employee_result()['j_comp']-rec.employee_result()['default_day_2_add'] if rec.employee_result() else 0
 
             elif max_worked_days_p and rec.employee_result()['j_comp'] > 0 and rec.employee_result()['default_day_2_add'] == 0:
 
                 if rec.autoriz_cp:
-                    rec.cp_number = min(rec.employee_result()['j_comp'],self.employee_id.panier_conge) if rec.employee_result() else 0
+                    rec.cp_number = min(rec.employee_result()['j_comp'],rec.employee_id.panier_conge) if rec.employee_result() else 0
                 elif rec.autoriz_zero_cp:
                     rec.cp_number += rec.employee_result()['j_comp'] if rec.employee_result() else 0
             
@@ -608,6 +607,12 @@ class fiche_paie(models.Model):
                 ('employee_id','in',(False,self.employee_id.id))
                 ]).filtered(lambda ln: ln.first_period_id.date_start <= self.period_id.date_start):
             prelevement.cancel_payement(self.period_id)
+    
+    def masse_payement(self):
+        for rec in self:
+            rec.to_validee()
+            rec.update_cal_state()
+            rec.to_done()
 
 class days_per_addition(models.Model):
     
