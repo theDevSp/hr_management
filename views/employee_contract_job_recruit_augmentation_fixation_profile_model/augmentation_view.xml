@@ -13,8 +13,7 @@
                 <field name="date_fait" />
                 <field name="montant_propose" />
                 <field name="montant_valide" attrs="{'column_invisible': [('type', '==', 'chg')]}" />
-                <field name="state" widget="badge" decoration-info="state == 'draft'"
-                    decoration-warning="state == 'annulee'" decoration-success="state == 'validee'" />
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'" />
                 <field name="motif" />
                 <field name="type" attrs="{'column_invisible': True}" />
             </tree>
@@ -33,8 +32,7 @@
                 <field name="period_id" />
                 <field name="date_fait" />
                 <field name="montant_propose" />
-                <field name="state" widget="badge" decoration-info="state == 'draft'"
-                    decoration-warning="state == 'annulee'" decoration-success="state == 'validee'" />
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'" />
                 <field name="motif" />
             </tree>
         </field>
@@ -52,10 +50,8 @@
                 <field name="period_id" />
                 <field name="date_fait" />
                 <field name="montant_propose" />
-                <field name="montant_valide" sum="Total Montant(s) Validé(s)"
-                    attrs="{'invisible': [('type', '!=', 'augementation')]}" />
-                <field name="state" widget="badge" decoration-info="state == 'draft'"
-                    decoration-warning="state == 'annulee'" decoration-success="state == 'validee'" />
+                <field name="montant_valide" sum="Total Montant(s) Validé(s)" attrs="{'invisible': [('type', '!=', 'augementation')]}" />
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'annulee'" decoration-success="state == 'validee'" />
                 <field name="motif" />
                 <field name="observation" />
                 <field name="type" />
@@ -63,27 +59,17 @@
         </field>
     </record>
 
-    <record id="augmentation_formulaire" model="ir.ui.view">
+    <record id="augmentation_formulairee" model="ir.ui.view">
         <field name="name">Formulaire des Augmentations</field>
         <field name="model">hr.augmentation</field>
         <field name="arch" type="xml">
             <form>
                 <header class="bar-box-shadow mb-4">
-                    <button name="to_draft" string="Brouillon" type="object"
-                        attrs="{'invisible': [('state', 'in', ('draft','acceptee','refusee'))]}"
-                        groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
-                    <button name="to_validee" string="Valider" type="object"
-                        attrs="{'invisible': [('state', 'in', ('validee','acceptee','refusee','annulee'))]}"
-                        groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
-                    <button name="to_acceptee" string="Accepter" type="object"
-                        attrs="{'invisible': [('state', 'in', ('draft','acceptee','annulee'))]}"
-                        groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
-                    <button name="to_refusee" string="Refuser" type="object"
-                        attrs="{'invisible': [('state', 'in', ('draft', 'refusee', 'annulee'))]}"
-                        groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
-                    <button name="to_annulee" string="Annuler" type="object"
-                        attrs="{'invisible': [('state', 'in', ('annulee'))]}"
-                        groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
+                    <button name="to_draft" string="Brouillon" type="object" attrs="{'invisible': [('state', 'in', ('draft','acceptee','refusee'))]}" groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
+                    <button name="to_validee" string="Valider" type="object" attrs="{'invisible': [('state', 'in', ('validee','acceptee','refusee','annulee'))]}" groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
+                    <button name="to_acceptee" string="Accepter" type="object" attrs="{'invisible': [('state', 'in', ('draft','acceptee','annulee'))]}" groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
+                    <button name="to_refusee" string="Refuser" type="object" attrs="{'invisible': [('state', 'in', ('draft', 'refusee', 'annulee'))]}" groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
+                    <button name="to_annulee" string="Annuler" type="object" attrs="{'invisible': [('state', 'in', ('annulee'))]}" groups="hr_management.group_agent_paie,hr_management.group_admin_paie" />
                     <field name="state" widget="statusbar" nolabel="1" />
                 </header>
                 <sheet>
@@ -96,7 +82,8 @@
                                 <h2 class="card-text">
                                     <span>
                                         <field name="type" readonly="1" />
-                                    </span> <span attrs="{'invisible': [('name', '=', False )]}">N°
+                                    </span>
+                                    <span attrs="{'invisible': [('name', '=', False )]}">N°
                                         <field name="name" readonly="1" />
                                     </span>
                                 </h2>
@@ -113,8 +100,7 @@
                                                     <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
                                                 </span>
                                             </div>
-                                            <field name="employee_id" options="{'no_create': True, 'no_open': True}"
-                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
+                                            <field name="employee_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
@@ -124,8 +110,7 @@
                                                     <label for="chantier_id" class="" />
                                                 </span>
                                             </div>
-                                            <field name="chantier_id" options="{'no_create': True, 'no_open': True}"
-                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
+                                            <field name="chantier_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
@@ -135,8 +120,7 @@
                                                     <label for="responsable_id" class="" />
                                                 </span>
                                             </div>
-                                            <field name="responsable_id" options="{'no_create': True, 'no_open': True}"
-                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
+                                            <field name="responsable_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
@@ -146,8 +130,7 @@
                                                     <label for="directeur_id" class="" />
                                                 </span>
                                             </div>
-                                            <field name="directeur_id" options="{'no_create': True, 'no_open': True}"
-                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
+                                            <field name="directeur_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
@@ -157,8 +140,7 @@
                                                     <label for="period_id" class="" />
                                                 </span>
                                             </div>
-                                            <field name="period_id" options="{'no_create': True, 'no_open': True}"
-                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
+                                            <field name="period_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
@@ -168,8 +150,7 @@
                                                     <label for="date_fait" class="" />
                                                 </span>
                                             </div>
-                                            <field name="date_fait" attrs="{'readonly': [('state', '!=', 'draft')]}"
-                                                class="form-control" />
+                                            <field name="date_fait" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
@@ -180,8 +161,7 @@
                                                     <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
                                                 </span>
                                             </div>
-                                            <field name="montant_propose"
-                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
+                                            <field name="montant_propose" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
 
                                         </div>
                                     </div>
@@ -193,8 +173,7 @@
                                                     <label for="montant_valide" class="" />
                                                 </span>
                                             </div>
-                                            <field name="montant_valide"
-                                                attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
+                                            <field name="montant_valide" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     <div class="o_form_label o_form_label_readonly">DH</div>
@@ -209,8 +188,7 @@
                                                     <label for="motif" class="" />
                                                 </span>
                                             </div>
-                                            <field name="motif" attrs="{'readonly': [('state', '!=', 'draft')]}"
-                                                class="form-control" />
+                                            <field name="motif" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
@@ -226,13 +204,11 @@
                                     <div class="col-12 col-lg-6" attrs="{'invisible': [('motif', '!=', 'autres')]}">
                                         <div class="card my-3">
                                             <div class="card-body text-center">
-                                                <h6 class="card-text">Détail Motif <i
-                                                        class="fas fa-exclamation-triangle" style="color:#f00000;"></i>
+                                                <h6 class="card-text">Détail Motif <i class="fas fa-exclamation-triangle" style="color:#f00000;"></i>
                                                 </h6>
                                             </div>
                                             <div class="card-body text-dark text-center">
-                                                <field name="motif_autres"
-                                                    attrs="{'readonly': [('state', '!=', 'draft')],'required':[('motif', '=', 'autres')]}" />
+                                                <field name="motif_autres" attrs="{'readonly': [('state', '!=', 'draft')],'required':[('motif', '=', 'autres')]}" />
                                             </div>
                                         </div>
                                     </div>
@@ -241,13 +217,11 @@
                                     <div class="col-12 col-lg">
                                         <div class="card my-3" style="border-color: #635b5b;">
                                             <div class="card-body text-center">
-                                                <h6 class="card-text">Observation <i class="fas fa-exclamation-triangle"
-                                                        style="color:#f00000;"></i>
+                                                <h6 class="card-text">Observation <i class="fas fa-exclamation-triangle" style="color:#f00000;"></i>
                                                 </h6>
                                             </div>
                                             <div class="card-body text-dark text-center">
-                                                <field name="observation"
-                                                    attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                                <field name="observation" attrs="{'readonly': [('state', '!=', 'draft')]}" />
                                             </div>
                                         </div>
                                     </div>
@@ -255,7 +229,6 @@
                             </div>
                         </div>
                     </div>
-
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers" />

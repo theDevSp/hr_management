@@ -46,7 +46,7 @@ class ZkMachines(models.Model):
                 }
             }
 
-    def connect_to_device(self, ip_address, port, timeout, password, force_udp, omit_ping):
+    def connect_to_device(self, ip_address, port, timeout=5, password=0, force_udp=False, omit_ping=False):
         zk = ZK(ip_address, port, timeout, str(password),
                 force_udp, omit_ping)
         conn = zk.connect()
@@ -92,7 +92,7 @@ class ZkMachines(models.Model):
                 utc_dt = utc_dt.strftime("%Y-%m-%d %H:%M:%S")
                 atten_time = datetime.strptime(utc_dt, "%Y-%m-%d %H:%M:%S")
 
-                if date_start.date() <= atten_time.date() <= date_fin.date():
+                if date_start <= atten_time.date() <= date_fin:
                     for user in users_founded:
                         if user.user_id == each.user_id:
                             user_id = int(user.user_id)
@@ -102,7 +102,7 @@ class ZkMachines(models.Model):
                                 user_attendance_dict[user_id] = {
                                     "name": user_name, "attendance_times": []}
                             user_attendance_dict[user_id]["attendance_times"].append(
-                                atten_time.date())
+                                atten_time)
 
             """for user_id, data in sorted(user_attendance_dict.items()):
                 print(f"-------------------------------------------")
@@ -112,8 +112,8 @@ class ZkMachines(models.Model):
                     print(f"Attendance Time: {atten_time}")
                 print(f"-------------------------------------------")"""
 
-        conn.enable_device()
-        return user_attendance_dict
+            conn.enable_device()
+            return user_attendance_dict
 
 
 class HrEmployeeMachines(models.Model):

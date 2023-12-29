@@ -9,14 +9,13 @@
                 <field name="name"/>
                 <field name="employee_id"/>
                 <field name="type_emp"/>
-                <field name="period_id" /> 
-                <field name="chantier_id"  />
-                <field name="vehicle_id"/> 
+                <field name="period_id" />
+                <field name="chantier_id" />
+                <field name="vehicle_id"/>
                 <field name="emplacement_chantier_id"/>
                 <field name="total_h" />
                 <field name="total_j" />
-                <field name="total_h_v" 
-                        groups="hr_management.group_admin_paie,
+                <field name="total_h_v" groups="hr_management.group_admin_paie,
                         hr_management.group_admin_view_paie,
                         hr_management.group_agent_paie,
                         hr_management.group_service_analytique,
@@ -24,8 +23,7 @@
                         hr_management.group_agent_paie_administration,
                         hr_management.group_agent_paie_cadre,
                         hr_management.group_cnss_juridique"/>
-                <field name="total_j_v" 
-                        groups="hr_management.group_admin_paie,
+                <field name="total_j_v" groups="hr_management.group_admin_paie,
                         hr_management.group_admin_view_paie,
                         hr_management.group_agent_paie,
                         hr_management.group_service_analytique,
@@ -53,6 +51,8 @@
                     <button name="action_cancel" states="draft,valide,done" string="Annuler" type="object" class="oe_highlight" groups="hr_management.group_admin_paie"/>
                     <button name="create_update_payslip" states="working" string="Payement" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,working,compute,valide,done"/>
+
+                    <button name="get_employee_pointage" string="test" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                 </header>
                 <div class="container-fliud p-3 my-3 ">
                     <div class="row justify-content-center">
@@ -67,50 +67,62 @@
                                     <div class="card-body">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="employee_id" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="employee_id" class=""/>
+                                                </span>
                                             </div>
                                             <field name="employee_id" class="form-control text-center" options="{'no_create': True,'no_open':True}"/>
                                         </div>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="type_emp" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="type_emp" class=""/>
+                                                </span>
                                             </div>
                                             <field name="type_emp" class="form-control text-center" options="{'no_create': True,'no_open':True}"/>
                                         </div>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="cin" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="cin" class=""/>
+                                                </span>
                                             </div>
                                             <field name="cin" class="form-control text-center" options="{'no_create': True,'no_open':True}"/>
                                         </div>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="job_id" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="job_id" class=""/>
+                                                </span>
                                             </div>
                                             <field name="job_id" class="form-control text-center" options="{'no_create': True,'no_open':True}"/>
-                                        </div>  
+                                        </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                         </div>
                         <div class="col-12 col-md-6 col-lg-4 mb-2">
                             <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">
                                     <div class="card-body text-center">
-                                        <h2 class="card-text">Rapport N° <field name="name"/></h2>
+                                        <h2 class="card-text">Rapport N° <field name="name"/>
+                                        </h2>
                                     </div>
                                 </div>
                                 <div class="card bg-light my-3">
                                     <div class="card-body">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="period_id" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="period_id" class=""/>
+                                                </span>
                                             </div>
                                             <field name="period_id" context="{'display_name': True}" class="form-control text-center" options="{'no_create': True,'no_open':True}"/>
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" >
+                                                <span class="input-group-text">
                                                     <div class="o_form_label" style="color:red">
-                                                        <field name="jom" class="h5"/> J.O
+                                                        <field name="jom" class="h5"/>
+ J.O
                                                     </div>
                                                 </span>
                                             </div>
@@ -118,31 +130,37 @@
                                         <!--     
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text" ><label for="periodicite" class=""/></span>
+                                                    <span class="input-group-text"><label for="periodicite" class=""/></span>
                                                 </div>
                                                 <field name="periodicite" class="form-control text-center" options="{'no_create': True,'no_open':True}"/>
                                             </div>
                                         -->
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="quinzaine" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="quinzaine" class=""/>
+                                                </span>
                                             </div>
                                             <field name="quinzaine" class="form-control text-center"/>
                                         </div>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="chantier_id" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="chantier_id" class=""/>
+                                                </span>
                                             </div>
                                             <field name="chantier_id" class="form-control text-center" context="{'short': True}" options="{'no_create': True,'no_open':True}"/>
                                         </div>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="emplacement_chantier_id" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="emplacement_chantier_id" class=""/>
+                                                </span>
                                             </div>
-                                            <field name="emplacement_chantier_id" class="form-control text-center"  options="{'no_create': True,'no_open':True}"/>
+                                            <field name="emplacement_chantier_id" class="form-control text-center" options="{'no_create': True,'no_open':True}"/>
                                         </div>
-                                    </div> 
-                                </div> 
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-12 col-md-12 col-lg-3 mb-2">
@@ -153,19 +171,31 @@
                                     </div>
                                 </div>
                                 <div class="alert alert-info text-center pt-3" attrs="{'invisible': [('message_last_periode', '=', False)]}">
-                                    <p><strong>Attention !!! </strong><field name="message_last_periode"/>.</p> 
+                                    <p>
+                                        <strong>Attention !!! </strong>
+                                        <field name="message_last_periode"/>
+.</p>
                                 </div>
                                 <div class="alert alert-warning text-center pt-3" attrs="{'invisible': ['|',('message_last_periode', '!=', False),('message_gap_payement', '=', False)]}">
-                                    <p><strong>Attention !!! </strong><field name="message_gap_payement"/>.</p> 
+                                    <p>
+                                        <strong>Attention !!! </strong>
+                                        <field name="message_gap_payement"/>
+.</p>
                                 </div>
                                 <div class="alert alert-danger text-center pt-3" attrs="{'invisible': [('message_change_chantier', '=', False)]}">
-                                    <p><strong>Attention !!! </strong><field name="message_change_chantier"/>.</p>
+                                    <p>
+                                        <strong>Attention !!! </strong>
+                                        <field name="message_change_chantier"/>
+.</p>
                                 </div>
                                 <div class="alert alert-danger text-center pt-3" attrs="{'invisible': [('message_end_existence_contract', '=', False)]}">
-                                    <p><strong>Attention !!! </strong><field name="message_end_existence_contract"/>.</p>
+                                    <p>
+                                        <strong>Attention !!! </strong>
+                                        <field name="message_end_existence_contract"/>
+.</p>
                                 </div>
                             </div>
-                        </div>                       
+                        </div>
                     </div>
                     <div class="row mt-2 justify-content-center">
                         <div class="col-12 col-lg-3">
@@ -176,7 +206,7 @@
                                     </div>
                                 </div>
                                 <div class="card bg-light my-3">
-                                    <div class="card-body">   
+                                    <div class="card-body">
                                         <ul class="list-group">
                                             <li class="list-group-item active text-center">Jour / Heure Travailés</li>
                                             <li class="list-group-item d-flex justify-content-between align-items-center p-0">
@@ -185,7 +215,8 @@
                                                         <label for="total_h"/>
                                                     </div>
                                                     <div class="col-4 bg-success text-center text-white">
-                                                        <field name="total_h" readonly="1" class="h3"/> H
+                                                        <field name="total_h" readonly="1" class="h3"/>
+ H
                                                     </div>
                                                 </div>
                                             </li>
@@ -195,7 +226,8 @@
                                                         <label for="total_h_v"/>
                                                     </div>
                                                     <div class="col-4 bg-success text-center text-white">
-                                                        <field name="total_h_v" readonly="1" class="h3"/> H
+                                                        <field name="total_h_v" readonly="1" class="h3"/>
+ H
                                                     </div>
                                                 </div>
                                             </li>
@@ -205,7 +237,8 @@
                                                         <label for="total_j"/>
                                                     </div>
                                                     <div class="col-4 bg-success text-center text-white">
-                                                        <field name="total_j" readonly="1" class="h3"/> Jr
+                                                        <field name="total_j" readonly="1" class="h3"/>
+ Jr
                                                     </div>
                                                 </div>
                                             </li>
@@ -215,7 +248,8 @@
                                                         <label for="total_j_v"/>
                                                     </div>
                                                     <div class="col-4 bg-success text-center text-white">
-                                                        <field name="total_j_v" readonly="1" class="h3"/> Jr
+                                                        <field name="total_j_v" readonly="1" class="h3"/>
+ Jr
                                                     </div>
                                                 </div>
                                             </li>
@@ -226,7 +260,8 @@
                                                         <label for="total_h_sup"/>
                                                     </div>
                                                     <div class="col-4 bg-info text-center text-white">
-                                                        <field name="total_h_sup" readonly="1" class="h3"/> H
+                                                        <field name="total_h_sup" readonly="1" class="h3"/>
+ H
                                                     </div>
                                                 </div>
                                             </li>
@@ -236,7 +271,8 @@
                                                         <label for="count_nbr_holiday_days"/>
                                                     </div>
                                                     <div class="col-4 bg-warning text-center text-white">
-                                                        <field name="count_nbr_holiday_days" readonly="1" class="h3"/> Jr
+                                                        <field name="count_nbr_holiday_days" readonly="1" class="h3"/>
+ Jr
                                                     </div>
                                                 </div>
                                             </li>
@@ -246,7 +282,8 @@
                                                         <label for="count_nbr_holiday_days_v"/>
                                                     </div>
                                                     <div class="col-4 bg-warning text-center text-white">
-                                                        <field name="count_nbr_holiday_days_v" readonly="1" class="h3"/> Jr
+                                                        <field name="count_nbr_holiday_days_v" readonly="1" class="h3"/>
+ Jr
                                                     </div>
                                                 </div>
                                             </li>
@@ -256,7 +293,8 @@
                                                         <label for="count_nbr_ferier_days"/>
                                                     </div>
                                                     <div class="col-4 bg-warning text-center text-white">
-                                                        <field name="count_nbr_ferier_days" readonly="1" class="h3"/> Jr
+                                                        <field name="count_nbr_ferier_days" readonly="1" class="h3"/>
+ Jr
                                                     </div>
                                                 </div>
                                             </li>
@@ -266,7 +304,8 @@
                                                         <label for="count_nbr_ferier_days_v"/>
                                                     </div>
                                                     <div class="col-4 bg-warning text-center text-white">
-                                                        <field name="count_nbr_ferier_days_v" readonly="1" class="h3"/> Jr
+                                                        <field name="count_nbr_ferier_days_v" readonly="1" class="h3"/>
+ Jr
                                                     </div>
                                                 </div>
                                             </li>
@@ -276,7 +315,8 @@
                                                         <label for="count_nbr_dim_days"/>
                                                     </div>
                                                     <div class="col-4 bg-warning text-center text-white">
-                                                        <field name="count_nbr_dim_days" readonly="1" class="h3"/> Jr
+                                                        <field name="count_nbr_dim_days" readonly="1" class="h3"/>
+ Jr
                                                     </div>
                                                 </div>
                                             </li>
@@ -286,7 +326,8 @@
                                                         <label for="count_nbr_dim_days_v"/>
                                                     </div>
                                                     <div class="col-4 bg-warning text-center text-white">
-                                                        <field name="count_nbr_dim_days_v" readonly="1" class="h3"/> Jr
+                                                        <field name="count_nbr_dim_days_v" readonly="1" class="h3"/>
+ Jr
                                                     </div>
                                                 </div>
                                             </li>
@@ -296,15 +337,16 @@
                                                         <label for="count_nbr_absense_days"/>
                                                     </div>
                                                     <div class="col-4 bg-danger text-center text-white">
-                                                        <field name="count_nbr_absense_days" readonly="1" class="h3"/> Jr
+                                                        <field name="count_nbr_absense_days" readonly="1" class="h3"/>
+ Jr
                                                     </div>
                                                 </div>
                                             </li>
-                                        </ul>  
-                                    </div> 
-                                </div> 
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
-                        </div> 
+                        </div>
                         <div class="col-12 col-lg-7 d-none d-md-block">
                             <div class="bg-white shadow p-3 my-3 my-md-0" groups="hr_management.group_admin_paie,hr_management.group_agent_paie">
                                 <div class="card bg-light my-3">
@@ -313,7 +355,7 @@
                                     </div>
                                 </div>
                                 <div class="card bg-light my-3 py-1">
-                                    <div class="card-body">            
+                                    <div class="card-body">
                                         <field name="payslip_ids" options="{'no_create': True,'no_open': True}" readonly="1" nolabel="1" class="table-inside-notebook">
                                             <tree>
                                                 <field name="name" />
@@ -321,13 +363,12 @@
                                                 <field name="net_pay" />
                                                 <field name="chantier_id"/>
                                                 <field name="emplacement_chantier_id" />
-                                                <field name="vehicle_id" /> 
-                                                <button name="open_payslip" type="object" icon="fa-external-link-alt"
-                                                        class="btn btn-link"/>
+                                                <field name="vehicle_id" />
+                                                <button name="open_payslip" type="object" icon="fa-external-link-alt" class="btn btn-link"/>
                                             </tree>
                                         </field>
-                                    </div> 
-                                </div> 
+                                    </div>
+                                </div>
                             </div>
                             <div class="bg-white shadow p-3 my-3">
                                 <div class="card bg-light my-3">
@@ -336,7 +377,7 @@
                                     </div>
                                 </div>
                                 <div class="card bg-light my-3 py-1">
-                                    <div class="card-body">            
+                                    <div class="card-body">
                                         <field name="holiday_ids" multi_edit="0" nolabel="1" class="table-inside-notebook">
                                             <tree>
                                                 <field name="chantier_id" readonly="1" options="{'no_create': True,'no_open': True}" string="Chantier"/>
@@ -345,16 +386,14 @@
                                                 <field name="date_start" readonly="1" string="Date Début"/>
                                                 <field name="date_end" readonly="1" string="Date Fin"/>
                                                 <field name="duree_jours" readonly="1" string="Nbr Jours"/>
-                                                <field name="nbr_jour_compenser" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"  attrs="{'readonly': [('parent.state', '!=', 'draft')]}"/>
+                                                <field name="nbr_jour_compenser" groups="hr_management.group_admin_paie,hr_management.group_agent_paie" attrs="{'readonly': [('parent.state', '!=', 'draft')]}"/>
                                                 <field name="state" readonly="1"/>
-                                                <button name="open_update_wizard" groups="hr_management.group_admin_paie,hr_management.group_agent_paie" type="object" icon="fa-check"
-                                                        class="btn btn-link"/>
-                                                <button name="open_holiday" groups="hr_management.group_admin_paie,hr_management.group_agent_paie" type="object" icon="fa-external-link-alt"
-                                                        class="btn btn-link"/>
+                                                <button name="open_update_wizard" groups="hr_management.group_admin_paie,hr_management.group_agent_paie" type="object" icon="fa-check" class="btn btn-link"/>
+                                                <button name="open_holiday" groups="hr_management.group_admin_paie,hr_management.group_agent_paie" type="object" icon="fa-external-link-alt" class="btn btn-link"/>
                                             </tree>
-                                        </field> 
-                                    </div> 
-                                </div> 
+                                        </field>
+                                    </div>
+                                </div>
                             </div>
                             <div class="bg-white shadow p-3 my-3">
                                 <div class="card bg-light my-3">
@@ -363,20 +402,19 @@
                                     </div>
                                 </div>
                                 <div class="card bg-light my-3 py-1">
-                                    <div class="card-body">            
-                                        <field name="transfert_ids" nolabel="1"  class="table-inside-notebook">
+                                    <div class="card-body">
+                                        <field name="transfert_ids" nolabel="1" class="table-inside-notebook">
                                             <tree>
                                                 <field name="chantier_id_source"/>
                                                 <field name="chantier_id_destiation"/>
                                                 <field name="date_transfert" string="Date Transfert"/>
                                                 <field name="date_arriver" string="Date Arrivé"/>
                                                 <field name="state"/>
-                                                <button name="open_transfert" type="object" icon="fa-external-link-alt"
-                                                        class="btn btn-link"/>
+                                                <button name="open_transfert" type="object" icon="fa-external-link-alt" class="btn btn-link"/>
                                             </tree>
                                         </field>
-                                    </div> 
-                                </div> 
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -396,19 +434,13 @@
                                                                                     hr_management.group_service_analytique,hr_management.group_controle_gestion,
                                                                                     hr_management.group_cnss_juridique"/>
                                     <field name="chantier_id" context="{'short': True}" options="{'no_create': True,'no_open': True}"/>
-                                    <field name="vehicle_id"  options="{'no_create': True,'no_open': True}" readonly="1" invisible="1"/>
+                                    <field name="vehicle_id" options="{'no_create': True,'no_open': True}" readonly="1" invisible="1"/>
                                     <field name="vehicle_ids" widget="many2many_tags" optional="show" readonly="1"/>
                                     <button name="update_engin_list" type="object" icon="fa-plus-square" />
-                                    <field name="emplacement_chantier_id"  options="{'no_create': True,'no_open': True}" string="Équipe"/>
+                                    <field name="emplacement_chantier_id" options="{'no_create': True,'no_open': True}" string="Équipe"/>
                                     <field name="details" />
                                     <field name="note" />
-                                    <field name="day_type" widget="badge"
-                                            decoration-success="day_type in ('1','9')" 
-                                            decoration-danger="day_type in ('5','6','7')"
-                                            decoration-muted="day_type == '2'"
-                                            decoration-info="day_type == '3'"
-                                            decoration-primary="day_type == '4'"
-                                            decoration-warning="day_type == '8'"/> 
+                                    <field name="day_type" widget="badge" decoration-success="day_type in ('1','9')" decoration-danger="day_type in ('5','6','7')" decoration-muted="day_type == '2'" decoration-info="day_type == '3'" decoration-primary="day_type == '4'" decoration-warning="day_type == '8'"/>
                                     <field name="state" invisible="1"/>
                                     <field name="day" invisible="1"/>
                                     <button name="update_wizard_ref_view" type="object" class="btn btn-link" icon="fa-pen" />
@@ -443,7 +475,10 @@
                             <div class="col-12">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" ><label for="name" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                        <span class="input-group-text">
+                                            <label for="name" class=""/>
+                                            <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                        </span>
                                     </div>
                                     <field name="name" options="{'no_create': True,'no_open': True}" class="form-control"/>
                                 </div>
@@ -451,7 +486,10 @@
                             <div class="col-12">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" ><label for="time_start" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                        <span class="input-group-text">
+                                            <label for="time_start" class=""/>
+                                            <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                        </span>
                                     </div>
                                     <field name="time_start" class="form-control"/>
                                 </div>
@@ -459,19 +497,22 @@
                             <div class="col-12">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" ><label for="time_end" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                        <span class="input-group-text">
+                                            <label for="time_end" class=""/>
+                                            <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                        </span>
                                     </div>
                                     <field name="time_end" class="form-control"/>
                                 </div>
                             </div>
-                        </div> 
-                    </div> 
+                        </div>
+                    </div>
                 </div>
 
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="message_ids" widget="mail_thread"/>
-                </div>     
+                </div>
             </form>
 
         </field>
@@ -489,20 +530,20 @@
                         </div>
                     </div>
                     <div class="card bg-light my-3">
-                        <div class="card-body">   
+                        <div class="card-body">
                             <field name="vehicle_ids">
                                 <tree>
-                                    <field name="name"  options="{'no_create': True,'no_open': True}"/>
+                                    <field name="name" options="{'no_create': True,'no_open': True}"/>
                                     <field name="time_start"/>
                                     <field name="time_end"/>
                                 </tree>
                             </field>
-                        </div> 
-                    </div> 
-                </div> 
+                        </div>
+                    </div>
+                </div>
             </form>
         </field>
     </record>
 
-    
+
 </odoo>
