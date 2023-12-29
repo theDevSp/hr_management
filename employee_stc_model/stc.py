@@ -24,12 +24,16 @@ class hr_stc(models.Model):
     }
 
     def _count_by_year(self):
-        query = """
-                select count(*) from hr_stc where job_id = %s and extract(year from date_start) = %s and id <= %s
-                """% (self.job_id.id,fields.Date.from_string(self.date_start).year,self.id)
-        self.env.cr.execute(query)
-        result = self.env.cr.fetchall()
-        self.count_by_year = str(result[0][0])+'/'+str(fields.Date.from_string(self.date_start).year)
+        for employee in self:
+            if employee and employee.job_id:
+                query = """
+                        select count(*) from hr_stc where job_id = %s and extract(year from date_start) = %s and id <= %s
+                        """% (employee.job_id.id,fields.Date.from_string(employee.date_start).year,employee.id)
+                self.env.cr.execute(query)
+                result = self.env.cr.fetchall()
+                employee.count_by_year = str(result[0][0])+'/'+str(fields.Date.from_string(employee.date_start).year)
+            else:
+                employee.count_by_year = 0
         return
 
     name = fields.Char(u"Référence" ,readonly=True, default="######")
