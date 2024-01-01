@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<menuitem
+				id="bi_import_employee_menu"
+				name="Import Employees"
+				action="import_employee_wizard_action"
+				parent="config_hr_menu"
+				groups="hr_management.group_admin_paie"
+				sequence="1000"
+		/>
+
+	</data>
+</odoo>

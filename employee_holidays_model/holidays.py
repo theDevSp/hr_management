@@ -98,6 +98,7 @@ class holidays(models.Model):
 
     rapport_id = fields.Many2one("hr.rapport.pointage", string = "Rapport de pointage")
     nbr_jour_compenser = fields.Float('Jours Validé')
+    type_emp = fields.Selection(related='employee_id.type_emp', string='Type Employé',store=True)
     
     @api.onchange("demi_jour")
     def onchange_demi_jour(self):
@@ -131,7 +132,22 @@ class holidays(models.Model):
             d1 = datetime.strptime(str(start_date), fmt)
             d2 = datetime.strptime(str(end_date), fmt)
             sun_count = self.env['account.month.period'].get_count_sundays(start_date,self.env['account.month.period'].add_days_to_date(d2.date(),1))
-            jf_count = self.env["hr.jours.feries"].get_sum_days_jf_between_two_dates(d1.date(),d2.date())
+            jf_count = 0
+            jf_objs = self.env["hr.jours.feries"].search([
+                        ('state','=','validee'),
+                        '|',
+                            '&',
+                                ('date_start','<=',d1.date()),
+                                ('date_end','>=',d1.date()),
+                            '&',
+                                ('date_start','<=',d2.date()),
+                                ('date_end','>=',d2.date())])
+            for jf in jf_objs:
+                jf_start = datetime.strptime(str(jf.date_start), fmt)
+                jf_end = datetime.strptime(str(jf.date_end), fmt)
+                first_date = max(d1.date(),jf_start.date())
+                second_date = min(d2.date(),jf_end.date())
+                jf_count += (second_date - first_date).days + 1 - sun_count
             date_difference = (d2 - d1).days + 1 - sun_count - jf_count
             
         return date_difference
@@ -209,12 +225,9 @@ class holidays(models.Model):
     
     def to_approuvee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie'):
-            if self.state not in {'draft','validate','cancel'} :
-                self.state = 'validate'
-            else:
-                raise ValidationError(
-                        "Erreur, Cette action n'est pas autorisée."
-                    )
+            self.state = 'validate'
+            if self.nbr_jour_compenser == 0:
+                self.nbr_jour_compenser = self.duree_jours
         else:
             raise ValidationError(
                     "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
@@ -295,3 +308,10 @@ class holidays(models.Model):
                 "default_nbr_jour_compenser" : self.nbr_jour_compenser
             }
         }
+
+    def validation_par_masse(self):
+        
+        for rec in self:
+            rec.to_approuvee()
+            
+        

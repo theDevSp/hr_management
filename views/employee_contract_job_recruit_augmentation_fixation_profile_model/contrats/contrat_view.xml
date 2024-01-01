@@ -316,6 +316,12 @@
                                                         </div>
                                                         <div class="input-group mb-3">
                                                             <div class="input-group-prepend">
+                                                                <span class="input-group-text" ><label for="autoriz_zero_cp_related" class=""/></span>
+                                                            </div>
+                                                            <field name="autoriz_zero_cp_related" widget="boolean_toggle" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
+                                                        </div>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><label for="plafonner_bonus_related" class=""/></span>
                                                             </div>
                                                             <field name="plafonner_bonus_related" widget="boolean_toggle" attrs="{'readonly': [('state', '!=', 'draft')]}" class="form-control"/>
@@ -375,7 +381,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><label for="type_profile_related" class=""/></span>
                                                             </div>
-                                                            <field name="type_profile_related" class="form-control"/>
+                                                            <field name="type_profile_related" class="form-control" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                                         </div>
                                                         <div class="input-group mb-3">
                                                             <div class="input-group-prepend">
@@ -391,7 +397,7 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><label for="definition_nbre_jour_worked_par_mois_related" class=""/></span>
                                                             </div>
-                                                            <field name="definition_nbre_jour_worked_par_mois_related" string="Définition" class="form-control"/>
+                                                            <field name="definition_nbre_jour_worked_par_mois_related" attrs="{'readonly': [('state', '!=', 'draft')]}" string="Définition" class="form-control"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-lg-4">

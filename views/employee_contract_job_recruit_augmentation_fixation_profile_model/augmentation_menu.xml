@@ -2,16 +2,37 @@
 <odoo>
 
     <record id='augmentation_action' model='ir.actions.act_window'>
-        <field name="name">Augmentation de Salaire </field>
+        <field name="name">Augmentation de Salaire</field>
         <field name="res_model">hr.augmentation</field>
         <field name="view_mode">tree,form,search</field>
+        <field name="context">{'default_type': 'aug'}</field>
+        <field name="domain">[('type', '=', 'aug')]</field>
     </record>
 
-    <menuitem name="Ajout et Déduction" 
-                id="ajout_deduction_main_menu" 
-                parent="hr_management_base_menu" 
-                groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique,hr_management.group_admin_view_paie,hr_management.group_agent_paie_cadre,hr_management.group_agent_paie_administration" 
-                sequence="4"/>
-    <menuitem name="Augmentation" id="augmentation_menu" parent="ajout_deduction_main_menu" action="augmentation_action" sequence="1"/>
-    
+    <record id='chargefixe_action' model='ir.actions.act_window'>
+        <field name="name">Charge Fixe</field>
+        <field name="res_model">hr.augmentation</field>
+        <field name="view_mode">tree,form,search</field>
+        <field name="context">{'default_type': 'chg'}</field>
+        <field name="domain">[('type', '=', 'chg')]</field>
+        <field name="view_id" ref="chg_prg_tree"/>
+    </record>
+
+    <record id='privilege_action' model='ir.actions.act_window'>
+        <field name="name">Privilège</field>
+        <field name="res_model">hr.augmentation</field>
+        <field name="view_mode">tree,form,search</field>
+        <field name="context">{'default_type': 'prg'}</field>
+        <field name="domain">[('type', '=', 'prg')]</field>
+        <field name="view_id" ref="chg_prg_tree"/>
+    </record>
+
+    <menuitem name="Ajout et Déduction" id="ajout_deduction_main_menu" parent="hr_management_base_menu" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique,hr_management.group_admin_view_paie,hr_management.group_agent_paie_cadre,hr_management.group_agent_paie_administration" sequence="4"/>
+    <menuitem id="augmentation_action_main_menu" name="Augmentation Menu" parent="ajout_deduction_main_menu" sequence = "-1" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique"/>
+    <menuitem name="Augmentation" id="augmentation_menu" parent="augmentation_action_main_menu" action="augmentation_action" sequence="1"/>
+    <menuitem name="Charge Fixe" id="charge_fixe_menu" parent="augmentation_action_main_menu" action="chargefixe_action" sequence="2"/>
+    <menuitem name="Privilège" id="privilege_menu" parent="augmentation_action_main_menu" action="privilege_action" sequence="3"/>
+
+
+
 </odoo>

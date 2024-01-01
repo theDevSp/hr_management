@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="deplacement_tree" model="ir.ui.view">
+        <field name="name">Liste des Deplacements</field>
+        <field name="model">hr.deplacement</field>
+        <field name="arch" type="xml">
+            <tree string="Liste des Deplacements" multi_edit="1" sample="1" default_order='date_debut DESC' class="table">
+                <field name="name"/>
+                <field name="employee_id" readonly="1"/>
+                <field name="date_debut" />
+                <field name="date_fin" />
+                <field name="motif" />
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'valide'" decoration-success="state == 'approuved'" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="augmentation_formulaire" model="ir.ui.view">
+        <field name="name">Formulaire des Deplacements</field>
+        <field name="model">hr.deplacement</field>
+        <field name="arch" type="xml">
+            <form>
+                <header class="bar-box-shadow mb-4">
+                    <button name="to_draft" class="btn btn-info rounded border-1" string="Brouillon" type="object" attrs="{'invisible': [('state', 'in', ('draft','approuved'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_approuver" class="btn btn-warning rounded border-1" string="Approuver" type="object" attrs="{'invisible': [('state', 'in', ('approuved','valide'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <button name="to_validee" class="btn btn-success rounded border-1" string="Valider" type="object" attrs="{'invisible': [('state', 'in', ('valide','draft'))]}" groups ="hr_management.group_agent_paie,hr_management.group_admin_paie"/>
+                    <field name="state" widget="statusbar" nolabel="1"/>
+                </header>
+                <sheet>
+                    <div class="bg-white shadow p-3">
+                        <div class="card bg-light my-3">
+                            <div class="card-body text-center">
+                                <h2 class="card-text">
+                                    <span>
+                                        <field name="type" attrs="{'readonly': True}"/>
+                                        <span> : </span>
+                                        <field name="name" />
+                                    </span>
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="card bg-light my-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <label for="employee_id" class=""/>
+                                                    <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                </span>
+                                            </div>
+                                            <field name="employee_id" class="form-control" options="{'no_create': True,'no_open':True}" attrs="{'readonly': [('state', 'in', ('valide', 'approuved'))]}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <label for="date_debut" class=""/>
+                                                    <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                </span>
+                                            </div>
+                                            <field name="date_debut" class="form-control" attrs="{'readonly': [('state', 'in', ('valide', 'approuved'))]}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <label for="date_fin" class=""/>
+                                                    <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                </span>
+                                            </div>
+                                            <field name="date_fin" class="form-control" attrs="{'readonly': [('state', 'in', ('valide', 'approuved'))]}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-lg">
+                                        <div class="card my-3" style="border-color: #635b5b;">
+                                            <div class="card-body text-center">
+                                                <h6 class="card-text">Motif <i class="fas fa-exclamation-triangle" style="color:#f00000;"></i>
+                                                </h6>
+                                            </div>
+                                            <div class="card-body text-dark text-center">
+                                                <field name="motif" attrs="{'readonly': [('state', 'in', ('valide', 'approuved'))]}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <hr />
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="activity_ids" widget="mail_activity" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
+    

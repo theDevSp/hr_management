@@ -49,8 +49,10 @@ class jour_ferie(models.Model):
         if res and 'state' in vals:
             if vals['state'] == 'draft':
                 self.update_corresponding_lines('1','3')
+                self.update_holidays()
             else:
                 self.update_corresponding_lines('3','1')
+                self.update_holidays(False)
         return res
     
     def get_duree(self,start_date,end_date):
@@ -59,7 +61,7 @@ class jour_ferie(models.Model):
             fmt = '%Y-%m-%d'
             d1 = datetime.strptime(str(start_date), fmt)
             d2 = datetime.strptime(str(end_date), fmt)
-            sun_count = self.env['account.month.period'].get_count_sundays(start_date,self.env['account.month.period'].add_days_to_date(d2.date(),1))
+            sun_count = self.env['account.month.period'].get_count_sundays(start_date,self.env['account.month.period'].add_days_to_date(self.date_end,1))
             date_difference = (d2 - d1).days + 1 - sun_count
         return date_difference
     
@@ -90,6 +92,34 @@ class jour_ferie(models.Model):
                 'emplacement_chantier_id': line.rapport_id.emplacement_chantier_id.id if type_condition == '1' else False
                 })
         return
+
+    def update_holidays(self,add=True):
+        holidays = self.env['hr.holidays'].search([
+                        '|',
+                            '&',
+                                ('date_start','<=',self.date_start),
+                                ('date_end','>=',self.date_start),
+                            '&',
+                                ('date_start','<=',self.date_end),
+                                ('date_end','>=',self.date_end)])
+        
+        fmt = '%Y-%m-%d'
+        d1 = datetime.strptime(str(self.date_start), fmt)
+        d2 = datetime.strptime(str(self.date_end), fmt)
+        sun_count = self.env['account.month.period'].get_count_sundays(self.date_start,self.env['account.month.period'].add_days_to_date(d2.date(),1))
+        for holiday in holidays:
+            holiday_start = datetime.strptime(str(holiday.date_start), fmt)
+            holiday_end = datetime.strptime(str(holiday.date_end), fmt)
+            first_date = max(d1.date(),holiday_start.date())
+            second_date = min(d2.date(),holiday_end.date())
+
+            count = (second_date - first_date).days + 1 - sun_count 
+
+            count = count if add else -count
+        
+            holiday.write({
+                'duree_jours': holiday.duree_jours + count
+            })
     
     def to_draft(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') or self.user_has_groups('hr_management.group_pointeur') :

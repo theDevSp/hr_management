@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id='pointage_machines_action' model='ir.actions.act_window'>
+        <field name="name">Pointage Machines</field>
+        <field name="res_model">zk.machines</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Pointage Machines" id="pointage_machines_menu" parent="pointage_machines_submenu" action="pointage_machines_action" sequence="1"/>
+
+</odoo>

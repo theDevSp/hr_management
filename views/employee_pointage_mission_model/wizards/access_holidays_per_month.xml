@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="creation_mass_repport_wizard" model="ir.ui.view">
-        <field name="name">hr.create.mass.repport.wizard</field>
+    <record id="access_holidays_per_month_wizard" model="ir.ui.view">
+        <field name="name">Consultation Congés paar mois</field>
         <field name="model">hr.filtre.pointage.wizard</field>
         <field name="arch" type="xml">
             <form>
@@ -13,12 +13,7 @@
                             <h2 class="card-text">Form</h2>
                         </div>
                     </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" ><label for="chantier_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
-                        </div>
-                        <field name="chantier_id" class="form-control" options="{'no_create': True,'no_open': True}" />
-                    </div>
+                    
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" ><label for="period_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
@@ -31,17 +26,11 @@
                         </div>
                         <field name="employee_type" class="form-control"/>
                     </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" ><label for="quinzaine" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
-                        </div>
-                        <field name="quinzaine" class="form-control" attrs="{'readonly': [('employee_type', '!=', 'o')]}" force_save="1"/>
-                    </div>
                 </div>
 
                 <footer>                      
                     <button string="Annuler" class="oe_link oe_right" special="cancel"/>
-                    <button string="Création" name="create_rapports_pointage_mass" class="oe_highlight oe_right" type="object"/> 
+                    <button string="Accéder" name="access_holidays" class="oe_highlight oe_right" type="object"/> 
                 </footer>
             </form>
         </field>

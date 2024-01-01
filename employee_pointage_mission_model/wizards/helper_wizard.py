@@ -36,6 +36,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
 
         
     chantier_id = fields.Many2one("fleet.vehicle.chantier",u"Chantier",domain=_get_chantier_domain)
+    chantier_ids = fields.Many2many('fleet.vehicle.chantier', string='Chantier')
     periodicite = fields.Selection(related="chantier_id.periodicite")
     sous_chantier = fields.Many2one("fleet.vehicle.chantier.emplacement",string="Equipes")
     employee_type = fields.Selection([("c","Cadre de Chantier"),("a","Administration"),("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé")
@@ -426,4 +427,148 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                 'last_period_qu2_03':last_period_qu2_day_ref,
                 'last_period_qu1_15':last_period_qu1_delimite,
                 'last_period_qu2_30':last_period_qu2_delimite,
+            }
+
+    def payement_masse_method(self):
+
+        if not self.period_id:
+            return  {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': ("Erreur de saisie"),
+                    'message': ("Veuillez remplir les données correct pour commencer"),
+                    'sticky': False,
+                    'type': 'danger',
+                    'next': {'type': 'ir.actions.act_window_close'},
+                }
+            }
+        else:
+            domain = [
+                        ('type_emp','=',self.employee_type),
+                        ('chantier_id','in',self.chantier_ids.ids),
+                        ('period_id','=',self.period_id.id)
+                    ]
+            if not self.employee_type:
+                domain.pop(0)
+            if not self.chantier_ids:
+                domain.pop(1)
+
+            rapports = self.env['hr.rapport.pointage'].search(domain)
+            _ids = []
+            for rapport in rapports:
+                res = rapport.create_update_payslip(redirect=False)
+                if res:
+                    _ids.append(res.id)
+            tree_view = self.env.ref("hr_management.fiche_paie_tree")
+            form_view = self.env.ref("hr_management.fiche_paie_formulaire")
+            return {
+                "name": ("Fiche de paie cadre pour mois %s" %self.period_id.code),
+                "type": "ir.actions.act_window",
+                "view_type": "form",
+                "view_mode": "form",
+                "res_model": "hr.payslip",
+                "views": [(tree_view.id, "tree"),(form_view.id, "form")],
+                'domain':[('id','in',_ids)],
+            }
+    
+    def access_holidays(self):
+        
+        if not self.period_id:
+            return  {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': ("Erreur de saisie"),
+                    'message': ("Veuillez choisir une période pour continuer"),
+                    'sticky': False,
+                    'type': 'danger',
+                    'next': {'type': 'ir.actions.act_window_close'},
+                }
+            }
+        else:
+            domain = [
+                        ('type_emp','=',self.employee_type),
+                        ('state','=','confirm'),
+                        '|',
+                            '&',
+                                ('date_start','>=',self.period_id.date_start),
+                                ('date_start','<=',self.period_id.date_stop),
+                            '&',
+                                ('date_end','>=',self.period_id.date_start),
+                                ('date_end','<=',self.period_id.date_stop)
+                    ]
+            
+            if not self.employee_type:
+                domain.pop(0)
+
+            holidays = self.env['hr.holidays'].search_read(domain,['id'])
+
+            _ids = []
+            
+            for holiday in holidays:
+                if holiday:
+                    _ids.append(holiday['id'])
+            
+            tree_view = self.env.ref("hr_management.holidays_tree")
+            form_view = self.env.ref("hr_management.holidays_formulaire")
+            return {
+                "name": ("Congés pour mois %s" %self.period_id.code),
+                "type": "ir.actions.act_window",
+                "view_type": "form",
+                "view_mode": "form",
+                "res_model": "hr.holidays",
+                "views": [(tree_view.id, "tree"),(form_view.id, "form")],
+                'domain':[('id','in',_ids)],
+            }
+
+
+    def validation_holidays_masse_method(self):
+
+        if not self.period_id:
+            return  {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': ("Erreur de saisie"),
+                    'message': ("Veuillez choisir une période pour continuer"),
+                    'sticky': False,
+                    'type': 'danger',
+                    'next': {'type': 'ir.actions.act_window_close'},
+                }
+            }
+        else:
+            domain = [
+                        ('type_emp','=',self.employee_type),
+                        ('state','=','confirm'),
+                        '|',
+                            '&',
+                                ('date_start','>=',self.period_id.date_start),
+                                ('date_start','<=',self.period_id.date_stop),
+                            '&',
+                                ('date_end','>=',self.period_id.date_start),
+                                ('date_end','<=',self.period_id.date_stop)
+                    ]
+            if not self.employee_type:
+                domain.pop(0)
+
+            holidays = self.env['hr.holidays'].search(domain)
+            
+            
+            try:
+                holidays = self.env['hr.holidays'].search(domain)
+                for holiday in holidays:
+                    holiday.to_approuvee()
+
+            except Exception as e:
+                return  {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': ("Erreur système"),
+                    'message': e,
+                    'sticky': True,
+                    'type': 'danger',
+                    'next': {'type': 'ir.actions.act_window_close'},
+                }
             }

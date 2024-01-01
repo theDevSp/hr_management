@@ -13,7 +13,50 @@ class hr_employee(models.Model):
     _mail_post_access = 'read'
 
     cin = fields.Char('CIN', required=True)
-    cnss = fields.Char('CNSS')
+
+    @api.constrains('cin')
+    def _check_cin(self):
+        
+        if not self.cin.isalnum():
+            raise ValidationError("Erreur : Format incorrect. Aucun espace ou caractère spécial n'est accepté ; seuls les chiffres et les lettres le sont.")
+        
+        if not self._contains_letter_and_number(self.cin):
+            raise ValidationError("Erreur : Format incorrect. Le N° CIN doit impérativement comporter à la fois au moins une lettre et un chiffre pour être valide.")
+
+        for record in self:
+            if record.cin:
+                duplicate_records = self.search([('cin', '=', self._correct_cin_format(record.cin).upper())])
+                if len(duplicate_records) > 1:
+                    raise ValidationError("Erreur : N° CIN unique. Le numéro de CIN %s est déjà associé à un autre employé."%(self.cin.upper()))
+
+    
+    def _correct_cin_format(self,input_string):
+        # Using list comprehension to filter out non-alphanumeric characters
+        filtered_string = ''.join([char for char in input_string if char.isalnum()])
+        return filtered_string
+    
+    def _contains_letter_and_number(self,input_string):
+        # Regular expressions to check for at least one letter and one number
+        letter_pattern = re.compile(r'[a-zA-Z]')
+        number_pattern = re.compile(r'[0-9]')
+
+        # Check if the string contains at least one letter and one number
+        has_letter = bool(re.search(letter_pattern, input_string))
+        has_number = bool(re.search(number_pattern, input_string))
+
+        if has_letter and has_number:
+            return True
+        
+        return False
+                
+    cnss = fields.Char('N° CNSS')
+
+    @api.constrains('cnss')
+    def _check_cnss(self):
+        
+        if self.cnss and not self.cnss.isdigit():
+            raise ValidationError("Erreur : Format incorrect. Le N° CNSS doit exclusivement contenir des chiffres pour être considérée comme valide.")
+        
     title_id = fields.Many2one("res.partner.title","Titre")
     bank = fields.Many2one("bank","Banque")
     ville_bank = fields.Many2one("city",u"Ville")
@@ -145,7 +188,6 @@ class hr_employee(models.Model):
                 rec.remaining_days = res[0][0]
             else :
                 rec.remaining_days = 0
-  
 
     def _compute_working_years(self):
         for employee in self:
@@ -508,3 +550,8 @@ class hr_employee(models.Model):
                     'default_chantier_id': self.chantier_id.id,
                 },
         }
+    
+    def check_cin(input_string):
+        # Using list comprehension to filter out non-alphanumeric characters
+        filtered_string = ''.join([char for char in input_string if char.isalnum()])
+        return filtered_string
