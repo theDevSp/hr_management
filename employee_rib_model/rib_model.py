@@ -31,7 +31,7 @@ class employee_rib(models.Model):
             if self.name.isdigit() == False:
                 raise ValidationError("Erreur, Format incorrect.")
             else:
-                if len(self.name) < 24 or  len(self.name)>24:
+                if len(self.name) != 24:
                     raise ValidationError("Erreur, Le numéro de RIB doit avoir 24 caractères.")
     
     def to_enable(self):

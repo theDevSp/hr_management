@@ -105,7 +105,8 @@
                                                     </div>
                                                     <field name="demi_jour" force_save="1" widget="boolean_toggle" class="form-control" attrs="{'readonly':[('state','!=','draft')]}"/>
                                                 </div>
-                                                <div class="input-group mb-3">
+
+                                                <div class="input-group mb-3" invisible="1">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" ><label for="heure_perso" class=""/></span>
                                                     </div>
@@ -119,6 +120,11 @@
                                                     </div>
                                                     <field name="chantier_id" class="form-control" options="{'no_create': True, 'no_open': True}" attrs="{'readonly':[('state','!=','draft')]}"/>
                                                 </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
                                                 <div class="row" attrs="{'invisible':['|',('demi_jour','=',True),('heure_perso','=',True)]}">
                                                     <div class="col-12 col-md-6">
                                                         <div class="input-group mb-3">
@@ -177,29 +183,16 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row" attrs="{'invisible':[('heure_perso','=',False)]}">
+                                                <div class="row">
                                                     <div class="col-12">
                                                         <div class="input-group mb-3">
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text" ><label for="date_start" class=""/></span>
+                                                                <span class="input-group-text" ><label for="nbr_jour_compenser" class=""/></span>
                                                             </div>
-                                                            <field name="date_select_half_perso" force_save="1" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 col-md-6">
-                                                        <div class="input-group mb-3">
+                                                            <field name="nbr_jour_compenser" force_save="1" class="form-control text-center" nolabel="1"/>
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text" ><label for="heure_start" string="Du" class=""/></span>
+                                                                <span class="input-group-text" ><div class="o_form_label o_form_label_readonly">Jour(s)</div></span>
                                                             </div>
-                                                            <field name="heure_start" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 col-md-6">
-                                                        <div class="input-group mb-3">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" ><label for="heure_end" string="Au" class=""/></span>
-                                                            </div>
-                                                            <field name="heure_end" class="form-control text-center" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -229,9 +222,10 @@
                 <field name="employee_id"/>
                 <field name="chantier_id"/>
                 <searchpanel>
+                    <field name="type_emp" icon="fa-city" enable_counters="1" select="multi"/>
+                    <field name="state" icon="fa-align-center" enable_counters="1" select="multi"/>
                     <field name="chantier_id" icon="fa-city" enable_counters="1" select="multi"/>
                     <field name="motif" icon="fa-comment" enable_counters="1" select="multi"/>
-                    <field name="state" icon="fa-align-center" enable_counters="1" select="multi"/>
                 </searchpanel>
             </search>
         </field>

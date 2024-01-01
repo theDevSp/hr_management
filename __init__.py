@@ -16,3 +16,4 @@ from . import wizard
 from . import reports
 from . import declaration
 from . import recap_pdf
+from . import importation

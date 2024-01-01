@@ -306,6 +306,168 @@
                     </div>
                 </div>
                 <div class="row mt-3 justify-content-center">
+                    
+                    <div class="col-12 col-md-8 col-lg-3">
+                        <div class="col- mt-3 justify-content-center">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <ul class="list-group">
+                                            <li class="list-group-item active text-center">DETAILS SALAIRE</li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="salaire_actuel" />
+                                                    </div>
+                                                    <div class="col-4 bg-success text-center text-white">
+                                                        <field name="salaire_actuel" readonly="1" class="h3" />
+                                                        DH
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="salaire_jour" />
+                                                    </div>
+                                                    <div class="col-4 bg-success text-center text-white">
+                                                        <field name="salaire_jour" readonly="1" class="h3" />
+                                                        DH
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="salaire_demi_jour" />
+                                                    </div>
+                                                    <div class="col-4 bg-success text-center text-white">
+                                                        <field name="salaire_demi_jour" readonly="1" class="h3" />
+                                                        DH
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="salaire_heure" />
+                                                    </div>
+                                                    <div class="col-4 bg-success text-center text-white">
+                                                        <field name="salaire_heure" readonly="1" class="h3" />
+                                                        DH
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-8 col-lg-3">
+                        <div class="col- mt-3 justify-content-center">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <ul class="list-group">
+                                            <li class="list-group-item active text-center">DETAILS JOURS</li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="affich_jour_conge" />
+                                                    </div>
+                                                    <div class="col-4 bg-success text-center text-white">
+                                                        <field name="affich_jour_conge" readonly="1" class="h3" />
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="affich_jour_dimanche_conge" />
+                                                    </div>
+                                                    <div class="col-4 bg-success text-center text-white">
+                                                        <field name="affich_jour_dimanche_conge" readonly="1" class="h3" />
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="affich_conge" />
+                                                    </div>
+                                                    <div class="col-4 bg-success text-center text-white">
+                                                        <field name="affich_conge" readonly="1" class="h3" />
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="affich_jour_dimanche" />
+                                                    </div>
+                                                    <div class="col-4 bg-success text-center text-white">
+                                                        <field name="affich_jour_dimanche" readonly="1" class="h3" />
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="affich_jour_ferier" />
+                                                    </div>
+                                                    <div class="col-4 bg-success text-center text-white">
+                                                        <field name="affich_jour_ferier" readonly="1" class="h3" />
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
+                                                <div class="row w-100 h-100 m-0">
+                                                    <div class="col-8 p-2">
+                                                        <label for="affich_jour_absence" />
+                                                    </div>
+                                                    <div class="col-4 bg-danger text-center text-white">
+                                                        <field name="affich_jour_absence" readonly="1" class="h3" />
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-8 col-lg-3">
+                        <div class="col- mt-3 justify-content-center">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <label for="cotisation" class="" />
+                                                </span>
+                                            </div>
+                                            <field name="cotisation" widget="boolean_toggle" class="form-control text-center" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <label for="amount_cimr" class="" />
+                                                </span>
+                                            </div>
+                                            <field name="amount_cimr" class="form-control text-center" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <div class="row mt-3 justify-content-center">  
+                    <field name="max_worked_days_d" invisible="1"/>
                     <div class="col-12 col-md-8 col-lg-3">
                         <div class="col- mt-3 justify-content-center">
                             <field name="type_profile_related" invisible="1" />
@@ -403,7 +565,7 @@
                         </div>
 
                     </div>
-                    <div class="col-12 col-md-8 col-lg-3">
+                    <div class="col-12 col-md-8 col-lg-3" attrs="{'invisible': [('rapport_id', '!=', False),'|',('payed_worked_holidays', '=', False),('payed_holidays', '=', False)]}">
                         <div class="col- mt-3 justify-content-center">
                             <field name="type_profile_related" invisible="1" />
                             <div class="bg-white shadow p-3">
@@ -462,6 +624,141 @@
                         </div>
 
                     </div>
+                    <div class="col-12 col-md-8 col-lg-6" attrs="{'invisible': ['|',('payed_holidays', '=', True),'|',('payed_worked_holidays', '=', True),('rapport_id', '=', False)]}">
+                        <div class="col- mt-3 justify-content-center">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">COMPENSATION SALAIRE</h2>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-4">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <label for="autoriz_cp" class="" />
+                                                </span>
+                                            </div>
+                                            <field name="autoriz_cp" widget="boolean_toggle" class="form-control text-center" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <label for="autoriz_zero_cp" class="" />
+                                                </span>
+                                            </div>
+                                            <field name="autoriz_zero_cp" widget="boolean_toggle" class="form-control text-center" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <label for="overrid_bonus" class="" />
+                                                </span>
+                                            </div>
+                                            <field name="overrid_bonus" widget="boolean_toggle" class="form-control text-center" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <table class="table table-bordered text-center align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th>REGULARISATION (24,25,27)</th>
+                                                    <th>JOURS FERIERS</th>
+                                                    <th>DIMANCHES</th>
+                                                    <th>PANIERS</th>
+                                                    <th>JOURS AUTORISES</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div attrs="{'invisible': [('max_worked_days_d', '=', True)]}" class="alert alert-warning text-center" role="alert">
+                                                            Récupérer à partir du panier
+                                                        </div>
+                                                        <h4>
+                                                            <field name="regularisation_auto" />
+                                                        </h4>
+                                                    </td>
+                                                    <td>
+                                                        <table class="table text-center align-middle" style="height:100px">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="border-bottom">CONSOMMER</th>
+                                                                    <th class="border-start border-bottom">CONSERVER</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <h4>
+                                                                            <field name="consumed_jf" />
+                                                                        </h4>
+                                                                    </td>
+                                                                    <td class="border-start">
+                                                                        <h4>
+                                                                            <field name="reserved_jf" />
+                                                                        </h4>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <table class="table text-center align-middle" style="height:100px">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="border-bottom">CONSOMMER</th>
+                                                                    <th class="border-start border-bottom">CONSERVER</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <h4>
+                                                                            <field name="consumed_sundays" />
+                                                                        </h4>
+                                                                    </td>
+                                                                    <td class="border-start">
+                                                                        <h4>
+                                                                            <field name="reserved_sundays" />
+                                                                        </h4>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td> 
+                                                    <td>
+                                                        <h4>
+                                                            <field name="consumed_panier" />
+                                                        </h4>
+                                                    </td>
+                                                    <td>
+                                                        <h4>
+                                                            <field name="jour_autoriser" />
+                                                        </h4>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" class="table-active">
+                                                        <h4>
+                                                            TOTAL <field name="cp_number" /> jours = <field name="montant_cp_number" /> DH
+                                                        </h4>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-12 col-md-8 col-lg-3" attrs="{'invisible': [('payed_holidays', '=', False),('payed_worked_holidays', '=', False)]}">
                         <div class="col- mt-3 justify-content-center">
                             <div class="bg-white shadow p-3">
@@ -510,135 +807,15 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    <div class="col-12 col-md-8 col-lg-3">
-                        <div class="col- mt-3 justify-content-center">
-                            <div class="bg-white shadow p-3">
-                                <div class="card bg-light my-3">
-                                    <div class="card-body">
-                                        <ul class="list-group">
-                                            <li class="list-group-item active text-center">DETAILS SALAIRE</li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
-                                                <div class="row w-100 h-100 m-0">
-                                                    <div class="col-8 p-2">
-                                                        <label for="salaire_actuel" />
-                                                    </div>
-                                                    <div class="col-4 bg-success text-center text-white">
-                                                        <field name="salaire_actuel" readonly="1" class="h3" />
-                                                        DH
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
-                                                <div class="row w-100 h-100 m-0">
-                                                    <div class="col-8 p-2">
-                                                        <label for="salaire_jour" />
-                                                    </div>
-                                                    <div class="col-4 bg-success text-center text-white">
-                                                        <field name="salaire_jour" readonly="1" class="h3" />
-                                                        DH
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
-                                                <div class="row w-100 h-100 m-0">
-                                                    <div class="col-8 p-2">
-                                                        <label for="salaire_demi_jour" />
-                                                    </div>
-                                                    <div class="col-4 bg-success text-center text-white">
-                                                        <field name="salaire_demi_jour" readonly="1" class="h3" />
-                                                        DH
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
-                                                <div class="row w-100 h-100 m-0">
-                                                    <div class="col-8 p-2">
-                                                        <label for="salaire_heure" />
-                                                    </div>
-                                                    <div class="col-4 bg-success text-center text-white">
-                                                        <field name="salaire_heure" readonly="1" class="h3" />
-                                                        DH
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="list-group-item active text-center">DETAILS JOURS</li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
-                                                <div class="row w-100 h-100 m-0">
-                                                    <div class="col-8 p-2">
-                                                        <label for="affich_jour_conge" />
-                                                    </div>
-                                                    <div class="col-4 bg-success text-center text-white">
-                                                        <field name="affich_jour_conge" readonly="1" class="h3" />
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
-                                                <div class="row w-100 h-100 m-0">
-                                                    <div class="col-8 p-2">
-                                                        <label for="affich_jour_dimanche_conge" />
-                                                    </div>
-                                                    <div class="col-4 bg-success text-center text-white">
-                                                        <field name="affich_jour_dimanche_conge" readonly="1" class="h3" />
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
-                                                <div class="row w-100 h-100 m-0">
-                                                    <div class="col-8 p-2">
-                                                        <label for="affich_conge" />
-                                                    </div>
-                                                    <div class="col-4 bg-success text-center text-white">
-                                                        <field name="affich_conge" readonly="1" class="h3" />
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
-                                                <div class="row w-100 h-100 m-0">
-                                                    <div class="col-8 p-2">
-                                                        <label for="affich_jour_dimanche" />
-                                                    </div>
-                                                    <div class="col-4 bg-success text-center text-white">
-                                                        <field name="affich_jour_dimanche" readonly="1" class="h3" />
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
-                                                <div class="row w-100 h-100 m-0">
-                                                    <div class="col-8 p-2">
-                                                        <label for="affich_jour_ferier" />
-                                                    </div>
-                                                    <div class="col-4 bg-success text-center text-white">
-                                                        <field name="affich_jour_ferier" readonly="1" class="h3" />
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li class="list-group-item d-flex justify-content-between align-items-center p-0">
-                                                <div class="row w-100 h-100 m-0">
-                                                    <div class="col-8 p-2">
-                                                        <label for="affich_jour_absence" />
-                                                    </div>
-                                                    <div class="col-4 bg-danger text-center text-white">
-                                                        <field name="affich_jour_absence" readonly="1" class="h3" />
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="row mt-3 justify-content-center">
                     <div class="col-12 col-lg-8">
                         <div class="bg-white shadow p-3">
                             <div class="card bg-light my-3">
                                 <div class="card-body text-center">
-                                    <h2 class="card-text">Augementation</h2>
+                                    <h2 class="card-text">Charges Fixes et Avantages</h2>
                                 </div>
                             </div>
                             <div class="card bg-light my-3">

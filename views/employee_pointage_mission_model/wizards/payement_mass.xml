@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="creation_mass_repport_wizard" model="ir.ui.view">
+    <record id="payement_mass_wizard" model="ir.ui.view">
         <field name="name">hr.create.mass.repport.wizard</field>
         <field name="model">hr.filtre.pointage.wizard</field>
         <field name="arch" type="xml">
@@ -15,12 +15,6 @@
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" ><label for="chantier_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
-                        </div>
-                        <field name="chantier_id" class="form-control" options="{'no_create': True,'no_open': True}" />
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
                             <span class="input-group-text" ><label for="period_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                         </div>
                         <field name="period_id" class="form-control" options="{'no_create': True,'no_open': True}" />
@@ -29,19 +23,19 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" ><label for="employee_type" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                         </div>
-                        <field name="employee_type" class="form-control"/>
+                        <field name="employee_type" class="form-control" options="{'no_create': True,'no_open': True}" />
                     </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" ><label for="quinzaine" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                    <div class="card bg-dark my-3">
+                        <div class="card-body text-center">
+                            <field name="chantier_ids" options="{'no_create': True,'no_open': True}" />
                         </div>
-                        <field name="quinzaine" class="form-control" attrs="{'readonly': [('employee_type', '!=', 'o')]}" force_save="1"/>
                     </div>
+                    
                 </div>
 
                 <footer>                      
                     <button string="Annuler" class="oe_link oe_right" special="cancel"/>
-                    <button string="Création" name="create_rapports_pointage_mass" class="oe_highlight oe_right" type="object"/> 
+                    <button string="Paiement" name="payement_masse_method" class="oe_highlight oe_right" type="object"/> 
                 </footer>
             </form>
         </field>

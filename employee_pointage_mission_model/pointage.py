@@ -91,7 +91,7 @@ class hr_rapport_pointage(models.Model):
     def _compute_jour_ferie(self):
         for rapport in self:
             rapport.count_nbr_ferier_days = len(
-                rapport.rapport_lines.filtered(lambda ln: ln.day_type == "3")
+                rapport.rapport_lines.filtered(lambda ln: ln.day_type == "3" and ln.day > rapport.employee_id.contract_id.date_start)
             )
 
     @api.depends(
@@ -118,17 +118,17 @@ class hr_rapport_pointage(models.Model):
             rapport.count_nbr_ferier_days_v = sum(
                 float(line.j_travaille_v)
                 for line in rapport.rapport_lines.filtered(
-                    lambda ln: ln.day_type == "3" and float(ln.h_travailler_v) > 0
+                    lambda ln: ln.day_type == "3" and float(ln.h_travailler_v) > 0 and ln.day > rapport.employee_id.contract_id.date_start
                 )
             )
 
-    @api.depends("rapport_lines.j_travaille", "rapport_lines.day_type")
+    @api.depends("rapport_lines.j_travaille","rapport_lines.h_travailler_v","rapport_lines.day_type")
     def _compute_days_absence(self):
         for rapport in self:
             rapport.count_nbr_absense_days = sum(
                 float(line.j_travaille)
                 for line in rapport.rapport_lines.filtered(
-                    lambda ln: ln.day_type == "5"
+                    lambda ln: ln.day_type == "5" or (ln.day_type == "1" and float(ln.h_travailler_v) == 0)
                 )
             )
 
@@ -688,20 +688,8 @@ class hr_rapport_pointage(models.Model):
 
     def create_update_payslip(self, redirect=True):
         view = self.env.ref("hr_management.fiche_paie_formulaire")
-        joe_def = (
-            self.employee_id.contract_id.definition_nbre_jour_worked_par_mois_related
-        )
-        joe = self.employee_id.contract_id.nbre_jour_worked_par_mois_related
-        max_worked_days_d = self.employee_id.contract_id.max_worked_days_d
-        max_worked_days_p = self.employee_id.contract_id.max_worked_days_p
-        jo_related = self.employee_id.contract_id.jo_related
-        total_jt = self.total_j_v
 
-        if jo_related:
-            total_jt -= self.count_nbr_dim_days_v
-
-        if max_worked_days_d:
-            total_jt += self.rapport_result()["default_day_2_add"]
+        nbr_jf_refunded = 0
 
         data = {
             "employee_id": self.employee_id.id,
@@ -714,10 +702,12 @@ class hr_rapport_pointage(models.Model):
             "emplacement_chantier_id": self.emplacement_chantier_id.id,
             "rapport_id": self.id,
             "quinzaine": self.quinzaine,
-            "nbr_jour_travaille": total_jt,
+            "nbr_jour_travaille": min(self.total_j_v,self.rapport_result()['jnt']) if self.employee_id.contract_id.type_profile_related == 'j' else self.total_j_v,
             "nbr_heure_travaille": self.total_h_v,
             "autoriz_cp": self.employee_id.contract_id.completer_salaire_related,
             "autoriz_zero_cp": self.employee_id.contract_id.autoriz_zero_cp_related,
+            "cotisation" : self.employee_id.cotisation,
+            "amount_cimr" : self.employee_id.montant_cimr
         }
 
         if not self.payslip_ids:
@@ -744,7 +734,7 @@ class hr_rapport_pointage(models.Model):
 
             self.payslip_ids[0].write(
                 {
-                    "nbr_jour_travaille": total_jt,
+                    "nbr_jour_travaille": min(self.total_j_v,self.rapport_result()['jnt']),
                     "nbr_heure_travaille": self.total_h_v,
                     "nbr_jf_refunded": nbr_jf_refunded,
                 }
@@ -825,139 +815,43 @@ class hr_rapport_pointage(models.Model):
 
     def rapport_result(self):
         contract = self.employee_id.contract_id  # contrat par defaut
-        can_complete = (
-            contract.completer_salaire_related
-        )  # autorisation de compensation
-        can_pay_holidays = (
-            contract.payed_holidays_related
-        )  # autorisation de compensation
         type_emp = contract.type_emp
         type_profile = contract.type_profile_related
-        jd = (
-            self.count_nbr_dim_days_v
-        )  # jour dimanche travaillé et validé par service rh
+        jdt = self.count_nbr_dim_days_v # jour dimanche travaillé et validé par service rh
         jc = self.count_nbr_holiday_days_v  # jour congé validé par service rh
-        jft = (
-            self.count_nbr_ferier_days_v
-        )  # jour férie travaillé et validé par service rh
-        jf = (
-            self.count_nbr_ferier_days
-        )  # total des jour férié travaillé + non travaillé
+        jfnt = max(self.count_nbr_ferier_days - self.count_nbr_ferier_days_v ,0)# jour férie non travaillé 
+        jf = self.count_nbr_ferier_days  # total des jour férié travaillé + non travaillé
         jom = self.jom  # jour ouvrable par mois
-        joe = (
-            contract.nbre_jour_worked_par_mois_related
-            if contract.definition_nbre_jour_worked_par_mois_related == "nbr_saisie"
-            else self.period.get_number_of_days_per_month()
-        )  # jour ouvrable sur lesquels le salaire de base de l'employé est définis
-        default_day_2_add = (
-            joe - jom
-            if contract.definition_nbre_jour_worked_par_mois_related == "nbr_saisie"
-            else 0
-        )  # jour de réguralisation pour les mois exceptionnels (24-25-27)
-        hnt = (
-            joe * contract.nbre_heure_worked_par_jour_related
-        )  # heure de travail sur lesquelles le salaire de base de l'employé est définis
-        jot = (
-            self.total_j_v + default_day_2_add
-        )  # jour travaillé par le salarié + la régularisation
+        joe = contract.nbre_jour_worked_par_mois_related if contract.definition_nbre_jour_worked_par_mois_related == "nbr_saisie" else self.period_id.get_number_of_days_per_month() # jour ouvrable sur lesquels le salaire de base de l'employé est définis
+        default_day_2_add = joe - jom if contract.definition_nbre_jour_worked_par_mois_related == "nbr_saisie" else 0  # jour de réguralisation pour les mois exceptionnels (24-25-27)
+        hnt = joe * contract.nbre_heure_worked_par_jour_related # heure de travail sur lesquelles le salaire de base de l'employé est définis
+        jont = self.count_nbr_absense_days  # jour ouvrable non travaillé par le salarié
         ht = self.total_h_v  # heure travaillées par le salarié
+        jt = self.total_j_v  # jour travaillées par le salarié
         h_comp = hnt - ht  # heure de compensation de salaire
-        j_comp = joe - jot  # jour de compensation de salaire
+        j_comp = joe - (jt + default_day_2_add) if type_profile == 'j' else h_comp / contract.nbre_heure_worked_par_jour_related # jour de compensation de salaire
 
         return {
-            "contract": contract,
-            "can_complete": can_complete,
-            "can_pay_holidays": can_pay_holidays,
-            "type_emp": type_emp,
-            "type_profile": type_profile,
             "jc": jc,
-            "jd": jd,
-            "jf": jf + jft,
+            "jdt": jdt,
+            "jf": jf,
+            "jfnt": jfnt,
             "jnt": joe,
-            "jt": jot,
+            "jont": jont,
             "hnt": hnt,
             "ht": ht,
+            "jt": jt,
             "h_comp": h_comp,
             "j_comp": j_comp,
             "default_day_2_add": default_day_2_add,
-            "jft": jf,
-        }
-
-    def handle_jf_for_daily_worker(self):
-        resume = self.rapport_result()
-        comp_jf = resume["j_comp"] - resume["jf"]
-
-        return {
-            "handeled_days": min(
-                resume["j_comp"], resume["jf"]
-            ),  # nombre de jour compenser ou jour ferie restant
-            "j_r_comp": comp_jf
-            if comp_jf > 0
-            else 0,  # régler avec dimanche travaillé ou congé justifier (condition > 0)
-            "jf_alloacation": -comp_jf
-            if comp_jf < 0
-            else 0,  # allocation panier jour férier (condition > 0)
-        }
-
-    def handle_j_comp_unused_jd_jc_for_daily_worker(self):
-        resume = self.rapport_result()
-        unhandeled_j_comp = self.handle_jf_for_daily_worker()["j_r_comp"]
-        comp_jd = unhandeled_j_comp - min(resume["jc"], resume["jd"])
-        jd_jc_used = resume["jc"] - resume["jd"]
-
-        handeled_days, handeled_sun_days, j_alloaction = 0, 0, 0
-
-        if comp_jd > 0:  #
-            handeled_days = resume["jc"]
-            j_alloaction = max(0, -jd_jc_used)
-
-        elif comp_jd < 0 and jd_jc_used > 0:
-            handeled_sun_days = unhandeled_j_comp
-            j_alloaction = max(0, resume["jd"] - unhandeled_j_comp)
-        elif comp_jd < 0 and jd_jc_used < 0:
-            handeled_days = min(resume["jc"], unhandeled_j_comp)
-            j_alloaction = max(0, resume["jd"] - handeled_days)
-
-        return {
-            "handeled_days_jf": self.handle_jf_for_daily_worker()[
-                "handeled_days"
-            ],  # C.P jf
-            "handeled_days": handeled_days,  # C.P
-            "handeled_sun_days": handeled_sun_days,  # C.P par Dimanche
-            "jd_alloaction": j_alloaction,  # allocation panier dimanche (condition > 0)
-            "jf_alloaction": self.handle_jf_for_daily_worker()[
-                "jf_alloacation"
-            ],  # allocation panier jour ferier (condition > 0)
-        }
-
-    def handle_hours_needed_for_hourly_worker(self):
-        resume = self.rapport_result()
-        unhandeled_hours = resume["h_comp"]
-        default_paied_hours = (
-            resume["default_day_2_add"]
-            * resume["contract"].nbre_heure_worked_par_jour_related
-        )
-        jf_paied, j_default_allocation, j_allocation = resume["jft"], 0, 0
-        if unhandeled_hours >= 0:
-            j_default_allocation = resume["default_day_2_add"]
-            unhandeled_hours = unhandeled_hours - default_paied_hours
-            j_allocation = min(
-                resume["jc"],
-                unhandeled_hours
-                / resume["contract"].nbre_heure_worked_par_jour_related,
-            )
-
-        return {
-            "panier_jour_ferier": jf_paied,
-            "default_allocation": j_default_allocation,  # allocation panier par defaut pour les salarie horaire
-            "j_allocation": j_allocation,  # a;llocation panier si > 0
         }
 
     def masse_payement(self):
         _ids = []
         for rec in self:
             res = rec.create_update_payslip(redirect=False)
-            _ids.append(res.id)
+            if res:
+                _ids.append(res.id)
         tree_view = self.env.ref("hr_management.fiche_paie_tree")
         form_view = self.env.ref("hr_management.fiche_paie_formulaire")
         return {

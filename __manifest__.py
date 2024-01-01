@@ -65,6 +65,9 @@
         'views/employee_pointage_mission_model/wizards/add_new_employee_wizard.xml',
         'views/employee_pointage_mission_model/wizards/create_single_emplyee_repport.xml',
         'views/employee_pointage_mission_model/wizards/create_mass_repport.xml',
+        'views/employee_pointage_mission_model/wizards/payement_mass.xml',
+        'views/employee_pointage_mission_model/wizards/validation_holidays_mass.xml',
+        'views/employee_pointage_mission_model/wizards/access_holidays_per_month.xml',
         'employee_holidays_model/validation_wizard/wizard_view.xml',
         'employee_holidays_model/mass_creation_holidays/wizard_view.xml',
 
@@ -110,6 +113,9 @@
         'views/employee_pointage_mission_model/pointage_menu.xml',
         'views/declaration/declaration_menu.xml',
         'views/declaration/declaration_views.xml',
+
+        'importation/import_employee_view.xml',
+        'importation/import_employee_menu.xml',
 
         'views/recap_pdf/recap_pdf_view.xml',
         'views/recap_pdf/recap_pdf_menu.xml',

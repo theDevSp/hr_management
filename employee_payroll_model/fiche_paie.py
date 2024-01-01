@@ -37,6 +37,8 @@ class fiche_paie(models.Model):
     
     payed_holidays = fields.Boolean(related='contract_id.payed_holidays_related', readonly=True)
     payed_worked_holidays = fields.Boolean(related='contract_id.payed_worked_holidays_related', readonly=True)
+    max_worked_days_d = fields.Boolean(related='contract_id.max_worked_days_d', readonly=True)
+    max_worked_days_p = fields.Boolean(related='contract_id.max_worked_days_p', readonly=True)
     
 
     #-------------> infos contract
@@ -88,6 +90,7 @@ class fiche_paie(models.Model):
     overrid_bonus = fields.Boolean('Dépassement bonus')
 
     cp_number = fields.Float('Nombre Jours Compensation',compute="_compute_cp_number",store=True)
+    montant_cp_number = fields.Float('Montant Compensation',compute="_compute_amount_cp_number",store=True)
     cp_number_regularisation = fields.Float('Régularisation')
     
     addition = fields.Float('Total Avantage',compute="_compute_total_addition",store=True)
@@ -115,12 +118,27 @@ class fiche_paie(models.Model):
     note = fields.Char('Observation')
     notes = fields.Html('Notes')
 
+    #---------------- fields de régularisation et compensation ---------------------
+
+    regularisation_auto = fields.Float('Régularisation (24,25,27)',readonly=True)
+    consumed_jf = fields.Float('consumed_jf',readonly=True)
+    reserved_jf = fields.Float('reserved_jf',readonly=True)
+    consumed_sundays = fields.Float('consumed_sundays',readonly=True)
+    reserved_sundays = fields.Float('reserved_sundays',readonly=True)
+    consumed_panier = fields.Float('consumed_panier',readonly=True)
+    jour_autoriser = fields.Float('jour_autoriser',store=True,compute='_compute_jour_autoriser')
+
+    #--------------------------------- cimr ----------------------------------------
+
+    cotisation = fields.Boolean('Activer cotisation')
+    amount_cimr = fields.Float('Montant CIMR')
+
+    recap_id = fields.Many2one('hr.recap.line.pdf', string='recap')
+    augementation_lines = fields.One2many("complement.augmentation", 'comp_aug_id',string='Liste des Augementatuions')
+
     net_paye_archive = fields.Float('Net à Payer')
     new_help = fields.Boolean('field_name',default=False)
 
-    recap_id = fields.Many2one('hr.recap.line.pdf', string='recap')
-
-    augementation_lines = fields.One2many("complement.augmentation", 'comp_aug_id',string='Liste des Augementatuions')
 
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
@@ -128,18 +146,13 @@ class fiche_paie(models.Model):
             self.contract_id = self.employee_id.contract_id
             self.autoriz_zero_cp = self.contract_id.autoriz_zero_cp_related
             self.autoriz_cp = self.contract_id.completer_salaire_related
+            self.cotisation = self.employee_id.cotisation
+            self.amount_cimr = self.employee_id.montant_cimr
             self.get_employee_augementations()
+            if self.rapport_id:
+                self._compute_regularisation_auto_compentation()
     
-    def get_employee_augementations(self):
-        augementations = self.env['hr.augmentation'].search([('employee_id','=',self.employee_id.id),('state','=','acceptee'),('type','!=','aug')])
-        augementations_lines = [(5,0,0)]
-        for line in augementations:
-            if line:
-                vals = {
-                    "augmentation_id": line.id
-                    }
-                augementations_lines.append((0,0,vals))
-        self.augementation_lines = augementations_lines
+    
     
     @api.onchange('contract_id')
     def _onchange_contract_id(self):
@@ -162,6 +175,8 @@ class fiche_paie(models.Model):
         res = super(fiche_paie, self).create(vals)
 
         res.get_employee_augementations()
+        if res.rapport_id:
+            res._compute_regularisation_auto_compentation()
 
         last_paied_period = self.env[self._name].search_read([('employee_id','=',res.employee_id.id),('id','<',res.id)],['notes','note'],limit=1, order='id desc')
         
@@ -197,7 +212,8 @@ class fiche_paie(models.Model):
             self.write({
                 'state':'cal'
             })
-        
+            if self.rapport_id:
+                self._compute_regularisation_auto_compentation()
             if self.payed_holidays and self.rapport_id:
                 self.nbr_jf_refunded = self.rapport_id.count_nbr_ferier_days
             
@@ -210,36 +226,45 @@ class fiche_paie(models.Model):
     def _compute_amount_jf_refunded(self):
         for rec in self:
             rec.amount_jf_refunded = rec.nbr_jf_refunded * rec.salaire_jour
+    
+    @api.depends('rapport_id.count_nbr_holiday_days_v')
+    def _compute_jour_autoriser(self):
+        for rec in self:
+            rec.jour_autoriser = 0
+            if rec.rapport_id:
+                rapport_result = rec.rapport_id.rapport_result()
+                jont = min(rapport_result["jc"],rapport_result["j_comp"]) if rec.autoriz_cp else 0
+                ja = max(min(jont,rec.affich_jour_conge),0) if not rec.autoriz_zero_cp else jont
 
-    @api.depends('nbr_jour_travaille','nbr_heure_travaille','autoriz_cp','autoriz_zero_cp')
+                rec.jour_autoriser = max(ja,0)
+    
+    def _compute_manual_cp_number(self):
+        for rec in self:
+            if rec.contract_id and rec.period_id:
+                joe = rec.contract_id.nbre_jour_worked_par_mois_related if rec.contract_id.definition_nbre_jour_worked_par_mois_related == "nbr_saisie" else rec.period_id.get_number_of_days_per_month()
+                hnt = joe * rec.contract_id.nbre_heure_worked_par_jour_related
+
+                h_comp = max(hnt - rec.nbr_heure_travaille,0)  # heure de compensation de salaire
+                j_comp = max(joe - self.nbr_jour_travaille,0) if rec.contract_id.type_profile_related == 'j' else h_comp / rec.contract_id.nbre_heure_worked_par_jour_related # jour de compensation de salaire
+
+                return min(j_comp,rec.affich_jour_conge) if not rec.autoriz_zero_cp else j_comp
+            
+            return 0
+        
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','consumed_jf','consumed_sundays','consumed_panier','autoriz_cp','autoriz_zero_cp')
     def _compute_cp_number(self):
         for rec in self:
-            max_worked_days_p = rec.employee_id.contract_id.max_worked_days_p
-            if not max_worked_days_p :
-
-                if rec.autoriz_cp:
-                    rec.cp_number = min(rec.employee_result()['j_comp'],rec.employee_id.panier_conge) if rec.employee_result() else 0
-                elif rec.autoriz_zero_cp:
-                    rec.cp_number = rec.employee_result()['j_comp'] if rec.employee_result() else 0
-                else:
-                    rec.cp_number = 0
-
-            elif max_worked_days_p and rec.employee_result()['j_comp'] > 0 and rec.employee_result()['default_day_2_add'] > 0:
-
-                if rec.employee_result()['j_comp'] > rec.employee_result()['default_day_2_add'] :
-                    rec.cp_number = rec.employee_result()['default_day_2_add']
-                if rec.autoriz_cp:
-                    rec.cp_number += min(rec.employee_result()['j_comp']-rec.employee_result()['default_day_2_add'],rec.employee_id.panier_conge) if rec.employee_result() else 0
-                elif rec.autoriz_zero_cp:
-                    rec.cp_number += rec.employee_result()['j_comp']-rec.employee_result()['default_day_2_add'] if rec.employee_result() else 0
-
-            elif max_worked_days_p and rec.employee_result()['j_comp'] > 0 and rec.employee_result()['default_day_2_add'] == 0:
-
-                if rec.autoriz_cp:
-                    rec.cp_number = min(rec.employee_result()['j_comp'],rec.employee_id.panier_conge) if rec.employee_result() else 0
-                elif rec.autoriz_zero_cp:
-                    rec.cp_number += rec.employee_result()['j_comp'] if rec.employee_result() else 0
+            if rec.rapport_id:
+                rec.cp_number = rec.consumed_jf + rec.consumed_sundays + rec.consumed_panier
+            else:
+                rec.cp_number = rec._compute_manual_cp_number()
+    
+    @api.depends('cp_number')
+    def _compute_amount_cp_number(self):
+        for rec in self:
+            rec.montant_cp_number = rec.cp_number * rec.salaire_jour
             
+
     @api.depends('employee_id','period_id','contract_id')
     def _compute_salaire_jour(self):
         for rec in self:
@@ -327,10 +352,10 @@ class fiche_paie(models.Model):
             
             if profile_paie_p:
                 if type_profile == 'j':
-                    worked_time = record.nbr_jour_travaille
+                    worked_time = record.nbr_jour_travaille + record.cp_number
                     base_time = profile_paie_p.nbre_jour_worked_par_mois if code_profile == 'nbr_saisie' else 30
                 elif type_profile == 'h':
-                    worked_time = record.nbr_heure_travaille
+                    worked_time = record.nbr_heure_travaille + (record.cp_number * profile_paie_p.nbre_heure_worked_par_jour)
                     base_time = profile_paie_p.nbre_heure_worked_par_jour * worked_days_per_month
                 res = worked_time / base_time * 1.5
 
@@ -339,26 +364,68 @@ class fiche_paie(models.Model):
                 else:
                     record.affich_bonus_jour = min(res,0.75) if not record.overrid_bonus else res  
 
+    def _compute_regularisation_auto_compentation(self):
+        for rec in self:
+            rapport_result = rec.rapport_id.rapport_result()
+
+            max_worked_days_d = rec.contract_id.max_worked_days_d
+            max_worked_days_p = rec.contract_id.max_worked_days_p
+            rest_jf = 0
+
+            if max_worked_days_d:
+                rec.regularisation_auto = rapport_result["default_day_2_add"]  
+            if max_worked_days_p and rapport_result["j_comp"] > 0:
+                rec.regularisation_auto = max(rapport_result["default_day_2_add"] - rapport_result["jont"],0)
+            
+            #-------------- reguraliser les jours ferier doit etre pour profile journalier
+            jont = max(min(rapport_result["jc"],rapport_result["j_comp"]),0) if rec.autoriz_cp else 0
+            ja = max(min(jont,rec.affich_jour_conge),0) if not rec.autoriz_zero_cp else jont
+
+            if rec.contract_id.type_profile_related == 'j':
+                rec.consumed_jf = rapport_result["jfnt"]
+                rest_jf = rapport_result["jf"] - rapport_result["jfnt"]
+                rec.consumed_jf += min(ja,rest_jf)
+            else:
+                rec.consumed_jf = min(ja,rapport_result["jf"]) if ja > 0 else 0
+                rest_jf = max(ja-rapport_result["jf"],0)
+
+
+            ja -= rest_jf 
+            rest_jf = rapport_result["jf"] - rec.consumed_jf
+            rec.reserved_jf = rest_jf
+
+            #-------------- regularise les jours ouvrable
+
+
+
+
+            if rapport_result["jdt"] > 0 :
+                rec.consumed_sundays = min(rapport_result["jdt"],ja) if ja > 0 else 0
+                rec.reserved_sundays = max(rapport_result["jdt"]-ja,0) if rec.contract_id.pp_personnel_id_many2one.type_profile == 'j' else 0
+            
+                ja -= rec.consumed_sundays
+
+            rec.consumed_panier = max(ja,0)
 
     @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','cp_number','cal_state')
     def compute_total(self):
         for rec in self:
             if rec.contract_id:
                 rec.total = rec.nbr_heure_travaille * rec.salaire_heure if rec.type_profile_related == "h" else rec.nbr_jour_travaille * rec.salaire_jour
-                rec.total += rec.cp_number * rec.salaire_jour
+                rec.total += rec.montant_cp_number
             else:
                 rec.total = 0
 
-    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','deduction','cp_number','employee_id.cotisation','employee_id.montant_cimr','cal_state')
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','deduction','cp_number','cotisation','amount_cimr','cal_state')
     def compute_sad(self):
         for rec in self:
             if rec.contract_id:
                 rec.sad = rec.total - rec.deduction
-                rec.sad -= rec.employee_id.montant_cimr if rec.employee_id.cotisation else 0
+                rec.sad -= rec.amount_cimr if rec.cotisation else 0
             else:
                 rec.sad = 0
 
-    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','addition','deduction','cp_number','cal_state','nbr_jf_refunded')
+    @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','addition','deduction','sad','cp_number','cal_state','nbr_jf_refunded')
     def compute_net_a_payer(self):
         for rec in self:
             if rec.contract_id:
@@ -507,39 +574,6 @@ class fiche_paie(models.Model):
             'view_id': view.id,
         }
 
-    def employee_result(self):
-
-        if self.contract_id and self.period_id:
-
-            type_emp = self.contract_id.type_emp
-            type_profile = self.contract_id.type_profile_related
-            jom = self.period_id.jom # jour ouvrable par mois
-            joe = self.contract_id.nbre_jour_worked_par_mois_related if self.contract_id.definition_nbre_jour_worked_par_mois_related == 'nbr_saisie' else self.period_id.get_number_of_days_per_month() # jour ouvrable sur lesquels le salaire de base de l'employé est définis
-            default_day_2_add = joe - jom  if self.contract_id.definition_nbre_jour_worked_par_mois_related == 'nbr_saisie' else 0 # jour de réguralisation pour les mois exceptionnels (24-25-27)
-            hnt = joe * self.contract_id.nbre_heure_worked_par_jour_related # heure de travail sur lesquelles le salaire de base de l'employé est définis
-            hntj = self.contract_id.nbre_heure_worked_par_jour_related # heure de travail sur lesquelles le salaire de base de l'employé est définis
-            jot = self.nbr_jour_travaille # jour travaillé par le salarié
-            ht = self.nbr_heure_travaille # heure travaillées par le salarié
-            h_comp = hnt - ht # heure de compensation de salaire
-            ht_equi_days = h_comp / hntj if h_comp > 0 else 0 
-            j_comp = joe - jot if type_profile == 'j' else ht_equi_days # jour/heure de compensation de salaire
-
-            return {
-                'type_emp':type_emp,
-                'type_profile':type_profile,
-                'jnt':joe,
-                'jt':jot,
-                'hnt':hnt,
-                'ht':ht,
-                'j_comp':j_comp,
-                'default_day_2_add':default_day_2_add
-            }
-        
-        return {
-            'j_comp':0,
-            'default_day_2_add':0
-        }
-
     def add_bonus(self):
         if self.affich_bonus_jour > 0:
             self.env['hr.allocations'].sudo().create({
@@ -613,6 +647,18 @@ class fiche_paie(models.Model):
             rec.to_validee()
             rec.update_cal_state()
             rec.to_done()
+    
+    def get_employee_augementations(self):
+        for rec in self:
+            augementations = self.env['hr.augmentation'].search([('employee_id','=',rec.employee_id.id),('state','=','acceptee'),('type','!=','aug')])
+            augementations_lines = [(5,0,0)]
+            for line in augementations:
+                if line:
+                    vals = {
+                        "augmentation_id": line.id
+                        }
+                    augementations_lines.append((0,0,vals))
+            rec.augementation_lines = augementations_lines
 
 class days_per_addition(models.Model):
     

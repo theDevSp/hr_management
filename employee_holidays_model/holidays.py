@@ -98,6 +98,7 @@ class holidays(models.Model):
 
     rapport_id = fields.Many2one("hr.rapport.pointage", string = "Rapport de pointage")
     nbr_jour_compenser = fields.Float('Jours Validé')
+    type_emp = fields.Selection(related='employee_id.type_emp', string='Type Employé',store=True)
     
     @api.onchange("demi_jour")
     def onchange_demi_jour(self):
@@ -224,12 +225,9 @@ class holidays(models.Model):
     
     def to_approuvee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie'):
-            if self.state not in {'draft','validate','cancel'} :
-                self.state = 'validate'
-            else:
-                raise ValidationError(
-                        "Erreur, Cette action n'est pas autorisée."
-                    )
+            self.state = 'validate'
+            if self.nbr_jour_compenser == 0:
+                self.nbr_jour_compenser = self.duree_jours
         else:
             raise ValidationError(
                     "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
@@ -310,3 +308,10 @@ class holidays(models.Model):
                 "default_nbr_jour_compenser" : self.nbr_jour_compenser
             }
         }
+
+    def validation_par_masse(self):
+        
+        for rec in self:
+            rec.to_approuvee()
+            
+        
