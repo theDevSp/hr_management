@@ -659,41 +659,6 @@
                             <div class="bg-white shadow p-3">
                                 <div class="card bg-light my-3">
                                     <div class="card-body text-center">
-                                        <h2 class="card-text">Pointage Machine</h2>
-                                    </div>
-                                </div>
-                                <div class="card bg-light my-3">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-12 col-lg-6">
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <label for="machine_id" class="" />
-                                                        </span>
-                                                    </div>
-                                                    <field name="machine_id" class="form-control" options="{'no_create': True,'no_open':True}"/>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-lg-6">
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <label for="user_machine_id" class="" />
-                                                        </span>
-                                                    </div>
-                                                    <field name="user_machine_id" class="form-control"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            <div class="bg-white shadow p-3">
-                                <div class="card bg-light my-3">
-                                    <div class="card-body text-center">
                                         <h2 class="card-text">Contacts</h2>
                                     </div>
                                 </div>
@@ -853,6 +818,41 @@
                                                         </span>
                                                     </div>
                                                     <field name="motif_enbauche" class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" groups="hr_management.group_admin_paie">
+                            <div class="bg-white shadow p-3">
+                                <div class="card bg-light my-3">
+                                    <div class="card-body text-center">
+                                        <h2 class="card-text">Pointage Machine</h2>
+                                    </div>
+                                </div>
+                                <div class="card bg-light my-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <label for="machine_id" class="" />
+                                                        </span>
+                                                    </div>
+                                                    <field name="machine_id" class="form-control" options="{'no_create': True,'no_open':True}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <label for="user_machine_id" class="" />
+                                                        </span>
+                                                    </div>
+                                                    <field name="user_machine_id" class="form-control"/>
                                                 </div>
                                             </div>
                                         </div>
