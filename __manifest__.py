@@ -130,8 +130,11 @@
         'views/owl_views/fiche_de_paie/fiche_de_paie_views_inherit.xml',
         'views/owl_views/fixation/fixation_salaire_views_inherit.xml',
         'views/owl_views/employe/employe_views_inherit.xml',
-        'views/owl_views/recap/recap_views_inherit.xml'
-
+        'views/owl_views/recap/recap_views_inherit.xml',
+        'views/employee_pointage_mission_model/pointage_machines_menu.xml',
+        'views/employee_pointage_mission_model/pointage_machines_view.xml',
+        'views/employee_holidays_model/deplacement_menu.xml',
+        'views/employee_holidays_model/deplacement_view.xml',
 
     ],
 

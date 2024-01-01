@@ -19,7 +19,10 @@
                                     <div class="col-12">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="chantier_id" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                <span class="input-group-text">
+                                                    <label for="chantier_id" class=""/>
+                                                    <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                </span>
                                             </div>
                                             <field name="chantier_id" class="form-control" options="{'no_create': True,'no_open':True}"/>
                                         </div>
@@ -27,7 +30,10 @@
                                     <div class="col-12">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="motif" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                <span class="input-group-text">
+                                                    <label for="motif" class=""/>
+                                                    <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                </span>
                                             </div>
                                             <field name="motif" class="form-control"/>
                                         </div>
@@ -35,7 +41,10 @@
                                     <div class="col-12">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="date_start" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                <span class="input-group-text">
+                                                    <label for="date_start" class=""/>
+                                                    <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                </span>
                                             </div>
                                             <field name="date_start" class="form-control" widget="daterange" options="{'related_end_date': 'date_end'}"/>
                                         </div>
@@ -43,7 +52,10 @@
                                     <div class="col-12">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="date_end" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                                                <span class="input-group-text">
+                                                    <label for="date_end" class=""/>
+                                                    <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                </span>
                                             </div>
                                             <field name="date_end" class="form-control" widget="daterange" options="{'related_start_date': 'date_start'}"/>
                                         </div>
@@ -51,14 +63,16 @@
                                     <div class="col-12">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" ><label for="duree_jours" class=""/></span>
+                                                <span class="input-group-text">
+                                                    <label for="duree_jours" class=""/>
+                                                </span>
                                             </div>
                                             <field name="duree_jours" class="form-control text-center"/>
                                         </div>
                                     </div>
                                 </div>
-                            </div> 
-                        </div> 
+                            </div>
+                        </div>
                     </div>
                     <div class="bg-white shadow p-3 my-3">
                         <div class="card bg-light my-3">
@@ -78,15 +92,14 @@
                                         <field name="vehicle_id"/>
                                     </tree>
                                 </field>
-                            </div> 
-                        </div> 
+                            </div>
+                        </div>
                     </div>
                 </sheet>
                 <footer class="justify-content-center">
                     <div class="row justify-content-center w-50">
                         <div class="btn-group" role="group">
-                            <button name="create_holiday" string="Confirm" type="object"
-                                class="btn btn-success" />
+                            <button name="create_holiday" string="Confirm" type="object" class="btn btn-success" />
                             <button string="Cancel" class="btn btn-danger" special="cancel" />
                         </div>
                     </div>
@@ -103,11 +116,4 @@
         <field name="target">new</field>
     </record>
 
-    <menuitem
-        id="mass_holidays_creation_menu"
-        name="Congé saisonnier"
-        action="mass_holidays_creation_action"
-        groups="hr_management.group_admin_paie,hr_management.group_pointeur"
-        parent="holidays_allocations_hr_menu"
-        sequence="10"/>
 </odoo>

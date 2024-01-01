@@ -825,7 +825,7 @@
                                             <!--<field name="augmentation_id" force_save="1" attrs="{'invisible': True}" />-->
                                             <field name="period_id" />
                                             <field name="augmentation_date_fait" />
-                                            <field name="augmentation_montant_valide" />
+                                            <field name="augmentation_montant_valide" string="Montant" />
                                             <field name="augmentation_type" />
                                             <field name="augmentation_observation" />
                                             <field name="state" widget="badge" decoration-danger="state == 'annulee'" decoration-success="state == 'validee'" />

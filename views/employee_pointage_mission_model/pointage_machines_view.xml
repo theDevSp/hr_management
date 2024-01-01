@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="pointage_machines_tree" model="ir.ui.view">
+        <field name="name">Pointage Machines</field>
+        <field name="model">zk.machines</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="ip_address" />
+                <field name="port" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_rib_form" model="ir.ui.view">
+        <field name="name">Pointage Machines Form</field>
+        <field name="model">zk.machines</field>
+        <field name="arch" type="xml">
+            <form>
+                <header class="bar-box-shadow mb-4">
+                    <button name="test_connection" class="btn btn-primary" string="Test Connection" type="object" icon="fa-sticky-note-o"/>
+                </header>
+                <sheet>
+                    <div class="bg-white shadow p-3">
+                        <div class="card bg-light my-3">
+                            <div class="card-body text-center">
+                                <h2 class="card-text">AJOUT D'UNE NOUVELLE MACHINE</h2>
+                            </div>
+                        </div>
+                        <div class="card bg-light my-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <label for="name" class=""/>
+                                                    <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                </span>
+                                            </div>
+                                            <field name="name" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <label for="ip_address" class=""/>
+                                                    <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                </span>
+                                            </div>
+                                            <field name="ip_address" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <label for="port" class=""/>
+                                                    <i class="fas fa-exclamation-triangle" style="color: #f00000;"></i>
+                                                </span>
+                                            </div>
+                                            <field name="port" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="activity_ids" widget="mail_activity" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
