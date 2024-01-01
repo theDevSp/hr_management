@@ -222,11 +222,6 @@ class hr_employee(models.Model):
 
     @api.model
     def create(self,vals):
-<<<<<<< HEAD
-=======
-
-        print("Valsss ",vals)
-
         res_char = []
         char = "".join(re.split("[^a-zA-Z]*", vals['cin']))
         num = "".join(re.split("[^0-9]*", vals['cin']))
@@ -247,10 +242,7 @@ class hr_employee(models.Model):
                     "Erreur, Un Employée avec le N° CIN %s existe déjà"%(vals['cin'].upper())
                 )        
             vals['cin'] = vals['cin'].upper()
->>>>>>> origin/Dev-Mostafa
 
-        if vals.get('cin'):
-            vals['cin'] = self._correct_cin_format(vals['cin']).upper()
         vals['state_employee_wtf'] ='new'
         return super(hr_employee,self).create(vals)
 

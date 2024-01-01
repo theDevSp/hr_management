@@ -18,7 +18,7 @@
     </record>
 
 
-    <menuitem id="deplacement_submenu" name="les Déplacements" parent="holidays_allocations_hr_menu" sequence="1"/>
+    <menuitem id="deplacement_submenu" name="Déplacements" parent="holidays_allocations_hr_menu" sequence="1"/>
     <menuitem name="Déplacement" id="deplacement_hr_menu" parent="deplacement_submenu" action="deplacement_action" sequence="2"/>
     <menuitem name="Autorisation" id="quthorisation_hr_menu" action="autorisation_action" groups="hr_management.group_admin_paie,hr_management.group_pointeur" parent="deplacement_submenu" sequence="10"/>
 

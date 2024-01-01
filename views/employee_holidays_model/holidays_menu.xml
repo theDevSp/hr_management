@@ -24,8 +24,13 @@
     </record>
 
     <menuitem name="Congés" id="holidays_allocations_hr_menu" parent="hr_management_base_menu" sequence="5"/>
-<<<<<<< HEAD
     <menuitem name="Congés" id="holidays_hr_menu" parent="holidays_allocations_hr_menu" action="holidays_action" sequence="1"/>
+    <menuitem id="mass_holidays_creation_menu" 
+                name="Congé Saisonnier" 
+                action="mass_holidays_creation_action" 
+                groups="hr_management.group_admin_paie,hr_management.group_pointeur" 
+                parent="holidays_allocations_hr_menu" sequence="10"/>
+
     <menuitem name="Validation par mass"
         id="holidays_validation_mass_menu"
         parent="holidays_allocations_hr_menu"
@@ -49,13 +54,5 @@
             action = records.validation_par_masse()
         </field>
     </record>
-=======
-
-
-    <menuitem id="conges_submenu" name="les Congés" parent="holidays_allocations_hr_menu" sequence="1"/>
-    <menuitem name="Congés" id="holidays_hr_menu" parent="conges_submenu" action="holidays_action" sequence="2"/>
-    <menuitem id="mass_holidays_creation_menu" name="Congé Saisonnier" action="mass_holidays_creation_action" groups="hr_management.group_admin_paie,hr_management.group_pointeur" parent="conges_submenu" sequence="10"/>
-    <menuitem id="mass_holidays_creation_menu" name="Congé Saisonnier" action="mass_holidays_creation_action" groups="hr_management.group_admin_paie,hr_management.group_pointeur" parent="conges_submenu" sequence="10"/>
->>>>>>> origin/Dev-Mostafa
 
 </odoo>
