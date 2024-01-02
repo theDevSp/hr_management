@@ -478,7 +478,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
             _ids = []
             for rapport in rapports:
                 
-                if rapport.employee_id.id not in exclud_list and rapport.employee_id.contract_id.pp_personnel_id_many2one:
+                if rapport.employee_id.id not in exclud_list and rapport.employee_id.contract_id.pp_personnel_id_many2one and not rapport.payslip_ids:
                     rapport.action_working()
                     res = rapport.create_update_payslip(redirect=False)
                     if res:
