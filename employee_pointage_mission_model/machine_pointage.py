@@ -60,10 +60,8 @@ class MachinePointage(models.Model):
                 result.append({
                     "date": formatted_date,
                     "p1": date_list[0].strftime("%Y-%m-%d %H:%M:%S"),
-                    "total_hours": f"{date_list[0]}"
+                    "total_hours": f"0.0"
                 })
-
-        print(f"result {result}")
 
         today = dt.date.today().strftime("%Y-%m-%d")
 
