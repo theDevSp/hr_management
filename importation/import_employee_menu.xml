@@ -10,6 +10,14 @@
 				groups="hr_management.group_admin_paie"
 				sequence="1000"
 		/>
+		<menuitem
+				id="update_employee_menu"
+				name="update Employees"
+				action="update_employee_wizard_action"
+				parent="config_hr_menu"
+				groups="hr_management.group_admin_paie"
+				sequence="1000"
+		/>
 
 	</data>
 </odoo>
