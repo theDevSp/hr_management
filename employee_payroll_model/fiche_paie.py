@@ -117,34 +117,24 @@ class fiche_paie(models.Model):
         'Total Avantage', compute="_compute_total_addition", store=True)
     deduction = fields.Float(
         'Total Déduction', compute="_compute_total_deduction", store=True)
-    total = fields.Float('Total', compute="compute_total",
-                         readonly=True, store=True)
-    sad = fields.Float('Total aprés Déduction',
-                       compute="compute_sad", readonly=True, store=True)
-    net_pay = fields.Float(
-        'Net à payer', compute="compute_net_a_payer", readonly=True, store=True)
+    total = fields.Float('Total', compute="compute_total",readonly=True, store=True)
+    sad = fields.Float('Total aprés Déduction',compute="compute_sad", readonly=True, store=True)
+    net_pay = fields.Float('Net à payer', compute="compute_net_a_payer", readonly=True, store=True)
 
     nbr_jour_travaille = fields.Float("Nombre de jours travaillés")
     nbr_heure_travaille = fields.Float("Nombre des heures travaillées")
     nbr_jf_refunded = fields.Float("Nombre JFs Rembourssés")
-    amount_jf_refunded = fields.Float(
-        compute='_compute_amount_jf_refunded', string='Montant JF Rembourssé')
+    amount_jf_refunded = fields.Float(compute='_compute_amount_jf_refunded', string='Montant JF Rembourssé')
 
     date_validation = fields.Date(u'Date de validation', readonly=True)
-    salaire_jour = fields.Float(
-        compute='_compute_salaire_jour', string="Salaire du jour", readonly=True)
-    salaire_demi_jour = fields.Float(
-        compute='_compute_salaire_demi_jour', string="Salaire du demi-jour", readonly=True)
-    salaire_heure = fields.Float(
-        compute='_compute_salaire_heure', string="Salaire d'heure", readonly=True)
-    rapport_id = fields.Many2one(
-        "hr.rapport.pointage", string="Rapport de pointage", readonly=True)
+    salaire_jour = fields.Float(compute='_compute_salaire_jour', string="Salaire du jour", readonly=True)
+    salaire_demi_jour = fields.Float(compute='_compute_salaire_demi_jour', string="Salaire du demi-jour", readonly=True)
+    salaire_heure = fields.Float(compute='_compute_salaire_heure', string="Salaire d'heure", readonly=True)
+    rapport_id = fields.Many2one("hr.rapport.pointage", string="Rapport de pointage", readonly=True)
     stc_id = fields.Many2one("hr.stc", string="STC", readonly=True)
 
-    jr_travaille_par_chantier = fields.One2many(
-        "jr.travaille.par.chantier", 'fiche_paie_id', string='Jours travaillés par chantier')
-    jr_par_prime = fields.One2many(
-        "days.per.addition", 'payroll_id', string='Jours par prime')
+    jr_travaille_par_chantier = fields.One2many("jr.travaille.par.chantier", 'fiche_paie_id', string='Jours travaillés par chantier')
+    jr_par_prime = fields.One2many("days.per.addition", 'payroll_id', string='Jours par prime')
 
     note = fields.Char('Observation')
     notes = fields.Html('Notes')
@@ -271,7 +261,10 @@ class fiche_paie(models.Model):
 
             if self.payed_worked_holidays and self.rapport_id:
                 self.nbr_jf_refunded = self.rapport_id.count_nbr_ferier_days_v
-
+        
+        if 'autoriz_cp' in vals or 'autoriz_zero_cp' in vals:
+            self._compute_regularisation_auto_compentation()
+            self.cp_number = self._compute_manual_cp_number()
         return res
 
     @api.depends('nbr_jf_refunded')
@@ -310,6 +303,7 @@ class fiche_paie(models.Model):
                 rec.cp_number = rec.consumed_jf + rec.consumed_sundays + rec.consumed_panier
             else:
                 rec.cp_number = rec._compute_manual_cp_number()
+
     
     @api.depends('cp_number')
     def _compute_amount_cp_number(self):
@@ -428,7 +422,7 @@ class fiche_paie(models.Model):
     def _compute_regularisation_auto_compentation(self):
         for rec in self:
             rapport_result = rec.rapport_id.rapport_result()
-            print(rapport_result)
+            
             max_worked_days_d = rec.contract_id.max_worked_days_d
             max_worked_days_p = rec.contract_id.max_worked_days_p
             rest_jf = 0
