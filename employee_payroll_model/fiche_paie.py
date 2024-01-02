@@ -424,43 +424,43 @@ class fiche_paie(models.Model):
     def _compute_regularisation_auto_compentation(self):
         for rec in self:
             rapport_result = rec.rapport_id.rapport_result()
-            
-            max_worked_days_d = rec.contract_id.max_worked_days_d
-            max_worked_days_p = rec.contract_id.max_worked_days_p
-            rest_jf = 0
+            if rec.type_emp != "o":
+                max_worked_days_d = rec.contract_id.max_worked_days_d
+                max_worked_days_p = rec.contract_id.max_worked_days_p
+                rest_jf = 0
 
-            if max_worked_days_d:
-                rec.regularisation_auto = rapport_result["default_day_2_add"]  
-            if max_worked_days_p and rapport_result["j_comp"] > 0:
-                rec.regularisation_auto = max(rapport_result["default_day_2_add"] - rapport_result["jont"],0)
+                if max_worked_days_d:
+                    rec.regularisation_auto = rapport_result["default_day_2_add"]  
+                if max_worked_days_p and rapport_result["j_comp"] > 0:
+                    rec.regularisation_auto = max(rapport_result["default_day_2_add"] - rapport_result["jont"],0)
 
-            #-------------- reguraliser les jours ferier doit etre pour profile journalier
-            jour_conge = rapport_result["jc"]+rapport_result["jfnt"] if rec.contract_id.type_profile_related == 'j' else rapport_result["jc"]
-            jont = max(min(jour_conge,rapport_result["j_comp"]),0) if rec.autoriz_cp else 0
-            ja = max(min(jont,rec.affich_jour_conge),0) if not rec.autoriz_zero_cp else jont
+                #-------------- reguraliser les jours ferier doit etre pour profile journalier
+                jour_conge = rapport_result["jc"]+rapport_result["jfnt"] if rec.contract_id.type_profile_related == 'j' else rapport_result["jc"]
+                jont = max(min(jour_conge,rapport_result["j_comp"]),0) if rec.autoriz_cp else 0
+                ja = max(min(jont,rec.affich_jour_conge),0) if not rec.autoriz_zero_cp else jont
 
-            if rec.contract_id.type_profile_related == 'j':
-                rec.consumed_jf = rapport_result["jfnt"]
-                rec.consumed_jf += min(ja,rest_jf)
-                rest_jf = rapport_result["jf"] - rec.consumed_jf
-            else:
-                rec.consumed_jf = min(ja,rapport_result["jf"]) if ja > 0 else 0
-                rest_jf = max(rapport_result["jf"]-rec.consumed_jf,0)
-
-
-            ja -= rec.consumed_jf
-            rec.reserved_jf = rest_jf
-            
-            #-------------- regularise les jours ouvrable
+                if rec.contract_id.type_profile_related == 'j':
+                    rec.consumed_jf = rapport_result["jfnt"]
+                    rec.consumed_jf += min(ja,rest_jf)
+                    rest_jf = rapport_result["jf"] - rec.consumed_jf
+                else:
+                    rec.consumed_jf = min(ja,rapport_result["jf"]) if ja > 0 else 0
+                    rest_jf = max(rapport_result["jf"]-rec.consumed_jf,0)
 
 
-            if rapport_result["jdt"] > 0 and rec.contract_id.pp_personnel_id_many2one.type_profile == 'j':
-                rec.consumed_sundays = min(rapport_result["jdt"],ja) if ja > 0 else 0
-                rec.reserved_sundays = rapport_result["jdt"]-rec.consumed_sundays 
-            
-                ja -= rec.consumed_sundays
+                ja -= rec.consumed_jf
+                rec.reserved_jf = rest_jf
+                
+                #-------------- regularise les jours ouvrable
 
-            rec.consumed_panier = max(ja,0)
+
+                if rapport_result["jdt"] > 0 and rec.contract_id.pp_personnel_id_many2one.type_profile == 'j':
+                    rec.consumed_sundays = min(rapport_result["jdt"],ja) if ja > 0 else 0
+                    rec.reserved_sundays = rapport_result["jdt"]-rec.consumed_sundays 
+                
+                    ja -= rec.consumed_sundays
+
+                rec.consumed_panier = max(ja,0)
 
     @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','cp_number','cal_state')
     def compute_total(self):

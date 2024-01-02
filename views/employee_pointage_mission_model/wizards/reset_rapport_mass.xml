@@ -26,6 +26,11 @@
                         </div>
                         <field name="employee_type" class="form-control"/>
                     </div>
+                    <div class="card bg-dark my-3">
+                        <div class="card-body text-center">
+                            <field name="chantier_ids" options="{'no_create': True,'no_open': True}" />
+                        </div>
+                    </div>
                 </div>
 
                 <footer>                      
