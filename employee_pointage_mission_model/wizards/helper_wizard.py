@@ -448,9 +448,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                 }
             }
         else:
-            domain = [
-                        
-                        
+            domain = [                    
                         ('period_id','=',self.period_id.id),
                         ('state','=','draft')
                     ]
@@ -479,7 +477,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
             rapports = self.env['hr.rapport.pointage'].search(domain)
             _ids = []
             for rapport in rapports:
-                if rapport.employee_id.id not in exclud_list and rapport.employee_id.state_employee_wtf in ("transfert","active"):
+                if rapport.employee_id.id not in exclud_list and rapport.employee_id.contract_id.pp_personnel_id_many2one:
                     rapport.action_working()
                     res = rapport.create_update_payslip(redirect=False)
                     if res:
