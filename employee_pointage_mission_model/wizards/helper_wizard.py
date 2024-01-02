@@ -675,6 +675,8 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                     ]
             if self.employee_type:
                 domain.append(('type_emp','=',self.employee_type))
+            if self.quinzaine:
+                domain.append(('quinzaine','=',self.quinzaine))
             elif agent_paie:
                 domain.append(('type_emp','in',("o","s")))
             elif agent_admin_paie:
