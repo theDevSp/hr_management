@@ -292,6 +292,8 @@ class fiche_paie(models.Model):
                 h_comp = max(hnt - rec.nbr_heure_travaille,0)  # heure de compensation de salaire
                 j_comp = max(joe - self.nbr_jour_travaille,0) if rec.contract_id.type_profile_related == 'j' else h_comp / rec.contract_id.nbre_heure_worked_par_jour_related # jour de compensation de salaire
 
+                if not rec.autoriz_cp:
+                    j_comp = 0
                 return min(j_comp,rec.affich_jour_conge) if not rec.autoriz_zero_cp else j_comp
             
             return 0
