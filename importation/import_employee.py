@@ -80,7 +80,6 @@ class ImportEmployee(models.TransientModel):
 					fields = list(map(lambda row:row.value.encode('utf-8'), sheet.row(row_no)))
 				else:
 					line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
-					print(xlrd.xldate_as_datetime(int(float(line[8])), 0).date().isoformat())
 					values.update( {
 							'name':line[0],
 							'cin': line[1],
@@ -112,6 +111,8 @@ class ImportEmployee(models.TransientModel):
 				'cnss' : values.get('cnss'),
 				'state_employee_wtf' : values.get('state_employee_wtf'),
 				'chantier_id':chantier_id.id,
+				'machine_id':values.get('machine_id'),
+				'user_machine_id':values.get('user_machine_id'),
 				}
 
 		employee_obj = employee.create(employee_vals)

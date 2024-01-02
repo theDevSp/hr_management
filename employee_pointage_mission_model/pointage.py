@@ -70,11 +70,13 @@ class hr_rapport_pointage(models.Model):
                 float(line.j_travaille) for line in rapport.rapport_lines
             )
 
-    @api.depends("rapport_lines.j_travaille_v")
+    @api.depends("rapport_lines.j_travaille_v","rapport_lines.state")
     def _compute_total_j_v(self):
         for rapport in self:
             rapport.total_j_v = sum(
-                float(line.j_travaille_v) for line in rapport.rapport_lines
+                float(line.j_travaille_v) for line in rapport.rapport_lines.filtered(
+                    lambda ln: ln.day_type in ("1","3") and float(ln.h_travailler) > 0
+                )
             )
 
     @api.depends("rapport_lines.j_travaille", "rapport_lines.day_type")
@@ -112,12 +114,11 @@ class hr_rapport_pointage(models.Model):
         "rapport_lines.j_travaille",
         "rapport_lines.day_type",
         "rapport_lines.h_travailler_v",
+        "rapport_lines.state",
     )
     def _compute_jour_ferier_valide(self):
         for rapport in self:
-            rapport.count_nbr_ferier_days_v = sum(
-                float(line.j_travaille_v)
-                for line in rapport.rapport_lines.filtered(
+            rapport.count_nbr_ferier_days_v = len(rapport.rapport_lines.filtered(
                     lambda ln: ln.day_type == "3" and float(ln.h_travailler_v) > 0 and ln.day > rapport.employee_id.contract_id.date_start
                 )
             )
@@ -139,8 +140,8 @@ class hr_rapport_pointage(models.Model):
                 float(line.duree_jours) for line in rapport.holiday_ids
             )
 
-    @api.depends("holiday_ids.nbr_jour_compenser")
-    def domain(self):
+    @api.depends("holiday_ids.nbr_jour_compenser","holiday_ids.state")
+    def _compute_valide_holidays(self):
         for rapport in self:
             rapport.count_nbr_holiday_days_v = sum(
                 float(line.nbr_jour_compenser) for line in rapport.holiday_ids
@@ -298,7 +299,10 @@ class hr_rapport_pointage(models.Model):
     )
 
     count_nbr_holiday_days_v = fields.Float(
-        "Jours Congés Validés", readonly=True, compute="domain"
+        "Jours Congés Validés", readonly=True, compute="_compute_valide_holidays"
+    )
+    count_holiday_days_v = fields.Float(
+        "Jours Congés Validés", readonly=True
     )
     count_nbr_ferier_days_v = fields.Float(
         "Jours Fériés Travaillés",
@@ -659,6 +663,29 @@ class hr_rapport_pointage(models.Model):
             }
 
         return result
+    
+    def get_autorisation_deplacement_per_period(self, result, period_id, employee_id):
+        deplacement_autorisation = self.env["hr.deplacement"].search(
+            [
+                ("employee_id", "=", employee_id),
+                ("state", "in", ("valide", "approuved")),
+                "|",
+                "&",
+                ("date_start", ">=", period_id.date_start),
+                ("date_start", "<=", period_id.date_stop),
+                "&",
+                ("date_end", ">=", period_id.date_start),
+                ("date_end", "<=", period_id.date_stop),
+            ],
+        )
+
+        for dc in deplacement_autorisation:
+            result[dc.date_fait.strftime("%m%d%Y")] = {
+                "day_type": dc.type_declaration,
+                "details": dc.motif,
+            }
+
+        return result
 
     def get_range_month(self, period_id):
         return calendar.monthrange(
@@ -702,7 +729,7 @@ class hr_rapport_pointage(models.Model):
             "emplacement_chantier_id": self.emplacement_chantier_id.id,
             "rapport_id": self.id,
             "quinzaine": self.quinzaine,
-            "nbr_jour_travaille": min(self.total_j_v,self.rapport_result()['jnt']) if self.employee_id.contract_id.type_profile_related == 'j' else self.total_j_v,
+            "nbr_jour_travaille": min(self.total_j_v,self.rapport_result()['jnt']) if self.employee_id.contract_id.type_profile_related == 'j' else self.total_j_v + self.rapport_result()['jdt'],
             "nbr_heure_travaille": self.total_h_v,
             "autoriz_cp": self.employee_id.contract_id.completer_salaire_related,
             "autoriz_zero_cp": self.employee_id.contract_id.autoriz_zero_cp_related,
@@ -818,7 +845,7 @@ class hr_rapport_pointage(models.Model):
         type_emp = contract.type_emp
         type_profile = contract.type_profile_related
         jdt = self.count_nbr_dim_days_v # jour dimanche travaillé et validé par service rh
-        jc = self.count_nbr_holiday_days_v  # jour congé validé par service rh
+        jc = self.count_holiday_days_v  # jour congé validé par service rh
         jfnt = max(self.count_nbr_ferier_days - self.count_nbr_ferier_days_v ,0)# jour férie non travaillé 
         jf = self.count_nbr_ferier_days  # total des jour férié travaillé + non travaillé
         jom = self.jom  # jour ouvrable par mois

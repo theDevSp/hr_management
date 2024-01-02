@@ -16,16 +16,16 @@ class Deplacement(models.Model):
     motif = fields.Text('Motif', required=True)
 
     type = fields.Selection([
-        ('dpl', 'Déplacement'),
-        ('auth', 'Autorisation')
+        ('10', 'Déplacement'),
+        ('11', 'Autorisation')
     ],
         string='type'
     )
 
     state = fields.Selection([
         ('draft', 'Brouillion'),
-        ('approuved', 'Approuvée'),
         ('valide', 'Validée'),
+        ('approuved', 'Approuvée'),
     ], string='Status', default='draft')
 
     @api.model

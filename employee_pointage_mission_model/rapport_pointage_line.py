@@ -71,7 +71,10 @@ class hr_rapport_pointage_line(models.Model):
                 ('6',u"Abondement de Poste"),
                 ('7',u"STC"),
                 ('8',u'Accident du Travail'),
-                ('9',u'Transfert')],u"État Jour",required=True,tracking=True)
+                ('9',u'Transfert'),
+                ('10',u'Déplacement'),
+                ('11',u'Autorisation'),
+                ],u"État Jour",required=True,tracking=True)
     
     details = fields.Text("Travaux Détaillés", states=READONLY_STATES_RL)
     note = fields.Char("Observation", states=READONLY_STATES_MG)

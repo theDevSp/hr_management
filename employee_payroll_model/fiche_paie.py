@@ -279,7 +279,7 @@ class fiche_paie(models.Model):
         for rec in self:
             rec.amount_jf_refunded = rec.nbr_jf_refunded * rec.salaire_jour
     
-    @api.depends('rapport_id.count_nbr_holiday_days_v')
+    @api.depends('rapport_id.count_holiday_days_v')
     def _compute_jour_autoriser(self):
         for rec in self:
             rec.jour_autoriser = 0
@@ -428,7 +428,7 @@ class fiche_paie(models.Model):
     def _compute_regularisation_auto_compentation(self):
         for rec in self:
             rapport_result = rec.rapport_id.rapport_result()
-
+            print(rapport_result)
             max_worked_days_d = rec.contract_id.max_worked_days_d
             max_worked_days_p = rec.contract_id.max_worked_days_p
             rest_jf = 0
@@ -437,32 +437,30 @@ class fiche_paie(models.Model):
                 rec.regularisation_auto = rapport_result["default_day_2_add"]  
             if max_worked_days_p and rapport_result["j_comp"] > 0:
                 rec.regularisation_auto = max(rapport_result["default_day_2_add"] - rapport_result["jont"],0)
-            
+
             #-------------- reguraliser les jours ferier doit etre pour profile journalier
-            jont = max(min(rapport_result["jc"],rapport_result["j_comp"]),0) if rec.autoriz_cp else 0
+            jour_conge = rapport_result["jc"]+rapport_result["jfnt"] if rec.contract_id.type_profile_related == 'j' else rapport_result["jc"]
+            jont = max(min(jour_conge,rapport_result["j_comp"]),0) if rec.autoriz_cp else 0
             ja = max(min(jont,rec.affich_jour_conge),0) if not rec.autoriz_zero_cp else jont
 
             if rec.contract_id.type_profile_related == 'j':
                 rec.consumed_jf = rapport_result["jfnt"]
-                rest_jf = rapport_result["jf"] - rapport_result["jfnt"]
                 rec.consumed_jf += min(ja,rest_jf)
+                rest_jf = rapport_result["jf"] - rec.consumed_jf
             else:
                 rec.consumed_jf = min(ja,rapport_result["jf"]) if ja > 0 else 0
-                rest_jf = max(ja-rapport_result["jf"],0)
+                rest_jf = max(rapport_result["jf"]-rec.consumed_jf,0)
 
 
-            ja -= rest_jf 
-            rest_jf = rapport_result["jf"] - rec.consumed_jf
+            ja -= rec.consumed_jf
             rec.reserved_jf = rest_jf
-
+            
             #-------------- regularise les jours ouvrable
 
 
-
-
-            if rapport_result["jdt"] > 0 :
+            if rapport_result["jdt"] > 0 and rec.contract_id.pp_personnel_id_many2one.type_profile == 'j':
                 rec.consumed_sundays = min(rapport_result["jdt"],ja) if ja > 0 else 0
-                rec.reserved_sundays = max(rapport_result["jdt"]-ja,0) if rec.contract_id.pp_personnel_id_many2one.type_profile == 'j' else 0
+                rec.reserved_sundays = rapport_result["jdt"]-rec.consumed_sundays 
             
                 ja -= rec.consumed_sundays
 
