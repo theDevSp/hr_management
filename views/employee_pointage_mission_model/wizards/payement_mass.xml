@@ -21,6 +21,12 @@
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
+                            <span class="input-group-text" ><label for="quinzaine" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
+                        </div>
+                        <field name="quinzaine" class="form-control" options="{'no_create': True,'no_open': True}" />
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
                             <span class="input-group-text" ><label for="employee_type" class=""/><i class="fas fa-exclamation-triangle" style="color: #f00000;"></i></span>
                         </div>
                         <field name="employee_type" class="form-control" options="{'no_create': True,'no_open': True}" />

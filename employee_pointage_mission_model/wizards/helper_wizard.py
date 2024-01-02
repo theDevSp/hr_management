@@ -462,6 +462,8 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                 domain.append(('type_emp','in',("c")))
             if self.chantier_ids:
                 domain.append(('chantier_id','in',self.chantier_ids.ids))
+            if self.quinzaine:
+                domain.append(('quinzaine','=',self.quinzaine))
             
             exclud_list = [ln['employee_id'][0] for ln in self.env['declaration.anomalie.employee.sur.chantier'].read_group(
                                 domain=[
@@ -675,8 +677,6 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                     ]
             if self.employee_type:
                 domain.append(('type_emp','=',self.employee_type))
-            if self.quinzaine:
-                domain.append(('quinzaine','=',self.quinzaine))
             elif agent_paie:
                 domain.append(('type_emp','in',("o","s")))
             elif agent_admin_paie:
@@ -685,7 +685,9 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                 domain.append(('type_emp','in',("c")))
             if self.chantier_ids:
                 domain.append(('chantier_id','in',self.chantier_ids.ids))
-            
+            if self.quinzaine:
+                domain.append(('quinzaine','=',self.quinzaine))
+
             rapports = self.env['hr.rapport.pointage'].search(domain)
             
             for rapport in rapports:
