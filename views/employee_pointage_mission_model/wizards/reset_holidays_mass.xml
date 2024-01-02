@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="validation_holidays_mass_wizard" model="ir.ui.view">
+    <record id="reset_holidays_mass_wizard" model="ir.ui.view">
         <field name="name">hr.create.mass.repport.wizard</field>
         <field name="model">hr.filtre.pointage.wizard</field>
         <field name="arch" type="xml">
@@ -30,7 +30,7 @@
 
                 <footer>                      
                     <button string="Annuler" class="oe_link oe_right" special="cancel"/>
-                    <button string="Validation" name="validation_holidays_masse_method" class="oe_highlight oe_right" type="object"/> 
+                    <button string="Reset" name="reset_par_masse" class="oe_highlight oe_right" type="object"/> 
                 </footer>
             </form>
         </field>

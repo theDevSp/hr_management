@@ -212,12 +212,7 @@ class holidays(models.Model):
 
     def to_validee(self):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') or self.user_has_groups('hr_management.group_pointeur') :
-            if self.state not in {'confirm','validate','refuse','cancel'} :
-                self.state = 'confirm'
-            else:
-                raise ValidationError(
-                        "Erreur, Cette action n'est pas autorisée."
-                    )
+            self.state = 'confirm'
         else:
             raise ValidationError(
                     "Erreur, Seulement les administrateurs,les agents de paie et les pointeurs qui peuvent changer le statut."
@@ -228,6 +223,18 @@ class holidays(models.Model):
             self.state = 'validate'
             if self.nbr_jour_compenser == 0:
                 self.nbr_jour_compenser = self.duree_jours
+            lines = self.env['hr.rapport.pointage.line'].search([
+                ('employee_id','=',self.employee_id.id),
+                ('day','>=',self.date_start),
+                ('day','<=',self.date_end),
+                ('day_type','=','4')
+                ])
+            valid_days = self.nbr_jour_compenser
+            for line in lines:
+                line.rapport_id.write({
+                    'count_holiday_days_v': line.rapport_id.count_holiday_days_v + min(valid_days,1)
+                })
+                valid_days -= 1
         else:
             raise ValidationError(
                     "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
@@ -250,6 +257,16 @@ class holidays(models.Model):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie') or self.user_has_groups('hr_management.group_pointeur') :
             if self.state not in {'cancel'} :
                 self.state = 'cancel'
+                lines = self.env['hr.rapport.pointage.line'].search([
+                ('employee_id','=',self.employee_id.id),
+                ('day','>=',self.date_start),
+                ('day','<=',self.date_end),
+                ])
+                for line in lines:
+                    line.rapport_id.write({
+                            'count_holiday_days_v': 0
+                        }
+                    )
             else:
                 raise ValidationError(
                         "Erreur, Cette action n'est pas autorisée."
@@ -276,7 +293,6 @@ class holidays(models.Model):
                 'chantier_id': line.rapport_id.chantier_id.id if type_condition == '1' else False,
                 'emplacement_chantier_id': line.rapport_id.emplacement_chantier_id.id if type_condition == '1' else False
                 })
-            
         return
     
     def open_holiday(self):
@@ -310,8 +326,8 @@ class holidays(models.Model):
         }
 
     def validation_par_masse(self):
-        
         for rec in self:
             rec.to_approuvee()
+    
             
         

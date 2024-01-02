@@ -52,7 +52,6 @@
                     <button name="create_update_payslip" states="working" string="Payement" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,working,compute,valide,done"/>
 
-                    <button name="get_employee_pointage" string="test" type="object" class="oe_highlight" groups="hr_management.group_admin_paie,hr_management.group_agent_paie"/>
                 </header>
                 <div class="container-fliud p-3 my-3 ">
                     <div class="row justify-content-center">
@@ -279,10 +278,10 @@
                                             <li class="list-group-item d-flex justify-content-between align-items-center p-0" groups="hr_management.group_admin_paie,hr_management.group_agent_paie">
                                                 <div class="row w-100 h-100 m-0">
                                                     <div class="col-8 p-2">
-                                                        <label for="count_nbr_holiday_days_v"/>
+                                                        <label for="count_holiday_days_v"/>
                                                     </div>
                                                     <div class="col-4 bg-warning text-center text-white">
-                                                        <field name="count_nbr_holiday_days_v" readonly="1" class="h3"/>
+                                                        <field name="count_holiday_days_v" readonly="1" class="h3"/>
  Jr
                                                     </div>
                                                 </div>

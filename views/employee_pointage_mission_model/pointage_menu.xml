@@ -75,6 +75,14 @@
         <field name="target">new</field>
     </record>
 
+    <record id="mass_payement_reset_action" model="ir.actions.act_window">
+        <field name="name">Reset Rapport du mois</field>
+        <field name="res_model">hr.filtre.pointage.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="reset_repports_mass_wizard" />
+        <field name="target">new</field>
+    </record>
+
     <record id="view_bce_filter" model="ir.ui.view">
         <field name="name">hr.rapport.pointage.select</field>
         <field name="model">hr.rapport.pointage</field>
@@ -152,6 +160,13 @@
         action="mass_payement_creation_action"
         sequence="22"
         groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_agent_paie_administration,hr_management.group_agent_paie_cadre" />
+    
+    <menuitem name="Reset Rapport par mass"
+        id="reset_mass_menu"
+        parent="fp_recap_parent_menu"
+        action="mass_payement_reset_action"
+        sequence="23"
+        groups="hr_management.group_admin_paie" />
 
 
     <record model="ir.actions.server" id="action_update_invoice_date">

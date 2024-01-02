@@ -430,7 +430,11 @@ class hr_filtre_pointage_wizard(models.TransientModel):
             }
 
     def payement_masse_method(self):
-
+        
+        admin_paie = self.env['res.users'].has_group("hr_management.group_admin_paie")
+        agent_paie = self.env['res.users'].has_group("hr_management.group_agent_paie")
+        agent_admin_paie = self.env['res.users'].has_group("hr_management.group_agent_paie_cadre")
+        agent_cadre_paie = self.env['res.users'].has_group("hr_management.group_agent_paie_administration")
         if not self.period_id:
             return  {
                 'type': 'ir.actions.client',
@@ -445,21 +449,41 @@ class hr_filtre_pointage_wizard(models.TransientModel):
             }
         else:
             domain = [
-                        ('type_emp','=',self.employee_type),
-                        ('chantier_id','in',self.chantier_ids.ids),
-                        ('period_id','=',self.period_id.id)
+                        
+                        
+                        ('period_id','=',self.period_id.id),
+                        ('state','=','draft')
                     ]
-            if not self.employee_type:
-                domain.pop(0)
-            if not self.chantier_ids:
-                domain.pop(1)
-
+            if self.employee_type:
+                domain.append(('type_emp','=',self.employee_type))
+            elif agent_paie:
+                domain.append(('type_emp','in',("o","s")))
+            elif agent_admin_paie:
+                domain.append(('type_emp','in',("a")))
+            elif agent_cadre_paie:
+                domain.append(('type_emp','in',("c")))
+            if self.chantier_ids:
+                domain.append(('chantier_id','in',self.chantier_ids.ids))
+            
+            exclud_list = [ln['employee_id'][0] for ln in self.env['declaration.anomalie.employee.sur.chantier'].read_group(
+                                domain=[
+                                    ('state', 'in', ('valide','approuved')),
+                                    ('date_fait', '>=', self.period_id.date_start),
+                                    ('date_fait', '<=', self.period_id.date_stop),
+                                    ('type_declaration','in',('6','7'))
+                                ],
+                                fields=['employee_id'],
+                                groupby=['employee_id'],
+                            )] 
+            
             rapports = self.env['hr.rapport.pointage'].search(domain)
             _ids = []
             for rapport in rapports:
-                res = rapport.create_update_payslip(redirect=False)
-                if res:
-                    _ids.append(res.id)
+                if rapport.employee_id.id not in exclud_list:
+                    rapport.action_working()
+                    res = rapport.create_update_payslip(redirect=False)
+                    if res:
+                        _ids.append(res.id)
             tree_view = self.env.ref("hr_management.fiche_paie_tree")
             form_view = self.env.ref("hr_management.fiche_paie_formulaire")
             return {
@@ -473,7 +497,10 @@ class hr_filtre_pointage_wizard(models.TransientModel):
             }
     
     def access_holidays(self):
-        
+        admin_paie = self.env['res.users'].has_group("hr_management.group_admin_paie")
+        agent_paie = self.env['res.users'].has_group("hr_management.group_agent_paie")
+        agent_admin_paie = self.env['res.users'].has_group("hr_management.group_agent_paie_cadre")
+        agent_cadre_paie = self.env['res.users'].has_group("hr_management.group_agent_paie_administration")
         if not self.period_id:
             return  {
                 'type': 'ir.actions.client',
@@ -488,8 +515,6 @@ class hr_filtre_pointage_wizard(models.TransientModel):
             }
         else:
             domain = [
-                        ('type_emp','=',self.employee_type),
-                        ('state','=','confirm'),
                         '|',
                             '&',
                                 ('date_start','>=',self.period_id.date_start),
@@ -499,8 +524,14 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                                 ('date_end','<=',self.period_id.date_stop)
                     ]
             
-            if not self.employee_type:
-                domain.pop(0)
+            if self.employee_type:
+                domain.append(('type_emp','=',self.employee_type))
+            elif agent_paie:
+                domain.append(('type_emp','in',("o","s")))
+            elif agent_admin_paie:
+                domain.append(('type_emp','in',("a")))
+            elif agent_cadre_paie:
+                domain.append(('type_emp','in',("c")))
 
             holidays = self.env['hr.holidays'].search_read(domain,['id'])
 
@@ -522,9 +553,11 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                 'domain':[('id','in',_ids)],
             }
 
-
     def validation_holidays_masse_method(self):
-
+        admin_paie = self.env['res.users'].has_group("hr_management.group_admin_paie")
+        agent_paie = self.env['res.users'].has_group("hr_management.group_agent_paie")
+        agent_admin_paie = self.env['res.users'].has_group("hr_management.group_agent_paie_cadre")
+        agent_cadre_paie = self.env['res.users'].has_group("hr_management.group_agent_paie_administration")
         if not self.period_id:
             return  {
                 'type': 'ir.actions.client',
@@ -539,7 +572,6 @@ class hr_filtre_pointage_wizard(models.TransientModel):
             }
         else:
             domain = [
-                        ('type_emp','=',self.employee_type),
                         ('state','=','confirm'),
                         '|',
                             '&',
@@ -549,8 +581,14 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                                 ('date_end','>=',self.period_id.date_start),
                                 ('date_end','<=',self.period_id.date_stop)
                     ]
-            if not self.employee_type:
-                domain.pop(0)
+            if self.employee_type:
+                domain.append(('type_emp','=',self.employee_type))
+            elif agent_paie:
+                domain.append(('type_emp','in',("o","s")))
+            elif agent_admin_paie:
+                domain.append(('type_emp','in',("a")))
+            elif agent_cadre_paie:
+                domain.append(('type_emp','in',("c")))
 
             holidays = self.env['hr.holidays'].search(domain)
             
@@ -572,3 +610,84 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                     'next': {'type': 'ir.actions.act_window_close'},
                 }
             }
+    
+    def reset_par_masse(self):
+        admin_paie = self.env['res.users'].has_group("hr_management.group_admin_paie")
+        agent_paie = self.env['res.users'].has_group("hr_management.group_agent_paie")
+        agent_admin_paie = self.env['res.users'].has_group("hr_management.group_agent_paie_cadre")
+        agent_cadre_paie = self.env['res.users'].has_group("hr_management.group_agent_paie_administration")
+        if not self.period_id:
+            return  {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': ("Erreur de saisie"),
+                    'message': ("Veuillez choisir une période pour continuer"),
+                    'sticky': False,
+                    'type': 'danger',
+                    'next': {'type': 'ir.actions.act_window_close'},
+                }
+            }
+        else:
+            domain = [
+                        ('state','=','validate'),
+                        '|',
+                            '&',
+                                ('date_start','>=',self.period_id.date_start),
+                                ('date_start','<=',self.period_id.date_stop),
+                            '&',
+                                ('date_end','>=',self.period_id.date_start),
+                                ('date_end','<=',self.period_id.date_stop)
+                    ]
+            if self.employee_type:
+                domain.append(('type_emp','=',self.employee_type))
+            elif agent_paie:
+                domain.append(('type_emp','in',("o","s")))
+            elif agent_admin_paie:
+                domain.append(('type_emp','in',("a")))
+            elif agent_cadre_paie:
+                domain.append(('type_emp','in',("c")))
+                
+            for holiday in self.env['hr.holidays'].search(domain):
+                holiday.to_annulee()
+                holiday.to_validee()
+
+    def reset_payement_masse_method(self):
+        admin_paie = self.env['res.users'].has_group("hr_management.group_admin_paie")
+        agent_paie = self.env['res.users'].has_group("hr_management.group_agent_paie")
+        agent_admin_paie = self.env['res.users'].has_group("hr_management.group_agent_paie_cadre")
+        agent_cadre_paie = self.env['res.users'].has_group("hr_management.group_agent_paie_administration")
+        if not self.period_id:
+            return  {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': ("Erreur de saisie"),
+                    'message': ("Veuillez remplir les données correct pour commencer"),
+                    'sticky': False,
+                    'type': 'danger',
+                    'next': {'type': 'ir.actions.act_window_close'},
+                }
+            }
+        else:
+            domain = [                        
+                        ('period_id','=',self.period_id.id),
+                        ('state','!=','draft')
+                    ]
+            if self.employee_type:
+                domain.append(('type_emp','=',self.employee_type))
+            elif agent_paie:
+                domain.append(('type_emp','in',("o","s")))
+            elif agent_admin_paie:
+                domain.append(('type_emp','in',("a")))
+            elif agent_cadre_paie:
+                domain.append(('type_emp','in',("c")))
+            if self.chantier_ids:
+                domain.append(('chantier_id','in',self.chantier_ids.ids))
+            
+            rapports = self.env['hr.rapport.pointage'].search(domain)
+            
+            for rapport in rapports:
+                for payslip in rapport.payslip_ids:
+                    payslip.sudo().unlink()
+                rapport.action_draft()
