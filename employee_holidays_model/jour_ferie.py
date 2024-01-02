@@ -13,6 +13,7 @@ class jour_ferie(models.Model):
     name = fields.Selection([
         ('1', '1er janvier : Nouvel an'),
         ('2', "11 janvier : Anniversaire de l'Indépendance"),
+        ('22', "1er mai : Fête du Travail"),
         ('3', '30 juillet : Fête du Trône'),
         ('4', '14 août : Commémoration de l’allégeance de l’oued Eddahab'),
         ('5', '20 août : Anniversaire de la révolution, du roi et du peuple'),
