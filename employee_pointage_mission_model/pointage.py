@@ -780,7 +780,7 @@ class hr_rapport_pointage(models.Model):
         self.write({"state": "done"})
 
     def action_working(self):
-        if self.employee_id.contract_id.pp_personnel_id_many2one:
+        if not self.employee_id.contract_id.pp_personnel_id_many2one:
             raise ValidationError(
                 "Manque d'information, Cet employé n'a pas encors de profile de paie pour commancer le traitement. Veuillez régler la situation avant de procéder."
             )
