@@ -694,3 +694,25 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                 for payslip in rapport.payslip_ids:
                     payslip.sudo().unlink()
                 rapport.action_draft()
+    
+    def regularisation_panier(self):
+
+        employees = self.env['hr.employee'].search([('type_emp','=',self.employee_type)])
+
+        for employee in employees:
+            if employee.contract_id:
+                allocation_vals = {
+                'name':'Régularisation Panier Jour férier 2022/2023',
+                'employee_id':employee.id,
+                'categorie':'regularisation',
+                'nbr_jour':sum(
+                    float(line.nbr_jour)
+                    for line in self.env['hr.jours.feries'].search([]).filtered(
+                        lambda ln: ln.period_id.date_start >= employee.contract_id.date_start
+                    )
+                ),
+                'period_id':self.env["account.month.period"].get_period_from_date(employee.contract_id.date_start)[0].id 
+                }
+                res = self.env['hr.allocations'].create(allocation_vals)
+                res.to_approuvee()
+

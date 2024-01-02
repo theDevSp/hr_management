@@ -222,28 +222,10 @@ class hr_employee(models.Model):
 
     @api.model
     def create(self,vals):
-        res_char = []
-        char = "".join(re.split("[^a-zA-Z]*", vals['cin']))
-        num = "".join(re.split("[^0-9]*", vals['cin']))
-        res_char.append("position('%s' in lower(cin))>0 and position('%s' in lower(cin))>0 or " % (char.lower(),num))
 
-        
-        if vals['cin']:
-            query = """
-                    select id from hr_employee where 
-                """ 
-            for res in res_char:
-                query += res
-            query = query[:len(query) - 3]
-            
-            self.env.cr.execute(query)
-            if len(self.env.cr.fetchall()) > 0:
-                raise ValidationError(
-                    "Erreur, Un Employée avec le N° CIN %s existe déjà"%(vals['cin'].upper())
-                )        
-            vals['cin'] = vals['cin'].upper()
+        if vals.get('cin'):
+            vals['cin'] = self._correct_cin_format(vals['cin']).upper()
 
-        vals['state_employee_wtf'] ='new'
         return super(hr_employee,self).create(vals)
 
     @api.model

@@ -30,6 +30,14 @@
         <field name="view_id" ref="reset_holidays_mass_wizard" />
         <field name="target">new</field>
     </record>
+    
+    <record id="mass_regularisation_action" model="ir.actions.act_window">
+        <field name="name">Reégularisation 2022/2023</field>
+        <field name="res_model">hr.filtre.pointage.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="regularisation_mass_wizard" />
+        <field name="target">new</field>
+    </record>
 
     <menuitem name="Congés" id="holidays_allocations_hr_menu" parent="hr_management_base_menu" sequence="5"/>
     <menuitem name="Congés" id="holidays_hr_menu" parent="holidays_allocations_hr_menu" action="holidays_action" sequence="1"/>
@@ -56,6 +64,13 @@
         parent="holidays_allocations_hr_menu"
         action="mass_holiday_reset_action"
         sequence="24"
+        groups="hr_management.group_admin_paie" />
+    
+    <menuitem name="Reégularisation 2022/2023"
+        id="regularisation_mass_menu"
+        parent="holidays_allocations_hr_menu"
+        action="mass_regularisation_action"
+        sequence="25"
         groups="hr_management.group_admin_paie" />
 
     <record model="ir.actions.server" id="action_update_holidays">
