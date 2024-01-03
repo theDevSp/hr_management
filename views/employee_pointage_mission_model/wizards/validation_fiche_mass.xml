@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="payement_mass_wizard" model="ir.ui.view">
+    <record id="validation_fiche_mass_wizard" model="ir.ui.view">
         <field name="name">hr.create.mass.repport.wizard</field>
         <field name="model">hr.filtre.pointage.wizard</field>
         <field name="arch" type="xml">
@@ -31,6 +31,7 @@
                         </div>
                         <field name="quinzaine" class="form-control" options="{'no_create': True,'no_open': True}" />
                     </div>
+                    
                     <div class="card bg-dark my-3">
                         <div class="card-body text-center">
                             <field name="chantier_ids" options="{'no_create': True,'no_open': True}" />
@@ -41,7 +42,7 @@
 
                 <footer>                      
                     <button string="Annuler" class="oe_link oe_right" special="cancel"/>
-                    <button string="Paiement" name="payement_masse_method" class="oe_highlight oe_right" type="object"/> 
+                    <button string="Validation Paiement" name="validation_fiche_paie" class="oe_highlight oe_right" type="object"/> 
                 </footer>
             </form>
         </field>

@@ -68,6 +68,7 @@
         'views/employee_pointage_mission_model/wizards/payement_mass.xml',
         'views/employee_pointage_mission_model/wizards/reset_rapport_mass.xml',
         'views/employee_pointage_mission_model/wizards/validation_holidays_mass.xml',
+        'views/employee_pointage_mission_model/wizards/validation_fiche_mass.xml',
         'views/employee_pointage_mission_model/wizards/reset_holidays_mass.xml',
         'views/employee_pointage_mission_model/wizards/access_holidays_per_month.xml',
         'views/employee_pointage_mission_model/wizards/regularisation_mass.xml',

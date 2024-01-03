@@ -448,7 +448,10 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                 }
             }
         else:
-            domain = [                    
+            domain = [   
+                        '|',
+                        ('total_j_v','!=','0'),
+                        ('total_h_v','!=','0'),
                         ('period_id','=',self.period_id.id),
                         ('state','=','draft')
                     ]
@@ -716,3 +719,58 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                 res = self.env['hr.allocations'].create(allocation_vals)
                 res.to_approuvee()
 
+    def validation_fiche_paie(self):
+
+        admin_paie = self.env['res.users'].has_group("hr_management.group_admin_paie")
+        agent_paie = self.env['res.users'].has_group("hr_management.group_agent_paie")
+        agent_admin_paie = self.env['res.users'].has_group("hr_management.group_agent_paie_cadre")
+        agent_cadre_paie = self.env['res.users'].has_group("hr_management.group_agent_paie_administration")
+        if not self.period_id:
+            return  {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': ("Erreur de saisie"),
+                    'message': ("Veuillez remplir les données correct pour commencer"),
+                    'sticky': False,
+                    'type': 'danger',
+                    'next': {'type': 'ir.actions.act_window_close'},
+                }
+            }
+        else:
+            domain = [                    
+                        ('period_id','=',self.period_id.id),
+                        ('state','=','draft')
+                    ]
+            if self.employee_type:
+                domain.append(('type_emp','=',self.employee_type))
+            elif agent_paie:
+                domain.append(('type_emp','in',("o","s")))
+            elif agent_admin_paie:
+                domain.append(('type_emp','in',("a")))
+            elif agent_cadre_paie:
+                domain.append(('type_emp','in',("c")))
+            if self.chantier_ids:
+                domain.append(('chantier_id','in',self.chantier_ids.ids))
+            if self.quinzaine:
+                domain.append(('quinzaine','=',self.quinzaine))
+            
+
+            
+            fiche_paie = self.env['hr.payslip'].search(domain)
+
+            for fiche in fiche_paie:
+                fiche.to_validee()
+                fiche.update_cal_state()
+                fiche.to_done()
+                
+            tree_view = self.env.ref("hr_management.fiche_paie_tree")
+            form_view = self.env.ref("hr_management.fiche_paie_formulaire")
+            return {
+                "name": ("Fiche de paie pour mois %s" %self.period_id.code),
+                "type": "ir.actions.act_window",
+                "view_type": "form",
+                "view_mode": "form",
+                "res_model": "hr.payslip",
+                "views": [(tree_view.id, "tree"),(form_view.id, "form")],
+            }
