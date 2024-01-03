@@ -598,10 +598,10 @@ class fiche_paie(models.Model):
 
         contract_period = self.env['account.month.period'].get_period_from_date(
             self.env['hr.contract'].browse(contract_id).date_start)
-
+        employee = self.env['hr.contract'].browse(contract_id).employee_id
         if self.env['account.month.period'].browse(period_id).date_stop <= contract_period.date_start:
             raise ValidationError(
-                "Anomalie détectée !!! la période choisie pour le payement ne correspond pas au contrat de l'employé %s veuillez choisir un contrat convenable."%(self.employee_id.name)
+                "Anomalie détectée !!! la période choisie pour le payement ne correspond pas au contrat de l'employé %s veuillez choisir un contrat convenable."%(employee.cin)
             )
 
     def unique_payroll_validation(self, employee_id, period_id, quinzaine):

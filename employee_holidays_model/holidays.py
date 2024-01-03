@@ -222,7 +222,7 @@ class holidays(models.Model):
         if self.user_has_groups('hr_management.group_admin_paie') or self.user_has_groups('hr_management.group_agent_paie'):
             self.state = 'validate'
             if self.nbr_jour_compenser == 0:
-                self.nbr_jour_compenser = self.duree_jours
+                self.nbr_jour_compenser = self.duree_jours if not self.demi_jour else 0.5
             lines = self.env['hr.rapport.pointage.line'].search([
                 ('employee_id','=',self.employee_id.id),
                 ('day','>=',self.date_start),
