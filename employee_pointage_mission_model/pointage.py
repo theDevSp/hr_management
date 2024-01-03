@@ -720,7 +720,12 @@ class hr_rapport_pointage(models.Model):
 
         total_jour_travailler = 0
         if self.employee_id.contract_id.type_profile_related == 'j' and self.employee_id.contract_id.type_emp != 'o':
-            total_jour_travailler = min(self.total_j_v + self.rapport_result()['j_transfert'],self.rapport_result()['jnt'])
+            
+            worked_sundays = 0
+            if not self.employee_id.contract_id.jo_related:
+                worked_sundays = self.rapport_result()['jdt'] 
+
+            total_jour_travailler = min(self.total_j_v + self.rapport_result()['j_transfert'] + worked_sundays,self.rapport_result()['jnt'])
         else:
             total_jour_travailler = self.total_j_v + self.rapport_result()['jdt'] + self.rapport_result()['j_transfert']
 
