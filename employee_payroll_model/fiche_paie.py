@@ -3,6 +3,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from datetime import date, datetime
+from dateutil.relativedelta import relativedelta
 
 
 class fiche_paie(models.Model):
@@ -182,7 +183,7 @@ class fiche_paie(models.Model):
         if self.employee_id:
             self.contract_id = self.employee_id.contract_id
             self.autoriz_zero_cp = self.contract_id.autoriz_zero_cp_related
-            self.autoriz_cp = self.contract_id.completer_salaire_related
+            self.autoriz_cp = self.contract_id.completer_salaire_related if self.employee_compensation_validation() else False
             self.cotisation = self.employee_id.cotisation
             self.amount_cimr = self.employee_id.montant_cimr
             self.get_employee_augementations()
@@ -593,6 +594,13 @@ class fiche_paie(models.Model):
             raise ValidationError(
                 "Erreur, Seulement les administrateurs et les agents de paie qui peuvent changer le statut."
             )
+
+    def employee_compensation_validation(self):
+        
+        ligible_date = self.period_id.date_stop - relativedelta(months=6)
+        if ligible_date < self.contract_id.date_start:
+            return False
+        return True
 
     def payroll_validation(self, contract_id, period_id):
 
