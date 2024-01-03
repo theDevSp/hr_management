@@ -225,9 +225,12 @@ class holidays(models.Model):
                 self.nbr_jour_compenser = self.duree_jours if not self.demi_jour else 0.5
             lines = self.env['hr.rapport.pointage.line'].search([
                 ('employee_id','=',self.employee_id.id),
-                ('day','>=',self.date_start),
-                ('day','<=',self.date_end),
-                ('day_type','=','4')
+                ('day_type','=','4'),
+                '|',
+                    ('day','=',self.date_select_half_perso),
+                '&',
+                    ('day','>=',self.date_start),
+                    ('day','<=',self.date_end),
                 ])
             valid_days = self.nbr_jour_compenser
             for line in lines:
@@ -259,8 +262,11 @@ class holidays(models.Model):
                 self.state = 'cancel'
                 lines = self.env['hr.rapport.pointage.line'].search([
                 ('employee_id','=',self.employee_id.id),
-                ('day','>=',self.date_start),
-                ('day','<=',self.date_end),
+                '|',
+                    ('day','=',self.date_select_half_perso),
+                '&',
+                    ('day','>=',self.date_start),
+                    ('day','<=',self.date_end),
                 ])
                 for line in lines:
                     line.rapport_id.write({
@@ -280,9 +286,12 @@ class holidays(models.Model):
         
         lines = self.env['hr.rapport.pointage.line'].search([
                 ('employee_id','=',self.employee_id.id),
-                ('day','>=',self.date_start),
-                ('day','<=',self.date_end),
-                ('day_type','=',type_condition)
+                ('day_type','=',type_condition),
+                '|',
+                    ('day','=',self.date_select_half_perso),
+                '&',
+                    ('day','>=',self.date_start),
+                    ('day','<=',self.date_end),
                 ])
         remplacant = (' - Remplacer par : %s - %s')%(self.remplacant_employee_id.cin,self.remplacant_employee_id.name) if self.remplacant_employee_id else ''
         motif_holiday = dict(self.fields_get(allfields=['motif'])['motif']['selection'])[self.motif]

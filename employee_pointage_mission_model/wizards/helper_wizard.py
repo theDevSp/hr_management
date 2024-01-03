@@ -521,11 +521,15 @@ class hr_filtre_pointage_wizard(models.TransientModel):
             domain = [
                         '|',
                             '&',
+                                ('date_select_half_perso','>=',self.period_id.date_start),
+                                ('date_select_half_perso','<=',self.period_id.date_stop),
+                        '|',
+                            '&',
                                 ('date_start','>=',self.period_id.date_start),
                                 ('date_start','<=',self.period_id.date_stop),
                             '&',
                                 ('date_end','>=',self.period_id.date_start),
-                                ('date_end','<=',self.period_id.date_stop)
+                                ('date_end','<=',self.period_id.date_stop),
                     ]
             
             if self.employee_type:
@@ -579,11 +583,16 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                         ('state','=','confirm'),
                         '|',
                             '&',
+                                ('date_select_half_perso','>=',self.period_id.date_start),
+                                ('date_select_half_perso','<=',self.period_id.date_stop),
+                        '|',
+                            '&',
                                 ('date_start','>=',self.period_id.date_start),
                                 ('date_start','<=',self.period_id.date_stop),
                             '&',
                                 ('date_end','>=',self.period_id.date_start),
-                                ('date_end','<=',self.period_id.date_stop)
+                                ('date_end','<=',self.period_id.date_stop),
+                        
                     ]
             if self.employee_type:
                 domain.append(('type_emp','=',self.employee_type))
@@ -637,11 +646,16 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                         ('state','=','validate'),
                         '|',
                             '&',
+                                ('date_select_half_perso','>=',self.period_id.date_start),
+                                ('date_select_half_perso','<=',self.period_id.date_stop),
+                        '|',
+                            '&',
                                 ('date_start','>=',self.period_id.date_start),
                                 ('date_start','<=',self.period_id.date_stop),
                             '&',
                                 ('date_end','>=',self.period_id.date_start),
-                                ('date_end','<=',self.period_id.date_stop)
+                                ('date_end','<=',self.period_id.date_stop),
+                        
                     ]
             if self.employee_type:
                 domain.append(('type_emp','=',self.employee_type))
