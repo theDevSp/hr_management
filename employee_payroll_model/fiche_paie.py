@@ -263,8 +263,10 @@ class fiche_paie(models.Model):
                 self.nbr_jf_refunded = self.rapport_id.count_nbr_ferier_days_v
         
         if 'autoriz_cp' in vals or 'autoriz_zero_cp' in vals:
-            self._compute_regularisation_auto_compentation()
-            self.cp_number = self._compute_manual_cp_number()
+            if self.rapport_id:
+                self._compute_regularisation_auto_compentation()
+            else:
+                self.cp_number = self._compute_manual_cp_number()
         return res
 
     @api.depends('nbr_jf_refunded')
@@ -599,7 +601,7 @@ class fiche_paie(models.Model):
 
         if self.env['account.month.period'].browse(period_id).date_stop <= contract_period.date_start:
             raise ValidationError(
-                "Anomalie détectée !!! la période choisie pour le payement ne correspond pas au contrat de l'employé veuillez choisir un contrat convenable."
+                "Anomalie détectée !!! la période choisie pour le payement ne correspond pas au contrat de l'employé %s veuillez choisir un contrat convenable."%(self.employee_id.name)
             )
 
     def unique_payroll_validation(self, employee_id, period_id, quinzaine):

@@ -729,7 +729,7 @@ class hr_rapport_pointage(models.Model):
             "emplacement_chantier_id": self.emplacement_chantier_id.id,
             "rapport_id": self.id,
             "quinzaine": self.quinzaine,
-            "nbr_jour_travaille": min(self.total_j_v,self.rapport_result()['jnt']) if self.employee_id.contract_id.type_profile_related == 'j' else self.total_j_v + self.rapport_result()['jdt'],
+            "nbr_jour_travaille": min(self.total_j_v+self.rapport_result()['j_transfert'],self.rapport_result()['jnt']) if self.employee_id.contract_id.type_profile_related == 'j' else self.total_j_v + self.rapport_result()['jdt'],
             "nbr_heure_travaille": self.total_h_v,
             "autoriz_cp": self.employee_id.contract_id.completer_salaire_related,
             "autoriz_zero_cp": self.employee_id.contract_id.autoriz_zero_cp_related,
@@ -857,6 +857,7 @@ class hr_rapport_pointage(models.Model):
         jt = self.total_j_v  # jour travaillées par le salarié
         h_comp = hnt - ht  # heure de compensation de salaire
         j_comp = joe - (jt + default_day_2_add) if type_profile == 'j' else h_comp / contract.nbre_heure_worked_par_jour_related # jour de compensation de salaire
+        j_transfert = len(self.rapport_lines.filtered(lambda ln: ln.day_type == "9"))
 
         return {
             "jc": jc,
@@ -868,6 +869,7 @@ class hr_rapport_pointage(models.Model):
             "hnt": hnt,
             "ht": ht,
             "jt": jt,
+            "j_transfert":j_transfert,
             "h_comp": h_comp,
             "j_comp": j_comp,
             "default_day_2_add": default_day_2_add,
