@@ -9,6 +9,14 @@
         <field name="domain">[('black_list', '=', False),('state_employee_wtf','=','active')]</field>
     </record>
 
+    <record id='employee_nv_action' model='ir.actions.act_window'>
+        <field name="name"> HR Management - Employees </field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_id" ref="employee_tree"/>
+        <field name="view_mode">tree,form,search</field>
+        <field name="domain">[('black_list', '=', False),('state_employee_wtf','=','new')]</field>
+    </record>
+
     <record id='employee_historique_action' model='ir.actions.act_window'>
         <field name="name"> HR Management - Employees </field>
         <field name="res_model">hr.employee</field>
@@ -20,7 +28,8 @@
     <menuitem name="HR Management" web_icon="hr_management,static/description/icon.png" id="hr_management_base_menu" />
     <menuitem name="Employés" id="employees_main_menu" parent="hr_management_base_menu" sequence="1"/>
     <menuitem name="Employés Actifs" id="employees_menu" parent="employees_main_menu" action="employee_action" sequence="1"/>
-    <menuitem name="Employés (Historique)" id="employees_historique_menu" parent="employees_main_menu" action="employee_historique_action" sequence="2"/>
+    <menuitem name="Employés (Nv Embauche)" id="employees_nv_menu" parent="employees_main_menu" action="employee_nv_action" sequence="2"/>
+    <menuitem name="Employés (Historique)" id="employees_historique_menu" parent="employees_main_menu" action="employee_historique_action" sequence="3"/>
     <menuitem action="new_employee_wizard_action" id="menu_new_embauche_wizard" parent="employees_main_menu" sequence="5" groups="hr_management.group_admin_paie,hr_management.group_pointeur"/>
 
 
