@@ -173,7 +173,7 @@ hr_payslip_agent_paie,hr_payslip,model_hr_payslip,group_agent_paie,1,1,1,0
 hr_payslip_service_analytique,hr_payslip,model_hr_payslip,group_service_analytique,1,0,0,0
 hr_payslip_controle_gestion,hr_payslip,model_hr_payslip,group_controle_gestion,1,0,0,0
 hr_payslip_pointeur,hr_payslip,model_hr_payslip,group_pointeur,1,0,0,0
-hr_payslip_cnss_juridique,hr_payslip,model_hr_payslip,group_cnss_juridique,1,0,0,0
+hr_payslip_cnss_juridique,cnss_juridique_hr_payslip,model_hr_payslip,group_cnss_juridique,1,0,0,0
 
 hr_payslip_stc_admin_paie,hr_payslip_stc_admin,model_hr_payslip_stc,group_admin_paie,1,1,1,1
 hr_payslip_stc_agent_paie,hr_payslip_stc,model_hr_payslip_stc,group_agent_paie,1,1,1,0

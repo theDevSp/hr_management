@@ -50,11 +50,14 @@ export class DeductionField extends Component {
     async get_prelevement(quinzaine,employee_id,period_id){
         const prelevement_list = []
         const res = []
+        console.log(typeof employee_i)
         try {
-            if (employee_id & period_id){
+            if (typeof employee_id !== 'undefined' & typeof period_id !== 'undefined'){
                 const result = await this.rpc("/hr_management/get_line_prelevement/"+employee_id+"/"+period_id)
+                console.log(result)
                 result['result'].forEach((element) => {
                     prelevement_list.push(element)
+                    
                 });
                 this.state.prelevement_list = prelevement_list
             }else{

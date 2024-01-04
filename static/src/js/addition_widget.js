@@ -63,7 +63,7 @@ export class AdditionField extends Component {
         const prime_list = []
         const res = []
         try {
-            if (employee_id & period_id) {
+            if (typeof employee_id !== 'undefined' & typeof period_id !== 'undefined') {
                 const result = await this.rpc("/hr_management/get_line_paiement/" + employee_id + "/" + period_id)
                 result['result'].forEach((element) => {
                     if (element.prime.pay_rate === 'j')
