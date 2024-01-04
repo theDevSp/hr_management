@@ -725,7 +725,7 @@ class hr_rapport_pointage(models.Model):
             if not self.employee_id.contract_id.jo_related:
                 worked_sundays = self.rapport_result()['jdt'] 
 
-            total_jour_travailler = min(self.total_j_v + self.rapport_result()['j_transfert'] + worked_sundays,self.rapport_result()['jnt'])
+            total_jour_travailler = min(self.total_j_v + self.rapport_result()['j_transfert'] + worked_sundays + self.rapport_result()['demijour_travailler'],self.rapport_result()['jnt'])
         else:
             total_jour_travailler = self.total_j_v + self.rapport_result()['jdt'] + self.rapport_result()['j_transfert']
 
@@ -772,7 +772,7 @@ class hr_rapport_pointage(models.Model):
 
             self.payslip_ids[0].write(
                 {
-                    "nbr_jour_travaille": min(self.total_j_v,self.rapport_result()['jnt']),
+                    "nbr_jour_travaille": total_jour_travailler,
                     "nbr_heure_travaille": self.total_h_v,
                     "nbr_jf_refunded": nbr_jf_refunded,
                 }
@@ -866,6 +866,7 @@ class hr_rapport_pointage(models.Model):
         jont = self.count_nbr_absense_days  # jour ouvrable non travaillé par le salarié
         ht = self.total_h_v  # heure travaillées par le salarié
         h_comp = hnt - ht  # heure de compensation de salaire
+        demijour_travailler = len(self.rapport_lines.filtered(lambda ln: ln.day_type == "4" and 0 < float(ln.h_travailler_v) <= contract.nbre_heure_worked_par_demi_jour_related)) * 0.5
         j_transfert = len(self.rapport_lines.filtered(lambda ln: ln.day_type == "9"))
         total_jour_travailler = 0
         if self.employee_id.contract_id.type_profile_related == 'j' and self.employee_id.contract_id.type_emp != 'o':
@@ -874,7 +875,7 @@ class hr_rapport_pointage(models.Model):
             if not self.employee_id.contract_id.jo_related:
                 worked_sundays = jdt
 
-            total_jour_travailler = min(self.total_j_v + j_transfert + worked_sundays,joe)
+            total_jour_travailler = min(self.total_j_v + j_transfert + worked_sundays + demijour_travailler,joe)
         else:
             total_jour_travailler = self.total_j_v + jdt + j_transfert
         jt = total_jour_travailler  # jour travaillées par le salarié
@@ -894,6 +895,7 @@ class hr_rapport_pointage(models.Model):
             "h_comp": h_comp,
             "j_comp": j_comp,
             "default_day_2_add": default_day_2_add,
+            "demijour_travailler":demijour_travailler
         }
 
     def masse_payement(self):
