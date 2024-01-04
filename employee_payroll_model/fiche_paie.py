@@ -620,9 +620,7 @@ class fiche_paie(models.Model):
             ('quinzaine', '=', quinzaine)])
         if unique_payroll_per_period > 0:
             raise ValidationError(
-                "Anomalie d'unicité détectée !!! une fiche de paie existe déja pour la période %s." % self.env['account.month.period'].browse(
-                    period_id).name
-            )
+                "Anomalie d'unicité détectée !!! une fiche de paie de l'employé %s existe déja pour la période %s." % (self.env['hr.employee'].browse(employee_id).cin,self.env['account.month.period'].browse(period_id).name))
 
     def update_cal_state(self):
         self.cal_state = not self.cal_state
