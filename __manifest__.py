@@ -135,6 +135,7 @@
         'views/employee_pointage_mission_model/pointage_machines_view.xml',
         'views/employee_holidays_model/deplacement_menu.xml',
         'views/employee_holidays_model/deplacement_view.xml',
+        'views/employee_pointage_mission_model/wizards/create_mass_rapport_machine_pointage.xml',
 
     ],
 

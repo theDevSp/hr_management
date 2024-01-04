@@ -85,19 +85,13 @@
                 <field name="chantier_id" />
                 <!-- <field name="vehicle_id" /> -->
                 <field name="emplacement_chantier_id" />
-                <field name="rapport_lines" string="Code Engin"
-                    filter_domain="[('rapport_lines.vehicle_ids.name','ilike',self)]" />
+                <field name="rapport_lines" string="Code Engin" filter_domain="[('rapport_lines.vehicle_ids.name','ilike',self)]" />
                 <group expand="0" string="Group By">
-                    <filter name="group_by_public_market_id" string="Chantier"
-                        context="{'group_by':'chantier_id'}" />
-                    <filter name="group_by_period_id" string="Période"
-                        context="{'group_by':'period_id'}" />
-                    <filter name="group_by_public_market_name" string="Employée"
-                        context="{'group_by':'employee_id'}" />
-                    <filter name="group_by_emplacement_chantier_id" string="Equipe"
-                        context="{'group_by':'emplacement_chantier_id'}" />
-                    <filter name="group_by_quinzaine" string="Quinzaine"
-                        context="{'group_by':'quinzaine'}" />
+                    <filter name="group_by_public_market_id" string="Chantier" context="{'group_by':'chantier_id'}" />
+                    <filter name="group_by_period_id" string="Période" context="{'group_by':'period_id'}" />
+                    <filter name="group_by_public_market_name" string="Employée" context="{'group_by':'employee_id'}" />
+                    <filter name="group_by_emplacement_chantier_id" string="Equipe" context="{'group_by':'emplacement_chantier_id'}" />
+                    <filter name="group_by_quinzaine" string="Quinzaine" context="{'group_by':'quinzaine'}" />
                     <filter name="group_by_state" string="Statut" context="{'group_by':'state'}" />
                 </group>
             </search>
@@ -105,54 +99,16 @@
     </record>
 
 
-    <menuitem name="Pointage" id="pointage_menu" parent="hr_management_base_menu" action=""
-        sequence="10" />
-    <menuitem name="Rapport Pointage" id="rapport_pointage_main_menu" parent="pointage_menu"
-        sequence="1" />
-    <menuitem name="Rapport (Cadre)"
-        id="rapport_pointage_cadre"
-        parent="rapport_pointage_main_menu"
-        groups="hr_management.group_admin_view_paie,hr_management.group_agent_paie_cadre,hr_management.group_pointeur"
-        action="pointage_cadre_action"
-        sequence="1" />
-    <menuitem name="Rapport (Siége)"
-        id="rapport_pointage_administration"
-        parent="rapport_pointage_main_menu"
-        groups="hr_management.group_admin_view_paie,hr_management.group_agent_paie_administration"
-        action="pointage_siege_action"
-        sequence="2" />
-    <menuitem name="Rapport (Salariés)"
-        id="rapport_pointage_menu_s"
-        parent="rapport_pointage_main_menu"
-        groups="hr_management.group_admin_paie,hr_management.group_admin_view_paie,hr_management.group_agent_paie,hr_management.group_pointeur"
-        action="pointage_s_action"
-        sequence="3" />
-    <menuitem name="Rapport (Ouvriers)"
-        id="rapport_pointage_menu_o"
-        parent="rapport_pointage_main_menu"
-        action="pointage_o_action"
-        groups="hr_management.group_admin_paie,hr_management.group_admin_view_paie,hr_management.group_agent_paie,hr_management.group_pointeur"
-        sequence="4" />
-    <menuitem name="Transfert"
-        id="transfert_menu"
-        parent="pointage_menu"
-        action="transfert_action"
-        groups="hr_management.group_admin_paie,hr_management.group_admin_view_paie,hr_management.group_agent_paie,hr_management.group_pointeur"
-        sequence="5" />
-    <menuitem name="Création par mass"
-        id="create_mass_menu"
-        parent="pointage_menu"
-        action="mass_create_creation_action"
-        sequence="20"
-        groups="hr_management.group_admin_paie,hr_management.group_pointeur" />
-    
-    <menuitem name="Payement par mass"
-        id="payement_mass_menu"
-        parent="fp_recap_parent_menu"
-        action="mass_payement_creation_action"
-        sequence="22"
-        groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_agent_paie_administration,hr_management.group_agent_paie_cadre" />
+    <menuitem name="Pointage" id="pointage_menu" parent="hr_management_base_menu" action="" sequence="10" />
+    <menuitem name="Rapport Pointage" id="rapport_pointage_main_menu" parent="pointage_menu" sequence="1" />
+    <menuitem name="Rapport (Cadre)" id="rapport_pointage_cadre" parent="rapport_pointage_main_menu" groups="hr_management.group_admin_view_paie,hr_management.group_agent_paie_cadre,hr_management.group_pointeur" action="pointage_cadre_action" sequence="1" />
+    <menuitem name="Rapport (Siége)" id="rapport_pointage_administration" parent="rapport_pointage_main_menu" groups="hr_management.group_admin_view_paie,hr_management.group_agent_paie_administration" action="pointage_siege_action" sequence="2" />
+    <menuitem name="Rapport (Salariés)" id="rapport_pointage_menu_s" parent="rapport_pointage_main_menu" groups="hr_management.group_admin_paie,hr_management.group_admin_view_paie,hr_management.group_agent_paie,hr_management.group_pointeur" action="pointage_s_action" sequence="3" />
+    <menuitem name="Rapport (Ouvriers)" id="rapport_pointage_menu_o" parent="rapport_pointage_main_menu" action="pointage_o_action" groups="hr_management.group_admin_paie,hr_management.group_admin_view_paie,hr_management.group_agent_paie,hr_management.group_pointeur" sequence="4" />
+    <menuitem name="Transfert" id="transfert_menu" parent="pointage_menu" action="transfert_action" groups="hr_management.group_admin_paie,hr_management.group_admin_view_paie,hr_management.group_agent_paie,hr_management.group_pointeur" sequence="5" />
+    <menuitem name="Création par mass" id="create_mass_menu" parent="pointage_menu" action="mass_create_creation_action" sequence="20" groups="hr_management.group_admin_paie,hr_management.group_pointeur" />
 
+    <menuitem name="Payement par mass" id="payement_mass_menu" parent="fp_recap_parent_menu" action="mass_payement_creation_action" sequence="22" groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_agent_paie_administration,hr_management.group_agent_paie_cadre" />
 
     <record model="ir.actions.server" id="action_update_invoice_date">
         <field name="name">Paiement par masse</field>
@@ -163,6 +119,16 @@
         <field name="code">
             action = records.masse_payement()
         </field>
+    </record>
+
+    <menuitem name="Création par mass Machine Pointage" id="create_mass_machine_pointage_menu" parent="pointage_menu" action="mass_create_machine_poinatge_creation_action" sequence="30" />
+
+    <record id="mass_create_machine_poinatge_creation_action" model="ir.actions.act_window">
+        <field name="name">Création du rapport des salariés avec la machine de pointage.</field>
+        <field name="res_model">hr.machine.rapport.mass.pointage.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="creation_mass_rapport_machine_pointage_wizard" />
+        <field name="target">new</field>
     </record>
 
 </odoo>

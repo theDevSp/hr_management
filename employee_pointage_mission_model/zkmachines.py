@@ -55,19 +55,17 @@ class ZkMachines(models.Model):
         return conn
 
     def get_user(self, conn, user_id):
-        conn.disable_device()
         users = conn.get_users()
 
         found_user = next((user for user in users if int(
             user.user_id) == int(user_id)), None)
 
-        conn.enable_device()
         return found_user
 
     def get_pointage(self, conn, ids=None, date_start=None, date_fin=None):
         conn.disable_device()
 
-        if ids is None or not ids:
+        if ids is None or not ids or ids == []:
             users = conn.get_users()
             ids = [user.user_id for user in users]
 
@@ -96,11 +94,10 @@ class ZkMachines(models.Model):
                     for user in users_founded:
                         if user.user_id == each.user_id:
                             user_id = int(user.user_id)
-                            user_name = str(user.name).upper()
 
                             if user_id not in user_attendance_dict:
                                 user_attendance_dict[user_id] = {
-                                    "name": user_name, "attendance_times": []}
+                                    "user_id": user_id, "attendance_times": []}
                             user_attendance_dict[user_id]["attendance_times"].append(
                                 atten_time)
 

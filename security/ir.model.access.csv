@@ -422,3 +422,4 @@ access_import_employee,import_employee,model_import_employee,group_admin_paie,1,
 hr_management.access_zk_machines,access_zk_machines,hr_management.model_zk_machines,base.group_user,1,1,1,1
 
 hr_management.access_hr_deplacement,access_hr_deplacement,hr_management.model_hr_deplacement,base.group_user,1,1,1,1
+hr_management.access_hr_machine_rapport_mass_pointage_wizard,access_hr_machine_rapport_mass_pointage_wizard,hr_management.model_hr_machine_rapport_mass_pointage_wizard,base.group_user,1,1,1,1

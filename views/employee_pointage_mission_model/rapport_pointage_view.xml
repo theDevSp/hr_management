@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <form>
                 <header attrs="{'invisible': [('employee_type','=','employee2'),('periodicite','=',1)]}">
-                    
+
                     <button name="action_draft" states="cancel,valide,compute,working" string="Mettre en brouillon" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin"/>
                     <button name="action_working" states="draft" string="Traiter" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
                     <button name="action_working" states="compute" string="Retourner" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_manager"/>
@@ -18,24 +18,24 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,working,compute,valide,done"/>
 
                 </header>
-                <header  attrs="{'invisible': ['|','|',('employee_type','=','employee1'),('quinzaine','!=','quinzaine1'),('periodicite','=',2)]}">
-                    
+                <header attrs="{'invisible': ['|','|',('employee_type','=','employee1'),('quinzaine','!=','quinzaine1'),('periodicite','=',2)]}">
+
                     <button name="action_q1_draft" attrs="{'invisible': [('q1_state','in',('q1_draft'))]}" string="Mettre en brouillon" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin"/>
                     <button name="action_q1_working" attrs="{'invisible': [('q1_state','!=','q1_draft')]}" string="Traiter" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
                     <button name="action_q1_working" attrs="{'invisible': [('q1_state','!=','q1_compute')]}" string="Retourner" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
                     <button name="action_q1_working" attrs="{'invisible': [('q1_state','not in',('q1_valide','q1_compute'))]}" string="Retourner" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_controller"/>
-                    <button name="action_q1_done"  attrs="{'invisible': [('q1_state','!=','q1_valide')]}" string="Clôturer" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_controller,nxtm_employee_mngt.group_pointage_admin"/>
+                    <button name="action_q1_done" attrs="{'invisible': [('q1_state','!=','q1_valide')]}" string="Clôturer" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_controller,nxtm_employee_mngt.group_pointage_admin"/>
                     <button name="create_q1_payslip" attrs="{'invisible': [('q1_state','!=','q1_working')]}" string="Payé Q1" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
                     <field name="q1_state" widget="statusbar"/>
 
                 </header>
-                <header  attrs="{'invisible': ['|','|',('employee_type','=','employee1'),('quinzaine','!=','quinzaine2'),('periodicite','=',2)]}">
-                    
+                <header attrs="{'invisible': ['|','|',('employee_type','=','employee1'),('quinzaine','!=','quinzaine2'),('periodicite','=',2)]}">
+
                     <button name="action_q2_draft" attrs="{'invisible': [('q2_state','in',('q2_draft'))]}" string="Mettre en brouillon" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin"/>
                     <button name="action_q2_working" attrs="{'invisible': [('q2_state','!=','q2_draft')]}" string="Traiter" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
                     <button name="action_q2_working" attrs="{'invisible': [('q2_state','!=','q2_compute')]}" string="Retourner" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
                     <button name="action_q2_working" attrs="{'invisible': [('q2_state','not in',('q2_valide','q2_compute'))]}" string="Retourner" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_controller"/>
-                    <button name="action_q2_done"  attrs="{'invisible': [('q2_state','!=','q2_valide')]}" string="Clôturer" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_controller,nxtm_employee_mngt.group_pointage_admin"/>
+                    <button name="action_q2_done" attrs="{'invisible': [('q2_state','!=','q2_valide')]}" string="Clôturer" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_controller,nxtm_employee_mngt.group_pointage_admin"/>
                     <button name="create_q2_payslip" attrs="{'invisible': [('q2_state','!=','q2_working')]}" string="Payé Q2" type="object" class="oe_highlight" groups="nxtm_employee_mngt.group_pointage_admin,nxtm_employee_mngt.group_pointage_manager"/>
                     <field name="q2_state" widget="statusbar"/>
 
@@ -67,162 +67,162 @@
                                             </h1>
                                         </div>
                                         <div class="panel-body">
-                                                <div class="col-md-12 ">
-                                                    <group>    
-                                                        <group>
-                                                            <field name="employee_id"  options="{'no_create': True,'no_open':True}"/>
-                                                            <field name="employee_type"/>
-                                                            <field name="cin"/>
-                                                            <field name="job_id"/>
-                                                            <field name="period_id" />
-                                                            <field name="quinzaine" />
-                                                            <field name="chantier_id" options="{'no_create': True}"/>
-                                                            <field name="periodicite" invisible="1"/>
-                                                            <!-- <field name="vehicle_id" options="{'no_create': True}" /> -->
-                                                            <field name="emplacement_chantier_id" options="{'no_create': True}" /> 
-                                                        </group>
+                                            <div class="col-md-12 ">
+                                                <group>
+                                                    <group>
+                                                        <field name="employee_id" options="{'no_create': True,'no_open':True}"/>
+                                                        <field name="employee_type"/>
+                                                        <field name="cin"/>
+                                                        <field name="job_id"/>
+                                                        <field name="period_id" />
+                                                        <field name="quinzaine" />
+                                                        <field name="chantier_id" options="{'no_create': True}"/>
+                                                        <field name="periodicite" invisible="1"/>
+                                                        <!-- <field name="vehicle_id" options="{'no_create': True}" /> -->
+                                                        <field name="emplacement_chantier_id" options="{'no_create': True}" />
                                                     </group>
+                                                </group>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3 col-sm-2 panel-group">
+                                                        <div class="panel panel-primary">
+                                                            <div class="panel-heading">
+                                                                <h3 class="text-center">
+                                                                    <label for="total_h"/>
+                                                                </h3>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <h1 class="text-center">
+                                                                    <field name="total_h" />
+                                                                </h1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-2">
+                                                        <div class="panel panel-success">
+                                                            <div class="panel-heading">
+                                                                <h3 class="text-center">
+                                                                    <label for="total_h_v"/>
+                                                                </h3>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <h1 class="text-center">
+                                                                    <field name="total_h_v" />
+                                                                </h1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-2">
+                                                        <div class="panel panel-warning">
+                                                            <div class="panel-heading">
+                                                                <h3 class="text-center">
+                                                                    <label for="total_h_sup"/>
+                                                                </h3>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <h1 class="text-center">
+                                                                    <field name="total_h_sup" />
+                                                                </h1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <div class="col-md-3 col-sm-2 panel-group">
-                                                            <div class="panel panel-primary">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="text-center">
-                                                                        <label for="total_h"/>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <h1 class="text-center">
-                                                                        <field name="total_h" />
-                                                                    </h1>
-                                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3 col-sm-2 panel-group">
+                                                        <div class="panel panel-primary">
+                                                            <div class="panel-heading">
+                                                                <h3 class="text-center">
+                                                                    <label for="total_j"/>
+                                                                </h3>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-sm-2">
-                                                            <div class="panel panel-success">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="text-center">
-                                                                        <label for="total_h_v"/>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <h1 class="text-center">
-                                                                        <field name="total_h_v" />
-                                                                    </h1>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-sm-2">
-                                                            <div class="panel panel-warning">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="text-center">
-                                                                        <label for="total_h_sup"/>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <h1 class="text-center">
-                                                                        <field name="total_h_sup" />
-                                                                    </h1>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3"> 
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-3 col-sm-2 panel-group">
-                                                            <div class="panel panel-primary">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="text-center">
-                                                                        <label for="total_j"/>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <h1 class="text-center">
-                                                                        <field name="total_j" />
-                                                                    </h1>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-sm-2">
-                                                            <div class="panel panel-success">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="text-center">
-                                                                        <label for="total_j_v"/>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <h1 class="text-center">
-                                                                        <field name="total_j_v" />
-                                                                    </h1>
-                                                                </div>
-                                                            </div>
-                                                        </div>                                
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-3 col-sm-2 panel-group">
-                                                            <div class="panel panel-info">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="text-center">
-                                                                        <label for="count_nbr_holiday_days"/>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <h1 class="text-center">
-                                                                        <field name="count_nbr_holiday_days" />
-                                                                    </h1>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-sm-2 panel-group">
-                                                            <div class="panel panel-info">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="text-center">
-                                                                        <label for="count_nbr_ferier_days"/>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <h1 class="text-center">
-                                                                        <field name="count_nbr_ferier_days" />
-                                                                    </h1>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-sm-2 panel-group">
-                                                            <div class="panel panel-default">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="text-center">
-                                                                        <label for="count_nbr_dim_days"/>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <h1 class="text-center">
-                                                                        <field name="count_nbr_dim_days" />
-                                                                    </h1>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-sm-2 panel-group">
-                                                            <div class="panel panel-danger">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="text-center">
-                                                                        <label for="count_nbr_absense_days"/>
-                                                                    </h3>
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <h1 class="text-center">
-                                                                        <field name="count_nbr_absense_days" />
-                                                                    </h1>
-                                                                </div>
+                                                            <div class="panel-body">
+                                                                <h1 class="text-center">
+                                                                    <field name="total_j" />
+                                                                </h1>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
+                                                    <div class="col-md-3 col-sm-2">
+                                                        <div class="panel panel-success">
+                                                            <div class="panel-heading">
+                                                                <h3 class="text-center">
+                                                                    <label for="total_j_v"/>
+                                                                </h3>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <h1 class="text-center">
+                                                                    <field name="total_j_v" />
+                                                                </h1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-md-3 col-sm-2 panel-group">
+                                                        <div class="panel panel-info">
+                                                            <div class="panel-heading">
+                                                                <h3 class="text-center">
+                                                                    <label for="count_nbr_holiday_days"/>
+                                                                </h3>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <h1 class="text-center">
+                                                                    <field name="count_nbr_holiday_days" />
+                                                                </h1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-2 panel-group">
+                                                        <div class="panel panel-info">
+                                                            <div class="panel-heading">
+                                                                <h3 class="text-center">
+                                                                    <label for="count_nbr_ferier_days"/>
+                                                                </h3>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <h1 class="text-center">
+                                                                    <field name="count_nbr_ferier_days" />
+                                                                </h1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-2 panel-group">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <h3 class="text-center">
+                                                                    <label for="count_nbr_dim_days"/>
+                                                                </h3>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <h1 class="text-center">
+                                                                    <field name="count_nbr_dim_days" />
+                                                                </h1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-2 panel-group">
+                                                        <div class="panel panel-danger">
+                                                            <div class="panel-heading">
+                                                                <h3 class="text-center">
+                                                                    <label for="count_nbr_absense_days"/>
+                                                                </h3>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <h1 class="text-center">
+                                                                    <field name="count_nbr_absense_days" />
+                                                                </h1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                             </group>
                         </page>
                         <page string="Infos Fiche Paie">
@@ -251,8 +251,8 @@
                                     <field name="state"/>
                                     <!-- <button name="open_holiday" type="object" class="oe_highlight oe_edit_only" string="Consulter" /> -->
                                 </tree>
-                            </field>   
-                        </page>   
+                            </field>
+                        </page>
                         <page string="Infos Transfert">
                             <field name="transfert_ids" nolabel="1">
                                 <tree>
@@ -265,9 +265,9 @@
                                     <button name="open_transfert" type="object" class="oe_highlight oe_edit_only" string="Consulter" />
                                 </tree>
                             </field>
-                        </page> 
+                        </page>
                     </notebook>
-                    
+
                 </sheet>
                 <sheet class="custom_sheet">
                     <div class="row">
@@ -292,23 +292,31 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="col-md-6">
-                                        <div class="row" style="color:black;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:black;"></span>Jours Ouvrable</div>
-                                        <div class="row" style="color:skyblue;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:skyblue;"></span>Jours Férié</div>
-                                        <div class="row" style="color:blue;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:blue;"></span>Congé</div>
-                                        <div class="row" style="color:grey;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:grey;"></span>Dimanche</div>
+                                        <div class="row" style="color:black;">
+                                            <span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:black;"></span>Jours Ouvrable</div>
+                                        <div class="row" style="color:skyblue;">
+                                            <span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:skyblue;"></span>Jours Férié</div>
+                                        <div class="row" style="color:blue;">
+                                            <span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:blue;"></span>Congé</div>
+                                        <div class="row" style="color:grey;">
+                                            <span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:grey;"></span>Dimanche</div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="row" style="color:tomato;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:tomato;"></span>Absense non Autorié</div>
-                                        <div class="row" style="color:crimson;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:crimson;"></span>Abondement de Poste</div>
-                                        <div class="row" style="color:crimson;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:crimson;"></span>Accident Travail</div>
-                                        <div class="row" style="color:slategrey;"><span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:slategrey;"></span>STC</div>
+                                        <div class="row" style="color:tomato;">
+                                            <span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:tomato;"></span>Absense non Autorié</div>
+                                        <div class="row" style="color:crimson;">
+                                            <span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:crimson;"></span>Abondement de Poste</div>
+                                        <div class="row" style="color:crimson;">
+                                            <span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:crimson;"></span>Accident Travail</div>
+                                        <div class="row" style="color:slategrey;">
+                                            <span style="border: 1px solid #ccc; float: left; width: 35px; height: 20px; margin: 2px; background-color:slategrey;"></span>STC</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <group string="">
-                            <field name="rapport_lines" nolabel="1">
+                        <field name="rapport_lines" nolabel="1">
                             <tree editable="bottom" colors="black:day_type==1; grey:day_type==2; skyblue:day_type==3; blue:day_type==4; tomato:day_type==5; crimson:day_type==6; slategrey:day_type==7;">
                                 <field name="name"/>
                                 <field name="h_travailler" string="TH"/>
@@ -317,30 +325,30 @@
                                 <field name="h_bonus" string="Bonus"/>
                                 <field name="j_travaille_v" string="TJV"/>
                                 <field name="chantier_id" options="{'no_create': True,'no_open': True}"/>
-                                <!-- <field name="vehicle_id"  options="{'no_create': True,'no_open': True}" readonly="1" invisible="1"/> -->
+                                <!-- <field name="vehicle_id" options="{'no_create': True,'no_open': True}" readonly="1" invisible="1"/> -->
                                 <field name="vehicle_ids_resume"/>
                                 <button name="update_engin_list" type="object" class="oe_highlight oe_edit_only" string="OPEN" icon="gtk-open" />
-                                <field name="emplacement_chantier_id"  options="{'no_create': True,'no_open': True}" string="Equipe"/>
-                                <field name="details" />                                           
+                                <field name="emplacement_chantier_id" options="{'no_create': True,'no_open': True}" string="Equipe"/>
+                                <field name="details" />
                                 <field name="note" />
-                                <field name="day_type"/>    
+                                <field name="day_type"/>
                                 <field name="state" invisible="1"/>
                                 <field name="day" invisible="1"/>
                                 <button name="update_wizard_ref_view" type="object" class="oe_highlight oe_edit_only" string="OPEN" icon="gtk-edit" />
                             </tree>
                         </field>
                     </group>
-                </sheet> 
+                </sheet>
                 <sheet>
                     <group string="">
-                            <field name="note"/>
+                        <field name="note"/>
                     </group>
-                </sheet> 
-                    
+                </sheet>
+
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="message_ids" widget="mail_thread"/>
-                </div>     
+                </div>
 
             </form>
         </field>
@@ -353,7 +361,7 @@
             <form>
                 <group string="">
                     <group string="">
-                        <field name="name"  options="{'no_create': True,'no_open': True}"/>
+                        <field name="name" options="{'no_create': True,'no_open': True}"/>
                         <field name="time_start"/>
                         <field name="time_end"/>
                     </group>
@@ -364,7 +372,7 @@
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="message_ids" widget="mail_thread"/>
-                </div>     
+                </div>
             </form>
 
         </field>
@@ -375,10 +383,10 @@
         <field name="arch" type="xml">
             <form>
 
-                <group string="">   
-                    <field name="vehicle_ids" colspan="4" nolabel="1" >
+                <group string="">
+                    <field name="vehicle_ids" colspan="4" nolabel="1">
                         <tree editable="bottom">
-                            <field name="name"  options="{'no_create': True,'no_open': True}"/>
+                            <field name="name" options="{'no_create': True,'no_open': True}"/>
                             <field name="time_start"/>
                             <field name="time_end"/>
                         </tree>
@@ -397,10 +405,10 @@
         <field name="model">hr.rapport.pointage.line</field>
         <field name="arch" type="xml">
             <form>
-                <group string="">   
+                <group string="">
                     <field name="vehicle_ids" colspan="4" nolabel="1" readonly="1">
                         <tree>
-                            <field name="name"  options="{'no_create': True,'no_open': True}"/>
+                            <field name="name" options="{'no_create': True,'no_open': True}"/>
                             <field name="time_start"/>
                             <field name="time_end"/>
                         </tree>
@@ -417,12 +425,12 @@
                 <group string="">
                     <div class="oe_chatter">
                         <field name="modification_data_html" colspan="4" nolabel="1"/>
-                    </div> 
+                    </div>
                 </group>
                 <div class="oe_chatter" groups="nxtm_employee_mngt.group_pointage_controller,nxtm_employee_mngt.group_pointage_admin">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="message_ids" widget="mail_thread"/>
-                </div>     
+                </div>
                 <footer>
                     <button string="Fermer" class="oe_highlight oe_right" special="cancel" />
                 </footer>
@@ -431,7 +439,7 @@
         </field>
     </record>
 
-    
+
 
     <record id="rapport_pointage_tree" model="ir.ui.view">
         <field name="name">rapport.pointage.tree</field>
@@ -441,7 +449,7 @@
             <tree>
                 <field name="name"/>
                 <field name="employee_id"/>
-                <field name="period_id" /> 
+                <field name="period_id" />
                 <field name="chantier_id"/>
                 <!-- <field name="vehicle_id"/> -->
                 <field name="emplacement_chantier_id"/>
@@ -465,23 +473,23 @@
         <field name="res_model">hr.employee.transfert</field>
         <field name="view_mode">tree,form</field>
     </record>
-    <menuitem id="hr_pointage_main_menu" name="Rapport Pointage"  parent="hr.menu_hr_root" sequence = "-1" groups="nxtm_employee_mngt.group_pointage_manager,nxtm_employee_mngt.group_pointage_controller"/>
-    <menuitem id="hr_pointage_salarie_global" name="Pointage Salariés"  parent="hr_pointage_main_menu" action="menu_view_pointage_salarie_tree" sequence = "-2" />
-    <menuitem id="hr_pointage_ouvrier_global" name="Pointage Ouvriers"  parent="hr_pointage_main_menu" action="menu_view_pointage_ouvrier_tree" sequence = "-2" />
+    <menuitem id="hr_pointage_main_menu" name="Rapport Pointage" parent="hr.menu_hr_root" sequence = "-1" groups="nxtm_employee_mngt.group_pointage_manager,nxtm_employee_mngt.group_pointage_controller"/>
+    <menuitem id="hr_pointage_salarie_global" name="Pointage Salariés" parent="hr_pointage_main_menu" action="menu_view_pointage_salarie_tree" sequence = "-2" />
+    <menuitem id="hr_pointage_ouvrier_global" name="Pointage Ouvriers" parent="hr_pointage_main_menu" action="menu_view_pointage_ouvrier_tree" sequence = "-2" />
     <!-- **************************************************** 
-    <menuitem id="hr_pointage_menu" name="Pointage Salariés"  parent="hr_pointage_main_menu" sequence = "1"/>
+    <menuitem id="hr_pointage_menu" name="Pointage Salariés" parent="hr_pointage_main_menu" sequence = "1"/>
 
-    <menuitem id="hr_pointage_menu_1" name="Pointage mensuelle"  parent="hr_pointage_menu" action="pointage_user_salarie" sequence = "1"/>
-    <menuitem id="hr_pointage_stc_menu" name="Salarié STC"  parent="hr_pointage_menu" action="pointage_user_salarie_stc" sequence = "2"/>
-    <menuitem id="hr_pointage_abondement_menu" name="Salarié Abondement"  parent="hr_pointage_menu" action="pointage_user_salarie_abondement" sequence = "3"/>
-    <menuitem id="hr_pointage_absence_menu" name="Salarié Absence"  parent="hr_pointage_menu" action="pointage_user_salarie_absence" sequence = "4"/>--> 
+    <menuitem id="hr_pointage_menu_1" name="Pointage mensuelle" parent="hr_pointage_menu" action="pointage_user_salarie" sequence = "1"/>
+    <menuitem id="hr_pointage_stc_menu" name="Salarié STC" parent="hr_pointage_menu" action="pointage_user_salarie_stc" sequence = "2"/>
+    <menuitem id="hr_pointage_abondement_menu" name="Salarié Abondement" parent="hr_pointage_menu" action="pointage_user_salarie_abondement" sequence = "3"/>
+    <menuitem id="hr_pointage_absence_menu" name="Salarié Absence" parent="hr_pointage_menu" action="pointage_user_salarie_absence" sequence = "4"/>-->
     <!-- **************************************************** -->
     <!-- **************************************************** 
-    <menuitem id="hr_pointage_menu_2" name="Pointage Ouvriers"  parent="hr_pointage_main_menu" sequence = "2"/>
-    <menuitem id="hr_pointage_menu_ou" name="Pointage mensuelle"  parent="hr_pointage_menu_2" action="pointage_user_ouvrier" sequence = "1"/>
-    <menuitem id="hr_pointage_stc_menu_ou" name="Ouvriers STC"  parent="hr_pointage_menu_2" action="pointage_user_ouvrier_stc" sequence = "2"/>
-    <menuitem id="hr_pointage_abondement_menu_ou" name="Ouvriers Abondement"  parent="hr_pointage_menu_2" action="pointage_user_ouvrier_abondement" sequence = "3"/>
-    <menuitem id="hr_pointage_absence_menu_ou" name="Ouvriers Absence"  parent="hr_pointage_menu_2" action="pointage_user_ouvrier_absence" sequence = "4"/>-->
+    <menuitem id="hr_pointage_menu_2" name="Pointage Ouvriers" parent="hr_pointage_main_menu" sequence = "2"/>
+    <menuitem id="hr_pointage_menu_ou" name="Pointage mensuelle" parent="hr_pointage_menu_2" action="pointage_user_ouvrier" sequence = "1"/>
+    <menuitem id="hr_pointage_stc_menu_ou" name="Ouvriers STC" parent="hr_pointage_menu_2" action="pointage_user_ouvrier_stc" sequence = "2"/>
+    <menuitem id="hr_pointage_abondement_menu_ou" name="Ouvriers Abondement" parent="hr_pointage_menu_2" action="pointage_user_ouvrier_abondement" sequence = "3"/>
+    <menuitem id="hr_pointage_absence_menu_ou" name="Ouvriers Absence" parent="hr_pointage_menu_2" action="pointage_user_ouvrier_absence" sequence = "4"/>-->
     <!-- **************************************************** -->
 
     <menuitem id="action_server_pointeur_transfert" name="Transferts" parent="hr_pointage_main_menu" sequence="3" action="menu_view_employee_transfert_tree"/>
@@ -532,11 +540,11 @@
         </field>
     </record> -->
 
-    
 
-    
 
-    
+
+
+
 
     <record id="view_transfert_filter" model="ir.ui.view">
         <field name="name">hr.employee.transfert.select</field>
@@ -581,7 +589,7 @@
             <field name="name" position="before">
                 <filter string="Nouveau Embauche" icon="terp-personal" domain="[('state_employee_wtf','=','new')]]" name="new_employee"/>
             </field>
-            </field>
+        </field>
     </record>
 
     <record id="hr_form_vieww_pointage_inherit" model="ir.ui.view">
@@ -590,14 +598,14 @@
         <field name="inherit_id" ref="nxtm_employee_mngt.view_employee_form"/>
         <field name="arch" type="xml">
             <button name="view_employee_payslips" position="after">
-                    <button name="view_employee_rapport_pointage" class="oe_stat_button" icon="fa-book" type="object" groups="base.group_hr_manager">
-                        <field name="rapport_pointage_count" widget="statinfo" string="Pointage"/>
-                    </button>
+                <button name="view_employee_rapport_pointage" class="oe_stat_button" icon="fa-book" type="object" groups="base.group_hr_manager">
+                    <field name="rapport_pointage_count" widget="statinfo" string="Pointage"/>
+                </button>
             </button>
         </field>
     </record>
 
-    
+
     <record id="creation_mass_wizard" model="ir.ui.view">
         <field name="name">hr.create.mass.wizard</field>
         <field name="model">hr.filtre.pointage.wizard</field>
@@ -605,16 +613,16 @@
             <form>
 
                 <group>
-                    <group>                          
-                        <field name="period_id" options="{'no_create': True,'no_open': True}" />                            
+                    <group>
+                        <field name="period_id" options="{'no_create': True,'no_open': True}" />
                         <field name="chantier_id" options="{'no_create': True,'no_open': True}"/>
                     </group>
                     <group>
-                    </group>    
+                    </group>
                 </group>
-                <footer>                      
+                <footer>
                     <button string="Annuler" class="oe_link oe_right" special="cancel"/>
-                    <button string="Create" name="create_rapports_pointage_mass" class="oe_highlight oe_right" type="object"/> 
+                    <button string="Create" name="create_rapports_pointage_mass" class="oe_highlight oe_right" type="object"/>
                 </footer>
             </form>
         </field>
@@ -627,17 +635,17 @@
             <form>
 
                 <group>
-                    <group>                          
-                        <field name="period_id" options="{'no_create': True,'no_open': True}" />                            
+                    <group>
+                        <field name="period_id" options="{'no_create': True,'no_open': True}" />
                         <field name="employee_id" options="{'no_create': True,'no_open': True}"/>
                         <field name="chantier_id" options="{'no_create': True,'no_open': True}"/>
                     </group>
                     <group>
-                    </group>    
+                    </group>
                 </group>
-                <footer>                      
+                <footer>
                     <button string="Annuler" class="oe_link oe_right" special="cancel"/>
-                    <button string="Create" name="create_rapports_pointage_individuel" class="oe_highlight oe_right" type="object"/> 
+                    <button string="Create" name="create_rapports_pointage_individuel" class="oe_highlight oe_right" type="object"/>
                 </footer>
             </form>
         </field>
@@ -650,20 +658,20 @@
             <form>
 
                 <group>
-                    <group>                          
-                        <field name="quinzaine"/> 
-                        <field name="period_id" invisible="1"/>                            
+                    <group>
+                        <field name="quinzaine"/>
+                        <field name="period_id" invisible="1"/>
                         <field name="employee_id" invisible="1"/>
                         <field name="chantier_id" invisible="1"/>
                         <field name="sous_chantier" invisible="1"/>
                         <field name="rapport_id" invisible="1"/>
                     </group>
                     <group>
-                    </group>    
+                    </group>
                 </group>
-                <footer>                      
+                <footer>
                     <button string="Annuler" class="oe_link oe_right" special="cancel"/>
-                    <button string="Create" name="create_payslip" class="oe_highlight oe_right" type="object"/> 
+                    <button string="Create" name="create_payslip" class="oe_highlight oe_right" type="object"/>
                 </footer>
             </form>
         </field>
@@ -676,17 +684,17 @@
             <form>
 
                 <group>
-                    <group>                          
-                        <field name="period_id" reandonly="1"/>                            
+                    <group>
+                        <field name="period_id" reandonly="1"/>
                         <field name="employee_id" reandonly="1"/>
                         <field name="chantier_id" reandonly="1"/>
                     </group>
                     <group>
-                    </group>    
+                    </group>
                 </group>
-                <footer>                      
+                <footer>
                     <button string="Non" name="cancel_rapport_creation" class="oe_highlight oe_right" type="object"/>
-                    <button string="Oui" name="create_rapports_pointage_individuel" class="oe_right" type="object"/> 
+                    <button string="Oui" name="create_rapports_pointage_individuel" class="oe_right" type="object"/>
                 </footer>
             </form>
         </field>
