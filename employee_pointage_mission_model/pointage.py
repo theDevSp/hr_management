@@ -318,6 +318,10 @@ class hr_rapport_pointage(models.Model):
     )
     # --------------------------------------------------
     jom = fields.Float(related="period_id.jom", readonly=True)
+    profile_paie_id = fields.Many2one(related='employee_id.contract_id.profile_paie_id')
+    state_employee_wtf = fields.Selection(related='employee_id.state_employee_wtf')
+    employee_name = fields.Char(related="employee_id.name", string=u"Nom et prénon", readonly=True)
+    cin = fields.Char(related="employee_id.cin", string='CIN', readonly=True)
 
     q1_state = fields.Selection(
         [
