@@ -347,7 +347,7 @@
                             </div>
                         </div>
                         <div class="col-12 col-lg-7 d-none d-md-block">
-                            <div class="bg-white shadow p-3 my-3 my-md-0" groups="hr_management.group_admin_paie,hr_management.group_agent_paie">
+                            <div class="bg-white shadow p-3 my-3 my-md-0" groups="hr_management.group_admin_paie,hr_management.group_admin_view_paie,hr_management.group_agent_paie,hr_management.group_cnss_juridique">
                                 <div class="card bg-light my-3">
                                     <div class="card-body text-center">
                                         <h2 class="card-text">Payement</h2>

@@ -41,7 +41,10 @@ class HrManagement(http.Controller):
         prelevement = http.request.env['hr.prelevement']
         requested_pariod = http.request.env['account.month.period'].browse(period_id)
         res = []
-        
+        print(prelevement.search([
+                ('state','!=','draft'),
+                ('employee_id','in',(False,employee_id))
+                ]))
         for line in prelevement.search([
                 ('state','!=','draft'),
                 ('employee_id','in',(False,employee_id))

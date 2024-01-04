@@ -160,7 +160,9 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><label for="date_start" class=""/></span>
                                                             </div>
-                                                            <field name="date_select_half_perso" force_save="1" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                            <field name="date_select_half_perso" force_save="1" 
+                                                                    class="form-control" nolabel="1" 
+                                                                    attrs="{'readonly':[('state','!=','draft')],'required':[('demi_jour','!=',False)]}"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-md-6">
@@ -168,7 +170,9 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" ><label for="matin_soir" class=""/></span>
                                                             </div>
-                                                            <field name="matin_soir" class="form-control" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                                            <field name="matin_soir" class="form-control" 
+                                                                    nolabel="1" 
+                                                                    attrs="{'readonly':[('state','!=','draft')],'required':[('demi_jour','!=',False)]}"/>
                                                         </div>
                                                     </div>
                                                     <div class="col-12">

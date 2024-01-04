@@ -720,7 +720,7 @@ class hr_rapport_pointage(models.Model):
 
         total_jour_travailler = 0
         if self.employee_id.contract_id.type_profile_related == 'j' and self.employee_id.contract_id.type_emp != 'o':
-            
+
             worked_sundays = 0
             if not self.employee_id.contract_id.jo_related:
                 worked_sundays = self.rapport_result()['jdt'] 
@@ -865,10 +865,20 @@ class hr_rapport_pointage(models.Model):
         hnt = joe * contract.nbre_heure_worked_par_jour_related # heure de travail sur lesquelles le salaire de base de l'employé est définis
         jont = self.count_nbr_absense_days  # jour ouvrable non travaillé par le salarié
         ht = self.total_h_v  # heure travaillées par le salarié
-        jt = self.total_j_v  # jour travaillées par le salarié
         h_comp = hnt - ht  # heure de compensation de salaire
-        j_comp = joe - (jt + default_day_2_add) if type_profile == 'j' else h_comp / contract.nbre_heure_worked_par_jour_related # jour de compensation de salaire
         j_transfert = len(self.rapport_lines.filtered(lambda ln: ln.day_type == "9"))
+        total_jour_travailler = 0
+        if self.employee_id.contract_id.type_profile_related == 'j' and self.employee_id.contract_id.type_emp != 'o':
+            
+            worked_sundays = 0
+            if not self.employee_id.contract_id.jo_related:
+                worked_sundays = jdt
+
+            total_jour_travailler = min(self.total_j_v + j_transfert + worked_sundays,joe)
+        else:
+            total_jour_travailler = self.total_j_v + jdt + j_transfert
+        jt = total_jour_travailler  # jour travaillées par le salarié
+        j_comp = joe - (jt + default_day_2_add) if type_profile == 'j' else h_comp / contract.nbre_heure_worked_par_jour_related # jour de compensation de salaire
 
         return {
             "jc": jc,

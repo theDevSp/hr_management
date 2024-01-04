@@ -37,7 +37,7 @@
                 sequence="7" 
                 groups="hr_management.group_admin_paie,hr_management.group_agent_paie,hr_management.group_controle_gestion,hr_management.group_cnss_juridique,hr_management.group_admin_view_paie,hr_management.group_agent_paie_cadre,hr_management.group_agent_paie_administration"/>
                 
-    <menuitem name="Fiche de paie" id="fiche_paie_menu" parent="fp_recap_parent_menu" action="fiche_paie_action" sequence="1"/>
+    <menuitem name="Fiche de paie" id="fiche_de_paie_menu" parent="fp_recap_parent_menu" action="fiche_paie_action" sequence="1"/>
 
     
     <menuitem name="Payement par mass"

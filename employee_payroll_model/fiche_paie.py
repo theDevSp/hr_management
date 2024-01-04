@@ -457,7 +457,7 @@ class fiche_paie(models.Model):
                 #-------------- regularise les jours ouvrable
 
 
-                if rapport_result["jdt"] > 0 and rec.contract_id.pp_personnel_id_many2one.type_profile == 'j':
+                if rapport_result["jdt"] > 0 and rec.contract_id.pp_personnel_id_many2one.type_profile == 'j' and self.employee_id.contract_id.jo_related:
                     rec.consumed_sundays = min(rapport_result["jdt"],ja) if ja > 0 else 0
                     rec.reserved_sundays = rapport_result["jdt"]-rec.consumed_sundays 
                 
@@ -596,7 +596,7 @@ class fiche_paie(models.Model):
             )
 
     def employee_compensation_validation(self):
-        
+
         ligible_date = self.period_id.date_stop - relativedelta(months=6)
         if ligible_date < self.contract_id.date_start:
             return False
