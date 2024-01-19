@@ -95,6 +95,12 @@ class PointageListController extends ListController {
             create: false,
             onChange: (selectedValue) => {
                 const selectQuinzine = $('#select-quinzine')[0].selectize;
+                selectQuinzine.addOption([
+                    { id: 'quinzaine12', title: 'Quinzaine12' },
+                ]);
+                selectQuinzine.setValue('quinzaine12');
+                selectQuinzine.disable();
+                return
 
                 if (selectedValue === 'o') {
 
@@ -172,7 +178,7 @@ class PointageListController extends ListController {
             framework.unblockUI();
             return;
         }
-        else if ($('#select-type').val() === 's') {
+        else if ($('#select-type').val() === 's' || $('#select-type').val() === 'o') {
 
             fetch("./hr_management/get_report_pointage/", {
                 method: "POST",
@@ -217,8 +223,8 @@ class PointageListController extends ListController {
                                     documentAssembly: true
                                 },
                                 info: {
-                                    title: "Les Rapports",
-                                    author: "BIOUI TRAVAUX",
+                                    title: "Les Rapports de Pointage",
+                                    author: "SBTX",
                                     subject: `Les Rapports de Pointages`
                                 },
                                 pageMargins: [12, 110, 12, 27],

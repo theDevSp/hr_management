@@ -121,6 +121,7 @@
         </field>
     </record>
 
+    <!--
     <menuitem name="Création par mass Machine Pointage" id="create_mass_machine_pointage_menu" parent="pointage_menu" action="mass_create_machine_poinatge_creation_action" sequence="30" />
 
     <record id="mass_create_machine_poinatge_creation_action" model="ir.actions.act_window">
@@ -129,6 +130,6 @@
         <field name="view_mode">form</field>
         <field name="view_id" ref="creation_mass_rapport_machine_pointage_wizard" />
         <field name="target">new</field>
-    </record>
+    </record>-->
 
 </odoo>
