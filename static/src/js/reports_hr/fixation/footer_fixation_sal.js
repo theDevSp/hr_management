@@ -80,7 +80,7 @@ export function footer_fixation_sal(currentPage, pageCount) {
                 headerRows: 1,
                 body: [
                     [{
-                        text: 'DIRECTEUR ADMINISTRATIF',
+                        text: 'DIRECTEUR ADMINISTRATIF ET FINANCIER',
                         bold: true,
                         fontSize: 10,
                         alignment: 'center',
@@ -93,7 +93,7 @@ export function footer_fixation_sal(currentPage, pageCount) {
                         border:[0]
                     },
                     {
-                        text: 'M. LE PDG',
+                        text: 'DIRECTEUR GÉNÉRAL',
                         fontSize: 10,
                         bold: true,
                         alignment: 'center',
