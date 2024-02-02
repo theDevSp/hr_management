@@ -480,6 +480,7 @@ class hr_rapport_pointage(models.Model):
         if if_exist == 0:
             res = super(hr_rapport_pointage, self).create(vals)
 
+            """
             if res.employee_id.type_emp == "o":
                 if res.quinzaine == "quinzaine1":
                     for line in self._prepare_rapport_pointage_lines(
@@ -507,7 +508,15 @@ class hr_rapport_pointage(models.Model):
                     res.emplacement_chantier_id.id,
                 ):
                     self.env["hr.rapport.pointage.line"].create(line)
-
+            """
+            
+            for line in self._prepare_rapport_pointage_lines(
+                    res.period_id,
+                    res.id,
+                    vals["employee_id"],
+                    res.emplacement_chantier_id.id,
+                ):
+                    self.env["hr.rapport.pointage.line"].create(line)
         return res
 
     def write(self, vals):
