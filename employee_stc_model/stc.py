@@ -145,7 +145,7 @@ class hr_stc(models.Model):
         salaire_jour = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
         employee_profile = self.contract.pp_personnel_id_many2one.definition_nbre_jour_worked_par_mois
         if employee_profile == 'jr_mois' and self.contract.type_salaire == 'm':
-            salaire_jour = self.contract.salaire_actuel / 30
+            salaire_jour = self.contract.salaire_actuel / 26
         elif employee_profile == 'nbr_saisie' and self.contract.type_salaire == 'm':
             salaire_jour = self.contract.salaire_actuel / self.contract.pp_personnel_id_many2one.nbre_jour_worked_par_mois
         elif self.contract.type_salaire == 'h':
