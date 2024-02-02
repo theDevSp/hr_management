@@ -509,7 +509,7 @@ class hr_rapport_pointage(models.Model):
                 ):
                     self.env["hr.rapport.pointage.line"].create(line)
             """
-            
+
             for line in self._prepare_rapport_pointage_lines(
                     res.period_id,
                     res.id,
@@ -892,7 +892,7 @@ class hr_rapport_pointage(models.Model):
         else:
             total_jour_travailler = self.total_j_v + jdt + j_transfert
         jt = total_jour_travailler  # jour travaillées par le salarié
-        j_comp = joe - (jt + default_day_2_add) if type_profile == 'j' else h_comp / contract.nbre_heure_worked_par_jour_related # jour de compensation de salaire
+        j_comp = joe - (jt) if type_profile == 'j' else h_comp / contract.nbre_heure_worked_par_jour_related # jour de compensation de salaire
 
         return {
             "jc": jc,
