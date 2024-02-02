@@ -41,7 +41,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
     sous_chantier = fields.Many2one("fleet.vehicle.chantier.emplacement",string="Equipes")
     employee_type = fields.Selection([("c","Cadre de Chantier"),("a","Administration"),("s","Salarié"),("o","Ouvrier")],string=u"Type d'employé")
     period_id = fields.Many2one("account.month.period",u'Période',domain = _get_ab_default)
-    quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine")
+    quinzaine = fields.Selection([('quinzaine1',"Première quinzaine"),('quinzaine2','Deuxième quinzaine'),('quinzaine12','Q1 + Q2')],string="Quinzaine",default='quinzaine12')
     jour = fields.Date('Date Jour')
     employee_id = fields.Many2one("hr.employee",string="Employées")
     vehicle_id = fields.Many2one("fleet.vehicle",u"Code engin")
@@ -58,14 +58,14 @@ class hr_filtre_pointage_wizard(models.TransientModel):
             self.chantier_id = self.employee_id.chantier_id
             self.employee_type = self.employee_id.type_emp
         
-
+    """
     @api.onchange('employee_type')
     def _onchange_employee_type(self):
         if self.employee_type != 'o':
             self.quinzaine = 'quinzaine12'
         else:
             self.quinzaine = 'quinzaine1'
-        
+    """    
 
     def prepare_lines(self):
         
@@ -206,7 +206,9 @@ class hr_filtre_pointage_wizard(models.TransientModel):
         exclud_list,result,foreign_list = [],[],[]
         #---------- quainzaine 1 ---------------------------------------
 
-        if self.quinzaine == 'quinzaine12' and  self.employee_type == 'o':
+        #if self.quinzaine == 'quinzaine12' and  self.employee_type == 'o':
+        """
+        if self.quinzaine == 'quinzaine12':
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
@@ -218,6 +220,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                     'next': {'type': 'ir.actions.act_window_close'},
                 }
             }
+        """
 
         if self.quinzaine == 'quinzaine1' and self.previlege_validation():
 
@@ -331,6 +334,7 @@ class hr_filtre_pointage_wizard(models.TransientModel):
     def create_rapports_pointage_individuel(self):
         
 
+        """
         if self.employee_id.type_emp == 'o' and self.quinzaine == 'quinzaine1' and self.previlege_validation():
             self.env['hr.rapport.pointage'].sudo().create({
                 'employee_id':self.employee_id.id,
@@ -346,6 +350,14 @@ class hr_filtre_pointage_wizard(models.TransientModel):
                 'quinzaine':'quinzaine2'
                 })
         elif self.employee_id.type_emp != 'o' and self.quinzaine == 'quinzaine12' and self.previlege_validation():
+            self.env['hr.rapport.pointage'].sudo().create({
+                'employee_id':self.employee_id.id,
+                'period_id':self.period_id.id,
+                'chantier_id':self.chantier_id.id,
+                'quinzaine':'quinzaine12'
+                })
+        """
+        if self.previlege_validation():
             self.env['hr.rapport.pointage'].sudo().create({
                 'employee_id':self.employee_id.id,
                 'period_id':self.period_id.id,
@@ -709,7 +721,8 @@ class hr_filtre_pointage_wizard(models.TransientModel):
             
             for rapport in rapports:
                 for payslip in rapport.payslip_ids:
-                    payslip.sudo().unlink()
+                    if payslip.type_fiche != 'stc':
+                        payslip.sudo().unlink()
                 rapport.action_draft()
     
     def regularisation_panier(self):
