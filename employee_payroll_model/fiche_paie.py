@@ -305,7 +305,7 @@ class fiche_paie(models.Model):
     def _compute_cp_number(self):
         for rec in self:
             if rec.rapport_id:
-                rec.cp_number = rec.consumed_jf + rec.consumed_sundays + rec.consumed_panier
+                rec.cp_number = rec.consumed_jf + rec.consumed_sundays + rec.consumed_panier + rec.regularisation_auto
             else:
                 rec.cp_number = rec._compute_manual_cp_number()
 
