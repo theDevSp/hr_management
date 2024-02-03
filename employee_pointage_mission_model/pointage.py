@@ -888,11 +888,13 @@ class hr_rapport_pointage(models.Model):
             if not self.employee_id.contract_id.jo_related:
                 worked_sundays = jdt
 
-            total_jour_travailler = min(self.total_j_v + j_transfert + worked_sundays + demijour_travailler,joe)
+            total_jour_travailler = self.total_j_v + j_transfert + worked_sundays + demijour_travailler + default_day_2_add
         else:
             total_jour_travailler = self.total_j_v + jdt + j_transfert
-        jt = total_jour_travailler  # jour travaillées par le salarié
-        j_comp = joe - (jt) if type_profile == 'j' else h_comp / contract.nbre_heure_worked_par_jour_related # jour de compensation de salaire
+            
+        jt = total_jour_travailler 
+        
+        j_comp = joe - jt if type_profile == 'j' else h_comp / contract.nbre_heure_worked_par_jour_related # jour de compensation de salaire
 
         return {
             "jc": jc,
