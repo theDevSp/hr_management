@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
+<!--
     <record id="hr_employee_rule_agent_paie" model="ir.rule">
         <field name="name">Employee Rules Agent de Paie</field>
         <field name="model_id" ref="model_hr_employee"/>
@@ -105,4 +105,5 @@
         <field name="domain_force">[('stc_id.employee_id.type_emp','in',('s','o'))]</field>
         <field name="groups" eval="[(4,ref('hr_management.group_agent_paie'))]"/>
     </record>
+-->
 </odoo>
