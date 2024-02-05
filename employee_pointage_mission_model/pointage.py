@@ -731,17 +731,6 @@ class hr_rapport_pointage(models.Model):
 
         nbr_jf_refunded = 0
 
-        total_jour_travailler = 0
-        if self.employee_id.contract_id.type_profile_related == 'j' and self.employee_id.contract_id.type_emp != 'o':
-
-            worked_sundays = 0
-            if not self.employee_id.contract_id.jo_related:
-                worked_sundays = self.rapport_result()['jdt'] 
-
-            total_jour_travailler = min(self.total_j_v + self.rapport_result()['j_transfert'] + worked_sundays + self.rapport_result()['demijour_travailler'],self.rapport_result()['jnt'])
-        else:
-            total_jour_travailler = self.total_j_v + self.rapport_result()['jdt'] + self.rapport_result()['j_transfert']
-
         data = {
             "employee_id": self.employee_id.id,
             "contract_id": self.employee_id.contract_id.id,
@@ -753,7 +742,7 @@ class hr_rapport_pointage(models.Model):
             "emplacement_chantier_id": self.emplacement_chantier_id.id,
             "rapport_id": self.id,
             "quinzaine": self.quinzaine,
-            "nbr_jour_travaille": total_jour_travailler,
+            "nbr_jour_travaille": self.rapport_result()['jt'],
             "nbr_heure_travaille": self.total_h_v,
             "autoriz_cp": self.employee_id.contract_id.completer_salaire_related,
             "autoriz_zero_cp": self.employee_id.contract_id.autoriz_zero_cp_related,
@@ -888,14 +877,16 @@ class hr_rapport_pointage(models.Model):
             if not self.employee_id.contract_id.jo_related:
                 worked_sundays = jdt
 
-            total_jour_travailler = self.total_j_v + j_transfert + worked_sundays + demijour_travailler + default_day_2_add
+            total_jour_travailler = self.total_j_v + j_transfert + worked_sundays + demijour_travailler
         else:
             total_jour_travailler = self.total_j_v + jdt + j_transfert
-            
+
         jt = total_jour_travailler 
+
+        
         
         j_comp = joe - jt if type_profile == 'j' else h_comp / contract.nbre_heure_worked_par_jour_related # jour de compensation de salaire
-
+        
         return {
             "jc": jc,
             "jdt": jdt,
