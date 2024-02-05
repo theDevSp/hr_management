@@ -774,7 +774,7 @@ class hr_rapport_pointage(models.Model):
 
             self.payslip_ids[0].write(
                 {
-                    "nbr_jour_travaille": total_jour_travailler,
+                    "nbr_jour_travaille": self.rapport_result()['jt'],
                     "nbr_heure_travaille": self.total_h_v,
                     "nbr_jf_refunded": nbr_jf_refunded,
                 }
@@ -877,7 +877,7 @@ class hr_rapport_pointage(models.Model):
             if not self.employee_id.contract_id.jo_related:
                 worked_sundays = jdt
 
-            total_jour_travailler = self.total_j_v + j_transfert + worked_sundays + demijour_travailler
+            total_jour_travailler = self.total_j_v + j_transfert + worked_sundays + demijour_travailler + default_day_2_add
         else:
             total_jour_travailler = self.total_j_v + jdt + j_transfert
 
