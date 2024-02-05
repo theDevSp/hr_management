@@ -91,6 +91,8 @@ class PointageListController extends ListController {
             options: [
                 { id: 'o', title: 'Ouvrier' },
                 { id: 's', title: 'Salarié' },
+                { id: 'a', title: 'Administration' },
+                { id: 'c', title: 'Cadre' },
             ],
             create: false,
             onChange: (selectedValue) => {
@@ -112,7 +114,7 @@ class PointageListController extends ListController {
                     selectQuinzine.refreshOptions();
                     selectQuinzine.clear();
                     selectQuinzine.enable();
-                } else if (selectedValue === 's') {
+                } else if (selectedValue === 's' | selectedValue === 'a' | selectedValue === 'c') {
 
                     selectQuinzine.clearOptions();
                     selectQuinzine.addOption([
@@ -172,7 +174,7 @@ class PointageListController extends ListController {
             framework.unblockUI();
             return;
         }
-        else if ($('#select-type').val() === 's') {
+        else {
 
             fetch("./hr_management/get_report_pointage/", {
                 method: "POST",
@@ -277,6 +279,7 @@ class PointageListController extends ListController {
                 });
 
         }
+        /*if ($('#select-type').val() === 's') 
         else if ($('#select-type').val() === 'o') {
 
             fetch("./hr_management/get_report_pointage_ouvrier/", {
@@ -450,7 +453,7 @@ class PointageListController extends ListController {
                     framework.unblockUI();
                     this.showNotification("Erreur d'impression ! Merci de réessayer !", "danger");
                 });
-        }
+        }*/
     };
 
     showNotification(message, typeNotification) {
