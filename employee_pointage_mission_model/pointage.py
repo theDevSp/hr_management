@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from odoo import models, fields, api, SUPERUSER_ID
 from odoo.exceptions import ValidationError, UserError
 from datetime import datetime, date
