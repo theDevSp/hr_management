@@ -469,7 +469,7 @@ class fiche_paie(models.Model):
     def compute_total(self):
         for rec in self:
             if rec.contract_id:
-                rec.total = rec.nbr_heure_travaille * rec.salaire_heure if rec.type_profile_related == "h" else rec.nbr_jour_travaille * rec.salaire_jour
+                rec.total = rec.nbr_heure_travaille * rec.salaire_heure if rec.type_profile_related == "h" else (rec.nbr_jour_travaille + rec.regularisation_auto) * rec.salaire_jour
                 rec.total += rec.montant_cp_number
             else:
                 rec.total = 0
