@@ -110,15 +110,6 @@ class holidays(models.Model):
         elif not self.heure_perso:
             date_difference = self.get_duree(self.date_start,self.date_end)
             self.duree_jours = date_difference
-    
-    @api.onchange("heure_perso")
-    def onchange_heure_perso(self):
-        if self.heure_perso:
-            self.demi_jour = False
-            self.duree_heures = 0
-        elif not self.demi_jour:
-            date_difference = self.get_duree(self.date_start, self.date_end)
-            self.duree_jours = date_difference
 
     @api.onchange("date_select_half_perso")
     def onchange_date_select_half_perso(self):
