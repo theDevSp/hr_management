@@ -120,6 +120,11 @@ class holidays(models.Model):
             date_difference = self.get_duree(self.date_start, self.date_end)
             self.duree_jours = date_difference
 
+    @api.onchange("date_select_half_perso")
+    def onchange_date_select_half_perso(self):
+        if self.date_select_half_perso:
+            self.date_start = self.date_select_half_perso
+
     @api.onchange("date_start","date_end")
     def onchange_dates(self):
         date_difference = self.get_duree(self.date_start,self.date_end)
@@ -155,7 +160,7 @@ class holidays(models.Model):
     @api.model
     def create(self, vals):
         
-        if self.holidays_validation(vals["employee_id"],vals["date_start"],vals["date_end"]):
+        if self.holidays_validation(vals["employee_id"],vals["date_start"],vals["date_end"],vals["date_select_half_perso"],vals["demi_jour"]):
             raise ValidationError("Erreur congé pour %s. Vous ne pouvez pas avoir 2 demandes de congés qui se chevauchent dans la même journée."%(self.env['hr.employee'].browse(vals["employee_id"]).name))
         
         return super(holidays, self).create(vals)
@@ -169,7 +174,7 @@ class holidays(models.Model):
                 self.update_corresponding_lines('4','1')
         return res
 
-    def holidays_validation(self,employee_id,date_start,date_end=False):
+    def holidays_validation(self,employee_id,date_start,date_end=False,date_select_half_perso=False,demi_jour=False):
         
         result = self.env[self._name].search_count([
                 '&',
@@ -184,13 +189,9 @@ class holidays(models.Model):
                                 ('date_end','>=',date_end),
                             '&',
                                 ('date_start','<=',date_start),
-                                ('date_end','>=',date_end)]) if date_end else self.env[self._name].search_count([
+                                ('date_end','>=',date_end)]) if not demi_jour else self.env[self._name].search_count([
                                                                                         ('employee_id','=',employee_id),
-                                                                                        '|',
-                                                                                            '&',
-                                                                                                ('date_start','<=',date_start),
-                                                                                                ('date_end','>=',date_start),
-                                                                                            ('date_start','=',date_start)
+                                                                                        ('date_select_half_perso','=',date_select_half_perso)
                                                                                             ])
         if result > 0:
             return True
