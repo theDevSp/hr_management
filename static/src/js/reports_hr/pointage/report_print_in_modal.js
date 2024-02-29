@@ -78,9 +78,16 @@ class PointageListController extends ListController {
             valueField: 'id',
             labelField: 'title',
             searchField: 'title',
-            options: [],
-            create: false
+            options: [
+                { id: 'quinzaine12', title: 'Quinzaine12' }
+            ],
+            create: false,
+            items: ['quinzaine12'],
+            onInitialize: function () {
+                this.disable();
+            }
         });
+
 
         $('#select-type').selectize({
             maxItems: 1,
@@ -91,6 +98,8 @@ class PointageListController extends ListController {
             options: [
                 { id: 'o', title: 'Ouvrier' },
                 { id: 's', title: 'Salarié' },
+                { id: 'a', title: 'Administration' },
+                { id: 'c', title: 'Cadre' },
             ],
             create: false,
             onChange: (selectedValue) => {
@@ -102,6 +111,8 @@ class PointageListController extends ListController {
                 selectQuinzine.disable();
                 return
 
+                /*
+                Code ANCIEN
                 if (selectedValue === 'o') {
 
                     selectQuinzine.clearOptions();
@@ -129,6 +140,7 @@ class PointageListController extends ListController {
                     selectQuinzine.setValue('quinzaine12');
                     selectQuinzine.disable();
                 }
+                */
             }
         });
 
