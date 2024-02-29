@@ -190,7 +190,7 @@ class PointageListController extends ListController {
             framework.unblockUI();
             return;
         }
-        else if ($('#select-type').val() === 's' || $('#select-type').val() === 'o') {
+        else if ($('#select-type').val() === 's' || $('#select-type').val() === 'o' || $('#select-type').val() === 'a' || $('#select-type').val() === 'c') {
 
             fetch("./hr_management/get_report_pointage/", {
                 method: "POST",
@@ -295,6 +295,9 @@ class PointageListController extends ListController {
                 });
 
         }
+
+        /*
+        ANCIEN Code
         else if ($('#select-type').val() === 'o') {
 
             fetch("./hr_management/get_report_pointage_ouvrier/", {
@@ -469,6 +472,7 @@ class PointageListController extends ListController {
                     this.showNotification("Erreur d'impression ! Merci de réessayer !", "danger");
                 });
         }
+        */
     };
 
     showNotification(message, typeNotification) {
