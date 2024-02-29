@@ -91,12 +91,16 @@ class PointageListController extends ListController {
             options: [
                 { id: 'o', title: 'Ouvrier' },
                 { id: 's', title: 'Salarié' },
-                { id: 'a', title: 'Administration' },
-                { id: 'c', title: 'Cadre' },
             ],
             create: false,
             onChange: (selectedValue) => {
                 const selectQuinzine = $('#select-quinzine')[0].selectize;
+                selectQuinzine.addOption([
+                    { id: 'quinzaine12', title: 'Quinzaine12' },
+                ]);
+                selectQuinzine.setValue('quinzaine12');
+                selectQuinzine.disable();
+                return
 
                 if (selectedValue === 'o') {
 
@@ -114,7 +118,7 @@ class PointageListController extends ListController {
                     selectQuinzine.refreshOptions();
                     selectQuinzine.clear();
                     selectQuinzine.enable();
-                } else if (selectedValue === 's' | selectedValue === 'a' | selectedValue === 'c') {
+                } else if (selectedValue === 's') {
 
                     selectQuinzine.clearOptions();
                     selectQuinzine.addOption([
@@ -174,7 +178,7 @@ class PointageListController extends ListController {
             framework.unblockUI();
             return;
         }
-        else {
+        else if ($('#select-type').val() === 's' || $('#select-type').val() === 'o') {
 
             fetch("./hr_management/get_report_pointage/", {
                 method: "POST",
@@ -219,8 +223,8 @@ class PointageListController extends ListController {
                                     documentAssembly: true
                                 },
                                 info: {
-                                    title: "Les Rapports",
-                                    author: "BIOUI TRAVAUX",
+                                    title: "Les Rapports de Pointage",
+                                    author: "SBTX",
                                     subject: `Les Rapports de Pointages`
                                 },
                                 pageMargins: [12, 110, 12, 27],
@@ -279,7 +283,6 @@ class PointageListController extends ListController {
                 });
 
         }
-        /*if ($('#select-type').val() === 's') 
         else if ($('#select-type').val() === 'o') {
 
             fetch("./hr_management/get_report_pointage_ouvrier/", {
@@ -453,7 +456,7 @@ class PointageListController extends ListController {
                     framework.unblockUI();
                     this.showNotification("Erreur d'impression ! Merci de réessayer !", "danger");
                 });
-        }*/
+        }
     };
 
     showNotification(message, typeNotification) {
