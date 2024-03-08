@@ -469,19 +469,22 @@ class fiche_paie(models.Model):
     def compute_total(self):
         for rec in self:
             if rec.contract_id:
-                rapport_result = rec.rapport_id.rapport_result()
-                jot = min(rec.nbr_jour_travaille,rec.contract_id.nbre_jour_worked_par_mois_related) if rec.type_profile_related == "j" and rec.contract_id.type_emp != 'o' else rec.nbr_jour_travaille
-                rec.total = rec.nbr_heure_travaille * rec.salaire_heure if rec.type_profile_related == "h" else jot * rec.salaire_jour
+                
+                jot = min(rec.nbr_jour_travaille,rec.contract_id.nbre_jour_worked_par_mois_related) if rec.contract_id.type_profile_related == "j" and rec.contract_id.type_emp != 'o' else rec.nbr_jour_travaille
+                rec.total = rec.nbr_heure_travaille * rec.salaire_heure if rec.contract_id.type_profile_related == "h" else jot * rec.salaire_jour
                 rec.total += rec.montant_cp_number
                 auto_addition = 0
                 if rec.type_profile_related == "j" and rec.contract_id.type_emp != 'o':
                     auto_addition = max(0,rec.regularisation_auto * rec.salaire_jour) 
                 elif rec.type_profile_related == "h" and rec.contract_id.type_emp != 'o':
-                    auto_addition = min(rec.contract_id.nbre_heure_worked_par_jour_related * rec.regularisation_auto,rapport_result["h_comp"]) * rec.salaire_heure
+                    hc = rec.nbr_heure_travaille + rec.cp_number * rec.contract_id.nbre_heure_worked_par_jour_related
+                    ht = rec.contract_id.nbre_heure_worked_par_jour_related * rec.contract_id.nbre_jour_worked_par_mois_related
+                    if hc < ht:
+                        auto_addition = min(rec.contract_id.nbre_heure_worked_par_jour_related * rec.regularisation_auto,ht-hc) * rec.salaire_heure
                 rec.total += auto_addition
             else:
                 rec.total = 0
-
+                
     @api.depends('nbr_jour_travaille','nbr_heure_travaille','contract_id','salaire_actuel','deduction','cp_number','cotisation','amount_cimr','cal_state')
     def compute_sad(self):
         for rec in self:
