@@ -38,7 +38,7 @@ class hrCongesControllers(http.Controller):
                 'employe_periodictite':dict(res.fields_get(allfields=['periodicity_related'])['periodicity_related']['selection'])[res.contract_id.periodicity_related].upper()  if res.contract_id.periodicity_related not in [False, True, 0, 0.0, ""] else "-",
                 'employe_embaucher_par': res.embaucher_par.name if res.embaucher_par.name not in [False, True, 0, 0.0, ""] else "-",
                 'employe_recomander_par': res.recommander_par.name if res.recommander_par.name not in [False, True, 0, 0.0, ""] else "-",
-                'employe_motif_embauche': res.motif_enbauche if res.motif_enbauche not in [False, True, 0, 0.0, ""] else "-",
+                'employe_motif_embauche': dict(res.fields_get(allfields=['motif_enbauche'])['motif_enbauche']['selection'])[res.motif_enbauche].upper() if res.motif_enbauche not in [False, True, 0, 0.0, ""] else "-",
                 'employe_rib': res.rib_number.name if res.rib_number.name not in [False, True, 0, 0.0, ""] else "-",
                 'employe_agence': res.rib_number.bank_agence if res.rib_number.bank_agence not in [False, True, 0, 0.0, ""] else "-",
                 'employe_bank': res.rib_number.bank.name if res.rib_number.bank.name not in [False, True, 0, 0.0, ""] else "-",
